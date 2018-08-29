@@ -16,7 +16,8 @@ namespace Bas.RedYarn
         {
             this.storyline = new Storyline();
         }
-        
+
+        #region ToString
         [TestMethod]
         public void ToString_NameIsNotEmpty_ReturnsName()
         {
@@ -28,5 +29,80 @@ namespace Bas.RedYarn
         {
             ToStringHelper.ToString_NameIsEmpty_ReturnsClassName(this.storyline);
         }
+        #endregion
+        
+        #region Characters property
+        [TestMethod]
+        public void CharactersAdd_NewCharacter_StorylineContainsCharacter()
+        {
+            var character = new Character() { Name = "Character" };
+            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.storyline, character, this.storyline.Characters, character.Storylines);
+        }
+
+        [TestMethod]
+        public void CharactersInsert_NewCharacter_StorylineContainsCharacter()
+        {
+            var character = new Character() { Name = "Character" };
+            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.storyline, character, this.storyline.Characters, character.Storylines);
+        }
+
+        [TestMethod]
+        public void CharactersClear_CharacterContainsStoryline_StorylineIsRemovedFromCharacter()
+        {
+            var character = new Character() { Name = "Character" };
+            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.storyline, character, this.storyline.Characters, character.Storylines);
+        }
+
+        [TestMethod]
+        public void CharactersRemove_CharacterContainsStoryline_StorylineIsRemovedFromCharacter()
+        {
+            var character = new Character() { Name = "Character" };
+            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.storyline, character, this.storyline.Characters, character.Storylines);
+        }
+
+        [TestMethod]
+        public void CharactersRemoveAt_CharacterContainsStoryline_StorylineIsRemovedFromCharacter()
+        {
+            var character = new Character() { Name = "Character" };
+            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.storyline, character, this.storyline.Characters, character.Storylines);
+        }
+        #endregion
+        
+        #region Authors property
+        [TestMethod]
+        public void AuthorsAdd_NewAuthor_AuthorContainsStoryline()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.storyline, author, this.storyline.Authors, author.Storylines);
+        }
+
+        [TestMethod]
+        public void AuthorsInsert_NewAuthor_AuthorContainsStoryline()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.storyline, author, this.storyline.Authors, author.Storylines);
+        }
+
+        [TestMethod]
+        public void AuthorsClear_AuthorContainsStoryline_StorylineIsRemovedFromAuthor()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.storyline, author, this.storyline.Authors, author.Storylines);
+        }
+
+        [TestMethod]
+        public void AuthorsRemove_AuthorContainsStoryline_StorylineIsRemovedFromAuthor()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.storyline, author, this.storyline.Authors, author.Storylines);
+        }
+
+        [TestMethod]
+        public void AuthorsRemoveAt_AuthorContainsStoryline_StorylineIsRemovedFromAuthor()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.storyline, author, this.storyline.Authors, author.Storylines);
+        }
+        #endregion
     }
 }
