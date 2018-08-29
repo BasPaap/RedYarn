@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bas.RedYarn", "Bas.RedYarn\Bas.RedYarn.csproj", "{840D10B1-7CD3-4ADE-84A4-541A697219EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bas.RedYarn.Tests", "Bas.RedYarn.Tests\Bas.RedYarn.Tests.csproj", "{DBBA49E2-273F-497B-BE19-0F360EC2FE5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{840D10B1-7CD3-4ADE-84A4-541A697219EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{840D10B1-7CD3-4ADE-84A4-541A697219EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{840D10B1-7CD3-4ADE-84A4-541A697219EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBBA49E2-273F-497B-BE19-0F360EC2FE5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBBA49E2-273F-497B-BE19-0F360EC2FE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBBA49E2-273F-497B-BE19-0F360EC2FE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBBA49E2-273F-497B-BE19-0F360EC2FE5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
