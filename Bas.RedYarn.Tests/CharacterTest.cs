@@ -16,7 +16,8 @@ namespace Bas.RedYarn
         {
             character = new Character();
         }
-                
+
+        #region ToString
         [TestMethod]
         public void ToString_NameIsNotEmpty_ReturnsName()
         {
@@ -27,74 +28,130 @@ namespace Bas.RedYarn
         public void ToString_NameIsEmpty_ReturnsClassName()
         {
             ToStringHelper.ToString_NameIsEmpty_ReturnsClassName(this.character);
-        }
-                
+        } 
+        #endregion
+
+        #region Storylines property
         [TestMethod]
         public void StorylinesAdd_NewStoryline_StorylineContainsCharacter()
         {
-            // Arrange
             var storyline = new Storyline() { Name = "Storyline" };
-
-            // Act
-            this.character.Storylines.Add(storyline);
-            
-            // Assert          
-            Assert.AreSame(this.character, storyline.Characters[0]);            
+            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.character, storyline, this.character.Storylines, storyline.Characters);
         }
 
         [TestMethod]
         public void StorylinesInsert_NewStoryline_StorylineContainsCharacter()
         {
-            // Arrange
             var storyline = new Storyline() { Name = "Storyline" };
-
-            // Act
-            this.character.Storylines.Insert(0, storyline);
-
-            // Assert          
-            Assert.AreSame(this.character, storyline.Characters[0]);
+            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.character, storyline, this.character.Storylines, storyline.Characters);
         }
 
         [TestMethod]
         public void StorylinesClear_StorylineContainsCharacter_CharacterIsRemovedFromStoryline()
         {
-            // Arrange
             var storyline = new Storyline() { Name = "Storyline" };
-            this.character.Storylines.Add(storyline);
-
-            // Act
-            this.character.Storylines.Clear();
-
-            // Assert          
-            Assert.AreEqual(0, storyline.Characters.Count);
+            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, storyline, this.character.Storylines, storyline.Characters);
         }
 
         [TestMethod]
         public void StorylinesRemove_StorylineContainsCharacter_CharacterIsRemovedFromStoryline()
         {
-            // Arrange
             var storyline = new Storyline() { Name = "Storyline" };
-            this.character.Storylines.Add(storyline);
-
-            // Act
-            this.character.Storylines.Remove(storyline);
-
-            // Assert          
-            Assert.AreEqual(0, storyline.Characters.Count);
+            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, storyline, this.character.Storylines, storyline.Characters);
         }
 
         [TestMethod]
         public void StorylinesRemoveAt_StorylineContainsCharacter_CharacterIsRemovedFromStoryline()
         {
-            // Arrange
             var storyline = new Storyline() { Name = "Storyline" };
-            this.character.Storylines.Add(storyline);
-
-            // Act
-            this.character.Storylines.RemoveAt(0);
-
-            // Assert          
-            Assert.AreEqual(0, storyline.Characters.Count);
+            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, storyline, this.character.Storylines, storyline.Characters);
         }
+        #endregion
+
+        #region Authors property
+        [TestMethod]
+        public void AuthorsAdd_NewAuthor_AuthorContainsCharacter()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.character, author, this.character.Authors, author.Characters);
+        }
+
+        [TestMethod]
+        public void AuthorsInsert_NewAuthor_AuthorContainsCharacter()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.character, author, this.character.Authors, author.Characters);
+        }
+
+        [TestMethod]
+        public void AuthorsClear_AuthorContainsCharacter_CharacterIsRemovedFromAuthor()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, author, this.character.Authors, author.Characters);
+        }
+
+        [TestMethod]
+        public void AuthorsRemove_AuthorContainsCharacter_CharacterIsRemovedFromAuthor()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, author, this.character.Authors, author.Characters);
+        }
+
+        [TestMethod]
+        public void AuthorsRemoveAt_AuthorContainsCharacter_CharacterIsRemovedFromAuthor()
+        {
+            var author = new Author() { Name = "Author" };
+            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, author, this.character.Authors, author.Characters);
+        }
+        #endregion
+
+        #region Tags property
+        [TestMethod]
+        public void TagsAdd_NewTag_TagContainsCharacter()
+        {
+            var tag = new Tag() { Name = "Tag" };
+            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.character, tag, this.character.Tags, tag.Characters);
+        }
+
+        [TestMethod]
+        public void TagsInsert_NewTag_TagContainsCharacter()
+        {
+            var tag = new Tag() { Name = "Tag" };
+            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.character, tag, this.character.Tags, tag.Characters);
+        }
+
+        [TestMethod]
+        public void TagsClear_TagContainsCharacter_CharacterIsRemovedFromTag()
+        {
+            var tag = new Tag() { Name = "Tag" };
+            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, tag, this.character.Tags, tag.Characters);
+        }
+
+        [TestMethod]
+        public void TagsRemove_TagContainsCharacter_CharacterIsRemovedFromTag()
+        {
+            var tag = new Tag() { Name = "Tag" };
+            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, tag, this.character.Tags, tag.Characters);
+        }
+
+        [TestMethod]
+        public void TagsRemoveAt_TagContainsCharacter_CharacterIsRemovedFromTag()
+        {
+            var tag = new Tag() { Name = "Tag" };
+            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, tag, this.character.Tags, tag.Characters);
+        }
+        #endregion
+
+        #region RelateTo
+
+        #endregion
+
+        #region UnrelateTo
+
+        #endregion
+
+        #region RelationTo
+
+        #endregion
     }
 }

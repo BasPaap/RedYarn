@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Bas.RedYarn.Helpers
 {
-    class ToStringHelper
+    static class ToStringHelper
     {
         public static void ToString_NameIsNotEmpty_ReturnsName(INameable nameable)
         {
