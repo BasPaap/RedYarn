@@ -401,7 +401,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void UnrelateToSpecific_TwoWayRelationDescriptionIsKnown_RelationIsRemoved()
+        public void UnrelateToSpecific_TwoWayToRelationDescriptionIsKnown_RelationIsRemoved()
         {
             // Arrange
             var firstRelatedCharacter = new Character() { Name = "FirstRelatedCharacter" };
@@ -414,11 +414,33 @@ namespace Bas.RedYarn
 
             // Assert
             Assert.AreEqual(0, this.character.RelationsTo(firstRelatedCharacter).Count);
+            Assert.AreEqual(0, firstRelatedCharacter.RelationsTo(this.character).Count);
+
             Assert.AreEqual(1, this.character.RelationsTo(secondRelatedCharacter).Count);
             Assert.AreEqual(secondToRelationDescription, this.character.RelationsTo(secondRelatedCharacter).Single());
+            
+            Assert.AreEqual(1, secondRelatedCharacter.RelationsTo(this.character).Count);
+            Assert.AreEqual(secondFromRelationDescription, secondRelatedCharacter.RelationsTo(this.character).Single());
+        }
 
-            Assert.AreEqual(1, firstRelatedCharacter.RelationsTo(this.character).Count);
-            Assert.AreEqual(fromRelationDescription, firstRelatedCharacter.RelationsTo(this.character).Single());
+        [TestMethod]
+        public void UnrelateToSpecific_TwoWayFromRelationDescriptionIsKnown_RelationIsRemoved()
+        {
+            // Arrange
+            var firstRelatedCharacter = new Character() { Name = "FirstRelatedCharacter" };
+            var secondRelatedCharacter = new Character() { Name = "SecondRelatedCharacter" };
+            this.character.RelateTo(firstRelatedCharacter, toRelationDescription, fromRelationDescription);
+            this.character.RelateTo(secondRelatedCharacter, secondToRelationDescription, secondFromRelationDescription);
+
+            // Act
+            this.character.UnrelateTo(firstRelatedCharacter, fromRelationDescription);
+
+            // Assert
+            Assert.AreEqual(0, this.character.RelationsTo(firstRelatedCharacter).Count);
+            Assert.AreEqual(0, firstRelatedCharacter.RelationsTo(this.character).Count);
+
+            Assert.AreEqual(1, this.character.RelationsTo(secondRelatedCharacter).Count);
+            Assert.AreEqual(secondToRelationDescription, this.character.RelationsTo(secondRelatedCharacter).Single());
 
             Assert.AreEqual(1, secondRelatedCharacter.RelationsTo(this.character).Count);
             Assert.AreEqual(secondFromRelationDescription, secondRelatedCharacter.RelationsTo(this.character).Single());
