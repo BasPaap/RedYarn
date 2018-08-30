@@ -9,12 +9,29 @@ namespace Bas.RedYarn
     sealed class CoupledCollection<OtherType, OwnerType> : Collection<OtherType>
     {
         private OwnerType owner;
-        private string otherCollectionPropertyName;
+
+        private PropertyInfo otherCollectionProperty;
+        private MethodInfo clearCoupledItemsMethod;
+        private MethodInfo insertCoupledItemMethod;
+        private MethodInfo removeCoupledItemMethod;
+        private MethodInfo setCoupledItemMethod;
 
         public CoupledCollection(OwnerType owner, string otherCollectionPropertyName)
         {
             this.owner = owner;
-            this.otherCollectionPropertyName = otherCollectionPropertyName;                        
+
+            // Get collection property for other type
+            this.otherCollectionProperty = typeof(OtherType).GetProperty(otherCollectionPropertyName);
+
+            // Get coupledItem methods on other collection type
+            this.clearCoupledItemsMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(ClearCoupledItems),
+                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
+            this.insertCoupledItemMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(InsertCoupledItem),
+                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
+            this.removeCoupledItemMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(RemoveCoupledItem),
+                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
+            this.setCoupledItemMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(SetCoupledItem),
+                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         protected override void ClearItems()
@@ -25,16 +42,9 @@ namespace Bas.RedYarn
         protected override void InsertItem(int index, OtherType item)
         {
             base.InsertItem(index, item);
-
-            // Get collection property for other type
-            var otherCollectionProperty = item.GetType().GetProperty(this.otherCollectionPropertyName);
-
-            // Get InsertCoupledItem on other collection
-            var insertCoupledItemMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(InsertCoupledItem),
-                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
-            
+                        
             // Call InsertCoupledItem on other collection with owner as argument.
-            insertCoupledItemMethod.Invoke(otherCollectionProperty.GetValue(item), new object[] { this.owner });
+            this.insertCoupledItemMethod.Invoke(this.otherCollectionProperty.GetValue(item), new object[] { this.owner });
         }
 
         protected override void RemoveItem(int index)
