@@ -10,14 +10,16 @@ namespace Bas.RedYarn
         public string Name { get; set; }
         public Collection<string> Aliases { get; } = new Collection<string>();
         public string Description { get; set; }
-        public Collection<Author> Authors { get; } = new Collection<Author>();
-        public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
-        public Collection<Tag> Tags { get; } = new Collection<Tag>();
+        public Collection<Author> Authors { get; } 
+        public Collection<Storyline> Storylines { get; }
+        public Collection<Tag> Tags { get; } 
         public string ImagePath { get; set; }
 
         public Character()
         {
-            Tags = new CoupledCollection<Tag, Character>(this, nameof(Character.Tags));
+            Authors = new CoupledCollection<Author, Character>(this, nameof(Author.Characters));
+            Storylines = new CoupledCollection<Storyline, Character>(this, nameof(Storyline.Characters));
+            Tags = new CoupledCollection<Tag, Character>(this, nameof(Tag.Characters));
         }
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;

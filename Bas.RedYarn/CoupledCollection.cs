@@ -11,11 +11,9 @@ namespace Bas.RedYarn
         private readonly OwnerType owner;
 
         private readonly PropertyInfo otherCollectionProperty;
-        private readonly MethodInfo clearCoupledItemsMethod;
         private readonly MethodInfo insertCoupledItemMethod;
         private readonly MethodInfo removeCoupledItemMethod;
-        private readonly MethodInfo setCoupledItemMethod;
-
+        
         public CoupledCollection(OwnerType owner, string otherCollectionPropertyName)
         {
             this.owner = owner;
@@ -24,19 +22,23 @@ namespace Bas.RedYarn
             this.otherCollectionProperty = typeof(OtherType).GetProperty(otherCollectionPropertyName);
 
             // Get coupledItem methods on other collection type
-            this.clearCoupledItemsMethod = GetCoupledItemMethod(nameof(ClearCoupledItems));
-            this.insertCoupledItemMethod = GetCoupledItemMethod(nameof(InsertCoupledItem));
-            this.removeCoupledItemMethod = GetCoupledItemMethod(nameof(RemoveCoupledItem));
-            this.setCoupledItemMethod = GetCoupledItemMethod(nameof(SetCoupledItem));
+            this.insertCoupledItemMethod = GetCoupledItemMethodInfo(nameof(InsertCoupledItem));
+            this.removeCoupledItemMethod = GetCoupledItemMethodInfo(nameof(RemoveCoupledItem));
         }
 
-        private static MethodInfo GetCoupledItemMethod(string methodName)
+        private static MethodInfo GetCoupledItemMethodInfo(string methodName)
         {
             return typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         protected override void ClearItems()
         {
+            // Remove owner from all other items' collections by calling RemoveCoupledItem on all other collections.
+            foreach (var itemToRemove in this)
+            {
+                this.removeCoupledItemMethod.Invoke(this.otherCollectionProperty.GetValue(itemToRemove), new object[] { this.owner });
+            }
+
             base.ClearItems();
         }
 
@@ -44,38 +46,43 @@ namespace Bas.RedYarn
         {
             base.InsertItem(index, item);
                         
-            // Call InsertCoupledItem on other collection with owner as argument.
+            // Add owner to other item's collection as well by calling InsertCoupledItem on other collection.
             this.insertCoupledItemMethod.Invoke(this.otherCollectionProperty.GetValue(item), new object[] { this.owner });
         }
 
         protected override void RemoveItem(int index)
         {
+            var item = base[index];
+
             base.RemoveItem(index);
+
+            // Remove owner from other item's collection as well by calling RemoveCoupledItem on other collection.
+            this.removeCoupledItemMethod.Invoke(this.otherCollectionProperty.GetValue(item), new object[] { this.owner });
         }
 
         protected override void SetItem(int index, OtherType item)
         {
-            base.SetItem(index, item);
-        }
+            var originalItem = this[index];
 
-        private void ClearCoupledItems()
-        {
-            throw new NotImplementedException();
+            base.SetItem(index, item);
+
+            // Remove owner from the original item and add owner to the new item by calling RemoveCoupledItem on the original item's collection
+            // and InsertCoupledItem on the new item's collection.            
+            this.removeCoupledItemMethod.Invoke(this.otherCollectionProperty.GetValue(originalItem), new object[] { this.owner });
+            this.insertCoupledItemMethod.Invoke(this.otherCollectionProperty.GetValue(item), new object[] { this.owner });
         }
-        
+                
         private void InsertCoupledItem(OtherType item)
         {
-            base.InsertItem(base.Count, item);
+            base.InsertItem(this.Count, item); // Call base.InsertItem to avoid tripping CoupledCollection.InsertItem again by calling, for instance, Add().
         }
         
-        private void RemoveCoupledItem()
+        private void RemoveCoupledItem(OtherType otherOwner)
         {
-            throw new NotImplementedException();
-        }
-
-        private void SetCoupledItem()
-        {
-            throw new NotImplementedException();
+            if (this.Contains(otherOwner))
+            {
+                base.RemoveItem(this.IndexOf(otherOwner)); // Call base.RemoveItem to avoid tripping CoupledCollection.RemoveItem.                
+            }
         }
     }
 }
