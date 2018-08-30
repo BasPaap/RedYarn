@@ -37,7 +37,7 @@ namespace Bas.RedYarn
             throw new NotImplementedException();
         }
 
-        public string RelationTo(Character character)
+        public ReadOnlyCollection<string> RelationsTo(Character character)
         {
             throw new NotImplementedException();
         }
