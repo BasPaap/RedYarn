@@ -66,6 +66,16 @@ namespace Bas.RedYarn
             var character = new Character() { Name = "Character" };
             ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.tag, character, this.tag.Characters, character.Tags);
         }
+
+        [TestMethod]
+        public void CharactersSet_CharacterContainsTag_TagIsRemovedFromOldCharacterAndAddedToNewCharacter()
+        {
+            var character = new Character() { Name = "Character" };
+            var newCharacter = new Character() { Name = "NewCharacter" };
+
+            ManyToManyCollectionHelper.CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection(this.tag, character, newCharacter, this.tag.Characters, character.Tags, newCharacter.Tags);
+        }
+
         #endregion
     }
 }

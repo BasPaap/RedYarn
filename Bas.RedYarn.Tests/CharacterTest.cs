@@ -75,6 +75,16 @@ namespace Bas.RedYarn
             var storyline = new Storyline() { Name = "Storyline" };
             ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, storyline, this.character.Storylines, storyline.Characters);
         }
+
+        [TestMethod]
+        public void StorylinesSet_StorylineContainsCharacter_CharacterIsRemovedFromOldStorylineAndAddedToNewStoryline()
+        {
+            var storyline = new Storyline() { Name = "Storyline" };
+            var newStoryline = new Storyline() { Name = "NewStoryline" };
+
+            ManyToManyCollectionHelper.CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection(this.character, storyline, newStoryline, this.character.Storylines, storyline.Characters, newStoryline.Characters);
+        }
+
         #endregion
 
         #region Authors property
@@ -112,6 +122,16 @@ namespace Bas.RedYarn
             var author = new Author() { Name = "Author" };
             ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, author, this.character.Authors, author.Characters);
         }
+
+        [TestMethod]
+        public void AuthorsSet_AuthorContainsCharacter_CharacterIsRemovedFromOldAuthorAndAddedToNewAuthor()
+        {
+            var author = new Author() { Name = "Author" };
+            var newAuthor = new Author() { Name = "NewAuthor" };
+
+            ManyToManyCollectionHelper.CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection(this.character, author, newAuthor, this.character.Authors, author.Characters, newAuthor.Characters);
+        }
+
         #endregion
 
         #region Tags property
@@ -149,6 +169,16 @@ namespace Bas.RedYarn
             var tag = new Tag() { Name = "Tag" };
             ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.character, tag, this.character.Tags, tag.Characters);
         }
+
+        [TestMethod]
+        public void TagsSet_TagContainsCharacter_CharacterIsRemovedFromOldTagAndAddedToNewTag()
+        {
+            var tag = new Tag() { Name = "Tag" };
+            var newTag = new Tag() { Name = "NewTag" };
+
+            ManyToManyCollectionHelper.CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection(this.character, tag, newTag, this.character.Tags, tag.Characters, newTag.Characters);
+        }
+
         #endregion
 
         #region RelateTo
@@ -160,7 +190,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void RelateTo_CharacterIsSelf_ThrowsArgumentException()
+        public void RelateTo_CharacterIsCharacter_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, toRelationDescription));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -295,7 +325,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void RelateToTwoWay_CharacterIsSelf_ThrowsArgumentException()
+        public void RelateToTwoWay_CharacterIsCharacter_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, toRelationDescription, fromRelationDescription));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -330,7 +360,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void RelateToTwoWay_CharacterIsNew_CharactersAreRelatedToEachOther()
+        public void RelateToTwoWay_CharacterIsNew_CharactersAreRelatedToEachAuthor()
         {
             // Arrange
             var newCharacter = new Character() { Name = "CharacterName" };
@@ -353,7 +383,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void UnrelateTo_CharacterIsSelf_ThrowsArgumentException()
+        public void UnrelateTo_CharacterIsCharacter_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(this.character));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -407,7 +437,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void UnrelateToSpecific_CharacterIsSelf_ThrowsArgumentException()
+        public void UnrelateToSpecific_CharacterIsCharacter_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(this.character, fromRelationDescription));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -534,7 +564,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void RelationTo_CharacterIsSelf_ThrowsArgumentException()
+        public void RelationTo_CharacterIsCharacter_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelationsTo(this.character));
             Assert.AreEqual(characterParameterName, exception.ParamName);
