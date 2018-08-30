@@ -26,11 +26,51 @@ namespace Bas.RedYarn
 
         public void RelateTo(Character character, string relationDescription)
         {
+            #region Preconditions
+            if (character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+
+            if (character == this)
+            {
+                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            }
+
+            if (string.IsNullOrEmpty(relationDescription))
+            {
+                throw new ArgumentException($"{nameof(relationDescription)} cannot be null or empty.", nameof(relationDescription));
+            }
+
+            #endregion
+
             throw new NotImplementedException();
         }
 
         public void RelateTo(Character character, string relationDescription, string reverseRelationDescription)
         {
+            #region Preconditions
+            if (character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+
+            if (character == this)
+            {
+                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            }
+
+            if (string.IsNullOrEmpty(relationDescription))
+            {
+                throw new ArgumentException($"{nameof(relationDescription)} cannot be null or empty.", nameof(relationDescription));
+            }
+
+            if (string.IsNullOrEmpty(reverseRelationDescription))
+            {
+                throw new ArgumentException($"{nameof(reverseRelationDescription)} cannot be null or empty.", nameof(reverseRelationDescription));
+            } 
+            #endregion
+
             throw new NotImplementedException();
         }
 
