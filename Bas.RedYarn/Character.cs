@@ -15,6 +15,11 @@ namespace Bas.RedYarn
         public Collection<Tag> Tags { get; } = new Collection<Tag>();
         public string ImagePath { get; set; }
 
+        public Character()
+        {
+            Tags = new CoupledCollection<Tag, Character>(this, nameof(Character.Tags));
+        }
+
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
 
         public void RelateTo(Character character, string relationDescription)
