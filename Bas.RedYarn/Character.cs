@@ -37,9 +37,14 @@ namespace Bas.RedYarn
                 throw new ArgumentException("A character cannot be related to itself.", nameof(character));
             }
 
-            if (string.IsNullOrEmpty(relationDescription))
+            if (relationDescription == null)
             {
-                throw new ArgumentException($"{nameof(relationDescription)} cannot be null or empty.", nameof(relationDescription));
+                throw new ArgumentNullException(nameof(relationDescription));
+            }
+
+            if (relationDescription == string.Empty)
+            {
+                throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
             }
 
             #endregion
@@ -60,14 +65,24 @@ namespace Bas.RedYarn
                 throw new ArgumentException("A character cannot be related to itself.", nameof(character));
             }
 
-            if (string.IsNullOrEmpty(relationDescription))
+            if (relationDescription == null)
             {
-                throw new ArgumentException($"{nameof(relationDescription)} cannot be null or empty.", nameof(relationDescription));
+                throw new ArgumentNullException(nameof(relationDescription));
             }
 
-            if (string.IsNullOrEmpty(reverseRelationDescription))
+            if (reverseRelationDescription == null)
             {
-                throw new ArgumentException($"{nameof(reverseRelationDescription)} cannot be null or empty.", nameof(reverseRelationDescription));
+                throw new ArgumentNullException(nameof(reverseRelationDescription));
+            }
+
+            if (relationDescription == string.Empty)
+            {
+                throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
+            }
+
+            if (reverseRelationDescription == string.Empty)
+            {
+                throw new ArgumentException($"{nameof(reverseRelationDescription)} cannot be empty.", nameof(reverseRelationDescription));
             } 
             #endregion
 
@@ -76,16 +91,63 @@ namespace Bas.RedYarn
 
         public void UnrelateTo(Character character)
         {
+            #region Preconditions
+            if (character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+            
+            if (character == this)
+            {
+                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            }
+
+            #endregion
+
             throw new NotImplementedException();
         }
 
         public void UnrelateTo(Character character, string relationDescription)
         {
+            #region Preconditions
+            if (character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+            
+            if (character == this)
+            {
+                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            }
+
+            if (relationDescription == null)
+            {
+                throw new ArgumentNullException(nameof(relationDescription));
+            }
+
+            if (relationDescription == string.Empty)
+            {
+                throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
+            }
+
+            #endregion
+
             throw new NotImplementedException();
         }
 
         public ReadOnlyCollection<string> RelationsTo(Character character)
         {
+            #region Preconditions
+            if (character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+
+            if (character == this)
+            {
+                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            }            
+            #endregion
             throw new NotImplementedException();
         }
     }
