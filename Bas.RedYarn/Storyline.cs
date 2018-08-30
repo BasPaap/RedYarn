@@ -13,6 +13,6 @@ namespace Bas.RedYarn
         public Collection<Character> Characters { get; } = new Collection<Character>();
         public Collection<Author> Authors { get; } = new Collection<Author>();
 
-        public override string ToString() => $"Storyline {Name}";
+        public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Storyline) : Name;
     }
 }

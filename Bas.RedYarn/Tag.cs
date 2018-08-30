@@ -8,6 +8,6 @@ namespace Bas.RedYarn
         public string Name { get; set; }
         public Collection<Character> Characters { get; } = new Collection<Character>();
 
-        //public override string ToString() => $"Tag {Name}";
+        public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Tag) : Name;
     }
 }

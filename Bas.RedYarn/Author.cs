@@ -9,6 +9,6 @@ namespace Bas.RedYarn
         public Collection<Character> Characters { get; } = new Collection<Character>();
         public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
 
-        public override string ToString() => $"Author {Name}";
+        public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Author) : Name;
     }
 }
