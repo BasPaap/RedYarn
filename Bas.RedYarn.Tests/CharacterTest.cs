@@ -190,7 +190,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void RelateTo_CharacterIsCharacter_ThrowsArgumentException()
+        public void RelateTo_CharacterIsSelf_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, toRelationDescription));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -325,7 +325,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void RelateToTwoWay_CharacterIsCharacter_ThrowsArgumentException()
+        public void RelateToTwoWay_CharacterIsSelf_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, toRelationDescription, fromRelationDescription));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -383,7 +383,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void UnrelateTo_CharacterIsCharacter_ThrowsArgumentException()
+        public void UnrelateTo_CharacterIsSelf_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(this.character));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -437,7 +437,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void UnrelateToSpecific_CharacterIsCharacter_ThrowsArgumentException()
+        public void UnrelateToSpecific_CharacterIsSelf_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(this.character, fromRelationDescription));
             Assert.AreEqual(characterParameterName, exception.ParamName);
@@ -564,7 +564,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void RelationTo_CharacterIsCharacter_ThrowsArgumentException()
+        public void RelationTo_CharacterIsSelf_ThrowsArgumentException()
         {
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelationsTo(this.character));
             Assert.AreEqual(characterParameterName, exception.ParamName);
