@@ -8,13 +8,13 @@ namespace Bas.RedYarn
 {
     sealed class CoupledCollection<OtherType, OwnerType> : Collection<OtherType>
     {
-        private OwnerType owner;
+        private readonly OwnerType owner;
 
-        private PropertyInfo otherCollectionProperty;
-        private MethodInfo clearCoupledItemsMethod;
-        private MethodInfo insertCoupledItemMethod;
-        private MethodInfo removeCoupledItemMethod;
-        private MethodInfo setCoupledItemMethod;
+        private readonly PropertyInfo otherCollectionProperty;
+        private readonly MethodInfo clearCoupledItemsMethod;
+        private readonly MethodInfo insertCoupledItemMethod;
+        private readonly MethodInfo removeCoupledItemMethod;
+        private readonly MethodInfo setCoupledItemMethod;
 
         public CoupledCollection(OwnerType owner, string otherCollectionPropertyName)
         {
@@ -24,14 +24,15 @@ namespace Bas.RedYarn
             this.otherCollectionProperty = typeof(OtherType).GetProperty(otherCollectionPropertyName);
 
             // Get coupledItem methods on other collection type
-            this.clearCoupledItemsMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(ClearCoupledItems),
-                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
-            this.insertCoupledItemMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(InsertCoupledItem),
-                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
-            this.removeCoupledItemMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(RemoveCoupledItem),
-                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
-            this.setCoupledItemMethod = typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(nameof(SetCoupledItem),
-                                                                                                    BindingFlags.NonPublic | BindingFlags.Instance);
+            this.clearCoupledItemsMethod = GetCoupledItemMethod(nameof(ClearCoupledItems));
+            this.insertCoupledItemMethod = GetCoupledItemMethod(nameof(InsertCoupledItem));
+            this.removeCoupledItemMethod = GetCoupledItemMethod(nameof(RemoveCoupledItem));
+            this.setCoupledItemMethod = GetCoupledItemMethod(nameof(SetCoupledItem));
+        }
+
+        private static MethodInfo GetCoupledItemMethod(string methodName)
+        {
+            return typeof(CoupledCollection<OwnerType, OtherType>).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         protected override void ClearItems()
