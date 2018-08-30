@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Bas.RedYarn.Extensions;
 
 namespace Bas.RedYarn
 {
@@ -209,6 +210,84 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
+        public void RelateTo_DescriptionIsUnsanitized_DescriptionIsSanitized()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "CharacterName" };
+
+            // Act
+            this.character.RelateTo(newCharacter, toRelationDescription.ToUnsanitized());
+
+            // Assert          
+            Assert.AreEqual(toRelationDescription.ToSanitized(), this.character.RelationsTo(newCharacter).Single());
+        }
+
+        [TestMethod]
+        public void RelateToTwoWay_DescriptionIsUnsanitized_DescriptionIsSanitized()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "CharacterName" };
+
+            // Act
+            this.character.RelateTo(newCharacter, toRelationDescription.ToUnsanitized(), fromRelationDescription);
+
+            // Assert          
+            Assert.AreEqual(toRelationDescription.ToSanitized(), this.character.RelationsTo(newCharacter).Single());
+        }
+
+        [TestMethod]
+        public void RelateToTwoWay_ReverseDescriptionIsUnsanitized_DescriptionIsSanitized()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "CharacterName" };
+
+            // Act
+            this.character.RelateTo(newCharacter, toRelationDescription, fromRelationDescription.ToUnsanitized());
+
+            // Assert          
+            Assert.AreEqual(fromRelationDescription.ToSanitized(), newCharacter.RelationsTo(this.character).Single());
+        }
+
+        [TestMethod]
+        public void RelateTo_DescriptionAlreadyExists_ThrowsArgumentException()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "CharacterName" };
+            this.character.RelateTo(newCharacter, toRelationDescription);
+
+            // Act
+            // Assert
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(newCharacter, toRelationDescription.ToUpper()));
+            Assert.AreEqual(relationDescriptionParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToTwoWay_DescriptionAlreadyExists_ThrowsArgumentException()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "CharacterName" };
+            this.character.RelateTo(newCharacter, toRelationDescription, fromRelationDescription);
+
+            // Act
+            // Assert
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(newCharacter, toRelationDescription.ToUpper(), "new"));
+            Assert.AreEqual(relationDescriptionParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToTwoWay_ReverseDescriptionAlreadyExists_ThrowsArgumentException()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "CharacterName" };
+            this.character.RelateTo(newCharacter, toRelationDescription, fromRelationDescription);
+
+            // Act
+            // Assert
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(newCharacter, "new", fromRelationDescription.ToUpper()));
+            Assert.AreEqual(reverseRelationDescriptionParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
         public void RelateToTwoWay_CharacterIsNull_ThrowsArgumentNullException()
         {
             var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(null, toRelationDescription, fromRelationDescription));
@@ -242,15 +321,13 @@ namespace Bas.RedYarn
             var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), null, fromRelationDescription));
             Assert.AreEqual(relationDescriptionParameterName, exception.ParamName);
         }
-
-
+        
         [TestMethod]
         public void RelateToTwoWay_ReverseDescriptionIsNull_ThrowsArgumentNullException()
         {
             var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), toRelationDescription, null));
             Assert.AreEqual(reverseRelationDescriptionParameterName, exception.ParamName);
         }
-
 
         [TestMethod]
         public void RelateToTwoWay_CharacterIsNew_CharactersAreRelatedToEachOther()
