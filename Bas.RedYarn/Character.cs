@@ -205,7 +205,43 @@ namespace Bas.RedYarn
             }
             #endregion
 
-            throw new NotImplementedException();
+            var relationshipsToCharacter = new List<string>();
+            
+            foreach (var relationship in this.relationships)
+            {
+                switch (relationship)
+                {
+                    case BidirectionalRelationship bidirectionalRelationship:
+                        if (bidirectionalRelationship.FirstCharacter == this && bidirectionalRelationship.SecondCharacter == character)
+                        {
+                            relationshipsToCharacter.Add(bidirectionalRelationship.DescriptionFromFirstToSecondCharacter);
+                        }
+                        else if (bidirectionalRelationship.FirstCharacter == character && bidirectionalRelationship.SecondCharacter == this)
+                        {
+                            relationshipsToCharacter.Add(bidirectionalRelationship.DescriptionFromSecondToFirstCharacter);
+                        }
+                        break;
+                    case UnidirectionalRelationship unidirectionalRelationship:
+                        if ((unidirectionalRelationship.FirstCharacter == this && unidirectionalRelationship.SecondCharacter == character && unidirectionalRelationship.Direction == Direction.FromFirstCharacterToSecondCharacter) ||
+                            (unidirectionalRelationship.FirstCharacter == character && unidirectionalRelationship.SecondCharacter == this && unidirectionalRelationship.Direction == Direction.FromSecondCharacterToFirstCharacter))
+                        {
+                            relationshipsToCharacter.Add(unidirectionalRelationship.Description);
+                        }
+                        break;
+                    case GenericRelationship genericRelationship:
+                        if ((genericRelationship.FirstCharacter == this && genericRelationship.SecondCharacter == character) ||
+                            (genericRelationship.FirstCharacter == character && genericRelationship.SecondCharacter == this))
+                        {
+                            relationshipsToCharacter.Add(genericRelationship.Description);
+                        }
+                        break;                                        
+                    case null:
+                    default:
+                        break;
+                }
+            }
+
+            return new ReadOnlyCollection<string>(relationshipsToCharacter);
         }
     }
 }
