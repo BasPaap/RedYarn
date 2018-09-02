@@ -9,22 +9,22 @@ namespace Bas.RedYarn.Helpers
 {
     static class ManyToManyCollectionHelper
     {
-        public static void CollectionAdd_NewItem_RelatedCollectionContainsThis<TestedType, RelatedType>(TestedType testedObject, 
-                                                                                                        RelatedType relatedObject, 
-                                                                                                        Collection<RelatedType> collectionOnTestedObject, 
+        public static void CollectionAdd_NewItem_RelatedCollectionContainsThis<TestedType, RelatedType>(TestedType testedObject,
+                                                                                                        RelatedType relatedObject,
+                                                                                                        Collection<RelatedType> collectionOnTestedObject,
                                                                                                         Collection<TestedType> collectionOnRelatedObject)
         {
             // Arrange        
             // Act
             collectionOnTestedObject.Add(relatedObject);
-                        
+
             // Assert          
             Assert.AreSame(testedObject, collectionOnRelatedObject[0]);
         }
 
-        public static void CollectionInsert_NewItem_RelatedCollectionContainsThis<TestedType, RelatedType>(TestedType testedObject, 
-                                                                                                           RelatedType relatedObject, 
-                                                                                                           Collection<RelatedType> collectionOnTestedObject, 
+        public static void CollectionInsert_NewItem_RelatedCollectionContainsThis<TestedType, RelatedType>(TestedType testedObject,
+                                                                                                           RelatedType relatedObject,
+                                                                                                           Collection<RelatedType> collectionOnTestedObject,
                                                                                                            Collection<TestedType> collectionOnRelatedObject)
         {
             // Arrange
@@ -36,9 +36,9 @@ namespace Bas.RedYarn.Helpers
         }
 
 
-        public static void CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection<TestedType, RelatedType>(TestedType testedObject, 
-                                                                                                                                                           RelatedType relatedObject, 
-                                                                                                                                                           Collection<RelatedType> collectionOnTestedObject, 
+        public static void CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection<TestedType, RelatedType>(TestedType testedObject,
+                                                                                                                                                           RelatedType relatedObject,
+                                                                                                                                                           Collection<RelatedType> collectionOnTestedObject,
                                                                                                                                                            Collection<TestedType> collectionOnRelatedObject)
         {
             // Arrange
@@ -51,9 +51,9 @@ namespace Bas.RedYarn.Helpers
             Assert.AreEqual(0, collectionOnRelatedObject.Count);
         }
 
-        public static void CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection<TestedType, RelatedType>(TestedType testedObject, 
-                                                                                                                                                            RelatedType relatedObject, 
-                                                                                                                                                            Collection<RelatedType> collectionOnTestedObject, 
+        public static void CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection<TestedType, RelatedType>(TestedType testedObject,
+                                                                                                                                                            RelatedType relatedObject,
+                                                                                                                                                            Collection<RelatedType> collectionOnTestedObject,
                                                                                                                                                             Collection<TestedType> collectionOnRelatedObject)
         {
             // Arrange
@@ -66,9 +66,9 @@ namespace Bas.RedYarn.Helpers
             Assert.AreEqual(0, collectionOnRelatedObject.Count);
         }
 
-        public static void CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection<TestedType, RelatedType>(TestedType testedObject, 
-                                                                                                                                                              RelatedType relatedObject, 
-                                                                                                                                                              Collection<RelatedType> collectionOnTestedObject, 
+        public static void CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection<TestedType, RelatedType>(TestedType testedObject,
+                                                                                                                                                              RelatedType relatedObject,
+                                                                                                                                                              Collection<RelatedType> collectionOnTestedObject,
                                                                                                                                                               Collection<TestedType> collectionOnRelatedObject)
         {
             // Arrange
@@ -81,11 +81,11 @@ namespace Bas.RedYarn.Helpers
             Assert.AreEqual(0, collectionOnRelatedObject.Count);
         }
 
-        public static void CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection<TestedType, RelatedType>(TestedType testedObject, 
+        public static void CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection<TestedType, RelatedType>(TestedType testedObject,
                                                                                                                                                         RelatedType relatedObject,
                                                                                                                                                         RelatedType newRelatedObject,
-                                                                                                                                                        Collection<RelatedType> collectionOnTestedObject, 
-                                                                                                                                                        Collection<TestedType> collectionOnRelatedObject, 
+                                                                                                                                                        Collection<RelatedType> collectionOnTestedObject,
+                                                                                                                                                        Collection<TestedType> collectionOnRelatedObject,
                                                                                                                                                         Collection<TestedType> collectionOnNewRelatedObject)
         {
             // Arrange

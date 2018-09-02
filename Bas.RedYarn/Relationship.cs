@@ -4,8 +4,9 @@ using System.Text;
 
 namespace Bas.RedYarn
 {
-    internal abstract class Relationship
+    abstract class Relationship
     {
-        public Guid Id { get; set; }
+        public Character FirstCharacter { get; set; }
+        public Character SecondCharacter { get; set; }
     }
 }

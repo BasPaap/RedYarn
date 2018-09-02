@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Bas.RedYarn.Extensions;
+using System.Linq;
 
 namespace Bas.RedYarn
 {
     public sealed class Character : INameable
     {
+        private HashSet<Relationship> relationships = new HashSet<Relationship>();
+
         public string Name { get; set; }
         public Collection<string> Aliases { get; } = new Collection<string>();
         public string Description { get; set; }
@@ -24,7 +28,7 @@ namespace Bas.RedYarn
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
 
-        public void RelateTo(Character character, string relationDescription)
+        public void RelateTo(Character character, string relationDescription, bool isDirectional = false)
         {
             #region Preconditions
             if (character == null)
@@ -42,14 +46,43 @@ namespace Bas.RedYarn
                 throw new ArgumentNullException(nameof(relationDescription));
             }
 
-            if (relationDescription == string.Empty)
+            if (relationDescription.Length == 0)
             {
                 throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
             }
 
             #endregion
 
-            throw new NotImplementedException();
+            var sanitizedRelationDescription = relationDescription.Sanitize();
+
+            if (sanitizedRelationDescription.Length == 0)
+            {
+                throw new ArgumentException($"{nameof(relationDescription)} does not contain any valid characters.", nameof(relationDescription));
+            }
+
+            if (isDirectional)
+            {
+                var unidirectionalRelationship = new UnidirectionalRelationship()
+                {
+                    FirstCharacter = this,
+                    SecondCharacter = character,
+                    Description = sanitizedRelationDescription                    
+                };
+
+                this.relationships.Add(unidirectionalRelationship);                
+            }
+            else
+            {
+                var genericRelationship = new GenericRelationship()
+                {
+                    FirstCharacter = this,
+                    SecondCharacter = character,
+                    Description = sanitizedRelationDescription
+                };
+
+                this.relationships.Add(genericRelationship);
+                character.relationships.Add(genericRelationship);
+            }            
         }
 
         public void RelateTo(Character character, string relationDescription, string reverseRelationDescription)
@@ -75,18 +108,41 @@ namespace Bas.RedYarn
                 throw new ArgumentNullException(nameof(reverseRelationDescription));
             }
 
-            if (relationDescription == string.Empty)
+            if (relationDescription.Length == 0)
             {
                 throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
             }
 
-            if (reverseRelationDescription == string.Empty)
+            if (reverseRelationDescription.Length == 0)
             {
                 throw new ArgumentException($"{nameof(reverseRelationDescription)} cannot be empty.", nameof(reverseRelationDescription));
-            } 
+            }
             #endregion
 
-            throw new NotImplementedException();
+            var sanitizedRelationDescription = relationDescription.Sanitize();
+
+            if (sanitizedRelationDescription.Length == 0)
+            {
+                throw new ArgumentException($"{nameof(relationDescription)} does not contain any valid characters.", nameof(relationDescription));
+            }
+
+            var sanitizedReverseRelationDescription = reverseRelationDescription.Sanitize();
+
+            if (sanitizedReverseRelationDescription.Length == 0)
+            {
+                throw new ArgumentException($"{nameof(reverseRelationDescription)} does not contain any valid characters.", nameof(reverseRelationDescription));
+            }
+
+            var bidirectionalRelationship = new BidirectionalRelationship()
+            {
+                FirstCharacter = this,
+                SecondCharacter = character,
+                DescriptionFromFirstToSecondCharacter = relationDescription,
+                DescriptionFromSecondToFirstCharacter = reverseRelationDescription
+            };
+
+            this.relationships.Add(bidirectionalRelationship);
+            character.relationships.Add(bidirectionalRelationship);
         }
 
         public void UnrelateTo(Character character)
@@ -125,7 +181,7 @@ namespace Bas.RedYarn
                 throw new ArgumentNullException(nameof(relationDescription));
             }
 
-            if (relationDescription == string.Empty)
+            if (relationDescription.Length == 0)
             {
                 throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
             }
@@ -135,7 +191,7 @@ namespace Bas.RedYarn
             throw new NotImplementedException();
         }
 
-        public ReadOnlyCollection<string> RelationsTo(Character character)
+        public ReadOnlyCollection<string> RelationshipsTo(Character character)
         {
             #region Preconditions
             if (character == null)
@@ -146,8 +202,9 @@ namespace Bas.RedYarn
             if (character == this)
             {
                 throw new ArgumentException("A character cannot be related to itself.", nameof(character));
-            }            
+            }
             #endregion
+
             throw new NotImplementedException();
         }
     }

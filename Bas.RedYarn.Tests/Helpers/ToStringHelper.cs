@@ -25,8 +25,7 @@ namespace Bas.RedYarn.Helpers
             // Act
             var result = nameable.ToString();
             // Assert
-            Assert.AreEqual(nameable.GetType().Name, result);
-            
+            Assert.AreEqual(nameable.GetType().Name, result);            
         }
     }
 }
