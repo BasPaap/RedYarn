@@ -6,6 +6,5 @@ namespace Bas.RedYarn
 {
     sealed class UnidirectionalRelationship : GenericRelationship
     {
-        public Direction Direction { get; set; }
     }
 }

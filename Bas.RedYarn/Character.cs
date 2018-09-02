@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Bas.RedYarn.Extensions;
 using System.Linq;
+using System.Globalization;
 
 namespace Bas.RedYarn
 {
@@ -28,7 +29,7 @@ namespace Bas.RedYarn
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
 
-        public void RelateTo(Character character, string relationDescription, bool isDirectional = false)
+        public void RelateTo(Character character, string relationshipDescription, bool isDirectional = false)
         {
             #region Preconditions
             if (character == null)
@@ -41,23 +42,33 @@ namespace Bas.RedYarn
                 throw new ArgumentException("A character cannot be related to itself.", nameof(character));
             }
 
-            if (relationDescription == null)
+            if (relationshipDescription == null)
             {
-                throw new ArgumentNullException(nameof(relationDescription));
+                throw new ArgumentNullException(nameof(relationshipDescription));
             }
 
-            if (relationDescription.Length == 0)
+            if (relationshipDescription.Length == 0)
             {
-                throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
+                throw new ArgumentException($"{nameof(relationshipDescription)} cannot be empty.", nameof(relationshipDescription));
             }
 
             #endregion
 
-            var sanitizedRelationDescription = relationDescription.Sanitize();
+            var sanitizedRelationDescription = relationshipDescription.Sanitize();
 
             if (sanitizedRelationDescription.Length == 0)
             {
-                throw new ArgumentException($"{nameof(relationDescription)} does not contain any valid characters.", nameof(relationDescription));
+                throw new ArgumentException($"{nameof(relationshipDescription)} does not contain any valid characters.", nameof(relationshipDescription));
+            }
+
+            var existingRelationships = from r in this.relationships
+                                        where r.FirstCharacter == this && r.SecondCharacter == character &&
+                                        (r as GenericRelationship).Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationDescription.ToUpper(CultureInfo.InvariantCulture)
+                                        select r;
+
+            if (existingRelationships.Count() != 0)
+            {
+                throw new ArgumentException("A relationship with that description already exists between these characters.", nameof(relationshipDescription));
             }
 
             if (isDirectional)
@@ -66,7 +77,7 @@ namespace Bas.RedYarn
                 {
                     FirstCharacter = this,
                     SecondCharacter = character,
-                    Description = sanitizedRelationDescription                    
+                    Description = sanitizedRelationDescription
                 };
 
                 this.relationships.Add(unidirectionalRelationship);                
@@ -222,8 +233,7 @@ namespace Bas.RedYarn
                         }
                         break;
                     case UnidirectionalRelationship unidirectionalRelationship:
-                        if ((unidirectionalRelationship.FirstCharacter == this && unidirectionalRelationship.SecondCharacter == character && unidirectionalRelationship.Direction == Direction.FromFirstCharacterToSecondCharacter) ||
-                            (unidirectionalRelationship.FirstCharacter == character && unidirectionalRelationship.SecondCharacter == this && unidirectionalRelationship.Direction == Direction.FromSecondCharacterToFirstCharacter))
+                        if (unidirectionalRelationship.FirstCharacter == this && unidirectionalRelationship.SecondCharacter == character)
                         {
                             relationshipsToCharacter.Add(unidirectionalRelationship.Description);
                         }
