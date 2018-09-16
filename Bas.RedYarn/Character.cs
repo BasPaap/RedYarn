@@ -61,39 +61,41 @@ namespace Bas.RedYarn
                 throw new ArgumentException($"{nameof(relationshipDescription)} does not contain any valid characters.", nameof(relationshipDescription));
             }
 
-            var existingRelationships = from r in this.relationships
-                                        where r.FirstCharacter == this && r.SecondCharacter == character &&
-                                        (r as UnidirectionalRelationship).Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationDescription.ToUpper(CultureInfo.InvariantCulture)
-                                        select r;
+            //var existingRelationships = from r in this.relationships
+            //                            where r.FirstCharacter == this && r.SecondCharacter == character &&
+            //                            (r as UnidirectionalRelationship).Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationDescription.ToUpper(CultureInfo.InvariantCulture)
+            //                            select r;
 
-            if (existingRelationships.Count() != 0)
-            {
-                throw new ArgumentException("A relationship with that description already exists between these characters.", nameof(relationshipDescription));
-            }
+            //if (existingRelationships.Count() != 0)
+            //{
+            //    throw new ArgumentException("A relationship with that description already exists between these characters.", nameof(relationshipDescription));
+            //}
 
-            if (isDirectional)
-            {
-                var unidirectionalRelationship = new UnidirectionalRelationship()
-                {
-                    FirstCharacter = this,
-                    SecondCharacter = character,
-                    Description = sanitizedRelationDescription
-                };
+            //if (isDirectional)
+            //{
+            //    var unidirectionalRelationship = new UnidirectionalRelationship()
+            //    {
+            //        FirstCharacter = this,
+            //        SecondCharacter = character,
+            //        Description = sanitizedRelationDescription
+            //    };
 
-                this.relationships.Add(unidirectionalRelationship);                
-            }
-            else
-            {
-                var genericRelationship = new UnidirectionalRelationship()
-                {
-                    FirstCharacter = this,
-                    SecondCharacter = character,
-                    Description = sanitizedRelationDescription
-                };
+            //    this.relationships.Add(unidirectionalRelationship);                
+            //}
+            //else
+            //{
+            //    var genericRelationship = new UnidirectionalRelationship()
+            //    {
+            //        FirstCharacter = this,
+            //        SecondCharacter = character,
+            //        Description = sanitizedRelationDescription
+            //    };
 
-                this.relationships.Add(genericRelationship);
-                character.relationships.Add(genericRelationship);
-            }            
+            //    this.relationships.Add(genericRelationship);
+            //    character.relationships.Add(genericRelationship);
+            //}            
+
+            throw new NotImplementedException();
         }
 
         public void RelateTo(Character character, string relationDescription, string reverseRelationDescription)
@@ -144,16 +146,18 @@ namespace Bas.RedYarn
                 throw new ArgumentException($"{nameof(reverseRelationDescription)} does not contain any valid characters.", nameof(reverseRelationDescription));
             }
 
-            var bidirectionalRelationship = new BidirectionalRelationship()
-            {
-                FirstCharacter = this,
-                SecondCharacter = character,
-                DescriptionFromFirstToSecondCharacter = relationDescription,
-                DescriptionFromSecondToFirstCharacter = reverseRelationDescription
-            };
+            //var bidirectionalRelationship = new BidirectionalRelationship()
+            //{
+            //    FirstCharacter = this,
+            //    SecondCharacter = character,
+            //    DescriptionFromFirstToSecondCharacter = relationDescription,
+            //    DescriptionFromSecondToFirstCharacter = reverseRelationDescription
+            //};
 
-            this.relationships.Add(bidirectionalRelationship);
-            character.relationships.Add(bidirectionalRelationship);
+            //this.relationships.Add(bidirectionalRelationship);
+            //character.relationships.Add(bidirectionalRelationship);
+
+            throw new NotImplementedException();
         }
 
         public void UnrelateTo(Character character)
@@ -216,35 +220,37 @@ namespace Bas.RedYarn
             }
             #endregion
 
-            var relationshipsToCharacter = new List<string>();
-            
-            foreach (var relationship in this.relationships)
-            {
-                switch (relationship)
-                {
-                    case BidirectionalRelationship bidirectionalRelationship:
-                        if (bidirectionalRelationship.FirstCharacter == this && bidirectionalRelationship.SecondCharacter == character)
-                        {
-                            relationshipsToCharacter.Add(bidirectionalRelationship.DescriptionFromFirstToSecondCharacter);
-                        }
-                        else if (bidirectionalRelationship.FirstCharacter == character && bidirectionalRelationship.SecondCharacter == this)
-                        {
-                            relationshipsToCharacter.Add(bidirectionalRelationship.DescriptionFromSecondToFirstCharacter);
-                        }
-                        break;
-                    case UnidirectionalRelationship unidirectionalRelationship:
-                        if (unidirectionalRelationship.FirstCharacter == this && unidirectionalRelationship.SecondCharacter == character)
-                        {
-                            relationshipsToCharacter.Add(unidirectionalRelationship.Description);
-                        }
-                        break;                    
-                    case null:
-                    default:
-                        break;
-                }
-            }
+            //var relationshipsToCharacter = new List<string>();
 
-            return new ReadOnlyCollection<string>(relationshipsToCharacter);
+            //foreach (var relationship in this.relationships)
+            //{
+            //    switch (relationship)
+            //    {
+            //        case BidirectionalRelationship bidirectionalRelationship:
+            //            if (bidirectionalRelationship.FirstCharacter == this && bidirectionalRelationship.SecondCharacter == character)
+            //            {
+            //                relationshipsToCharacter.Add(bidirectionalRelationship.DescriptionFromFirstToSecondCharacter);
+            //            }
+            //            else if (bidirectionalRelationship.FirstCharacter == character && bidirectionalRelationship.SecondCharacter == this)
+            //            {
+            //                relationshipsToCharacter.Add(bidirectionalRelationship.DescriptionFromSecondToFirstCharacter);
+            //            }
+            //            break;
+            //        case UnidirectionalRelationship unidirectionalRelationship:
+            //            if (unidirectionalRelationship.FirstCharacter == this && unidirectionalRelationship.SecondCharacter == character)
+            //            {
+            //                relationshipsToCharacter.Add(unidirectionalRelationship.Description);
+            //            }
+            //            break;                    
+            //        case null:
+            //        default:
+            //            break;
+            //    }
+            //}
+
+            //return new ReadOnlyCollection<string>(relationshipsToCharacter);
+
+            throw new NotImplementedException();
         }
     }
 }
