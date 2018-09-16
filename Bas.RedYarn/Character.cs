@@ -29,7 +29,7 @@ namespace Bas.RedYarn
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
 
-        public void RelateTo(Character character, string relationshipDescription, bool isDirectional = false)
+        public void RelateTo(Character character, string relationshipDescription)
         {
             #region Preconditions
             if (character == null)
@@ -54,12 +54,12 @@ namespace Bas.RedYarn
 
             #endregion
 
-            var sanitizedRelationDescription = relationshipDescription.Sanitize();
+            //var sanitizedRelationDescription = relationshipDescription.Sanitize();
 
-            if (sanitizedRelationDescription.Length == 0)
-            {
-                throw new ArgumentException($"{nameof(relationshipDescription)} does not contain any valid characters.", nameof(relationshipDescription));
-            }
+            //if (sanitizedRelationDescription.Length == 0)
+            //{
+            //    throw new ArgumentException($"{nameof(relationshipDescription)} does not contain any valid characters.", nameof(relationshipDescription));
+            //}
 
             //var existingRelationships = from r in this.relationships
             //                            where r.FirstCharacter == this && r.SecondCharacter == character &&
@@ -98,7 +98,7 @@ namespace Bas.RedYarn
             throw new NotImplementedException();
         }
 
-        public void RelateTo(Character character, string relationDescription, string reverseRelationDescription)
+        public void RelateTo(Character character, string relationshipDescription, string pairedRelationshipDescription)
         {
             #region Preconditions
             if (character == null)
@@ -132,19 +132,19 @@ namespace Bas.RedYarn
             }
             #endregion
 
-            var sanitizedRelationDescription = relationDescription.Sanitize();
+            //var sanitizedRelationDescription = relationDescription.Sanitize();
 
-            if (sanitizedRelationDescription.Length == 0)
-            {
-                throw new ArgumentException($"{nameof(relationDescription)} does not contain any valid characters.", nameof(relationDescription));
-            }
+            //if (sanitizedRelationDescription.Length == 0)
+            //{
+            //    throw new ArgumentException($"{nameof(relationDescription)} does not contain any valid characters.", nameof(relationDescription));
+            //}
 
-            var sanitizedReverseRelationDescription = reverseRelationDescription.Sanitize();
+            //var sanitizedReverseRelationDescription = reverseRelationDescription.Sanitize();
 
-            if (sanitizedReverseRelationDescription.Length == 0)
-            {
-                throw new ArgumentException($"{nameof(reverseRelationDescription)} does not contain any valid characters.", nameof(reverseRelationDescription));
-            }
+            //if (sanitizedReverseRelationDescription.Length == 0)
+            //{
+            //    throw new ArgumentException($"{nameof(reverseRelationDescription)} does not contain any valid characters.", nameof(reverseRelationDescription));
+            //}
 
             //var bidirectionalRelationship = new BidirectionalRelationship()
             //{
@@ -178,7 +178,7 @@ namespace Bas.RedYarn
             throw new NotImplementedException();
         }
 
-        public void UnrelateTo(Character character, string relationDescription)
+        public void UnrelateTo(Character character, string relationshipDescription)
         {
             #region Preconditions
             if (character == null)
@@ -206,7 +206,7 @@ namespace Bas.RedYarn
             throw new NotImplementedException();
         }
 
-        public ReadOnlyCollection<string> RelationshipsTo(Character character)
+        public ReadOnlyCollection<string> GetRelationshipsTo(Character character)
         {
             #region Preconditions
             if (character == null)
