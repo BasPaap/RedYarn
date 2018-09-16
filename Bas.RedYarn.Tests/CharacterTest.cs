@@ -13,13 +13,12 @@ namespace Bas.RedYarn
     {
         private Character character;
         const string relationshipDescription = "RelationshipDescription";
+        const string pairedRelationshipDescription = "PairedRelationshipDescription";
+        const string newRelationshipDescription = "NewRelationshipDescription";
+        const string newPairedRelationshipDescription = "NewPairedRelationshipDescription";
         const string characterParameterName = "character";
         const string relationshipDescriptionParameterName = "relationshipDescription";
-
-        //const string fromRelationshipDescription = "RelationshipFrom";
-        //const string secondToRelationshipDescription = "RelationshipTo2";
-        //const string secondFromRelationshipDescription = "RelationshipFrom2";
-        //const string reverseRelationshipDescriptionParameterName = "reverseRelationshipDescription";
+        const string pairedRelationshipDescriptionParameterName = "pairedRelationshipDescription";
 
         [TestInitialize]
         public void Initialize()
@@ -246,7 +245,126 @@ namespace Bas.RedYarn
             // Assert          
             var exception = Assert.ThrowsException<InvalidOperationException>(() => this.character.RelateTo(newCharacter, relationshipDescription));
         }
-                
+
         #endregion
+
+        #region RelateToPaired
+        [TestMethod]
+        public void RelateToPaired_CharacterIsNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            // Act
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(null, relationshipDescription, pairedRelationshipDescription));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToPaired_RelationshipDescriptionIsNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), null, pairedRelationshipDescription));
+            Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToPaired_PairedRelationshipDescriptionIsNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), relationshipDescription,  null));
+            Assert.AreEqual(pairedRelationshipDescriptionParameterName, exception.ParamName);
+        }
+        
+        [TestMethod]
+        public void RelateToPaired_RelationshipDescriptionIsEmpty_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), string.Empty, pairedRelationshipDescription));
+            Assert.AreEqual(relationshipDescription, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToPaired_PairedRelationshipDescriptionIsEmpty_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), relationshipDescription, string.Empty));
+            Assert.AreEqual(pairedRelationshipDescription, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToPaired_RelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
+        {
+
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), "  \t  ", pairedRelationshipDescription));
+            Assert.AreEqual(relationshipDescription, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToPaired_PairedRelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
+        {
+
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), relationshipDescription, "  \t  "));
+            Assert.AreEqual(pairedRelationshipDescription, exception.ParamName);
+        }
+                             
+        [TestMethod]
+        public void RelateToPaired_CharacterIsSelf_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, relationshipDescription, pairedRelationshipDescription));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateToPaired_CharacterIsAlreadyRelatedToThatCharacterViaThatDescription_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription, pairedRelationshipDescription);
+
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<InvalidOperationException>(() => this.character.RelateTo(newCharacter, relationshipDescription, newPairedRelationshipDescription));
+        }
+
+        [TestMethod]
+        public void RelateToPaired_CharacterIsAlreadyRelatedToThatCharacterViaThatPairedDescription_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription, pairedRelationshipDescription);
+
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<InvalidOperationException>(() => this.character.RelateTo(newCharacter, newRelationshipDescription, relationshipDescription));
+        }
+
+        [TestMethod]
+        public void RelateToPaired_DescriptionsAreTheSame_ThrowsNotSupportedException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<NotSupportedException>(() => this.character.RelateTo(new Character(), relationshipDescription, relationshipDescription));            
+        }
+        #endregion
+
+
     }
 }
