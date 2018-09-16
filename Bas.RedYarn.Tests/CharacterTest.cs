@@ -365,6 +365,25 @@ namespace Bas.RedYarn
         }
         #endregion
 
+        #region UnrelateTo
+
+        #endregion
+
+        #region UnrelateToPaired
+
+        #endregion
+
+        #region GetRelationshipsTo
+
+        #endregion
+        #region Relating
+        // Test the unit of relating characters, i.e. wether RelatingTo a character actually makes them RelatedTo characters.
+        #endregion
+
+        #region Unrelating
+        // Test the unit of unrelating characters, i.e. wether UnrelatingTo a character actually makes them no longer RelatedTo characters.
+        #endregion
+
 
     }
 }
