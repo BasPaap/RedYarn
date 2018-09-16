@@ -12,13 +12,14 @@ namespace Bas.RedYarn
     public class CharacterTest
     {
         private Character character;
-        const string toRelationshipDescription = "RelationshipTo";
-        const string fromRelationshipDescription = "RelationshipFrom";
-        const string secondToRelationshipDescription = "RelationshipTo2";
-        const string secondFromRelationshipDescription = "RelationshipFrom2";
+        const string relationshipDescription = "RelationshipDescription";
         const string characterParameterName = "character";
         const string relationshipDescriptionParameterName = "relationshipDescription";
-        const string reverseRelationshipDescriptionParameterName = "reverseRelationshipDescription";
+
+        //const string fromRelationshipDescription = "RelationshipFrom";
+        //const string secondToRelationshipDescription = "RelationshipTo2";
+        //const string secondFromRelationshipDescription = "RelationshipFrom2";
+        //const string reverseRelationshipDescriptionParameterName = "reverseRelationshipDescription";
 
         [TestInitialize]
         public void Initialize()
@@ -181,6 +182,71 @@ namespace Bas.RedYarn
 
         #endregion
 
-        
+        #region RelateTo
+
+        [TestMethod]
+        public void RelateTo_CharacterIsNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            // Act
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(null, relationshipDescription));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateTo_RelationshipDescriptionIsNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), null));
+            Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateTo_RelationshipDescriptionIsEmpty_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), string.Empty));
+            Assert.AreEqual(relationshipDescription, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateTo_RelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
+        {
+            
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), "  \t  "));
+            Assert.AreEqual(relationshipDescription, exception.ParamName);            
+        }
+
+        [TestMethod]
+        public void RelateTo_CharacterIsSelf_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, relationshipDescription));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void RelateTo_CharacterIsAlreadyRelatedToThatCharacterViaThatDescription_ThrowsInvalidOperationException()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription);
+
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<InvalidOperationException>(() => this.character.RelateTo(newCharacter, relationshipDescription));
+        }
+                
+        #endregion
     }
 }

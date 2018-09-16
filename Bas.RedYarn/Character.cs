@@ -100,37 +100,37 @@ namespace Bas.RedYarn
 
         public void RelateTo(Character character, string relationshipDescription, string pairedRelationshipDescription)
         {
-            #region Preconditions
-            if (character == null)
-            {
-                throw new ArgumentNullException(nameof(character));
-            }
+            //#region Preconditions
+            //if (character == null)
+            //{
+            //    throw new ArgumentNullException(nameof(character));
+            //}
 
-            if (character == this)
-            {
-                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
-            }
+            //if (character == this)
+            //{
+            //    throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            //}
 
-            if (relationDescription == null)
-            {
-                throw new ArgumentNullException(nameof(relationDescription));
-            }
+            //if (relationDescription == null)
+            //{
+            //    throw new ArgumentNullException(nameof(relationDescription));
+            //}
 
-            if (reverseRelationDescription == null)
-            {
-                throw new ArgumentNullException(nameof(reverseRelationDescription));
-            }
+            //if (reverseRelationDescription == null)
+            //{
+            //    throw new ArgumentNullException(nameof(reverseRelationDescription));
+            //}
 
-            if (relationDescription.Length == 0)
-            {
-                throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
-            }
+            //if (relationDescription.Length == 0)
+            //{
+            //    throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
+            //}
 
-            if (reverseRelationDescription.Length == 0)
-            {
-                throw new ArgumentException($"{nameof(reverseRelationDescription)} cannot be empty.", nameof(reverseRelationDescription));
-            }
-            #endregion
+            //if (reverseRelationDescription.Length == 0)
+            //{
+            //    throw new ArgumentException($"{nameof(reverseRelationDescription)} cannot be empty.", nameof(reverseRelationDescription));
+            //}
+            //#endregion
 
             //var sanitizedRelationDescription = relationDescription.Sanitize();
 
@@ -180,28 +180,28 @@ namespace Bas.RedYarn
 
         public void UnrelateTo(Character character, string relationshipDescription)
         {
-            #region Preconditions
-            if (character == null)
-            {
-                throw new ArgumentNullException(nameof(character));
-            }
+            //#region Preconditions
+            //if (character == null)
+            //{
+            //    throw new ArgumentNullException(nameof(character));
+            //}
             
-            if (character == this)
-            {
-                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
-            }
+            //if (character == this)
+            //{
+            //    throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            //}
 
-            if (relationDescription == null)
-            {
-                throw new ArgumentNullException(nameof(relationDescription));
-            }
+            //if (relationDescription == null)
+            //{
+            //    throw new ArgumentNullException(nameof(relationDescription));
+            //}
 
-            if (relationDescription.Length == 0)
-            {
-                throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
-            }
+            //if (relationDescription.Length == 0)
+            //{
+            //    throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
+            //}
 
-            #endregion
+            //#endregion
 
             throw new NotImplementedException();
         }
