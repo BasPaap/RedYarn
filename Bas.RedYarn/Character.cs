@@ -63,7 +63,7 @@ namespace Bas.RedYarn
 
             var existingRelationships = from r in this.relationships
                                         where r.FirstCharacter == this && r.SecondCharacter == character &&
-                                        (r as GenericRelationship).Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationDescription.ToUpper(CultureInfo.InvariantCulture)
+                                        (r as UniDirectionalRelationship).Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationDescription.ToUpper(CultureInfo.InvariantCulture)
                                         select r;
 
             if (existingRelationships.Count() != 0)
@@ -84,7 +84,7 @@ namespace Bas.RedYarn
             }
             else
             {
-                var genericRelationship = new GenericRelationship()
+                var genericRelationship = new UniDirectionalRelationship()
                 {
                     FirstCharacter = this,
                     SecondCharacter = character,
@@ -238,7 +238,7 @@ namespace Bas.RedYarn
                             relationshipsToCharacter.Add(unidirectionalRelationship.Description);
                         }
                         break;
-                    case GenericRelationship genericRelationship:
+                    case UniDirectionalRelationship genericRelationship:
                         if ((genericRelationship.FirstCharacter == this && genericRelationship.SecondCharacter == character) ||
                             (genericRelationship.FirstCharacter == character && genericRelationship.SecondCharacter == this))
                         {

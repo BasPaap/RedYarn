@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Bas.RedYarn
 {
-    sealed class UnidirectionalRelationship : GenericRelationship
+    class UnidirectionalRelationship : Relationship
     {
+        public string Description { get; set; }
     }
 }
