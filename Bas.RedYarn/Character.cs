@@ -72,7 +72,7 @@ namespace Bas.RedYarn
 
             if (existingRelationships.Count() != 0)
             {
-                throw new ArgumentException("A relationship with that description already exists between these characters.", nameof(relationshipDescription));
+                throw new InvalidOperationException("A relationship with that description already exists between these characters.");
             }
 
             Relationship newRelationship;
@@ -90,6 +90,7 @@ namespace Bas.RedYarn
             }
 
             this.relationships.Add(newRelationship);
+            character.relationships.Add(newRelationship);
         }
 
         //public void RelateTo(Character character, string relationshipDescription, string pairedRelationshipDescription)
