@@ -9,6 +9,9 @@ using System.Diagnostics;
 
 namespace Bas.RedYarn
 {
+    /// <summary>
+    /// Represents a character as it occurs in a story, scenario etc. 
+    /// </summary>
     public sealed class Character : INameable
     {
         private HashSet<Relationship> relationships = new HashSet<Relationship>();
@@ -30,6 +33,16 @@ namespace Bas.RedYarn
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
 
+        /// <summary>
+        /// Relates the character and the provided character, using the specified name.
+        /// </summary>
+        /// <param name="character">The character to which this character is to be related.</param>
+        /// <param name="relationshipName">Name of the relationship between the characters.</param>
+        /// <param name="pairedRelationshipName">If not null, the name of a second relationship between the characters with which the new relationship is paired. <seealso cref="PairedRelationship"/></param>
+        /// <returns>A boolean value indicating wether the method succeeding in creating the provided relationship.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when either <paramref name="character"/> or <paramref name="relationshipName"/> are null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="character"/> equals <c>this</c>, or either <paramref name="relationshipName"/> or <paramref name="pairedRelationshipName"/> consist of whitespace.</exception>
+        /// <exception cref="NotSupportedException">Thrown when <paramref name="relationshipName"/> equals <paramref name="pairedRelationshipName"/>.</exception>
         public bool RelateTo(Character character, string relationshipName, string pairedRelationshipName = null)
         {
             #region Preconditions
@@ -105,7 +118,17 @@ namespace Bas.RedYarn
             return true;
         }
 
-        public bool UnrelateTo(Character character, string relationshipName = null, bool deletePaired = false)
+        /// <summary>
+        /// Removes the relationship between characters. If <paramref name="relationshipName"/> is given, only removes the relationship with that name, otherwise all
+        /// relationships between this character and <paramref name="character"/> are removed.
+        /// </summary>
+        /// <param name="character">The character to which the relationship is to be removed.</param>
+        /// <param name="relationshipName">The name of the relationship to remove. If null, all relationships between this character and <paramref name="character"/> are removed.</param>
+        /// <param name="deletePaired">If true, the pairs in pairedrelationships are removed as well.</param>
+        /// <returns>A boolean value indicating wether the method succeeded in removing the relationship between the characters.</returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="character"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when trying to relate <c>this</c> to itself.</exception>
+        public bool UnrelateTo(Character character, string relationshipName = null, bool deletePaired = true)
         {
             #region Preconditions
             if (character == null)
@@ -155,6 +178,11 @@ namespace Bas.RedYarn
             return true;
         }
 
+        /// <summary>
+        /// Returns the names of relationships between <c>this</c> and <paramref name="character"/>.
+        /// </summary>
+        /// <param name="character">The character between which and <c>this</c> the relationship names are to be returned.</param>
+        /// <returns>A ReadOnlyCollection containing the names of the relationships between <c>this</c> and <paramref name="character"/></returns>
         public ReadOnlyCollection<string> GetRelationshipsTo(Character character)
         {
             #region Preconditions

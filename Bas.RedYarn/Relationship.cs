@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Bas.RedYarn
 {
+    /// <summary>
+    /// Represents a relationship between several characters.
+    /// </summary>
     class Relationship : INameable
     {
         public Collection<Character> Characters { get; set; } = new Collection<Character>();

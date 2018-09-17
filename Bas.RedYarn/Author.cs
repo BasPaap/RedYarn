@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 
 namespace Bas.RedYarn
 {
+    /// <summary>
+    /// Represents an author working on a character, storyline etc.
+    /// </summary>
     public sealed class Author : INameable
     {
         public string Name { get; set; }

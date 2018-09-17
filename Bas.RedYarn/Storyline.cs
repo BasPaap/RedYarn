@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Bas.RedYarn
 {
+    /// <summary>
+    /// Represents a storyline containing a name, description, characters, authors, etc.
+    /// </summary>
     public sealed class Storyline : INameable
     {
         public string Name { get; set; }
