@@ -486,8 +486,8 @@ namespace Bas.RedYarn
             this.character.UnrelateTo(newCharacter);
 
             // Assert          
-            Assert.AreEqual(0, this.character.GetRelationshipsTo(newCharacter));
-            Assert.AreEqual(0, newCharacter.GetRelationshipsTo(this.character));
+            Assert.AreEqual(0, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.AreEqual(0, newCharacter.GetRelationshipsTo(this.character).Count);
             Assert.AreEqual(relationshipDescription, this.character.GetRelationshipsTo(thirdCharacter).Single());
             Assert.AreEqual(relationshipDescription, thirdCharacter.GetRelationshipsTo(this.character).Single());
         }
@@ -506,8 +506,8 @@ namespace Bas.RedYarn
             this.character.UnrelateTo(newCharacter, relationshipDescription);
 
             // Assert          
-            Assert.Equals(secondRelationshipDescription, this.character.GetRelationshipsTo(newCharacter).Single());
-            Assert.Equals(secondRelationshipDescription, newCharacter.GetRelationshipsTo(this.character).Single());
+            Assert.AreEqual(secondRelationshipDescription, this.character.GetRelationshipsTo(newCharacter).Single());
+            Assert.AreEqual(secondRelationshipDescription, newCharacter.GetRelationshipsTo(this.character).Single());
         }
 
         [TestMethod]

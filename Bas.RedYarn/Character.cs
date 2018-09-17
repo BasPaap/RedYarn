@@ -5,6 +5,7 @@ using System.Text;
 using Bas.RedYarn.Extensions;
 using System.Linq;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace Bas.RedYarn
 {
@@ -15,9 +16,9 @@ namespace Bas.RedYarn
         public string Name { get; set; }
         public Collection<string> Aliases { get; } = new Collection<string>();
         public string Description { get; set; }
-        public Collection<Author> Authors { get; } 
+        public Collection<Author> Authors { get; }
         public Collection<Storyline> Storylines { get; }
-        public Collection<Tag> Tags { get; } 
+        public Collection<Tag> Tags { get; }
         public string ImagePath { get; set; }
 
         public Character()
@@ -78,7 +79,7 @@ namespace Bas.RedYarn
             }
 
             Relationship newRelationship = (pairedRelationshipDescription == null) ? new Relationship() : new PairedRelationship();
-            
+
             newRelationship.Characters.Add(this);
             newRelationship.Characters.Add(character);
             newRelationship.Description = sanitizedRelationshipDescription;
@@ -91,6 +92,9 @@ namespace Bas.RedYarn
                 pairedRelationship.Description = sanitizedPairedRelationshipDescription;
                 pairedRelationship.OtherRelationship = newRelationship;
 
+                Debug.Assert(newRelationship is PairedRelationship, "newRelationship should always be a PairedRelationship here.");
+                (newRelationship as PairedRelationship).OtherRelationship = pairedRelationship;
+                
                 this.relationships.Add(pairedRelationship);
                 character.relationships.Add(pairedRelationship);
             }
@@ -164,7 +168,7 @@ namespace Bas.RedYarn
 
         //    throw new NotImplementedException();
         //}
-              
+
         public void UnrelateTo(Character character, string relationshipDescription = null, bool deletePaired = false)
         {
             #region Preconditions
@@ -177,7 +181,7 @@ namespace Bas.RedYarn
             {
                 throw new ArgumentException("A character cannot be related to itself.", nameof(character));
             }
-            
+
             if (string.IsNullOrWhiteSpace(relationshipDescription) && relationshipDescription != null)
             {
                 throw new ArgumentException($"{nameof(relationshipDescription)} cannot be whitespace.", nameof(relationshipDescription));
@@ -185,7 +189,32 @@ namespace Bas.RedYarn
 
             #endregion
 
-            throw new NotImplementedException();
+            var relationshipsToRemove = from r in this.relationships
+                                        where r.Characters.Contains(character) &&
+                                        r.Description == (relationshipDescription ?? r.Description)
+                                        select r;
+
+            if (relationshipsToRemove.Count() == 0)
+            {
+                throw new ArgumentException("Character is unrelated to the other character.", nameof(character));
+            }
+
+            foreach (var relationshipToRemove in relationshipsToRemove.ToList())
+            {
+                this.relationships.Remove(relationshipToRemove);
+                character.relationships.Remove(relationshipToRemove);
+
+                if (deletePaired)
+                {
+                    var otherRelationship = (relationshipToRemove as PairedRelationship)?.OtherRelationship;
+                    
+                    if (otherRelationship != null)
+                    {
+                        this.relationships.Remove(otherRelationship);
+                        character.relationships.Remove(otherRelationship);
+                    }
+                }
+            }                                    
         }
 
         public ReadOnlyCollection<string> GetRelationshipsTo(Character character)
