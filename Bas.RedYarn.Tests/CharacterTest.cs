@@ -442,6 +442,31 @@ namespace Bas.RedYarn
             Assert.IsTrue(newCharacter.GetRelationshipsTo(this.character).Contains(pairedRelationshipDescription));
         }
 
+
+        [TestMethod]
+        public void Relating_RelationscripDescriptionIsUnsanitized_RelationshipDescriptionIsSanitized()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            // Act
+            this.character.RelateTo(newCharacter, relationshipDescription.ToUnsanitized());
+
+            // Assert          
+            Assert.AreEqual(relationshipDescription.ToSanitized(), this.character.GetRelationshipsTo(newCharacter).Single());
+        }
+
+        [TestMethod]
+        public void Relating_PairedRelationscripDescriptionIsUnsanitized_PairedRelationshipDescriptionIsSanitized()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            // Act
+            this.character.RelateTo(newCharacter, relationshipDescription, pairedRelationshipDescription.ToUnsanitized());
+
+            // Assert          
+            Assert.IsFalse(this.character.GetRelationshipsTo(newCharacter).Contains(pairedRelationshipDescription.ToUnsanitized()));
+            Assert.IsTrue(this.character.GetRelationshipsTo(newCharacter).Contains(pairedRelationshipDescription.ToSanitized()));
+        }
         #endregion
 
         #region Unrelating

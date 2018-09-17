@@ -71,8 +71,8 @@ namespace Bas.RedYarn
             //}
 
             //var existingRelationships = from r in this.relationships
-            //                            where r.FirstCharacter == this && r.SecondCharacter == character &&
-            //                            (r as UnidirectionalRelationship).Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationDescription.ToUpper(CultureInfo.InvariantCulture)
+            //                            where r.Characters.Contains(character) &&
+            //                            r.Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipDescription.ToUpper(CultureInfo.InvariantCulture)
             //                            select r;
 
             //if (existingRelationships.Count() != 0)
