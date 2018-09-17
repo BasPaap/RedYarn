@@ -459,12 +459,45 @@ namespace Bas.RedYarn
 
         #region Relating
         // Test the unit of relating characters, i.e. wether RelatingTo a character actually makes them RelatedTo characters.
+
+        [TestMethod]
+        public void Relating_RelateCharacters_CharactersAreRelatedToEachOther()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "NewCharacter" };
+
+            // Act
+            this.character.RelateTo(newCharacter, relationshipDescription);
+
+            // Assert          
+            Assert.AreEqual(relationshipDescription, this.character.GetRelationshipsTo(newCharacter).Single());
+            Assert.AreEqual(relationshipDescription, newCharacter.GetRelationshipsTo(this.character).Single());
+        }
+
+        // Relate character by description with paired relationship
+        [TestMethod]
+        public void Relating_RelateCharactersPaired_CharactersAreRelatedToEachOtherWithTwoDescriptions()
+        {
+            // Arrange
+            var newCharacter = new Character() { Name = "NewCharacter" };
+
+            // Act
+            this.character.RelateTo(newCharacter, relationshipDescription, pairedRelationshipDescription);
+
+            // Assert          
+            Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.IsTrue(this.character.GetRelationshipsTo(newCharacter).Contains(relationshipDescription));
+            Assert.IsTrue(this.character.GetRelationshipsTo(newCharacter).Contains(pairedRelationshipDescription));
+
+            Assert.AreEqual(2, newCharacter.GetRelationshipsTo(this.character).Count);
+            Assert.IsTrue(newCharacter.GetRelationshipsTo(this.character).Contains(relationshipDescription));
+            Assert.IsTrue(newCharacter.GetRelationshipsTo(this.character).Contains(pairedRelationshipDescription));
+        }
+
         #endregion
 
         #region Unrelating
         // Test the unit of unrelating characters, i.e. wether UnrelatingTo a character actually makes them no longer RelatedTo characters.
         #endregion
-
-
     }
 }
