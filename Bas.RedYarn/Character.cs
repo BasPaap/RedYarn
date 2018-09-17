@@ -62,24 +62,28 @@ namespace Bas.RedYarn
             }
             else if (string.IsNullOrWhiteSpace(relationshipName))
             {
+                // If the relationship name is not null, but still only contains of whitespace, we can't do anything with it.
                 throw new ArgumentException($"{nameof(relationshipName)} cannot be whitespace.", nameof(relationshipName));
             }
 
             if (pairedRelationshipName != null && string.IsNullOrWhiteSpace(pairedRelationshipName))
             {
+                // If the relationship name is not null, but still only contains of whitespace, we can't do anything with it.
                 throw new ArgumentException($"{nameof(pairedRelationshipName)} cannot be whitespace.", nameof(pairedRelationshipName));
             }
 
             if (relationshipName == pairedRelationshipName)
             {
+                // If relationshipName and pairedRelationshipName are equal, we can't woth with this.
                 throw new NotSupportedException($"{nameof(relationshipName)} and {nameof(pairedRelationshipName)} cannot be the same.");
             }
 
             #endregion
 
+            // Getting cleaned up versions of the provided name.
             var sanitizedRelationshipName = relationshipName.Sanitize();
             var sanitizedPairedRelationshipName = pairedRelationshipName.Sanitize();
-
+                                   
             var existingRelationships = from r in this.relationships
                                         where r.Characters.Contains(character) &&
                                         r.Name.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipName.ToUpper(CultureInfo.InvariantCulture) ||
@@ -88,6 +92,7 @@ namespace Bas.RedYarn
 
             if (existingRelationships.Count() != 0)
             {
+                // The character is not related to the provded culture.
                 return false;
             }
 
