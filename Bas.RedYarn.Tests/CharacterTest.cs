@@ -498,6 +498,74 @@ namespace Bas.RedYarn
 
         #region Unrelating
         // Test the unit of unrelating characters, i.e. wether UnrelatingTo a character actually makes them no longer RelatedTo characters.
+
+        [TestMethod]
+        public void Unrelating_UnrelateAll_CharacterHasNoRelationshipsToNewCharacter()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            var thirdCharacter = new Character();
+
+            this.character.RelateTo(newCharacter, relationshipDescription);
+            this.character.RelateTo(thirdCharacter, relationshipDescription);
+            
+            // Act
+            this.character.UnrelateTo(newCharacter);
+
+            // Assert          
+            Assert.AreEqual(0, this.character.GetRelationshipsTo(newCharacter));
+            Assert.AreEqual(0, newCharacter.GetRelationshipsTo(this.character));
+            Assert.AreEqual(relationshipDescription, this.character.GetRelationshipsTo(thirdCharacter).Single());
+            Assert.AreEqual(relationshipDescription, thirdCharacter.GetRelationshipsTo(this.character).Single());
+        }
+
+        [TestMethod]
+        public void Unrelating_UnrelateByName_CharacterHasNoRelationshipByThatName()
+        {
+            // Arrange
+            const string secondRelationshipDescription = "SecondRelationshipDescription";
+
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription);
+            this.character.RelateTo(newCharacter, secondRelationshipDescription);
+
+            // Act
+            this.character.UnrelateTo(newCharacter, relationshipDescription);
+
+            // Assert          
+            Assert.Equals(secondRelationshipDescription, this.character.GetRelationshipsTo(newCharacter).Single());
+            Assert.Equals(secondRelationshipDescription, newCharacter.GetRelationshipsTo(this.character).Single());
+        }
+
+        [TestMethod]
+        public void Unrelating_UnrelatePairedAndDeletePairedRelationship_BothRelationshipsAreDeleted()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription, pairedRelationshipDescription);
+
+            // Act
+            this.character.UnrelateTo(newCharacter, relationshipDescription, true);
+
+            // Assert          
+            Assert.AreEqual(0, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.AreEqual(0, newCharacter.GetRelationshipsTo(this.character).Count);
+        }
+
+        [TestMethod]
+        public void Unrelating_UnrelatePairedButDontDeletePairedRelationship_OneRelationshipIsDeleted()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription, pairedRelationshipDescription);
+
+            // Act
+            this.character.UnrelateTo(newCharacter, relationshipDescription, false);
+
+            // Assert          
+            Assert.AreEqual(pairedRelationshipDescription, this.character.GetRelationshipsTo(newCharacter).Single());
+            Assert.AreEqual(pairedRelationshipDescription, newCharacter.GetRelationshipsTo(this.character).Single());
+        }
         #endregion
     }
 }
