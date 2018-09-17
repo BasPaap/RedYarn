@@ -203,17 +203,7 @@ namespace Bas.RedYarn
             var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), null));
             Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
         }
-
-        [TestMethod]
-        public void RelateTo_RelationshipDescriptionIsEmpty_ThrowsArgumentException()
-        {
-            // Arrange
-            // Act          
-            // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), string.Empty));
-            Assert.AreEqual(relationshipDescription, exception.ParamName);
-        }
-
+                
         [TestMethod]
         public void RelateTo_RelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
         {
@@ -279,27 +269,7 @@ namespace Bas.RedYarn
             var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), relationshipDescription,  null));
             Assert.AreEqual(pairedRelationshipDescriptionParameterName, exception.ParamName);
         }
-        
-        [TestMethod]
-        public void RelateToPaired_RelationshipDescriptionIsEmpty_ThrowsArgumentException()
-        {
-            // Arrange
-            // Act          
-            // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), string.Empty, pairedRelationshipDescription));
-            Assert.AreEqual(relationshipDescription, exception.ParamName);
-        }
-
-        [TestMethod]
-        public void RelateToPaired_PairedRelationshipDescriptionIsEmpty_ThrowsArgumentException()
-        {
-            // Arrange
-            // Act          
-            // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), relationshipDescription, string.Empty));
-            Assert.AreEqual(pairedRelationshipDescription, exception.ParamName);
-        }
-
+                
         [TestMethod]
         public void RelateToPaired_RelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
         {
@@ -396,19 +366,7 @@ namespace Bas.RedYarn
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(new Character()));
             Assert.AreEqual(characterParameterName, exception.ParamName);
         }
-
-        [TestMethod]
-        public void UnrelateTo_RelationshipDescriptionIsEmpty_ThrowsArgumentException()
-        {
-            // Arrange
-            var newCharacter = new Character();
-            this.character.RelateTo(newCharacter, relationshipDescription);
-            // Act          
-            // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(newCharacter, string.Empty));
-            Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
-        }
-
+        
         [TestMethod]
         public void UnrelateTo_RelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
         {

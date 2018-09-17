@@ -159,49 +159,26 @@ namespace Bas.RedYarn
 
             throw new NotImplementedException();
         }
-
-        //public void UnrelateTo(Character character)
-        //{
-        //    #region Preconditions
-        //    if (character == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(character));
-        //    }
-            
-        //    if (character == this)
-        //    {
-        //        throw new ArgumentException("A character cannot be related to itself.", nameof(character));
-        //    }
-
-        //    #endregion
-
-        //    throw new NotImplementedException();
-        //}
-
+              
         public void UnrelateTo(Character character, string relationshipDescription = null, bool deletePaired = false)
         {
-            //#region Preconditions
-            //if (character == null)
-            //{
-            //    throw new ArgumentNullException(nameof(character));
-            //}
+            #region Preconditions
+            if (character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+
+            if (character == this)
+            {
+                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            }
             
-            //if (character == this)
-            //{
-            //    throw new ArgumentException("A character cannot be related to itself.", nameof(character));
-            //}
+            if (string.IsNullOrWhiteSpace(relationshipDescription) && relationshipDescription != null)
+            {
+                throw new ArgumentException($"{nameof(relationshipDescription)} cannot be whitespace.", nameof(relationshipDescription));
+            }
 
-            //if (relationDescription == null)
-            //{
-            //    throw new ArgumentNullException(nameof(relationDescription));
-            //}
-
-            //if (relationDescription.Length == 0)
-            //{
-            //    throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
-            //}
-
-            //#endregion
+            #endregion
 
             throw new NotImplementedException();
         }
