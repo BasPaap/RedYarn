@@ -30,7 +30,7 @@ namespace Bas.RedYarn
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
 
-        public bool RelateTo(Character character, string relationshipDescription, string pairedRelationshipDescription = null)
+        public bool RelateTo(Character character, string relationshipName, string pairedRelationshipName = null)
         {
             #region Preconditions
             if (character == null)
@@ -43,34 +43,34 @@ namespace Bas.RedYarn
                 throw new ArgumentException("A character cannot be related to itself.", nameof(character));
             }
 
-            if (relationshipDescription == null)
+            if (relationshipName == null)
             {
-                throw new ArgumentNullException(nameof(relationshipDescription));
+                throw new ArgumentNullException(nameof(relationshipName));
             }
-            else if (string.IsNullOrWhiteSpace(relationshipDescription))
+            else if (string.IsNullOrWhiteSpace(relationshipName))
             {
-                throw new ArgumentException($"{nameof(relationshipDescription)} cannot be whitespace.", nameof(relationshipDescription));
-            }
-
-            if (pairedRelationshipDescription != null && string.IsNullOrWhiteSpace(pairedRelationshipDescription))
-            {
-                throw new ArgumentException($"{nameof(pairedRelationshipDescription)} cannot be whitespace.", nameof(pairedRelationshipDescription));
+                throw new ArgumentException($"{nameof(relationshipName)} cannot be whitespace.", nameof(relationshipName));
             }
 
-            if (relationshipDescription == pairedRelationshipDescription)
+            if (pairedRelationshipName != null && string.IsNullOrWhiteSpace(pairedRelationshipName))
             {
-                throw new NotSupportedException($"{nameof(relationshipDescription)} and {nameof(pairedRelationshipDescription)} cannot be the same.");
+                throw new ArgumentException($"{nameof(pairedRelationshipName)} cannot be whitespace.", nameof(pairedRelationshipName));
+            }
+
+            if (relationshipName == pairedRelationshipName)
+            {
+                throw new NotSupportedException($"{nameof(relationshipName)} and {nameof(pairedRelationshipName)} cannot be the same.");
             }
 
             #endregion
 
-            var sanitizedRelationshipDescription = relationshipDescription.Sanitize();
-            var sanitizedPairedRelationshipDescription = pairedRelationshipDescription.Sanitize();
+            var sanitizedRelationshipName = relationshipName.Sanitize();
+            var sanitizedPairedRelationshipName = pairedRelationshipName.Sanitize();
 
             var existingRelationships = from r in this.relationships
                                         where r.Characters.Contains(character) &&
-                                        r.Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipDescription.ToUpper(CultureInfo.InvariantCulture) ||
-                                        r.Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedPairedRelationshipDescription.ToUpper(CultureInfo.InvariantCulture)
+                                        r.Name.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipName.ToUpper(CultureInfo.InvariantCulture) ||
+                                        r.Name.ToUpper(CultureInfo.InvariantCulture) == sanitizedPairedRelationshipName.ToUpper(CultureInfo.InvariantCulture)
                                         select r;
 
             if (existingRelationships.Count() != 0)
@@ -78,18 +78,18 @@ namespace Bas.RedYarn
                 return false;
             }
 
-            Relationship newRelationship = (pairedRelationshipDescription == null) ? new Relationship() : new PairedRelationship();
+            Relationship newRelationship = (pairedRelationshipName == null) ? new Relationship() : new PairedRelationship();
 
             newRelationship.Characters.Add(this);
             newRelationship.Characters.Add(character);
-            newRelationship.Description = sanitizedRelationshipDescription;
+            newRelationship.Name = sanitizedRelationshipName;
 
-            if (pairedRelationshipDescription != null)
+            if (pairedRelationshipName != null)
             {
                 var pairedRelationship = new PairedRelationship();
                 pairedRelationship.Characters.Add(this);
                 pairedRelationship.Characters.Add(character);
-                pairedRelationship.Description = sanitizedPairedRelationshipDescription;
+                pairedRelationship.Name = sanitizedPairedRelationshipName;
                 pairedRelationship.OtherRelationship = newRelationship;
 
                 Debug.Assert(newRelationship is PairedRelationship, "newRelationship should always be a PairedRelationship here.");
@@ -105,7 +105,7 @@ namespace Bas.RedYarn
             return true;
         }
 
-        public bool UnrelateTo(Character character, string relationshipDescription = null, bool deletePaired = false)
+        public bool UnrelateTo(Character character, string relationshipName = null, bool deletePaired = false)
         {
             #region Preconditions
             if (character == null)
@@ -118,7 +118,7 @@ namespace Bas.RedYarn
                 throw new ArgumentException("A character cannot be related to itself.", nameof(character));
             }
 
-            if (string.IsNullOrWhiteSpace(relationshipDescription) && relationshipDescription != null)
+            if (string.IsNullOrWhiteSpace(relationshipName) && relationshipName != null)
             {
                 return false;
             }
@@ -127,7 +127,7 @@ namespace Bas.RedYarn
 
             var relationshipsToRemove = from r in this.relationships
                                         where r.Characters.Contains(character) &&
-                                        r.Description == (relationshipDescription ?? r.Description)
+                                        r.Name == (relationshipName ?? r.Name)
                                         select r;
 
             if (relationshipsToRemove.Count() == 0)
@@ -172,7 +172,7 @@ namespace Bas.RedYarn
             return new ReadOnlyCollection<string>((from r in this.relationships
                                                    where r.Characters.Contains(this) &&
                                                          r.Characters.Contains(character)
-                                                   select r.Description).ToList());
+                                                   select r.Name).ToList());
         }
     }
 }
