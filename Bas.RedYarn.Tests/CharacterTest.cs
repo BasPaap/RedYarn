@@ -212,7 +212,7 @@ namespace Bas.RedYarn
             // Act          
             // Assert          
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), whiteSpace));
-            Assert.AreEqual(relationshipDescription, exception.ParamName);            
+            Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);            
         }
 
         [TestMethod]
@@ -259,17 +259,7 @@ namespace Bas.RedYarn
             var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), null, pairedRelationshipDescription));
             Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
         }
-
-        [TestMethod]
-        public void RelateToPaired_PairedRelationshipDescriptionIsNull_ThrowsArgumentNullException()
-        {
-            // Arrange
-            // Act          
-            // Assert          
-            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), relationshipDescription,  null));
-            Assert.AreEqual(pairedRelationshipDescriptionParameterName, exception.ParamName);
-        }
-                
+                        
         [TestMethod]
         public void RelateToPaired_RelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
         {
@@ -278,7 +268,7 @@ namespace Bas.RedYarn
             // Act          
             // Assert          
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), "  \t  ", pairedRelationshipDescription));
-            Assert.AreEqual(relationshipDescription, exception.ParamName);
+            Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
         }
 
         [TestMethod]
@@ -289,7 +279,7 @@ namespace Bas.RedYarn
             // Act          
             // Assert          
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), relationshipDescription, "  \t  "));
-            Assert.AreEqual(pairedRelationshipDescription, exception.ParamName);
+            Assert.AreEqual(pairedRelationshipDescriptionParameterName, exception.ParamName);
         }
                              
         [TestMethod]

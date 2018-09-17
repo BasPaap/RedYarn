@@ -29,7 +29,7 @@ namespace Bas.RedYarn
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
 
-        public void RelateTo(Character character, string relationshipDescription)
+        public void RelateTo(Character character, string relationshipDescription, string pairedRelationshipDescription = null)
         {
             #region Preconditions
             if (character == null)
@@ -46,10 +46,19 @@ namespace Bas.RedYarn
             {
                 throw new ArgumentNullException(nameof(relationshipDescription));
             }
-
-            if (relationshipDescription.Length == 0)
+            else if (string.IsNullOrWhiteSpace(relationshipDescription))
             {
-                throw new ArgumentException($"{nameof(relationshipDescription)} cannot be empty.", nameof(relationshipDescription));
+                throw new ArgumentException($"{nameof(relationshipDescription)} cannot be whitespace.", nameof(relationshipDescription));
+            }
+
+            if (pairedRelationshipDescription != null && string.IsNullOrWhiteSpace(pairedRelationshipDescription))
+            {
+                throw new ArgumentException($"{nameof(pairedRelationshipDescription)} cannot be whitespace.", nameof(pairedRelationshipDescription));
+            }
+
+            if (relationshipDescription == pairedRelationshipDescription)
+            {
+                throw new NotSupportedException($"{nameof(relationshipDescription)} and {nameof(pairedRelationshipDescription)} cannot be the same.");
             }
 
             #endregion
@@ -98,67 +107,71 @@ namespace Bas.RedYarn
             throw new NotImplementedException();
         }
 
-        public void RelateTo(Character character, string relationshipDescription, string pairedRelationshipDescription)
-        {
-            //#region Preconditions
-            //if (character == null)
-            //{
-            //    throw new ArgumentNullException(nameof(character));
-            //}
+        //public void RelateTo(Character character, string relationshipDescription, string pairedRelationshipDescription)
+        //{
+        //    #region Preconditions
+        //    if (character == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(character));
+        //    }
 
-            //if (character == this)
-            //{
-            //    throw new ArgumentException("A character cannot be related to itself.", nameof(character));
-            //}
+        //    if (character == this)
+        //    {
+        //        throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+        //    }
 
-            //if (relationDescription == null)
-            //{
-            //    throw new ArgumentNullException(nameof(relationDescription));
-            //}
+        //    if (relationshipDescription == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(relationshipDescription));
+        //    }
+        //    else if (string.IsNullOrWhiteSpace(relationshipDescription))
+        //    {
+        //        throw new ArgumentException($"{nameof(relationshipDescription)} cannot be whitespace.", nameof(relationshipDescription));
+        //    }
 
-            //if (reverseRelationDescription == null)
-            //{
-            //    throw new ArgumentNullException(nameof(reverseRelationDescription));
-            //}
+        //    if (pairedRelationshipDescription == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(pairedRelationshipDescription));
+        //    }
+        //    else if (string.IsNullOrWhiteSpace(pairedRelationshipDescription))
+        //    {
+        //        throw new ArgumentException($"{nameof(pairedRelationshipDescription)} cannot be whitespace.", nameof(pairedRelationshipDescription));
+        //    }
 
-            //if (relationDescription.Length == 0)
-            //{
-            //    throw new ArgumentException($"{nameof(relationDescription)} cannot be empty.", nameof(relationDescription));
-            //}
+        //    if (relationshipDescription == pairedRelationshipDescription)
+        //    {
+        //        throw new NotSupportedException($"{nameof(relationshipDescription)} and {nameof(pairedRelationshipDescription)} cannot be the same.");
+        //    }
 
-            //if (reverseRelationDescription.Length == 0)
-            //{
-            //    throw new ArgumentException($"{nameof(reverseRelationDescription)} cannot be empty.", nameof(reverseRelationDescription));
-            //}
-            //#endregion
+        //    #endregion
 
-            //var sanitizedRelationDescription = relationDescription.Sanitize();
+        //    //var sanitizedRelationDescription = relationDescription.Sanitize();
 
-            //if (sanitizedRelationDescription.Length == 0)
-            //{
-            //    throw new ArgumentException($"{nameof(relationDescription)} does not contain any valid characters.", nameof(relationDescription));
-            //}
+        //    //if (sanitizedRelationDescription.Length == 0)
+        //    //{
+        //    //    throw new ArgumentException($"{nameof(relationDescription)} does not contain any valid characters.", nameof(relationDescription));
+        //    //}
 
-            //var sanitizedReverseRelationDescription = reverseRelationDescription.Sanitize();
+        //    //var sanitizedReverseRelationDescription = reverseRelationDescription.Sanitize();
 
-            //if (sanitizedReverseRelationDescription.Length == 0)
-            //{
-            //    throw new ArgumentException($"{nameof(reverseRelationDescription)} does not contain any valid characters.", nameof(reverseRelationDescription));
-            //}
+        //    //if (sanitizedReverseRelationDescription.Length == 0)
+        //    //{
+        //    //    throw new ArgumentException($"{nameof(reverseRelationDescription)} does not contain any valid characters.", nameof(reverseRelationDescription));
+        //    //}
 
-            //var bidirectionalRelationship = new BidirectionalRelationship()
-            //{
-            //    FirstCharacter = this,
-            //    SecondCharacter = character,
-            //    DescriptionFromFirstToSecondCharacter = relationDescription,
-            //    DescriptionFromSecondToFirstCharacter = reverseRelationDescription
-            //};
+        //    //var bidirectionalRelationship = new BidirectionalRelationship()
+        //    //{
+        //    //    FirstCharacter = this,
+        //    //    SecondCharacter = character,
+        //    //    DescriptionFromFirstToSecondCharacter = relationDescription,
+        //    //    DescriptionFromSecondToFirstCharacter = reverseRelationDescription
+        //    //};
 
-            //this.relationships.Add(bidirectionalRelationship);
-            //character.relationships.Add(bidirectionalRelationship);
+        //    //this.relationships.Add(bidirectionalRelationship);
+        //    //character.relationships.Add(bidirectionalRelationship);
 
-            throw new NotImplementedException();
-        }
+        //    throw new NotImplementedException();
+        //}
               
         public void UnrelateTo(Character character, string relationshipDescription = null, bool deletePaired = false)
         {
