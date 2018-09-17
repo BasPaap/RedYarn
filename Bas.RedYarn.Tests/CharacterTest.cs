@@ -421,12 +421,40 @@ namespace Bas.RedYarn
             var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(newCharacter, whiteSpace));
             Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
         }
-                
+
         #endregion
 
-
         #region GetRelationshipsTo
+        [TestMethod]
+        public void GetRelationshipsTo_CharacterIsNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.GetRelationshipsTo(null));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
 
+        [TestMethod]
+        public void GetRelationshipsTo_CharacterIsSelf_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.GetRelationshipsTo(this.character));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void GetRelationshipsTo_CharacterIsUnrelated_ReturnsEmptyCollection()
+        {
+            // Arrange
+            // Act
+            var relationships = this.character.GetRelationshipsTo(new Character());
+
+            // Assert          
+            Assert.AreEqual(0, relationships.Count);
+        }
         #endregion
 
         #region Relating
