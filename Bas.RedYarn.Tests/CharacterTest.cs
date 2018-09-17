@@ -19,6 +19,7 @@ namespace Bas.RedYarn
         const string characterParameterName = "character";
         const string relationshipDescriptionParameterName = "relationshipDescription";
         const string pairedRelationshipDescriptionParameterName = "pairedRelationshipDescription";
+        const string whiteSpace = "  \t  \n ";
 
         [TestInitialize]
         public void Initialize()
@@ -220,7 +221,7 @@ namespace Bas.RedYarn
             // Arrange
             // Act          
             // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), "  \t  "));
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), whiteSpace));
             Assert.AreEqual(relationshipDescription, exception.ParamName);            
         }
 
@@ -366,16 +367,68 @@ namespace Bas.RedYarn
         #endregion
 
         #region UnrelateTo
+        [TestMethod]
+        public void UnRelateTo_CharacterIsNull_ThrowsArgumentNullException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.UnrelateTo(null));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
 
+        [TestMethod]
+        public void UnrelateTo_CharacterIsSelf_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(this.character));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void UnrelateTo_CharacterIsUnrelated_ThrowsArgumentException()
+        {
+            // Arrange
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(new Character()));
+            Assert.AreEqual(characterParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void UnrelateTo_RelationshipDescriptionIsEmpty_ThrowsArgumentException()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription);
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(newCharacter, string.Empty));
+            Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
+        }
+
+        [TestMethod]
+        public void UnrelateTo_RelationshipDescriptionIsWhiteSpace_ThrowsArgumentException()
+        {
+            // Arrange
+            var newCharacter = new Character();
+            this.character.RelateTo(newCharacter, relationshipDescription);
+
+            // Act          
+            // Assert          
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.UnrelateTo(newCharacter, whiteSpace));
+            Assert.AreEqual(relationshipDescriptionParameterName, exception.ParamName);
+        }
+                
         #endregion
 
-        #region UnrelateToPaired
-
-        #endregion
 
         #region GetRelationshipsTo
 
         #endregion
+
         #region Relating
         // Test the unit of relating characters, i.e. wether RelatingTo a character actually makes them RelatedTo characters.
         #endregion

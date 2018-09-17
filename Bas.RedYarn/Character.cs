@@ -160,25 +160,25 @@ namespace Bas.RedYarn
             throw new NotImplementedException();
         }
 
-        public void UnrelateTo(Character character)
-        {
-            #region Preconditions
-            if (character == null)
-            {
-                throw new ArgumentNullException(nameof(character));
-            }
+        //public void UnrelateTo(Character character)
+        //{
+        //    #region Preconditions
+        //    if (character == null)
+        //    {
+        //        throw new ArgumentNullException(nameof(character));
+        //    }
             
-            if (character == this)
-            {
-                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
-            }
+        //    if (character == this)
+        //    {
+        //        throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+        //    }
 
-            #endregion
+        //    #endregion
 
-            throw new NotImplementedException();
-        }
+        //    throw new NotImplementedException();
+        //}
 
-        public void UnrelateTo(Character character, string relationshipDescription)
+        public void UnrelateTo(Character character, string relationshipDescription = null, bool deletePaired = false)
         {
             //#region Preconditions
             //if (character == null)
