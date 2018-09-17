@@ -64,10 +64,12 @@ namespace Bas.RedYarn
             #endregion
 
             var sanitizedRelationshipDescription = relationshipDescription.Sanitize();
-            
+            var sanitizedPairedRelationshipDescription = pairedRelationshipDescription.Sanitize();
+
             var existingRelationships = from r in this.relationships
                                         where r.Characters.Contains(character) &&
-                                        r.Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipDescription.ToUpper(CultureInfo.InvariantCulture)
+                                        r.Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipDescription.ToUpper(CultureInfo.InvariantCulture) ||
+                                        r.Description.ToUpper(CultureInfo.InvariantCulture) == sanitizedPairedRelationshipDescription.ToUpper(CultureInfo.InvariantCulture)
                                         select r;
 
             if (existingRelationships.Count() != 0)
@@ -75,18 +77,22 @@ namespace Bas.RedYarn
                 throw new InvalidOperationException("A relationship with that description already exists between these characters.");
             }
 
-            Relationship newRelationship;
+            Relationship newRelationship = (pairedRelationshipDescription == null) ? new Relationship() : new PairedRelationship();
+            
+            newRelationship.Characters.Add(this);
+            newRelationship.Characters.Add(character);
+            newRelationship.Description = sanitizedRelationshipDescription;
 
-            if (pairedRelationshipDescription == null)
+            if (pairedRelationshipDescription != null)
             {
-                newRelationship = new Relationship();
-                newRelationship.Characters.Add(this);
-                newRelationship.Characters.Add(character);
-                newRelationship.Description = sanitizedRelationshipDescription;                
-            }
-            else
-            {
-                newRelationship = new PairedRelationship();
+                var pairedRelationship = new PairedRelationship();
+                pairedRelationship.Characters.Add(this);
+                pairedRelationship.Characters.Add(character);
+                pairedRelationship.Description = sanitizedPairedRelationshipDescription;
+                pairedRelationship.OtherRelationship = newRelationship;
+
+                this.relationships.Add(pairedRelationship);
+                character.relationships.Add(pairedRelationship);
             }
 
             this.relationships.Add(newRelationship);
