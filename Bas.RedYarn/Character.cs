@@ -39,11 +39,10 @@ namespace Bas.RedYarn
         /// <param name="character">The character to which this character is to be related.</param>
         /// <param name="relationshipName">Name of the relationship between the characters.</param>
         /// <param name="pairedRelationshipName">If not null, the name of a second relationship between the characters with which the new relationship is paired. <seealso cref="PairedRelationship"/></param>
-        /// <returns>A boolean value indicating wether the method succeeding in creating the provided relationship.</returns>
         /// <exception cref="ArgumentNullException">Thrown when either <paramref name="character"/> or <paramref name="relationshipName"/> are null.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="character"/> equals <c>this</c>, or either <paramref name="relationshipName"/> or <paramref name="pairedRelationshipName"/> consist of whitespace.</exception>
         /// <exception cref="NotSupportedException">Thrown when <paramref name="relationshipName"/> equals <paramref name="pairedRelationshipName"/>.</exception>
-        public bool RelateTo(Character character, string relationshipName, string pairedRelationshipName = null)
+        public void RelateTo(Character character, string relationshipName, string pairedRelationshipName = null)
         {
             #region Preconditions
             if (character == null)
@@ -92,8 +91,8 @@ namespace Bas.RedYarn
 
             if (existingRelationships.Count() != 0)
             {
-                // The character is not related to the provded culture.
-                return false;
+                // The character is not related to the provided culture, so we immediately return.
+                return;
             }
 
             Relationship newRelationship = (pairedRelationshipName == null) ? new Relationship() : new PairedRelationship();
@@ -118,9 +117,7 @@ namespace Bas.RedYarn
             }
 
             this.relationships.Add(newRelationship);
-            character.relationships.Add(newRelationship);
-
-            return true;
+            character.relationships.Add(newRelationship);            
         }
 
         /// <summary>
@@ -130,10 +127,9 @@ namespace Bas.RedYarn
         /// <param name="character">The character to which the relationship is to be removed.</param>
         /// <param name="relationshipName">The name of the relationship to remove. If null, all relationships between this character and <paramref name="character"/> are removed.</param>
         /// <param name="deletePaired">If true, the pairs in pairedrelationships are removed as well.</param>
-        /// <returns>A boolean value indicating wether the method succeeded in removing the relationship between the characters.</returns>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="character"/> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when trying to relate <c>this</c> to itself.</exception>
-        public bool UnrelateTo(Character character, string relationshipName = null, bool deletePaired = true)
+        public void UnrelateTo(Character character, string relationshipName = null, bool deletePaired = true)
         {
             #region Preconditions
             if (character == null)
@@ -148,7 +144,7 @@ namespace Bas.RedYarn
 
             if (string.IsNullOrWhiteSpace(relationshipName) && relationshipName != null)
             {
-                return false;
+                return;
             }
 
             #endregion
@@ -160,7 +156,7 @@ namespace Bas.RedYarn
 
             if (relationshipsToRemove.Count() == 0)
             {
-                return false;
+                return;
             }
 
             foreach (var relationshipToRemove in relationshipsToRemove.ToList())
@@ -178,9 +174,19 @@ namespace Bas.RedYarn
                         character.relationships.Remove(otherRelationship);
                     }
                 }
-            }
+            }            
+        }
 
-            return true;
+        /// <summary>
+        /// Returns true if this character has one or more relationships with <paramref name="character"/> or false if it does not. 
+        /// If a <paramref name="relationshipName"/> is provided, return true if this character has a relationship by that name with <paramref name="character"/>.
+        /// </summary>
+        /// <param name="character">The character to test for a relationship with.</param>
+        /// <param name="relationshipName">Optionally, the name of the relationship between the two characters.</param>
+        /// <returns>A boolean value indicating wether this character has one or more relationships with <paramref name="character"/> (optionally by the name of <paramref name="relationshipName"/>).</returns>
+        public bool IsRelatedTo(Character character, string relationshipName = null)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
