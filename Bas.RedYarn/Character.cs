@@ -82,7 +82,7 @@ namespace Bas.RedYarn
             // Getting cleaned up versions of the provided name.
             var sanitizedRelationshipName = relationshipName.Sanitize();
             var sanitizedPairedRelationshipName = pairedRelationshipName.Sanitize();
-                                   
+
             var existingRelationships = from r in this.relationships
                                         where r.Characters.Contains(character) &&
                                         r.Name.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipName.ToUpper(CultureInfo.InvariantCulture) ||
@@ -111,13 +111,13 @@ namespace Bas.RedYarn
 
                 Debug.Assert(newRelationship is PairedRelationship, "newRelationship should always be a PairedRelationship here.");
                 (newRelationship as PairedRelationship).OtherRelationship = pairedRelationship;
-                
+
                 this.relationships.Add(pairedRelationship);
                 character.relationships.Add(pairedRelationship);
             }
 
             this.relationships.Add(newRelationship);
-            character.relationships.Add(newRelationship);            
+            character.relationships.Add(newRelationship);
         }
 
         /// <summary>
@@ -167,14 +167,14 @@ namespace Bas.RedYarn
                 if (deletePaired)
                 {
                     var otherRelationship = (relationshipToRemove as PairedRelationship)?.OtherRelationship;
-                    
+
                     if (otherRelationship != null)
                     {
                         this.relationships.Remove(otherRelationship);
                         character.relationships.Remove(otherRelationship);
                     }
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -186,7 +186,30 @@ namespace Bas.RedYarn
         /// <returns>A boolean value indicating wether this character has one or more relationships with <paramref name="character"/> (optionally by the name of <paramref name="relationshipName"/>).</returns>
         public bool IsRelatedTo(Character character, string relationshipName = null)
         {
-            throw new NotImplementedException();
+            #region Preconditions
+            if (character == null)
+            {
+                throw new ArgumentNullException(nameof(character));
+            }
+
+            if (character == this)
+            {
+                throw new ArgumentException("A character cannot be related to itself.", nameof(character));
+            }
+
+            if (string.IsNullOrWhiteSpace(relationshipName) && relationshipName != null)
+            {
+                // If the relationship name is not null, but still only contains of whitespace, we can't do anything with it.
+                throw new ArgumentException($"{nameof(relationshipName)} cannot be whitespace.", nameof(relationshipName));
+            }
+            #endregion
+
+            var relationships = from r in this.relationships
+                                where r.Characters.Contains(character) &&
+                                r.Name == (relationshipName ?? r.Name)
+                                select r;
+
+            return relationships.Count() >= 1;
         }
 
         /// <summary>

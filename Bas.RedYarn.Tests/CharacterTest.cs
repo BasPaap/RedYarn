@@ -727,7 +727,7 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, relationshipName + "2");
 
             // Act
-            var result = this.character.IsRelatedTo(newCharacter);
+            var result = this.character.IsRelatedTo(newCharacter, relationshipName);
 
             // Assert          
             Assert.IsFalse(result);
