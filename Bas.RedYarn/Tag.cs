@@ -9,6 +9,7 @@ namespace Bas.RedYarn
     public sealed class Tag : INameable
     {
         public string Name { get; set; }
+        public string Category { get; set; } 
         public Collection<Character> Characters { get; }
 
         public Tag()
