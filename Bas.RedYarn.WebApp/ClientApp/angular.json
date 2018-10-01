@@ -23,7 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/redyarn-theme.scss"
+              "src/required.scss"
             ],
             "scripts": []
           },
