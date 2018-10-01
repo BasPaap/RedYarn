@@ -1,9 +1,13 @@
 <mat-toolbar color="primary">
-  <span>RedYarn</span>
-  <button mat-button>New diagram</button>
-  <button mat-button>My diagrams</button>
-  <span class="fill-remaining-space"></span>
-  <button mat-button>Help</button>
-  <button mat-flat-button (click)="openLoginDialog()" color="accent">Login</button>
+  <mat-toolbar-row>
+    <span>RedYarn</span>
+    <span class="fill-remaining-space"></span>
+    <button mat-button>Help</button>
+    <button mat-flat-button (click)="openLoginDialog()" color="accent">Login</button>
+  </mat-toolbar-row>
+  <mat-toolbar-row>
+    <button mat-button>New diagram</button>
+    <button mat-button>My diagrams</button>
+  </mat-toolbar-row>
 </mat-toolbar>
 
