@@ -12,4 +12,8 @@ export class MainToolbarComponent implements OnInit {
   ngOnInit() {
   }
 
+  public openLoginDialog() {
+
+  }
+
 }
