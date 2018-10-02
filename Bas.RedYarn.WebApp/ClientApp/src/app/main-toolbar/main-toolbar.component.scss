@@ -1,0 +1,27 @@
+@import '../../redyarn-theme.scss';
+
+.rowOne {
+  background-color: mat-color($redyarn-app-primary, 500);
+}
+
+.rowTwo {
+  background-color: mat-color($redyarn-app-primary, 400);
+}
+
+.rowThree {
+  background-color: mat-color($redyarn-app-primary, 300);
+}
+
+.rowFour {
+  background-color: mat-color($redyarn-app-primary, 200);
+}
+
+.rowFive {
+  background-color: mat-color($redyarn-app-primary, 100);
+}
+
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}

@@ -1,5 +1,6 @@
 @import '~@angular/material/theming';
 @import 'redyarn-theme.scss';
 
-@include angular-material-theme($redyarn-app-theme);
 @include mat-core();
+$redyarn-app-theme: mat-light-theme($redyarn-app-primary, $redyarn-app-accent, $redyarn-app-warn);
+@include angular-material-theme($redyarn-app-theme);

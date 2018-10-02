@@ -1,6 +1,6 @@
+@import '~@angular/material/theming';
 
 $redyarn-app-primary: mat-palette($mat-indigo);
 $redyarn-app-accent: mat-palette($mat-pink, A200, A100, A400);
 $redyarn-app-warn: mat-palette($mat-red);
 
-$redyarn-app-theme: mat-light-theme($redyarn-app-primary, $redyarn-app-accent, $redyarn-app-warn);
