@@ -7,7 +7,7 @@ using System.Text;
 namespace Bas.RedYarn
 {
     [TestClass]
-    public class EssentialInformationTest
+    public partial class EssentialInformationTest
     {
         private EssentialInformation essentialInformation;
 

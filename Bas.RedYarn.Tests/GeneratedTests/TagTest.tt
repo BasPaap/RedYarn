@@ -1,0 +1,7 @@
+﻿<#@ include file="ManyToManyCollectionTestGenerator.t4" #>
+<# 
+var unitUnderTestName = nameof(Tag);
+WriteBeginning(unitUnderTestName);
+WriteTests(unitUnderTestName, nameof(Character), nameof(Tag.Characters), nameof(Character.Tags));
+WriteEnd();
+#>

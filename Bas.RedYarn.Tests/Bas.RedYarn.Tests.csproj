@@ -9,6 +9,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="GeneratedTests\AuthorTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorTest.tt</DependentUpon>
+    </None>
+    <None Include="GeneratedTests\CharacterTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterTest.tt</DependentUpon>
+    </None>
+    <None Include="GeneratedTests\EssentialInformation.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EssentialInformation.tt</DependentUpon>
+    </None>
+    <None Include="GeneratedTests\StorylineTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineTest.tt</DependentUpon>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.2.1" />
     <PackageReference Include="MSTest.TestFramework" Version="1.2.1" />
@@ -16,6 +39,61 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bas.RedYarn\Bas.RedYarn.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="GeneratedTests\CharacterTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CharacterTest.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\AuthorTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AuthorTest.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\EssentialInformation.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EssentialInformation.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\StorylineTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StorylineTest.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\TagTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TagTest.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="GeneratedTests\AuthorTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\CharacterTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\EssentialInformation.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EssentialInformation.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\StorylineTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\TagTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagTest.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

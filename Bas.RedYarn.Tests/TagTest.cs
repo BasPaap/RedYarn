@@ -7,7 +7,7 @@ using System.Text;
 namespace Bas.RedYarn
 {
     [TestClass]
-    public class TagTest
+    public partial class TagTest
     {
         private Tag tag;
 
@@ -29,53 +29,6 @@ namespace Bas.RedYarn
         {
             ToStringHelper.ToString_NameIsEmpty_ReturnsClassName(this.tag);
         }
-        #endregion
-        
-        #region Characters property
-        [TestMethod]
-        public void CharactersAdd_NewCharacter_TagContainsCharacter()
-        {
-            var character = new Character() { Name = "Character" };
-            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.tag, character, this.tag.Characters, character.Tags);
-        }
-
-        [TestMethod]
-        public void CharactersInsert_NewCharacter_TagContainsCharacter()
-        {
-            var character = new Character() { Name = "Character" };
-            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.tag, character, this.tag.Characters, character.Tags);
-        }
-
-        [TestMethod]
-        public void CharactersClear_CharacterContainsTag_TagIsRemovedFromCharacter()
-        {
-            var character = new Character() { Name = "Character" };
-            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.tag, character, this.tag.Characters, character.Tags);
-        }
-
-        [TestMethod]
-        public void CharactersRemove_CharacterContainsTag_TagIsRemovedFromCharacter()
-        {
-            var character = new Character() { Name = "Character" };
-            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.tag, character, this.tag.Characters, character.Tags);
-        }
-
-        [TestMethod]
-        public void CharactersRemoveAt_CharacterContainsTag_TagIsRemovedFromCharacter()
-        {
-            var character = new Character() { Name = "Character" };
-            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.tag, character, this.tag.Characters, character.Tags);
-        }
-
-        [TestMethod]
-        public void CharactersSet_CharacterContainsTag_TagIsRemovedFromOldCharacterAndAddedToNewCharacter()
-        {
-            var character = new Character() { Name = "Character" };
-            var newCharacter = new Character() { Name = "NewCharacter" };
-
-            ManyToManyCollectionHelper.CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection(this.tag, character, newCharacter, this.tag.Characters, character.Tags, newCharacter.Tags);
-        }
-
-        #endregion
+        #endregion        
     }
 }
