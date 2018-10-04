@@ -37,6 +37,11 @@ private void WriteEnd()
 <#+
 }
 
+private string Decapitalize(string capitalizedString)
+{
+	return Char.ToLowerInvariant(capitalizedString[0]) + capitalizedString.Substring(1);
+}
+
 private void WriteTests(string unitUnderTestName, string relatedObjectName, string collectionOnTestedObjectPropertyName, string collectionOnRelatedObjectPropertyName)
 {
 #>
@@ -44,45 +49,45 @@ private void WriteTests(string unitUnderTestName, string relatedObjectName, stri
         [TestMethod]
         public void <#= collectionOnTestedObjectPropertyName #>Add_New<#= relatedObjectName #>_<#= unitUnderTestName #>Contains<#= relatedObjectName #>()
         {
-            var <#= relatedObjectName.ToLower() #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
-            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.<#= unitUnderTestName.ToLower() #>, <#= relatedObjectName.ToLower() #>, this.<#= unitUnderTestName.ToLower() #>.<#= collectionOnTestedObjectPropertyName #>, <#= relatedObjectName.ToLower() #>.<#= collectionOnRelatedObjectPropertyName #>);
+            var <#= Decapitalize(relatedObjectName) #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
+            ManyToManyCollectionHelper.CollectionAdd_NewItem_RelatedCollectionContainsThis(this.<#= Decapitalize(unitUnderTestName) #>, <#= Decapitalize(relatedObjectName) #>, this.<#= Decapitalize(unitUnderTestName) #>.<#= collectionOnTestedObjectPropertyName #>, <#= Decapitalize(relatedObjectName) #>.<#= collectionOnRelatedObjectPropertyName #>);
         }
 
         [TestMethod]
         public void <#= collectionOnTestedObjectPropertyName #>Insert_New<#= relatedObjectName #>_<#= unitUnderTestName #>Contains<#= relatedObjectName #>()
         {
-            var <#= relatedObjectName.ToLower() #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
-            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.<#= unitUnderTestName.ToLower() #>, <#= relatedObjectName.ToLower() #>, this.<#= unitUnderTestName.ToLower() #>.<#= collectionOnTestedObjectPropertyName #>, <#= relatedObjectName.ToLower() #>.<#= unitUnderTestName #>s);
+            var <#= Decapitalize(relatedObjectName) #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
+            ManyToManyCollectionHelper.CollectionInsert_NewItem_RelatedCollectionContainsThis(this.<#= Decapitalize(unitUnderTestName) #>, <#= Decapitalize(relatedObjectName) #>, this.<#= Decapitalize(unitUnderTestName) #>.<#= collectionOnTestedObjectPropertyName #>, <#= Decapitalize(relatedObjectName) #>.<#= collectionOnRelatedObjectPropertyName #>);
         }
 
         [TestMethod]
         public void <#= collectionOnTestedObjectPropertyName #>Clear_<#= relatedObjectName #>Contains<#= unitUnderTestName #>_<#= unitUnderTestName #>IsRemovedFrom<#= relatedObjectName #>()
         {
-            var <#= relatedObjectName.ToLower() #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
-            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.<#= unitUnderTestName.ToLower() #>, <#= relatedObjectName.ToLower() #>, this.<#= unitUnderTestName.ToLower() #>.<#= collectionOnTestedObjectPropertyName #>, <#= relatedObjectName.ToLower() #>.<#= unitUnderTestName #>s);
+            var <#= Decapitalize(relatedObjectName) #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
+            ManyToManyCollectionHelper.CollectionClear_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.<#= Decapitalize(unitUnderTestName) #>, <#= Decapitalize(relatedObjectName) #>, this.<#= Decapitalize(unitUnderTestName) #>.<#= collectionOnTestedObjectPropertyName #>, <#= Decapitalize(relatedObjectName) #>.<#= collectionOnRelatedObjectPropertyName #>);
         }
 
         [TestMethod]
         public void <#= collectionOnTestedObjectPropertyName #>Remove_<#= relatedObjectName #>Contains<#= unitUnderTestName #>_<#= unitUnderTestName #>IsRemovedFrom<#= relatedObjectName #>()
         {
-            var <#= relatedObjectName.ToLower() #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
-            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.<#= unitUnderTestName.ToLower() #>, <#= relatedObjectName.ToLower() #>, this.<#= unitUnderTestName.ToLower() #>.<#= collectionOnTestedObjectPropertyName #>, <#= relatedObjectName.ToLower() #>.<#= unitUnderTestName #>s);
+            var <#= Decapitalize(relatedObjectName) #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
+            ManyToManyCollectionHelper.CollectionRemove_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.<#= Decapitalize(unitUnderTestName) #>, <#= Decapitalize(relatedObjectName) #>, this.<#= Decapitalize(unitUnderTestName) #>.<#= collectionOnTestedObjectPropertyName #>, <#= Decapitalize(relatedObjectName) #>.<#= collectionOnRelatedObjectPropertyName #>);
         }
 
         [TestMethod]
         public void <#= collectionOnTestedObjectPropertyName #>RemoveAt_<#= relatedObjectName #>Contains<#= unitUnderTestName #>_<#= unitUnderTestName #>IsRemovedFrom<#= relatedObjectName #>()
         {
-            var <#= relatedObjectName.ToLower() #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
-            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.<#= unitUnderTestName.ToLower() #>, <#= relatedObjectName.ToLower() #>, this.<#= unitUnderTestName.ToLower() #>.<#= collectionOnTestedObjectPropertyName #>, <#= relatedObjectName.ToLower() #>.<#= unitUnderTestName #>s);
+            var <#= Decapitalize(relatedObjectName) #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
+            ManyToManyCollectionHelper.CollectionRemoveAt_TestedObjectCollectionContainsRelatedObject_TestedObjectIsRemovedFromRelatedCollection(this.<#= Decapitalize(unitUnderTestName) #>, <#= Decapitalize(relatedObjectName) #>, this.<#= Decapitalize(unitUnderTestName) #>.<#= collectionOnTestedObjectPropertyName #>, <#= Decapitalize(relatedObjectName) #>.<#= collectionOnRelatedObjectPropertyName #>);
         }
 
         [TestMethod]
         public void <#= collectionOnTestedObjectPropertyName #>Set_<#= relatedObjectName #>Contains<#= unitUnderTestName #>_<#= unitUnderTestName #>IsRemovedFromOld<#= relatedObjectName #>AndAddedToNew<#= relatedObjectName #>()
         {
-            var <#= relatedObjectName.ToLower() #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
+            var <#= Decapitalize(relatedObjectName) #> = new <#= relatedObjectName #>() { Name = "<#= relatedObjectName #>" };
             var new<#= relatedObjectName #> = new <#= relatedObjectName #>() { Name = "New<#= relatedObjectName #>" };
 
-            ManyToManyCollectionHelper.CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection(this.<#= unitUnderTestName.ToLower() #>, <#= relatedObjectName.ToLower() #>, new<#= relatedObjectName #>, this.<#= unitUnderTestName.ToLower() #>.<#= collectionOnTestedObjectPropertyName #>, <#= relatedObjectName.ToLower() #>.<#= unitUnderTestName #>s, new<#= relatedObjectName #>.<#= unitUnderTestName #>s);
+            ManyToManyCollectionHelper.CollectionSet_TestedObjectCollectionContainsRelatedObject_TestedObjectIsReplacedInRelatedCollection(this.<#= Decapitalize(unitUnderTestName) #>, <#= Decapitalize(relatedObjectName) #>, new<#= relatedObjectName #>, this.<#= Decapitalize(unitUnderTestName) #>.<#= collectionOnTestedObjectPropertyName #>, <#= Decapitalize(relatedObjectName) #>.<#= collectionOnRelatedObjectPropertyName #>, new<#= relatedObjectName #>.<#= collectionOnRelatedObjectPropertyName #>);
         }
         #endregion	
 

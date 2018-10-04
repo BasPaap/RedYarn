@@ -79,11 +79,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterTest.tt</DependentUpon>
     </Compile>
-    <Compile Update="GeneratedTests\EssentialInformation.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EssentialInformation.tt</DependentUpon>
-    </Compile>
     <Compile Update="GeneratedTests\EssentialPlotElementTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

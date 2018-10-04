@@ -23,12 +23,16 @@ namespace Bas.RedYarn
         public Collection<Storyline> Storylines { get; }
         public Collection<Tag> Tags { get; }
         public string ImagePath { get; set; }
+        public Collection<EssentialPlotElement> OwnedPlotElements { get; set; }
+        public Collection<EssentialPlotElement> NeededPlotElements { get; set; }
 
         public Character()
         {
             Authors = new CoupledCollection<Author, Character>(this, nameof(Author.Characters));
             Storylines = new CoupledCollection<Storyline, Character>(this, nameof(Storyline.Characters));
             Tags = new CoupledCollection<Tag, Character>(this, nameof(Tag.Characters));
+            OwnedPlotElements = new CoupledCollection<EssentialPlotElement, Character>(this, nameof(EssentialPlotElement.OwningCharacters));
+            NeededPlotElements = new CoupledCollection<EssentialPlotElement, Character>(this, nameof(EssentialPlotElement.NeedingCharacters));
         }
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;

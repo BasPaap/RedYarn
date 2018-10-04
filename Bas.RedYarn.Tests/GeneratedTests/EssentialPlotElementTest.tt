@@ -2,6 +2,8 @@
 <# 
 var unitUnderTestName = nameof(EssentialPlotElement);
 WriteBeginning(unitUnderTestName);
-//WriteTests(unitUnderTestName, nameof(X), nameof(EssentialPlotElement.X), nameof(X.EssentialPlotElements));
+WriteTests(unitUnderTestName, nameof(Storyline), nameof(EssentialPlotElement.Storylines), nameof(Storyline.EssentialPlotElements));
+WriteTests(unitUnderTestName, nameof(Character), nameof(EssentialPlotElement.OwningCharacters), nameof(Character.OwnedPlotElements));
+WriteTests(unitUnderTestName, nameof(Character), nameof(EssentialPlotElement.NeedingCharacters), nameof(Character.NeededPlotElements));
 WriteEnd();
 #>

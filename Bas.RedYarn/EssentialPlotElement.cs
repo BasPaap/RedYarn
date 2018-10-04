@@ -10,10 +10,19 @@ namespace Bas.RedYarn
     /// </summary>
     public sealed class EssentialPlotElement : INameable
     {
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Name { get; set; }
         public string Description { get; set; }
         public Collection<Storyline> Storylines { get; }
         public Collection<Character> OwningCharacters { get; }
         public Collection<Character> NeedingCharacters { get; }
+
+        public EssentialPlotElement()
+        {
+            Storylines = new CoupledCollection<Storyline, EssentialPlotElement>(this, nameof(Storyline.EssentialPlotElements));
+            OwningCharacters = new CoupledCollection<Character, EssentialPlotElement>(this, nameof(Character.OwnedPlotElements));
+            NeedingCharacters = new CoupledCollection<Character, EssentialPlotElement>(this, nameof(Character.NeededPlotElements));
+        }
+
+        public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(EssentialPlotElement) : Name;
     }
 }
