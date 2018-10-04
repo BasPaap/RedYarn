@@ -1,7 +1,0 @@
-﻿<#@ include file="ManyToManyCollectionTestGenerator.t4" #>
-<# 
-var unitUnderTestName = nameof(EssentialInformation);
-WriteBeginning(unitUnderTestName);
-//WriteTests(unitUnderTestName, nameof(X), nameof(EssentialInformation.X), nameof(X.EssentialInformations));
-WriteEnd();
-#>

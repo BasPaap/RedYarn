@@ -8,7 +8,7 @@ namespace Bas.RedYarn
     /// <summary>
     /// Represents information owned by characters or required for characters to 'complete' a storyline.
     /// </summary>
-    public sealed class EssentialInformation : INameable
+    public sealed class EssentialPlotElement : INameable
     {
         public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public string Description { get; set; }

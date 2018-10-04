@@ -1,0 +1,7 @@
+﻿<#@ include file="ManyToManyCollectionTestGenerator.t4" #>
+<# 
+var unitUnderTestName = nameof(EssentialPlotElement);
+WriteBeginning(unitUnderTestName);
+//WriteTests(unitUnderTestName, nameof(X), nameof(EssentialPlotElement.X), nameof(X.EssentialPlotElements));
+WriteEnd();
+#>

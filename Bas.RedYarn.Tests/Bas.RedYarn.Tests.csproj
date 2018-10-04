@@ -19,10 +19,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterTest.tt</DependentUpon>
     </None>
-    <None Include="GeneratedTests\EssentialInformation.cs">
+    <None Include="GeneratedTests\EssentialPlotElementTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EssentialInformation.tt</DependentUpon>
+      <DependentUpon>EssentialPlotElementTest.tt</DependentUpon>
     </None>
     <None Include="GeneratedTests\StorylineTest.cs">
       <DesignTime>True</DesignTime>
@@ -50,9 +50,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AuthorTest.cs</LastGenOutput>
     </None>
-    <None Update="GeneratedTests\EssentialInformation.tt">
+    <None Update="GeneratedTests\EssentialPlotElementTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EssentialInformation.cs</LastGenOutput>
+      <LastGenOutput>EssentialPlotElementTest.cs</LastGenOutput>
     </None>
     <None Update="GeneratedTests\StorylineTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -83,6 +83,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EssentialInformation.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\EssentialPlotElementTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EssentialPlotElementTest.tt</DependentUpon>
     </Compile>
     <Compile Update="GeneratedTests\StorylineTest.cs">
       <DesignTime>True</DesignTime>
