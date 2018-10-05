@@ -8,13 +8,15 @@ import { MatToolbarModule, MatButtonModule, MatFormFieldModule, MatDialogModule,
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginDialogComponent,
     MainToolbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    StoryDiagramComponent
   ],
   imports: [
     BrowserModule,
