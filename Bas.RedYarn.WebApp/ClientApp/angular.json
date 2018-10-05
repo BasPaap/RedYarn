@@ -123,5 +123,10 @@
       }
     }
   },
-  "defaultProject": "bas-redyarn-webapp"
+  "defaultProject": "bas-redyarn-webapp",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

@@ -4,15 +4,17 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule, MatFormFieldModule, MatDialogModule } from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatFormFieldModule, MatDialogModule, MatSidenavModule, MatListModule } from '@angular/material';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginDialogComponent,
-    MainToolbarComponent
+    MainToolbarComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -20,7 +22,9 @@ import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
     MatToolbarModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatDialogModule    
+    MatDialogModule,
+    MatSidenavModule,
+    MatListModule
   ],
   entryComponents : [ LoginDialogComponent ],
   providers: [],

@@ -1,0 +1,10 @@
+@import '../../redyarn-theme.scss';
+
+mat-list {
+  background-color: mat-color($redyarn-app-primary, 300);
+  height: 100%;
+}
+
+mat-list button {
+  color: mat-color($redyarn-app-primary, "300-contrast");
+}
