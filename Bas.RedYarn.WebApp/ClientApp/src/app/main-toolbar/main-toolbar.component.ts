@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-main-toolbar',
@@ -7,13 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainToolbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
   }
 
   public openLoginDialog() {
-
+    const dialogRef = this.dialog.open(LoginDialogComponent);
   }
 
 }

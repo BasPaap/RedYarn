@@ -1,10 +1,14 @@
 <app-main-toolbar></app-main-toolbar>
 
-<div>
-  <aside>
-    <app-sidebar></app-sidebar>
-  </aside>
-  <section>
-    <app-story-diagram></app-story-diagram>
-  </section>
-</div>
+<mat-sidenav-container>
+  <mat-sidenav mode="side" opened>
+    <aside>
+      <app-sidebar></app-sidebar>
+    </aside>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <section>
+      <app-story-diagram></app-story-diagram>
+    </section>
+  </mat-sidenav-content>
+</mat-sidenav-container>

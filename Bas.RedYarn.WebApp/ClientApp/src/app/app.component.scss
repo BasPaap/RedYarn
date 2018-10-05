@@ -1,0 +1,33 @@
+@import '../redyarn-theme.scss';
+
+/*mat-list {
+  background-color: mat-color($redyarn-app-primary, 300);
+  height: 100%;
+}
+
+mat-list button {
+  color: mat-color($redyarn-app-primary, "300-contrast");
+}*/
+
+app-main-toolbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+mat-sidenav-container {
+  position: absolute;
+  top: 128px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
+aside {
+  height: 95%;
+}
+
+mat-sidenav {
+  background-color: mat-color($redyarn-app-primary, 300);
+}
