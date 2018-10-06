@@ -9,6 +9,7 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
+import { GraphVisDirective } from './graph-vis.directive';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
     LoginDialogComponent,
     MainToolbarComponent,
     SidebarComponent,
-    StoryDiagramComponent
+    StoryDiagramComponent,
+    GraphVisDirective
   ],
   imports: [
     BrowserModule,
