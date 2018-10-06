@@ -15,6 +15,7 @@ export class StoryDiagramComponent implements OnInit {
   ngOnInit() {
 
   }
+
   ngAfterContentInit() {
     var nodes = new DataSet([
       { id: 1, label: 'Node 1' },

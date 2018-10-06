@@ -5,14 +5,13 @@ import { Network } from 'vis';
   selector: '[appGraphVis]'
 })
 export class GraphVisDirective {
-  network;
-
+  private network: Network 
+  
   constructor(private el: ElementRef) { }
 
   @Input() set appGraphVis(graphData) {
-    console.log('graph data ', graphData);
     let options = {};
-
+    
     if (!this.network) {
       this.network = new Network(this.el.nativeElement, graphData, options);
     }
