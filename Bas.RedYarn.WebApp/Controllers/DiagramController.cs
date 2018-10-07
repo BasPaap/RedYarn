@@ -20,7 +20,7 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<string> GetDiagram(int id)
+        public string GetDiagram(int id)
         {
             var diagram = this.dataService.GetDiagram(id);
 

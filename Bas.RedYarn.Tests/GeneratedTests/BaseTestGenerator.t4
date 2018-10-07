@@ -1,7 +1,7 @@
 ﻿<#@ template debug="false" hostspecific="false" language="C#" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Runtime" #>
-<#@ assembly name="$(SolutionDir)\Bas.RedYarn\bin\Debug\netcoreapp2.0\Bas.RedYarn.dll" #>
+<#@ assembly name="$(SolutionDir)\Bas.RedYarn\bin\Debug\netcoreapp2.1\Bas.RedYarn.dll" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
