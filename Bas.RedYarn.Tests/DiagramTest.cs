@@ -1,5 +1,4 @@
-﻿using Bas.RedYarn.Helpers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,14 +6,14 @@ using System.Text;
 namespace Bas.RedYarn
 {
     [TestClass]
-    public partial class TagTest
+    public partial class DiagramTest
     {
-        private Tag tag;
+        private Diagram diagram;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.tag = new Tag();
-        }     
+            this.diagram = new Diagram();
+        }
     }
 }

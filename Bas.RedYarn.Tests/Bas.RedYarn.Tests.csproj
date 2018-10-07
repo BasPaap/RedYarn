@@ -19,6 +19,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterTest.tt</DependentUpon>
     </None>
+    <None Include="GeneratedTests\DiagramTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramTest.tt</DependentUpon>
+    </None>
     <None Include="GeneratedTests\EssentialPlotElementTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -50,6 +55,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AuthorTest.cs</LastGenOutput>
     </None>
+    <None Update="GeneratedTests\DiagramTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramTest.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\EssentialPlotElementTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EssentialPlotElementTest.cs</LastGenOutput>
@@ -78,6 +87,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\DiagramTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramTest.tt</DependentUpon>
     </Compile>
     <Compile Update="GeneratedTests\EssentialPlotElementTest.cs">
       <DesignTime>True</DesignTime>

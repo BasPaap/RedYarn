@@ -1,7 +1,8 @@
-﻿<#@ include file="ManyToManyCollectionTestGenerator.t4" #>
+﻿<#@ include file="BaseTestGenerator.t4" #>
 <# 
 var unitUnderTestName = nameof(Tag);
 WriteBeginning(unitUnderTestName);
-WriteTests(unitUnderTestName, nameof(Character), nameof(Tag.Characters), nameof(Character.Tags));
+WriteToStringTests(unitUnderTestName);
+WriteManyToManyTests(unitUnderTestName, nameof(Character), nameof(Tag.Characters), nameof(Character.Tags));
 WriteEnd();
 #>

@@ -27,20 +27,6 @@ namespace Bas.RedYarn
             character = new Character();
         }
 
-        #region ToString
-        [TestMethod]
-        public void ToString_NameIsNotEmpty_ReturnsName()
-        {
-            ToStringHelper.ToString_NameIsNotEmpty_ReturnsName(this.character);
-        }
-
-        [TestMethod]
-        public void ToString_NameIsEmpty_ReturnsClassName()
-        {
-            ToStringHelper.ToString_NameIsEmpty_ReturnsClassName(this.character);
-        } 
-        #endregion
-        
         #region RelateTo
 
         [TestMethod]

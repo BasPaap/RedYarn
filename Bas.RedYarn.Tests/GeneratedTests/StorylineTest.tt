@@ -1,9 +1,10 @@
-﻿<#@ include file="ManyToManyCollectionTestGenerator.t4" #>
+﻿<#@ include file="BaseTestGenerator.t4" #>
 <# 
 var unitUnderTestName = nameof(Storyline);
 WriteBeginning(unitUnderTestName);
-WriteTests(unitUnderTestName, nameof(Character), nameof(Storyline.Characters), nameof(Character.Storylines));
-WriteTests(unitUnderTestName, nameof(Author), nameof(Storyline.Authors), nameof(Author.Storylines));
-WriteTests(unitUnderTestName, nameof(EssentialPlotElement), nameof(Storyline.EssentialPlotElements), nameof(EssentialPlotElement.Storylines));
+WriteToStringTests(unitUnderTestName);
+WriteManyToManyTests(unitUnderTestName, nameof(Character), nameof(Storyline.Characters), nameof(Character.Storylines));
+WriteManyToManyTests(unitUnderTestName, nameof(Author), nameof(Storyline.Authors), nameof(Author.Storylines));
+WriteManyToManyTests(unitUnderTestName, nameof(EssentialPlotElement), nameof(Storyline.EssentialPlotElements), nameof(EssentialPlotElement.Storylines));
 WriteEnd();
 #>

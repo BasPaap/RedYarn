@@ -42,7 +42,27 @@ private string Decapitalize(string capitalizedString)
 	return Char.ToLowerInvariant(capitalizedString[0]) + capitalizedString.Substring(1);
 }
 
-private void WriteTests(string unitUnderTestName, string relatedObjectName, string collectionOnTestedObjectPropertyName, string collectionOnRelatedObjectPropertyName)
+private void WriteToStringTests(string testObjectName)
+{
+#>
+		#region ToString
+        [TestMethod]
+        public void ToString_NameIsNotEmpty_ReturnsName()
+        {
+            ToStringHelper.ToString_NameIsNotEmpty_ReturnsName(this.<#= Decapitalize(testObjectName) #>);
+        }
+
+        [TestMethod]
+        public void ToString_NameIsEmpty_ReturnsClassName()
+        {
+            ToStringHelper.ToString_NameIsEmpty_ReturnsClassName(this.<#= Decapitalize(testObjectName) #>);
+        }
+        #endregion
+
+<#+
+}
+
+private void WriteManyToManyTests(string unitUnderTestName, string relatedObjectName, string collectionOnTestedObjectPropertyName, string collectionOnRelatedObjectPropertyName)
 {
 #>
 		#region <#= collectionOnTestedObjectPropertyName #> property

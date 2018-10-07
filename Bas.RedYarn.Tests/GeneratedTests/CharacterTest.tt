@@ -1,11 +1,12 @@
-﻿<#@ include file="ManyToManyCollectionTestGenerator.t4" #>
+﻿<#@ include file="BaseTestGenerator.t4" #>
 <# 
 var unitUnderTestName = nameof(Character);
 WriteBeginning(unitUnderTestName);
-WriteTests(unitUnderTestName, nameof(Storyline), nameof(Character.Storylines), nameof(Storyline.Characters));
-WriteTests(unitUnderTestName, nameof(Author), nameof(Character.Authors), nameof(Author.Characters));
-WriteTests(unitUnderTestName, nameof(Tag), nameof(Character.Tags), nameof(Tag.Characters));
-WriteTests(unitUnderTestName, nameof(EssentialPlotElement), nameof(Character.OwnedPlotElements), nameof(EssentialPlotElement.OwningCharacters));
-WriteTests(unitUnderTestName, nameof(EssentialPlotElement), nameof(Character.NeededPlotElements), nameof(EssentialPlotElement.NeedingCharacters));
+WriteToStringTests(unitUnderTestName);
+WriteManyToManyTests(unitUnderTestName, nameof(Storyline), nameof(Character.Storylines), nameof(Storyline.Characters));
+WriteManyToManyTests(unitUnderTestName, nameof(Author), nameof(Character.Authors), nameof(Author.Characters));
+WriteManyToManyTests(unitUnderTestName, nameof(Tag), nameof(Character.Tags), nameof(Tag.Characters));
+WriteManyToManyTests(unitUnderTestName, nameof(EssentialPlotElement), nameof(Character.OwnedPlotElements), nameof(EssentialPlotElement.OwningCharacters));
+WriteManyToManyTests(unitUnderTestName, nameof(EssentialPlotElement), nameof(Character.NeededPlotElements), nameof(EssentialPlotElement.NeedingCharacters));
 WriteEnd();
 #>
