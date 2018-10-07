@@ -1,3 +1,4 @@
+using Bas.RedYarn.WebApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Bas.RedYarn.WebApp
 {
@@ -27,6 +29,8 @@ namespace Bas.RedYarn.WebApp
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddTransient<IDataService, TestDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
