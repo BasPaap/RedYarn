@@ -50,52 +50,32 @@ namespace Bas.RedYarn.WebApp.Tests.Services
         {
             get
             {
-                var firstCharacterModel = GetCharacterModel(firstCharacter);
-                firstCharacterModel.Aliases.Add(firstCharacter.Aliases[0]);
-                firstCharacterModel.Aliases.Add(firstCharacter.Aliases[1]);
+                var firstCharacterModel = new Model.Character(firstCharacter);
+                var secondCharacterModel = new Model.Character(secondCharacter);
 
-                var secondCharacterModel = GetCharacterModel(secondCharacter);
-
-                var firstStorylineModel = GetStorylineModel(firstStoryline);
-                var secondStorylineModel = GetStorylineModel(firstStoryline);
+                var firstStorylineModel = new Model.Storyline(firstStoryline);
+                var secondStorylineModel = new Model.Storyline(secondStoryline);
 
                 var firstRelationship = GetRelationship(firstCharacterModel, secondCharacterModel, relationshipFromFirstToSecondName);
                 var secondRelationship = GetRelationship(secondCharacterModel, firstCharacterModel, relationshipFromSecondToFirstName);
-
+                
                 var firstStorylineConnection = GetStorylineConnection(firstCharacterModel, firstStorylineModel);
                 var secondStorylineConnection = GetStorylineConnection(firstCharacterModel, secondStorylineModel);
                 var thirdStorylineConnection = GetStorylineConnection(secondCharacterModel, firstStorylineModel);
 
-                var diagramModel = new Model.Diagram() { Name = diagram.Name };
+                var diagramModel = new Model.Diagram(diagram);
                 diagramModel.Characters.Add(firstCharacterModel);
                 diagramModel.Characters.Add(secondCharacterModel);
                 diagramModel.Storylines.Add(firstStorylineModel);
                 diagramModel.Storylines.Add(secondStorylineModel);
                 diagramModel.Relationships.Add(firstRelationship);
                 diagramModel.Relationships.Add(secondRelationship);
+                diagramModel.StorylineConnections.Add(firstStorylineConnection);
+                diagramModel.StorylineConnections.Add(secondStorylineConnection);
+                diagramModel.StorylineConnections.Add(thirdStorylineConnection);
 
                 return diagramModel;
             }
-        }
-
-        private Model.Character GetCharacterModel(Character character)
-        {
-            return new Model.Character()
-            {
-                Id = Guid.NewGuid(),
-                Name = character.Name,
-                Description = character.Description
-            };
-        }
-
-        private Model.Storyline GetStorylineModel(Storyline storyline)
-        {
-            return new Model.Storyline()
-            {
-                Id = Guid.NewGuid(),
-                Name = storyline.Name,
-                Description = storyline.Description
-            };
         }
 
         private Model.Relationship GetRelationship(Model.Character firstCharacterModel, Model.Character secondCharacterModel, string name)

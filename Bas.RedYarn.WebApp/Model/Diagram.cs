@@ -13,5 +13,14 @@ namespace Bas.RedYarn.WebApp.Model
         public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
         public Collection<Relationship> Relationships { get; } = new Collection<Relationship>();
         public Collection<StorylineConnection> StorylineConnections { get; } = new Collection<StorylineConnection>();
+
+        public Diagram()
+        {
+        }
+
+        public Diagram(RedYarn.Diagram diagram)
+        {
+            Name = diagram.Name;
+        }
     }
 }
