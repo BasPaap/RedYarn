@@ -14,5 +14,7 @@ namespace Bas.RedYarn
         public Collection<EssentialPlotElement> EssentialPlotElements { get; } = new Collection<EssentialPlotElement>();
         public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
         public Collection<Tag> Tags { get; } = new Collection<Tag>();
+
+        public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Diagram) : Name;
     }
 }
