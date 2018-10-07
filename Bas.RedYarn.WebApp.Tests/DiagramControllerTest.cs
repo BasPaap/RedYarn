@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -23,7 +24,7 @@ namespace Bas.RedYarn.WebApp.Tests
             this.diagramController = new DiagramController(dataService);
         }
 
-        private static string Serialize<T>(T objectToSerialize)
+        private static string SerializeObject<T>(T objectToSerialize)
         {
             if (objectToSerialize == null)
             {
@@ -47,6 +48,14 @@ namespace Bas.RedYarn.WebApp.Tests
             }
         }
 
+        private static string GetComparableSerialization<T>(T objectToSerialize)
+        {
+            var uncomparableSerialization = SerializeObject(objectToSerialize);
+
+            const string guidRegexPattern = @"^[{(]?[0-9A-F]{8}[-]?(?:[0-9A-F]{4}[-]?){3}[0-9A-F]{12}[)}]?$";
+            return Regex.Replace(uncomparableSerialization, guidRegexPattern, "GUID", RegexOptions.IgnoreCase);
+        }
+
 
         [TestMethod]
         public void GetDiagram_IdIsValid_ReturnsDiagramJson()
@@ -57,7 +66,7 @@ namespace Bas.RedYarn.WebApp.Tests
             var result = this.diagramController.GetDiagram(1);
             
             // Assert
-            Assert.AreEqual(Serialize(this.dataService.ExpectedModel), Serialize(result.Value));
+            Assert.AreEqual(GetComparableSerialization(this.dataService.ExpectedModel), GetComparableSerialization(result.Value));
         }
     }
 }

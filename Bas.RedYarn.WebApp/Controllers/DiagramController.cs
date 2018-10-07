@@ -24,7 +24,7 @@ namespace Bas.RedYarn.WebApp.Controllers
         {
             var diagram = this.dataService.GetDiagram(id);
 
-            throw new NotImplementedException();
+            return (Model.Diagram)null;
         }
     }
 }

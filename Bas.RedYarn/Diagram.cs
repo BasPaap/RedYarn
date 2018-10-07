@@ -7,7 +7,7 @@ namespace Bas.RedYarn
 {
     public sealed class Diagram : INameable
     {
-        public string Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Name { get; set; }
 
         public Collection<Author> Authors { get; } = new Collection<Author>();
         public Collection<Character> Characters { get; } = new Collection<Character>();
