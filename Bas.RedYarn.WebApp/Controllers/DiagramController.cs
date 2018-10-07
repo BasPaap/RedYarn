@@ -12,7 +12,7 @@ namespace Bas.RedYarn.WebApp.Controllers
     [ApiController]
     public class DiagramController : ControllerBase
     {
-        private IDataService dataService;
+        private readonly IDataService dataService;
 
         public DiagramController(IDataService dataService)
         {
@@ -20,7 +20,7 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpGet("[action]")]
-        public string GetDiagram(int id)
+        public ActionResult<Model.Diagram> GetDiagram(int id)
         {
             var diagram = this.dataService.GetDiagram(id);
 

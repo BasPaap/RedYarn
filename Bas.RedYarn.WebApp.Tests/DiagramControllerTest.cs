@@ -4,14 +4,17 @@ using Bas.RedYarn.WebApp.Tests.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Bas.RedYarn.WebApp.Tests
 {
     [TestClass]
     public class DiagramControllerTest
     {
-        private IDataService dataService = new TestDataService();
+        private readonly TestDataService dataService = new TestDataService();
         private DiagramController diagramController;
 
         [TestInitialize]
@@ -20,17 +23,41 @@ namespace Bas.RedYarn.WebApp.Tests
             this.diagramController = new DiagramController(dataService);
         }
 
+        private static string Serialize<T>(T objectToSerialize)
+        {
+            if (objectToSerialize == null)
+            {
+                return string.Empty;
+            }
+
+            try
+            {
+                var stringWriter = new StringWriter();
+                var xmlWriter = XmlWriter.Create(stringWriter);
+                var xmlSerializer = new XmlSerializer(typeof(T));
+                xmlSerializer.Serialize(xmlWriter, objectToSerialize);
+                var serializedXml = stringWriter.ToString();
+                xmlWriter.Close();
+
+                return serializedXml;
+            }
+            catch 
+            {
+                return string.Empty;
+            }
+        }
+
+
         [TestMethod]
         public void GetDiagram_IdIsValid_ReturnsDiagramJson()
         {
             // Arrange
-            var expectedResult = "test";
-
+            
             // Act
             var result = this.diagramController.GetDiagram(1);
-
+            
             // Assert
-            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual(Serialize(this.dataService.ExpectedModel), Serialize(result.Value));
         }
     }
 }
