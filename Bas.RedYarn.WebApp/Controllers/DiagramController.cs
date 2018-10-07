@@ -20,22 +20,9 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpGet("[action]")]
-        public IEnumerable<string> GetDiagram()
+        public IEnumerable<string> GetDiagram(int id)
         {
-            //var edmond = new Character() { Name = "Edmond Dantes" };
-            //var mercedes = new Character() { Name = "Mercedes" };
-            //var storyline = new Storyline() { Name = "De noodlottige bruiloft" };
-            //var author = new Author() { Name = "Alexandre Dumas" };
-
-            //edmond.RelateTo(mercedes, "Verloofd");
-
-            //var diagram = new Diagram();
-            //diagram.Characters.Add(edmond);
-            //diagram.Characters.Add(mercedes);
-            //diagram.Authors.Add(author);
-            //diagram.Storylines.Add(storyline);
-
-            //return new[] { diagram };
+            var diagram = this.dataService.GetDiagram(id);
 
             throw new NotImplementedException();
         }
