@@ -33,14 +33,14 @@ namespace Bas.RedYarn.WebApp.Services
             var albert = new Character { Name = "Albert de Morcerf" };
             albert.Authors.Add(dumas);
 
-            edmond.RelateTo(louis, "son", "father");
+            edmond.RelateTo(louis, "son", false, "father");
             edmond.RelateTo(mercedes, "engaged");
-            edmond.RelateTo(albert, "is challenged to a duel by", "challenges to a duel");
+            edmond.RelateTo(albert, "is challenged to a duel by", false, "challenges to a duel");
 
             mercedes.RelateTo(fernand, "married");
 
-            albert.RelateTo(mercedes, "son", "mother");
-            albert.RelateTo(fernand, "son", "father");
+            albert.RelateTo(mercedes, "son", false, "mother");
+            albert.RelateTo(fernand, "son", false, "father");
 
             var diagram = new Diagram();
             diagram.Characters.Add(edmond);

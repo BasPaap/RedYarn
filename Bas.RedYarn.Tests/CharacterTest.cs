@@ -93,7 +93,7 @@ namespace Bas.RedYarn
             // Arrange
             // Act
             // Assert          
-            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(null, relationshipName, pairedRelationshipName));
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(null, relationshipName, false, pairedRelationshipName));
             Assert.AreEqual(characterParameterName, exception.ParamName);
         }
 
@@ -103,7 +103,7 @@ namespace Bas.RedYarn
             // Arrange
             // Act          
             // Assert          
-            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), null, pairedRelationshipName));
+            var exception = Assert.ThrowsException<ArgumentNullException>(() => this.character.RelateTo(new Character(), null, false, pairedRelationshipName));
             Assert.AreEqual(relationshipNameParameterName, exception.ParamName);
         }
                         
@@ -114,7 +114,7 @@ namespace Bas.RedYarn
             // Arrange
             // Act          
             // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), "  \t  ", pairedRelationshipName));
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), "  \t  ", false, pairedRelationshipName));
             Assert.AreEqual(relationshipNameParameterName, exception.ParamName);
         }
 
@@ -125,7 +125,7 @@ namespace Bas.RedYarn
             // Arrange
             // Act          
             // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), relationshipName, "  \t  "));
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(new Character(), relationshipName, false, "  \t  "));
             Assert.AreEqual(pairedRelationshipNameParameterName, exception.ParamName);
         }
                              
@@ -135,7 +135,7 @@ namespace Bas.RedYarn
             // Arrange
             // Act          
             // Assert          
-            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, relationshipName, pairedRelationshipName));
+            var exception = Assert.ThrowsException<ArgumentException>(() => this.character.RelateTo(this.character, relationshipName, false, pairedRelationshipName));
             Assert.AreEqual(characterParameterName, exception.ParamName);
         }
 
@@ -144,10 +144,10 @@ namespace Bas.RedYarn
         {
             // Arrange
             var newCharacter = new Character();
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName);
 
             // Act          
-            this.character.RelateTo(newCharacter, relationshipName, newPairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, newPairedRelationshipName);
 
             // Assert          
             Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
@@ -158,10 +158,10 @@ namespace Bas.RedYarn
         {
             // Arrange
             var newCharacter = new Character();
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName);
 
             // Act          
-            this.character.RelateTo(newCharacter, newRelationshipName, relationshipName);
+            this.character.RelateTo(newCharacter, newRelationshipName, false, relationshipName);
 
             // Assert          
             Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
@@ -173,7 +173,7 @@ namespace Bas.RedYarn
             // Arrange
             // Act          
             // Assert          
-            var exception = Assert.ThrowsException<NotSupportedException>(() => this.character.RelateTo(new Character(), relationshipName, relationshipName));            
+            var exception = Assert.ThrowsException<NotSupportedException>(() => this.character.RelateTo(new Character(), relationshipName, false, relationshipName));            
         }
         #endregion
 
@@ -299,7 +299,7 @@ namespace Bas.RedYarn
             var newCharacter = new Character() { Name = "NewCharacter" };
 
             // Act
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName);
 
             // Assert          
             Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
@@ -318,7 +318,7 @@ namespace Bas.RedYarn
             var newCharacter = new Character() { Name = "NewCharacter" };
 
             // Act
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName);
 
             // Assert          
             Assert.IsTrue(this.character.GetRelationshipsTo(newCharacter).Contains(relationshipName));
@@ -345,7 +345,7 @@ namespace Bas.RedYarn
             // Arrange
             var newCharacter = new Character();
             // Act
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName.ToUnsanitized());
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName.ToUnsanitized());
 
             // Assert          
             Assert.IsFalse(this.character.GetRelationshipsTo(newCharacter).Contains(pairedRelationshipName.ToUnsanitized()));
@@ -434,7 +434,7 @@ namespace Bas.RedYarn
         {
             // Arrange
             var newCharacter = new Character();
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName);
 
             // Act
             this.character.UnrelateTo(newCharacter, relationshipName, true);
@@ -449,7 +449,7 @@ namespace Bas.RedYarn
         {
             // Arrange
             var newCharacter = new Character();
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName);
 
             // Act
             this.character.UnrelateTo(newCharacter, relationshipName, false);
@@ -459,8 +459,7 @@ namespace Bas.RedYarn
             Assert.AreEqual(pairedRelationshipName, newCharacter.GetRelationshipsTo(this.character).Single());
         }
         #endregion
-
-
+        
         #region IsRelatedTo
         [TestMethod]
         public void IsRelatedTo_CharacterIsNull_ThrowsArgumentNullException()
@@ -501,7 +500,7 @@ namespace Bas.RedYarn
         {
             // Arrange
             var newCharacter = new Character();
-            this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
+            this.character.RelateTo(newCharacter, relationshipName, false, pairedRelationshipName);
 
             // Act          
             var result = this.character.IsRelatedTo(newCharacter, pairedRelationshipName);

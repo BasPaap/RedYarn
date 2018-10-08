@@ -42,11 +42,12 @@ namespace Bas.RedYarn
         /// </summary>
         /// <param name="character">The character to which this character is to be related.</param>
         /// <param name="relationshipName">Name of the relationship between the characters.</param>
+        /// <param name="isDirectional">Specifies wether the relationship goes from this character to <paramref name="character"/>, or is simply between the two characters.</param>
         /// <param name="pairedRelationshipName">If not null, the name of a second relationship between the characters with which the new relationship is paired. <seealso cref="PairedRelationship"/></param>
         /// <exception cref="ArgumentNullException">Thrown when either <paramref name="character"/> or <paramref name="relationshipName"/> are null.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="character"/> equals <c>this</c>, or either <paramref name="relationshipName"/> or <paramref name="pairedRelationshipName"/> consist of whitespace.</exception>
         /// <exception cref="NotSupportedException">Thrown when <paramref name="relationshipName"/> equals <paramref name="pairedRelationshipName"/>.</exception>
-        public void RelateTo(Character character, string relationshipName, string pairedRelationshipName = null)
+        public void RelateTo(Character character, string relationshipName, bool isDirectional = false, string pairedRelationshipName = null)
         {
             #region Preconditions
             if (character == null)
@@ -95,7 +96,7 @@ namespace Bas.RedYarn
 
             if (existingRelationships.Count() != 0)
             {
-                // The character is not related to the provided culture, so we immediately return.
+                // The character is already related to the other character by that name.
                 return;
             }
 
@@ -107,11 +108,13 @@ namespace Bas.RedYarn
 
             if (pairedRelationshipName != null)
             {
-                var pairedRelationship = new PairedRelationship();
-                pairedRelationship.FirstCharacter = character;
-                pairedRelationship.SecondCharacter = this;
-                pairedRelationship.Name = sanitizedPairedRelationshipName;
-                pairedRelationship.OtherRelationship = newRelationship;
+                var pairedRelationship = new PairedRelationship
+                {
+                    FirstCharacter = character,
+                    SecondCharacter = this,
+                    Name = sanitizedPairedRelationshipName,
+                    OtherRelationship = newRelationship
+                };
 
                 Debug.Assert(newRelationship is PairedRelationship, "newRelationship should always be a PairedRelationship here.");
                 (newRelationship as PairedRelationship).OtherRelationship = pairedRelationship;
@@ -130,7 +133,7 @@ namespace Bas.RedYarn
         /// </summary>
         /// <param name="character">The character to which the relationship is to be removed.</param>
         /// <param name="relationshipName">The name of the relationship to remove. If null, all relationships between this character and <paramref name="character"/> are removed.</param>
-        /// <param name="deletePaired">If true, the pairs in pairedrelationships are removed as well.</param>
+        /// <param name="deletePaired">If true, the relationship in pairedrelationship is removed as well.</param>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="character"/> is null.</exception>
         /// <exception cref="ArgumentException">Thrown when trying to relate <c>this</c> to itself.</exception>
         public void UnrelateTo(Character character, string relationshipName = null, bool deletePaired = true)

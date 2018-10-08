@@ -8,12 +8,12 @@ namespace Bas.RedYarn.WebApp.Tests.Services
 {
     sealed class TestDataService : IDataService
     {
-        private Author firstAuthor = new Author() { Name = "FirstAuthor" };
-        private Author secondAuthor = new Author() { Name = "SecondAuthor" };
+        private readonly Author firstAuthor = new Author() { Name = "FirstAuthor" };
+        private readonly Author secondAuthor = new Author() { Name = "SecondAuthor" };
         private Character firstCharacter = new Character() { Name = "FirstCharacter" };
         private Character secondCharacter = new Character() { Name = "SecondCharacter" };
-        private Storyline firstStoryline = new Storyline() { Name = "FirstStoryline", Description = "FirstStorylineDescription" };
-        private Storyline secondStoryline = new Storyline() { Name = "SecondStoryline", Description = "SecondStorylineDescription" };
+        private readonly Storyline firstStoryline = new Storyline() { Name = "FirstStoryline", Description = "FirstStorylineDescription" };
+        private readonly Storyline secondStoryline = new Storyline() { Name = "SecondStoryline", Description = "SecondStorylineDescription" };
         private Diagram diagram = new Diagram() { Name = "Diagram" };
 
         private const string relationshipFromFirstToSecondName = "RelationshipFromFirstToSecond";
@@ -31,7 +31,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             secondCharacter.Authors.Add(secondAuthor);
             secondCharacter.Storylines.Add(firstStoryline);
 
-            firstCharacter.RelateTo(secondCharacter, relationshipFromFirstToSecondName, relationshipFromSecondToFirstName);
+            firstCharacter.RelateTo(secondCharacter, relationshipFromFirstToSecondName, false, relationshipFromSecondToFirstName);
                         
             diagram.Authors.Add(firstAuthor);
             diagram.Authors.Add(secondAuthor);
