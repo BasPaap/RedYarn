@@ -88,7 +88,7 @@ namespace Bas.RedYarn
             var sanitizedPairedRelationshipName = pairedRelationshipName.Sanitize();
 
             var existingRelationships = from r in this.relationships
-                                        where r.Characters.Contains(character) &&
+                                        where (r.FirstCharacter == character || r.SecondCharacter == character) &&
                                         r.Name.ToUpper(CultureInfo.InvariantCulture) == sanitizedRelationshipName.ToUpper(CultureInfo.InvariantCulture) ||
                                         r.Name.ToUpper(CultureInfo.InvariantCulture) == sanitizedPairedRelationshipName.ToUpper(CultureInfo.InvariantCulture)
                                         select r;
@@ -101,15 +101,15 @@ namespace Bas.RedYarn
 
             Relationship newRelationship = (pairedRelationshipName == null) ? new Relationship() : new PairedRelationship();
 
-            newRelationship.Characters.Add(this);
-            newRelationship.Characters.Add(character);
+            newRelationship.FirstCharacter = this;
+            newRelationship.SecondCharacter = character;
             newRelationship.Name = sanitizedRelationshipName;
 
             if (pairedRelationshipName != null)
             {
                 var pairedRelationship = new PairedRelationship();
-                pairedRelationship.Characters.Add(this);
-                pairedRelationship.Characters.Add(character);
+                pairedRelationship.FirstCharacter = character;
+                pairedRelationship.SecondCharacter = this;
                 pairedRelationship.Name = sanitizedPairedRelationshipName;
                 pairedRelationship.OtherRelationship = newRelationship;
 
@@ -154,7 +154,7 @@ namespace Bas.RedYarn
             #endregion
 
             var relationshipsToRemove = from r in this.relationships
-                                        where r.Characters.Contains(character) &&
+                                        where (r.FirstCharacter == character || r.SecondCharacter == character) &&
                                         r.Name == (relationshipName ?? r.Name)
                                         select r;
 
@@ -209,7 +209,7 @@ namespace Bas.RedYarn
             #endregion
 
             var relationships = from r in this.relationships
-                                where r.Characters.Contains(character) &&
+                                where (r.FirstCharacter == character || r.SecondCharacter == character) &&
                                 r.Name == (relationshipName ?? r.Name)
                                 select r;
 
@@ -236,8 +236,8 @@ namespace Bas.RedYarn
             #endregion
 
             return new ReadOnlyCollection<string>((from r in this.relationships
-                                                   where r.Characters.Contains(this) &&
-                                                         r.Characters.Contains(character)
+                                                   where (r.FirstCharacter == this && r.SecondCharacter == character) ||
+                                                         (r.FirstCharacter == character && r.SecondCharacter == this)
                                                    select r.Name).ToList());
         }
     }

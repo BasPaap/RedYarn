@@ -10,7 +10,9 @@ namespace Bas.RedYarn
     /// </summary>
     class Relationship : INameable
     {
-        public Collection<Character> Characters { get; set; } = new Collection<Character>();
+        public Character FirstCharacter { get; set; }
+        public Character SecondCharacter { get; set; }
+
         public string Name { get; set; }
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Relationship) : Name;
