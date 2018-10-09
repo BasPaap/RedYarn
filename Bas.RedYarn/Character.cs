@@ -43,11 +43,38 @@ namespace Bas.RedYarn
         /// <param name="character">The character to which this character is to be related.</param>
         /// <param name="relationshipName">Name of the relationship between the characters.</param>
         /// <param name="isDirectional">Specifies wether the relationship goes from this character to <paramref name="character"/>, or is simply between the two characters.</param>
+        /// <exception cref="ArgumentNullException">Thrown when either <paramref name="character"/> or <paramref name="relationshipName"/> are null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="character"/> equals <c>this</c>, or <paramref name="relationshipName"/> consist of whitespace.</exception>
+        public void RelateTo(Character character, string relationshipName, bool isDirectional = false)
+        {
+            RelateTo(character, relationshipName, isDirectional);
+        }
+
+        /// <summary>
+        /// Relates the character and the provided character, using the specified name and a name for the reverse, paired relationship.
+        /// </summary>
+        /// <param name="character">The character to which this character is to be related.</param>
+        /// <param name="relationshipName">Name of the relationship between the characters.</param>
         /// <param name="pairedRelationshipName">If not null, the name of a second relationship between the characters with which the new relationship is paired. <seealso cref="PairedRelationship"/></param>
         /// <exception cref="ArgumentNullException">Thrown when either <paramref name="character"/> or <paramref name="relationshipName"/> are null.</exception>
         /// <exception cref="ArgumentException">Thrown when <paramref name="character"/> equals <c>this</c>, or either <paramref name="relationshipName"/> or <paramref name="pairedRelationshipName"/> consist of whitespace.</exception>
         /// <exception cref="NotSupportedException">Thrown when <paramref name="relationshipName"/> equals <paramref name="pairedRelationshipName"/>.</exception>
-        public void RelateTo(Character character, string relationshipName, bool isDirectional = false, string pairedRelationshipName = null)
+        public void RelateTo(Character character, string relationShipName, string pairedRelationshipName)
+        {
+            RelateTo(character, relationShipName, true, pairedRelationshipName);
+        }
+
+        /// <summary>
+        /// Relates the character and the provided character, using the specified name.
+        /// </summary>
+        /// <param name="character">The character to which this character is to be related.</param>
+        /// <param name="relationshipName">Name of the relationship between the characters.</param>
+        /// <param name="isDirectional">Specifies wether the relationship goes from this character to <paramref name="character"/>, or is simply between the two characters.</param>
+        /// <param name="pairedRelationshipName">If not null, the name of a second relationship between the characters with which the new relationship is paired. <seealso cref="PairedRelationship"/></param>
+        /// <exception cref="ArgumentNullException">Thrown when either <paramref name="character"/> or <paramref name="relationshipName"/> are null.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="character"/> equals <c>this</c>, or either <paramref name="relationshipName"/> or <paramref name="pairedRelationshipName"/> consist of whitespace.</exception>
+        /// <exception cref="NotSupportedException">Thrown when <paramref name="relationshipName"/> equals <paramref name="pairedRelationshipName"/>.</exception>
+        private void RelateTo(Character character, string relationshipName, bool isDirectional = false, string pairedRelationshipName = null)
         {
             #region Preconditions
             if (character == null)
@@ -84,6 +111,8 @@ namespace Bas.RedYarn
 
             #endregion
 
+            Debug.Assert((isDirectional == true && pairedRelationshipName != null) || isDirectional == false, "When supplying a pairedRelationshipName, isDirectional cannot be false.");
+                       
             // Getting cleaned up versions of the provided name.
             var sanitizedRelationshipName = relationshipName.Sanitize();
             var sanitizedPairedRelationshipName = pairedRelationshipName.Sanitize();
