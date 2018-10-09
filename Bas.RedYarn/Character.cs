@@ -220,11 +220,11 @@ namespace Bas.RedYarn
         }
 
         /// <summary>
-        /// Returns the names of relationships between <c>this</c> and <paramref name="character"/>.
+        /// Returns information about the relationships between <c>this</c> and <paramref name="character"/>.
         /// </summary>
         /// <param name="character">The character between which and <c>this</c> the relationship names are to be returned.</param>
-        /// <returns>A ReadOnlyCollection containing the names of the relationships between <c>this</c> and <paramref name="character"/></returns>
-        public ReadOnlyCollection<string> GetRelationshipsTo(Character character)
+        /// <returns>A ReadOnlyCollection containing RelationshipInfo objects describing the relationships between <c>this</c> and <paramref name="character"/></returns>
+        public ReadOnlyCollection<RelationshipInfo> GetRelationshipsTo(Character character)
         {
             #region Preconditions
             if (character == null)
@@ -238,10 +238,14 @@ namespace Bas.RedYarn
             }
             #endregion
 
-            return new ReadOnlyCollection<string>((from r in this.relationships
-                                                   where (r.FirstCharacter == this && r.SecondCharacter == character) ||
-                                                         (r.FirstCharacter == character && r.SecondCharacter == this)
-                                                   select r.Name).ToList());
+            return new ReadOnlyCollection<RelationshipInfo>((from r in this.relationships
+                                                             where (r.FirstCharacter == this && r.SecondCharacter == character) ||
+                                                             (r.FirstCharacter == character && r.SecondCharacter == this)
+                                                             select new RelationshipInfo()
+                                                             {
+                                                                 Name = r.Name,
+                                                                 Type = RelationshipType.None                                                                 
+                                                             }).ToList());
         }
     }
 }

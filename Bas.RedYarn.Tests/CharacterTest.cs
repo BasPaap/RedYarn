@@ -84,6 +84,18 @@ namespace Bas.RedYarn
             Assert.AreEqual(1, this.character.GetRelationshipsTo(newCharacter).Count);
         }
 
+        //[TestMethod]
+        //public void RelateTo_IsDirectionalNonPairedRelationship_()
+        //{
+        //    // Arrange
+        //    var newCharacter = new Character();
+            
+        //    // Act
+        //    this.character.RelateTo(newCharacter, relationshipName, true)
+        //    // Assert
+        //}
+
+
         #endregion
 
         #region RelateToPaired

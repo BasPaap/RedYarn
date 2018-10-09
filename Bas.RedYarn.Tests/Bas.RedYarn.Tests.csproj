@@ -63,6 +63,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EssentialPlotElementTest.cs</LastGenOutput>
     </None>
+    <None Update="GeneratedTests\RelationshipInfoTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RelationshipInfoTest.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\StorylineTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineTest.cs</LastGenOutput>
@@ -97,6 +101,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>EssentialPlotElementTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\RelationshipInfoTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RelationshipInfoTest.tt</DependentUpon>
     </Compile>
     <Compile Update="GeneratedTests\StorylineTest.cs">
       <DesignTime>True</DesignTime>

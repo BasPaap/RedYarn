@@ -1,0 +1,7 @@
+﻿<#@ include file="BaseTestGenerator.t4" #>
+<# 
+var unitUnderTestName = nameof(RelationshipInfo);
+WriteBeginning(unitUnderTestName);
+WriteToStringTests(unitUnderTestName);
+WriteEnd();
+#>
