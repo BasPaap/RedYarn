@@ -31,7 +31,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             secondCharacter.Authors.Add(secondAuthor);
             secondCharacter.Storylines.Add(firstStoryline);
 
-            firstCharacter.RelateTo(secondCharacter, relationshipFromFirstToSecondName, false, relationshipFromSecondToFirstName);
+            firstCharacter.RelateTo(secondCharacter, relationshipFromFirstToSecondName, relationshipFromSecondToFirstName);
                         
             diagram.Authors.Add(firstAuthor);
             diagram.Authors.Add(secondAuthor);

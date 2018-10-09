@@ -82,20 +82,7 @@ namespace Bas.RedYarn
 
             // Assert          
             Assert.AreEqual(1, this.character.GetRelationshipsTo(newCharacter).Count);
-        }
-
-        //[TestMethod]
-        //public void RelateTo_IsDirectionalNonPairedRelationship_()
-        //{
-        //    // Arrange
-        //    var newCharacter = new Character();
-            
-        //    // Act
-        //    this.character.RelateTo(newCharacter, relationshipName, true)
-        //    // Assert
-        //}
-
-
+        }               
         #endregion
 
         #region RelateToPaired
@@ -275,7 +262,7 @@ namespace Bas.RedYarn
         // Test the unit of relating characters, i.e. wether RelatingTo a character actually makes them RelatedTo characters.
 
         [TestMethod]
-        public void Relating_RelateCharactersNonDirectional_CharactersAreRelatedToEachOther()
+        public void Relating_RelateCharactersNonDirectional_CharactersAreRelatedToEachOtherNonDirectionally()
         {
             // Arrange
             var newCharacter = new Character() { Name = "NewCharacter" };
@@ -293,6 +280,25 @@ namespace Bas.RedYarn
             Assert.AreEqual(RelationshipType.NonDirectional, otherCharacterRelationshipInfo.Type);
         }
         
+
+        [TestMethod]
+        public void RelateTo_RelateCharactersDirectionalNonPaired_CharactersAreRelatedInRightDirection()
+        {
+            // Arrange
+            var newCharacter = new Character();
+
+            // Act
+            this.character.RelateTo(newCharacter, relationshipName, true);
+
+            // Assert
+            var relationship = this.character.GetRelationshipsTo(newCharacter).Single();
+            var reverseRelationship = newCharacter.GetRelationshipsTo(this.character).Single();
+            Assert.AreEqual(relationshipName, relationship.Name);
+            Assert.AreEqual(relationshipName, reverseRelationship.Name);
+            Assert.AreEqual(RelationshipType.Forward, relationship.Type);
+            Assert.AreEqual(RelationshipType.Reverse, reverseRelationship.Type);
+        }
+               
         // Relate character with paired relationship
         [TestMethod]
         public void Relating_RelateCharactersPaired_CharactersAreRelatedToEachOtherWithOneNameAndCorrectTypeEach()
