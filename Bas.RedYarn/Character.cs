@@ -111,7 +111,7 @@ namespace Bas.RedYarn
 
             #endregion
 
-            Debug.Assert((isDirectional == true && pairedRelationshipName != null) || isDirectional == false, "When supplying a pairedRelationshipName, isDirectional cannot be false.");
+            Debug.Assert((isDirectional == true && pairedRelationshipName != null) || isDirectional == false, "A nondirectional relationship cannot be paired. When supplying a pairedRelationshipName, isDirectional cannot be false.");
                        
             // Getting cleaned up versions of the provided name.
             var sanitizedRelationshipName = relationshipName.Sanitize();

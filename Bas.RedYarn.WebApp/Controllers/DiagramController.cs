@@ -62,15 +62,15 @@ namespace Bas.RedYarn.WebApp.Controllers
                 {
                     if (character != otherCharacter)
                     {
-                        var relationshipNames = character.GetRelationshipsTo(otherCharacter);
+                        var relationships = character.GetRelationshipsTo(otherCharacter);
 
-                        foreach (var relationshipName in relationshipNames)
+                        foreach (var relationship in relationships)
                         {
                             diagramModel.Relationships.Add(new Model.Relationship()
                             {
                                 FromCharacterId = characterDictionary[character].Id,
                                 ToCharacterId = characterDictionary[otherCharacter].Id,
-                                Name = relationshipName
+                                Name = relationship.Name
                             });
                         }
                     }
