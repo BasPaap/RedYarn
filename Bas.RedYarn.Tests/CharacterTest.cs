@@ -142,14 +142,14 @@ namespace Bas.RedYarn
         public void RelateToPaired_CharacterIsAlreadyRelatedToThatCharacterViaThatName_NothingHappens()
         {
             // Arrange
-            var newCharacter = new Character();
+            var newCharacter = new Character() { Name = "NewCharacter" };
             this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
 
             // Act          
             this.character.RelateTo(newCharacter, relationshipName, newPairedRelationshipName);
 
             // Assert          
-            Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.AreEqual(1, this.character.GetRelationshipsTo(newCharacter).Count);
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, newRelationshipName, relationshipName);
 
             // Assert          
-            Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.AreEqual(1, this.character.GetRelationshipsTo(newCharacter).Count);
         }
 
         [TestMethod]
@@ -301,7 +301,7 @@ namespace Bas.RedYarn
                
         // Relate character with paired relationship
         [TestMethod]
-        public void Relating_RelateCharactersPaired_CharactersAreRelatedToEachOtherWithOneNameAndCorrectTypeEach()
+        public void Relating_RelateCharactersDirectionalPaired_CharactersAreRelatedToEachOtherWithOneNameAndCorrectTypeEach()
         {
             // Arrange
             var newCharacter = new Character() { Name = "NewCharacter" };
@@ -327,11 +327,11 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, relationshipName.ToUnsanitized());
 
             // Assert          
-            Assert.AreEqual(relationshipName.ToSanitized(), this.character.GetRelationshipsTo(newCharacter).Single());
+            Assert.AreEqual(relationshipName.ToSanitized(), this.character.GetRelationshipsTo(newCharacter).Single().Name);
         }
 
         [TestMethod]
-        public void Relating_PairedRelationscripNameIsUnsanitized_PairedRelationshipNameIsSanitized()
+        public void Relating_PairedRelationshipNameIsUnsanitized_PairedRelationshipNameIsSanitized()
         {
             // Arrange
             var newCharacter = new Character();
@@ -339,8 +339,7 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName.ToUnsanitized());
 
             // Assert          
-            Assert.IsFalse(this.character.GetRelationshipsTo(newCharacter).Select(r => r.Name).Contains(pairedRelationshipName.ToUnsanitized()));
-            Assert.IsTrue(this.character.GetRelationshipsTo(newCharacter).Select(r => r.Name).Contains(pairedRelationshipName.ToSanitized()));
+            Assert.IsTrue(newCharacter.GetRelationshipsTo(this.character).Single().Name == pairedRelationshipName.ToSanitized());            
         }
         #endregion
 
@@ -351,8 +350,8 @@ namespace Bas.RedYarn
         public void Unrelating_UnrelateAll_CharacterHasNoRelationshipsToNewCharacter()
         {
             // Arrange
-            var newCharacter = new Character();
-            var thirdCharacter = new Character();
+            var newCharacter = new Character() { Name = "NewCharacter" };
+            var thirdCharacter = new Character() { Name = "ThirdCharacter" };
 
             this.character.RelateTo(newCharacter, relationshipName);
             this.character.RelateTo(thirdCharacter, relationshipName);
@@ -473,7 +472,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void IsRelatedTo_CharacterIsRelatedToThatCharacterViaThatName_ReturnsTrue()
+        public void IsRelatedTo_CharacterIsNonDirectionallyRelatedToThatCharacterViaThatName_ReturnsTrue()
         {
             // Arrange
             var newCharacter = new Character();
@@ -487,7 +486,7 @@ namespace Bas.RedYarn
         }
 
         [TestMethod]
-        public void IsRelatedTo_CharacterIsRelatedToThatCharacterViaThatPairedName_ReturnsTrue()
+        public void IsRelatedTo_CharacterIsDirectionallyRelatedToThatCharacterViaThatPairedName_ReturnsTrue()
         {
             // Arrange
             var newCharacter = new Character();

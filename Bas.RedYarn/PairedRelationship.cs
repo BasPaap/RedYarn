@@ -8,9 +8,9 @@ namespace Bas.RedYarn
     /// Represents a relationship between various characters that is paired with a different (paired) relationship, for instance 
     /// a "father"/"son" relationship.
     /// </summary>
-    sealed class PairedRelationship : Relationship
+    sealed class PairedRelationship : DirectionalRelationship
     {
-        public Relationship OtherRelationship { get; set; }
+        public DirectionalRelationship OtherRelationship { get; set; }
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(PairedRelationship) : Name;
     }
