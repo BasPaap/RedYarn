@@ -10,6 +10,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using DeepEqual.Syntax;
+using Bas.RedYarn.WebApp.Model;
 
 namespace Bas.RedYarn.WebApp.Tests
 {
@@ -53,13 +55,38 @@ namespace Bas.RedYarn.WebApp.Tests
         public void GetDiagram_IdIsValid_ReturnsDiagramJson()
         {
             // Arrange
+            var testDataService = new TestDataService();
 
             // Act
             var diagram = this.diagramController.GetDiagram(1).Value;
 
+            // Cleanup
+            ResetGuids(diagram);
             // Assert
+            diagram.ShouldDeepEqual(testDataService.ExpectedModel);
             
-            
+        }
+
+        private void ResetGuids(Model.Diagram diagram)
+        {
+            foreach (var character in diagram.Characters)
+            {
+                character.Id = Guid.Empty;
+            }
+            foreach (var storyline in diagram.Storylines)
+            {
+                storyline.Id = Guid.Empty;
+            }
+            foreach (var storylineConnection in diagram.StorylineConnections)
+            {
+                storylineConnection.CharacterId = Guid.Empty;
+                storylineConnection.StorylineId = Guid.Empty;
+            }
+            foreach (var relationship in diagram.Relationships)
+            {
+                relationship.FromCharacterId = Guid.Empty;
+                relationship.ToCharacterId = Guid.Empty;
+            }
         }
     }
 }
