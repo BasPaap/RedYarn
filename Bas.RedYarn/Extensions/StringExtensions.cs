@@ -13,6 +13,11 @@ namespace Bas.RedYarn.Extensions
         /// <returns>A trimmed version of originalString where various invalid characters are removed.</returns>
         public static string Sanitize(this string originalString)
         {
+            if (originalString == null)
+            {
+                return null;
+            }
+
             string[] invalidCharacters = new [] { "\0", "\a", "\b", "\f", "\n", "\r", "\t" };
             var stringBuilder = new StringBuilder(originalString);
 
