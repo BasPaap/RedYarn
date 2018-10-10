@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Bas.RedYarn.WebApp.Model;
 using Bas.RedYarn.WebApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,34 +30,19 @@ namespace Bas.RedYarn.WebApp.Controllers
             var storylineDictionary = new Dictionary<RedYarn.Storyline, Model.Storyline>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, Model.Storyline>(s, new Model.Storyline(s))));
 
             var diagramModel = new Model.Diagram(diagram);
+            diagramModel.AddStorylines(storylineDictionary);
+            diagramModel.AddCharacters(characterDictionary);
+            diagramModel.GenerateStorylineConnections(storylineDictionary, characterDictionary);
 
-            AddCharactersAndRelationshipsToDiagram(characterDictionary, diagramModel);
-            AddStorylinesAndConnectionsToDiagram(characterDictionary, storylineDictionary, diagramModel);
-
+            
             return diagramModel;
         }
 
-        private static void AddStorylinesAndConnectionsToDiagram(Dictionary<Character, Model.Character> characterDictionary, Dictionary<Storyline, Model.Storyline> storylineDictionary, Model.Diagram diagramModel)
-        {
-            foreach (var storyline in storylineDictionary.Keys)
-            {
-                diagramModel.Storylines.Add(storylineDictionary[storyline]);
-                foreach (var character in storyline.Characters)
-                {
-                    diagramModel.StorylineConnections.Add(new Model.StorylineConnection()
-                    {
-                        CharacterId = characterDictionary[character].Id,
-                        StorylineId = storylineDictionary[storyline].Id
-                    });
-                }
-            }
-        }
-
-        private static void AddCharactersAndRelationshipsToDiagram(Dictionary<Character, Model.Character> characterDictionary, Model.Diagram diagramModel)
+        private static void AddCharactersAndRelationshipsToDiagramModel(Dictionary<Character, Model.Character> characterDictionary, Model.Diagram diagramModel)
         {
             foreach (var character in characterDictionary.Keys)
             {
-                diagramModel.Characters.Add(characterDictionary[character]);
+                //diagramModel.Characters.Add(characterDictionary[character]);
 
                 foreach (var otherCharacter in characterDictionary.Keys)
                 {

@@ -22,5 +22,36 @@ namespace Bas.RedYarn.WebApp.Model
         {
             Name = diagram.Name;
         }
+
+        internal void AddStorylines(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
+        {
+            foreach (var storyline in storylineDictionary.Keys)
+            {
+                this.Storylines.Add(new Storyline(storyline));
+            }
+        }
+
+        internal void AddCharacters(Dictionary<RedYarn.Character, Character> characterDictionary)
+        {
+            foreach (var character in characterDictionary.Keys)
+            {
+                this.Characters.Add(new Character(character));
+            }
+        }
+
+        internal void GenerateStorylineConnections(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
+        {
+            foreach (var storyline in storylineDictionary.Keys)
+            {
+                foreach (var character in storyline.Characters)
+                {
+                    StorylineConnections.Add(new Model.StorylineConnection()
+                    {
+                        CharacterId = characterDictionary[character].Id,
+                        StorylineId = storylineDictionary[storyline].Id
+                    });
+                }
+            }
+        }
     }
 }
