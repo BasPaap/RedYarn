@@ -21,7 +21,7 @@ namespace Bas.RedYarn.WebApp.Controllers
             this.dataService = dataService;
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("{id}")]
         public ActionResult<Model.Diagram> GetDiagram(int id)
         {
             var diagram = this.dataService.GetDiagram(id);
