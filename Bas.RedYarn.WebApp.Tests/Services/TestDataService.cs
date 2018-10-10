@@ -12,6 +12,10 @@ namespace Bas.RedYarn.WebApp.Tests.Services
         private readonly Author secondAuthor = new Author() { Name = "SecondAuthor" };
         private Character firstCharacter = new Character() { Name = "FirstCharacter" };
         private Character secondCharacter = new Character() { Name = "SecondCharacter" };
+        private Character thirdCharacter = new Character() { Name = "ThirdCharacter" };
+        private Character fourthCharacter = new Character() { Name = "FourthCharacter" };
+        private Character fifthCharacter = new Character() { Name = "FifthCharacter" };
+        private Character sixthCharacter = new Character() { Name = "SixthCharacter" };
         private readonly Storyline firstStoryline = new Storyline() { Name = "FirstStoryline", Description = "FirstStorylineDescription" };
         private readonly Storyline secondStoryline = new Storyline() { Name = "SecondStoryline", Description = "SecondStorylineDescription" };
         private Diagram diagram = new Diagram() { Name = "Diagram" };
@@ -30,13 +34,19 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             secondCharacter.Authors.Add(firstAuthor);
             secondCharacter.Authors.Add(secondAuthor);
             secondCharacter.Storylines.Add(firstStoryline);
-
+            
             firstCharacter.RelateTo(secondCharacter, relationshipFromFirstToSecondName, relationshipFromSecondToFirstName);
-                        
+            thirdCharacter.RelateTo(fourthCharacter, relationshipFromFirstToSecondName);
+            fifthCharacter.RelateTo(sixthCharacter, relationshipFromFirstToSecondName, true);
+                                    
             diagram.Authors.Add(firstAuthor);
             diagram.Authors.Add(secondAuthor);
             diagram.Characters.Add(firstCharacter);
             diagram.Characters.Add(secondCharacter);
+            diagram.Characters.Add(thirdCharacter);
+            diagram.Characters.Add(fourthCharacter);
+            diagram.Characters.Add(fifthCharacter);
+            diagram.Characters.Add(sixthCharacter);
             diagram.Storylines.Add(firstStoryline);
             diagram.Storylines.Add(secondStoryline);
         }
@@ -52,13 +62,18 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             {
                 var firstCharacterModel = new Model.Character(firstCharacter);
                 var secondCharacterModel = new Model.Character(secondCharacter);
+                var thirdCharacterModel = new Model.Character(thirdCharacter);
+                var fourthCharacterModel = new Model.Character(fourthCharacter);
+                var fifthCharacterModel = new Model.Character(fifthCharacter);
+                var sixthCharacterModel = new Model.Character(sixthCharacter);
 
                 var firstStorylineModel = new Model.Storyline(firstStoryline);
                 var secondStorylineModel = new Model.Storyline(secondStoryline);
 
                 var firstRelationship = GetRelationship(firstCharacterModel, secondCharacterModel, relationshipFromFirstToSecondName);
                 var secondRelationship = GetRelationship(secondCharacterModel, firstCharacterModel, relationshipFromSecondToFirstName);
-                
+                var thirdRelationship = GetRelationship(thirdCharacterModel, fourthCharacterModel, relationshipFromFirstToSecondName);
+                var fourthRelationship = GetRelationship(fifthCharacterModel, sixthCharacterModel, relationshipFromFirstToSecondName);
                 var firstStorylineConnection = GetStorylineConnection(firstCharacterModel, firstStorylineModel);
                 var secondStorylineConnection = GetStorylineConnection(firstCharacterModel, secondStorylineModel);
                 var thirdStorylineConnection = GetStorylineConnection(secondCharacterModel, firstStorylineModel);
@@ -66,10 +81,16 @@ namespace Bas.RedYarn.WebApp.Tests.Services
                 var diagramModel = new Model.Diagram(diagram);
                 diagramModel.Characters.Add(firstCharacterModel);
                 diagramModel.Characters.Add(secondCharacterModel);
+                diagramModel.Characters.Add(thirdCharacterModel);
+                diagramModel.Characters.Add(fourthCharacterModel);
+                diagramModel.Characters.Add(fifthCharacterModel);
+                diagramModel.Characters.Add(sixthCharacterModel);
                 diagramModel.Storylines.Add(firstStorylineModel);
                 diagramModel.Storylines.Add(secondStorylineModel);
                 diagramModel.Relationships.Add(firstRelationship);
                 diagramModel.Relationships.Add(secondRelationship);
+                diagramModel.Relationships.Add(thirdRelationship);
+                diagramModel.Relationships.Add(fourthRelationship);
                 diagramModel.StorylineConnections.Add(firstStorylineConnection);
                 diagramModel.StorylineConnections.Add(secondStorylineConnection);
                 diagramModel.StorylineConnections.Add(thirdStorylineConnection);

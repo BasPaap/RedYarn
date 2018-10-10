@@ -64,7 +64,7 @@ namespace Bas.RedYarn.WebApp.Controllers
                     {
                         var relationships = character.GetRelationshipsTo(otherCharacter);
 
-                        foreach (var relationship in relationships)
+                        foreach (var relationship in relationships.Where(r => r.Type == RelationshipType.Forward || r.Type== RelationshipType.NonDirectional))
                         {
                             diagramModel.Relationships.Add(new Model.Relationship()
                             {
