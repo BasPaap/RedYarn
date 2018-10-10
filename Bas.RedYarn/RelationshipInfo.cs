@@ -8,5 +8,7 @@ namespace Bas.RedYarn
     {
         public string Name { get; set; }
         public RelationshipType Type { get; set; }
+
+        public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(RelationshipInfo) : Name;
     }
 }

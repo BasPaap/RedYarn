@@ -215,15 +215,27 @@ namespace Bas.RedYarn
                 this.relationships.Remove(relationshipToRemove);
                 character.relationships.Remove(relationshipToRemove);
 
-                if (deletePaired)
-                {
-                    var otherRelationship = (relationshipToRemove as PairedRelationship)?.OtherRelationship;
+                var otherRelationship = (relationshipToRemove as PairedRelationship)?.OtherRelationship;
 
-                    if (otherRelationship != null)
+                if (otherRelationship != null)
+                {
+                    // Remove the paired relationship. If the caller doesn't want the paired relationship deleted, convert it to a DirectionalRelationsip.
+                    
+                    if (!deletePaired)
                     {
-                        this.relationships.Remove(otherRelationship);
-                        character.relationships.Remove(otherRelationship);
+                        var directionalRelationship = new DirectionalRelationship()
+                        {
+                            FirstCharacter = otherRelationship.FirstCharacter,
+                            SecondCharacter = otherRelationship.SecondCharacter,
+                            Name = otherRelationship.Name
+                        };
+
+                        this.relationships.Add(directionalRelationship);
+                        character.relationships.Add(directionalRelationship);                        
                     }
+
+                    this.relationships.Remove(otherRelationship);
+                    character.relationships.Remove(otherRelationship);
                 }
             }
         }

@@ -362,8 +362,8 @@ namespace Bas.RedYarn
             // Assert          
             Assert.AreEqual(0, this.character.GetRelationshipsTo(newCharacter).Count);
             Assert.AreEqual(0, newCharacter.GetRelationshipsTo(this.character).Count);
-            Assert.AreEqual(relationshipName, this.character.GetRelationshipsTo(thirdCharacter).Single());
-            Assert.AreEqual(relationshipName, thirdCharacter.GetRelationshipsTo(this.character).Single());
+            Assert.AreEqual(relationshipName, this.character.GetRelationshipsTo(thirdCharacter).Single().Name);
+            Assert.AreEqual(relationshipName, thirdCharacter.GetRelationshipsTo(this.character).Single().Name);
         }
 
         [TestMethod]
@@ -398,8 +398,8 @@ namespace Bas.RedYarn
             this.character.UnrelateTo(newCharacter, relationshipName);
 
             // Assert          
-            Assert.AreEqual(secondRelationshipName, this.character.GetRelationshipsTo(newCharacter).Single());
-            Assert.AreEqual(secondRelationshipName, newCharacter.GetRelationshipsTo(this.character).Single());
+            Assert.AreEqual(secondRelationshipName, newCharacter.GetRelationshipsTo(this.character).Single().Name);
+            Assert.AreEqual(secondRelationshipName, this.character.GetRelationshipsTo(newCharacter).Single().Name);
         }
 
         [TestMethod]
@@ -416,7 +416,7 @@ namespace Bas.RedYarn
             this.character.UnrelateTo(newCharacter, relationshipName);
 
             // Assert          
-            Assert.AreEqual(secondRelationshipName, this.character.GetRelationshipsTo(newCharacter).Single());
+            Assert.AreEqual(secondRelationshipName, this.character.GetRelationshipsTo(newCharacter).Single().Name);
         }
 
         [TestMethod]
@@ -445,8 +445,8 @@ namespace Bas.RedYarn
             this.character.UnrelateTo(newCharacter, relationshipName, false);
 
             // Assert          
-            Assert.AreEqual(pairedRelationshipName, this.character.GetRelationshipsTo(newCharacter).Single());
-            Assert.AreEqual(pairedRelationshipName, newCharacter.GetRelationshipsTo(this.character).Single());
+            Assert.AreEqual(pairedRelationshipName, this.character.GetRelationshipsTo(newCharacter).Single().Name);
+            Assert.AreEqual(pairedRelationshipName, newCharacter.GetRelationshipsTo(this.character).Single().Name);
         }
         #endregion
         
