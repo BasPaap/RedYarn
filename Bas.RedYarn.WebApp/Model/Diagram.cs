@@ -27,7 +27,7 @@ namespace Bas.RedYarn.WebApp.Model
         {
             foreach (var storyline in storylineDictionary.Keys)
             {
-                this.Storylines.Add(new Storyline(storyline));
+                this.Storylines.Add(storylineDictionary[storyline]);
             }
         }
 
@@ -35,7 +35,7 @@ namespace Bas.RedYarn.WebApp.Model
         {
             foreach (var character in characterDictionary.Keys)
             {
-                this.Characters.Add(new Character(character));
+                this.Characters.Add(characterDictionary[character]);
             }
         }
 
