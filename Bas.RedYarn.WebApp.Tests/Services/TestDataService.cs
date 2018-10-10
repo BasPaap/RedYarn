@@ -2,6 +2,7 @@
 using Bas.RedYarn.WebApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Bas.RedYarn.WebApp.Tests.Services
@@ -50,72 +51,72 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             diagram.Storylines.Add(firstStoryline);
             diagram.Storylines.Add(secondStoryline);
         }
-
+        
         public Diagram GetDiagram(int id)
         {            
             return diagram;
         }
 
-        public Model.Diagram ExpectedModel
-        {
-            get
-            {
-                var firstCharacterModel = new Model.Character(firstCharacter);
-                var secondCharacterModel = new Model.Character(secondCharacter);
-                var thirdCharacterModel = new Model.Character(thirdCharacter);
-                var fourthCharacterModel = new Model.Character(fourthCharacter);
-                var fifthCharacterModel = new Model.Character(fifthCharacter);
-                var sixthCharacterModel = new Model.Character(sixthCharacter);
+        //public Model.Diagram ExpectedModel
+        //{
+        //    get
+        //    {
+        //        var firstCharacterModel = new Model.Character(firstCharacter);
+        //        var secondCharacterModel = new Model.Character(secondCharacter);
+        //        var thirdCharacterModel = new Model.Character(thirdCharacter);
+        //        var fourthCharacterModel = new Model.Character(fourthCharacter);
+        //        var fifthCharacterModel = new Model.Character(fifthCharacter);
+        //        var sixthCharacterModel = new Model.Character(sixthCharacter);
 
-                var firstStorylineModel = new Model.Storyline(firstStoryline);
-                var secondStorylineModel = new Model.Storyline(secondStoryline);
+        //        var firstStorylineModel = new Model.Storyline(firstStoryline);
+        //        var secondStorylineModel = new Model.Storyline(secondStoryline);
 
-                var firstRelationship = GetRelationship(firstCharacterModel, secondCharacterModel, relationshipFromFirstToSecondName);
-                var secondRelationship = GetRelationship(secondCharacterModel, firstCharacterModel, relationshipFromSecondToFirstName);
-                var thirdRelationship = GetRelationship(thirdCharacterModel, fourthCharacterModel, relationshipFromFirstToSecondName);
-                var fourthRelationship = GetRelationship(fifthCharacterModel, sixthCharacterModel, relationshipFromFirstToSecondName);
-                var firstStorylineConnection = GetStorylineConnection(firstCharacterModel, firstStorylineModel);
-                var secondStorylineConnection = GetStorylineConnection(firstCharacterModel, secondStorylineModel);
-                var thirdStorylineConnection = GetStorylineConnection(secondCharacterModel, firstStorylineModel);
+        //        var firstRelationship = GetRelationship(firstCharacterModel, secondCharacterModel, relationshipFromFirstToSecondName);
+        //        var secondRelationship = GetRelationship(secondCharacterModel, firstCharacterModel, relationshipFromSecondToFirstName);
+        //        var thirdRelationship = GetRelationship(thirdCharacterModel, fourthCharacterModel, relationshipFromFirstToSecondName);
+        //        var fourthRelationship = GetRelationship(fifthCharacterModel, sixthCharacterModel, relationshipFromFirstToSecondName);
+        //        var firstStorylineConnection = GetStorylineConnection(firstCharacterModel, firstStorylineModel);
+        //        var secondStorylineConnection = GetStorylineConnection(firstCharacterModel, secondStorylineModel);
+        //        var thirdStorylineConnection = GetStorylineConnection(secondCharacterModel, firstStorylineModel);
 
-                var diagramModel = new Model.Diagram(diagram);
-                diagramModel.Characters.Add(firstCharacterModel);
-                diagramModel.Characters.Add(secondCharacterModel);
-                diagramModel.Characters.Add(thirdCharacterModel);
-                diagramModel.Characters.Add(fourthCharacterModel);
-                diagramModel.Characters.Add(fifthCharacterModel);
-                diagramModel.Characters.Add(sixthCharacterModel);
-                diagramModel.Storylines.Add(firstStorylineModel);
-                diagramModel.Storylines.Add(secondStorylineModel);
-                diagramModel.Relationships.Add(firstRelationship);
-                diagramModel.Relationships.Add(secondRelationship);
-                diagramModel.Relationships.Add(thirdRelationship);
-                diagramModel.Relationships.Add(fourthRelationship);
-                diagramModel.StorylineConnections.Add(firstStorylineConnection);
-                diagramModel.StorylineConnections.Add(secondStorylineConnection);
-                diagramModel.StorylineConnections.Add(thirdStorylineConnection);
+        //        var diagramModel = new Model.Diagram(diagram);
+        //        diagramModel.Characters.Add(firstCharacterModel);
+        //        diagramModel.Characters.Add(secondCharacterModel);
+        //        diagramModel.Characters.Add(thirdCharacterModel);
+        //        diagramModel.Characters.Add(fourthCharacterModel);
+        //        diagramModel.Characters.Add(fifthCharacterModel);
+        //        diagramModel.Characters.Add(sixthCharacterModel);
+        //        diagramModel.Storylines.Add(firstStorylineModel);
+        //        diagramModel.Storylines.Add(secondStorylineModel);
+        //        diagramModel.Relationships.Add(firstRelationship);
+        //        diagramModel.Relationships.Add(secondRelationship);
+        //        diagramModel.Relationships.Add(thirdRelationship);
+        //        diagramModel.Relationships.Add(fourthRelationship);
+        //        diagramModel.StorylineConnections.Add(firstStorylineConnection);
+        //        diagramModel.StorylineConnections.Add(secondStorylineConnection);
+        //        diagramModel.StorylineConnections.Add(thirdStorylineConnection);
 
-                return diagramModel;
-            }
-        }
+        //        return diagramModel;
+        //    }
+        //}
 
-        private Model.Relationship GetRelationship(Model.Character firstCharacterModel, Model.Character secondCharacterModel, string name)
-        {
-            return new Model.Relationship()
-            {
-                FromCharacterId = firstCharacterModel.Id,
-                ToCharacterId = secondCharacterModel.Id,
-                Name = name
-            };
-        }                
+        //private Model.Relationship GetRelationship(Model.Character firstCharacterModel, Model.Character secondCharacterModel, string name)
+        //{
+        //    return new Model.Relationship()
+        //    {
+        //        FromCharacterId = firstCharacterModel.Id,
+        //        ToCharacterId = secondCharacterModel.Id,
+        //        Name = name
+        //    };
+        //}                
 
-        private Model.StorylineConnection GetStorylineConnection(Model.Character characterModel, Model.Storyline storylineModel)
-        {
-            return new Model.StorylineConnection()
-            {
-                CharacterId = characterModel.Id,
-                StorylineId = storylineModel.Id
-            };
-        }
+        //private Model.StorylineConnection GetStorylineConnection(Model.Character characterModel, Model.Storyline storylineModel)
+        //{
+        //    return new Model.StorylineConnection()
+        //    {
+        //        CharacterId = characterModel.Id,
+        //        StorylineId = storylineModel.Id
+        //    };
+        //}
     }
 }

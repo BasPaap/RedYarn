@@ -53,5 +53,28 @@ namespace Bas.RedYarn.WebApp.Model
                 }
             }
         }
+
+        internal void GenerateRelationships(Dictionary<RedYarn.Character, Character> characterDictionary)
+        {
+            var uniqueRelationships = new HashSet<IRelationship>();
+            
+            foreach (var character in characterDictionary.Keys)
+            {
+                foreach (var relationship in character.Relationships)
+                {
+                    uniqueRelationships.Add(relationship);
+                }
+            }
+
+            foreach (var relationship in uniqueRelationships)
+            {
+                Relationships.Add(new Relationship()
+                {
+                    FromCharacterId = characterDictionary[relationship.FirstCharacter].Id,
+                    ToCharacterId = characterDictionary[relationship.SecondCharacter].Id,
+                    Name = relationship.Name
+                });
+            }
+        }
     }
 }

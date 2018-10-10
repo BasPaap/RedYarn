@@ -33,35 +33,9 @@ namespace Bas.RedYarn.WebApp.Controllers
             diagramModel.AddStorylines(storylineDictionary);
             diagramModel.AddCharacters(characterDictionary);
             diagramModel.GenerateStorylineConnections(storylineDictionary, characterDictionary);
-
+            diagramModel.GenerateRelationships(characterDictionary);
             
             return diagramModel;
-        }
-
-        private static void AddCharactersAndRelationshipsToDiagramModel(Dictionary<Character, Model.Character> characterDictionary, Model.Diagram diagramModel)
-        {
-            foreach (var character in characterDictionary.Keys)
-            {
-                //diagramModel.Characters.Add(characterDictionary[character]);
-
-                foreach (var otherCharacter in characterDictionary.Keys)
-                {
-                    if (character != otherCharacter)
-                    {
-                        var relationships = character.GetRelationshipsTo(otherCharacter);
-
-                        foreach (var relationship in relationships.Where(r => r.Type == RelationshipType.Forward || r.Type== RelationshipType.NonDirectional))
-                        {
-                            diagramModel.Relationships.Add(new Model.Relationship()
-                            {
-                                FromCharacterId = characterDictionary[character].Id,
-                                ToCharacterId = characterDictionary[otherCharacter].Id,
-                                Name = relationship.Name
-                            });
-                        }
-                    }
-                }
-            }
-        }
+        }        
     }
 }

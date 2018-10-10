@@ -14,7 +14,7 @@ namespace Bas.RedYarn
     /// </summary>
     public sealed class Character : INameable
     {
-        private HashSet<IRelationship> relationships = new HashSet<IRelationship>();
+        private List<IRelationship> relationships = new List<IRelationship>();
 
         public string Name { get; set; }
         public Collection<string> Aliases { get; } = new Collection<string>();
@@ -23,8 +23,9 @@ namespace Bas.RedYarn
         public Collection<Storyline> Storylines { get; }
         public Collection<Tag> Tags { get; }
         public string ImagePath { get; set; }
-        public Collection<EssentialPlotElement> OwnedPlotElements { get; set; }
-        public Collection<EssentialPlotElement> NeededPlotElements { get; set; }
+        public Collection<EssentialPlotElement> OwnedPlotElements { get; }
+        public Collection<EssentialPlotElement> NeededPlotElements { get; }
+        public ReadOnlyCollection<IRelationship> Relationships { get; } 
 
         public Character()
         {
@@ -33,6 +34,7 @@ namespace Bas.RedYarn
             Tags = new CoupledCollection<Tag, Character>(this, nameof(Tag.Characters));
             OwnedPlotElements = new CoupledCollection<EssentialPlotElement, Character>(this, nameof(EssentialPlotElement.OwningCharacters));
             NeededPlotElements = new CoupledCollection<EssentialPlotElement, Character>(this, nameof(EssentialPlotElement.NeedingCharacters));
+            Relationships = new ReadOnlyCollection<IRelationship>(this.relationships);
         }
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
@@ -134,27 +136,23 @@ namespace Bas.RedYarn
 
             if (!isDirectional)
             {
-                newRelationship = new NonDirectionalRelationship();
-            }
-            else
-            {
-                newRelationship = (pairedRelationshipName == null) ? new DirectionalRelationship() : new PairedRelationship();
+                newRelationship = new NonDirectionalRelationship(this, character, sanitizedRelationshipName);                
             }
 
-            newRelationship.FirstCharacter = this;
-            newRelationship.SecondCharacter = character;
-            newRelationship.Name = sanitizedRelationshipName;
+            else
+            {
+                newRelationship = (pairedRelationshipName == null) ? new DirectionalRelationship(this, character, sanitizedRelationshipName) : 
+                                                                     new PairedRelationship(this, character, sanitizedRelationshipName);
+            }
+                        
 
             if (pairedRelationshipName != null)
             {
                 Debug.Assert(newRelationship is PairedRelationship, "If pairedRelationship name is set, newRelationship should be Paired.");
                 var newPairedRelationship = newRelationship as PairedRelationship;
 
-                var otherPairedRelationship = new PairedRelationship
-                {
-                    FirstCharacter = character,
-                    SecondCharacter = this,
-                    Name = sanitizedPairedRelationshipName,
+                var otherPairedRelationship = new PairedRelationship(character, this, sanitizedPairedRelationshipName)
+                {                    
                     OtherRelationship = newPairedRelationship
                 };
                                 
@@ -222,13 +220,7 @@ namespace Bas.RedYarn
                     
                     if (!deletePaired)
                     {
-                        var directionalRelationship = new DirectionalRelationship()
-                        {
-                            FirstCharacter = otherRelationship.FirstCharacter,
-                            SecondCharacter = otherRelationship.SecondCharacter,
-                            Name = otherRelationship.Name
-                        };
-
+                        var directionalRelationship = new DirectionalRelationship(otherRelationship.FirstCharacter, otherRelationship.SecondCharacter, otherRelationship.Name);
                         this.relationships.Add(directionalRelationship);
                         character.relationships.Add(directionalRelationship);                        
                     }
@@ -275,11 +267,11 @@ namespace Bas.RedYarn
         }
 
         /// <summary>
-        /// Returns information about the relationships between <c>this</c> and <paramref name="character"/>.
+        /// Returns the relationships between <c>this</c> and <paramref name="character"/>.
         /// </summary>
-        /// <param name="character">The character between which and <c>this</c> the relationship names are to be returned.</param>
-        /// <returns>A ReadOnlyCollection containing RelationshipInfo objects describing the relationships between <c>this</c> and <paramref name="character"/></returns>
-        public ReadOnlyCollection<RelationshipInfo> GetRelationshipsTo(Character character)
+        /// <param name="character">The character between which and <c>this</c> the relationships are to be returned.</param>
+        /// <returns>A ReadOnlyCollection containing IRelationship instances describing the relationships between <c>this</c> and <paramref name="character"/></returns>
+        public ReadOnlyCollection<IRelationship> GetRelationshipsTo(Character character)
         {
             #region Preconditions
             if (character == null)
@@ -294,33 +286,11 @@ namespace Bas.RedYarn
             #endregion
 
             var allRelationships = from r in this.relationships
-                                   where (r is NonDirectionalRelationship && (r.FirstCharacter == character || r.SecondCharacter == character)) ||
-                                         (r is DirectionalRelationship && !(r is PairedRelationship) && (r.FirstCharacter == character || r.SecondCharacter == character)) ||
-                                         (r is PairedRelationship && r.FirstCharacter == this && r.SecondCharacter == character)
-                                   select GetRelationshipInfo(r);
+                                   where (r.FirstCharacter == character && r.SecondCharacter == this) ||
+                                         (r.FirstCharacter == this && r.SecondCharacter == character)
+                                   select r;
                                
-            return new ReadOnlyCollection<RelationshipInfo>(allRelationships.ToList());
-        }
-
-        private RelationshipInfo GetRelationshipInfo(IRelationship relationship)
-        {
-            var relationshipInfo = new RelationshipInfo() { Name = relationship.Name };
-
-            switch (relationship)
-            {
-                case NonDirectionalRelationship nonDirectionalRelationship:
-                    relationshipInfo.Type = RelationshipType.NonDirectional;
-                    break;
-                case PairedRelationship pairedRelationship:
-                case DirectionalRelationship directionalRelationship:
-                    relationshipInfo.Type = relationship.FirstCharacter == this ? RelationshipType.Forward :
-                                                                                  RelationshipType.Reverse;
-                    break;                
-                default:
-                    return null;
-            }
-
-            return relationshipInfo;
+            return new ReadOnlyCollection<IRelationship>(allRelationships.ToList());
         }
     }
 }

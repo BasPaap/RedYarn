@@ -1,8 +1,9 @@
 ﻿namespace Bas.RedYarn
 {
-    internal interface IRelationship : INameable
+    public interface IRelationship : INameable
     {
-        Character FirstCharacter { get; set; }
-        Character SecondCharacter { get; set; }
+        Character FirstCharacter { get; }
+        Character SecondCharacter { get; }        
+        bool IsDirectional { get; }
     }
 }

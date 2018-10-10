@@ -149,7 +149,7 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, relationshipName, newPairedRelationshipName);
 
             // Assert          
-            Assert.AreEqual(1, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, newRelationshipName, relationshipName);
 
             // Assert          
-            Assert.AreEqual(1, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
         }
 
         [TestMethod]
@@ -271,13 +271,17 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, relationshipName);
 
             // Assert          
-            var relationshipInfo = this.character.GetRelationshipsTo(newCharacter).Single();
-            var otherCharacterRelationshipInfo = newCharacter.GetRelationshipsTo(this.character).Single();
+            var relationship = this.character.GetRelationshipsTo(newCharacter).Single();
+            var otherRelationship = newCharacter.GetRelationshipsTo(this.character).Single();
 
-            Assert.AreEqual(relationshipName, relationshipInfo.Name);
-            Assert.AreEqual(relationshipName, otherCharacterRelationshipInfo.Name);
-            Assert.AreEqual(RelationshipType.NonDirectional, relationshipInfo.Type);
-            Assert.AreEqual(RelationshipType.NonDirectional, otherCharacterRelationshipInfo.Type);
+            Assert.AreEqual(relationshipName, relationship.Name);
+            Assert.AreEqual(relationshipName, otherRelationship.Name);
+            Assert.AreSame(this.character, relationship.FirstCharacter);
+            Assert.AreSame(newCharacter, relationship.SecondCharacter);
+            Assert.AreSame(this.character.Relationships.Single(), relationship);
+            Assert.AreSame(newCharacter.Relationships.Single(), otherRelationship);
+            Assert.AreSame(relationship, otherRelationship);
+            Assert.IsFalse(relationship.IsDirectional);
         }
         
 
@@ -292,16 +296,21 @@ namespace Bas.RedYarn
 
             // Assert
             var relationship = this.character.GetRelationshipsTo(newCharacter).Single();
-            var reverseRelationship = newCharacter.GetRelationshipsTo(this.character).Single();
+            var otherRelationship = newCharacter.GetRelationshipsTo(this.character).Single();
+
             Assert.AreEqual(relationshipName, relationship.Name);
-            Assert.AreEqual(relationshipName, reverseRelationship.Name);
-            Assert.AreEqual(RelationshipType.Forward, relationship.Type);
-            Assert.AreEqual(RelationshipType.Reverse, reverseRelationship.Type);
+            Assert.AreEqual(relationshipName, otherRelationship.Name);
+            Assert.AreSame(this.character, relationship.FirstCharacter);
+            Assert.AreSame(newCharacter, relationship.SecondCharacter);
+            Assert.AreSame(this.character.Relationships.Single(), relationship);
+            Assert.AreSame(newCharacter.Relationships.Single(), otherRelationship);
+            Assert.AreSame(relationship, otherRelationship);
+            Assert.IsTrue(relationship.IsDirectional);
         }
                
         // Relate character with paired relationship
         [TestMethod]
-        public void Relating_RelateCharactersDirectionalPaired_CharactersAreRelatedToEachOtherWithOneNameAndCorrectTypeEach()
+        public void Relating_RelateCharactersDirectionalPaired_CharactersEachHaveTwoDirectionalRelationships()
         {
             // Arrange
             var newCharacter = new Character() { Name = "NewCharacter" };
@@ -310,11 +319,16 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName);
 
             // Assert          
-            Assert.AreEqual(relationshipName, this.character.GetRelationshipsTo(newCharacter).Single().Name);
-            Assert.AreEqual(RelationshipType.Forward, this.character.GetRelationshipsTo(newCharacter).Single().Type);
-
-            Assert.AreEqual(pairedRelationshipName, newCharacter.GetRelationshipsTo(this.character).Single().Name);
-            Assert.AreEqual(RelationshipType.Forward, newCharacter.GetRelationshipsTo(this.character).Single().Type);
+            Assert.AreEqual(2, this.character.GetRelationshipsTo(newCharacter).Count);
+            Assert.AreEqual(2, newCharacter.GetRelationshipsTo(this.character).Count);
+            Assert.IsTrue(this.character.Relationships[0].IsDirectional);
+            Assert.IsTrue(this.character.Relationships[1].IsDirectional);
+            Assert.IsTrue(newCharacter.Relationships[0].IsDirectional);
+            Assert.IsTrue(newCharacter.Relationships[1].IsDirectional);
+            Assert.IsTrue(this.character.Relationships.Select(r => r.Name).Contains(relationshipName));
+            Assert.IsTrue(this.character.Relationships.Select(r => r.Name).Contains(pairedRelationshipName));
+            Assert.IsTrue(newCharacter.Relationships.Select(r => r.Name).Contains(relationshipName));
+            Assert.IsTrue(newCharacter.Relationships.Select(r => r.Name).Contains(pairedRelationshipName));                        
         }
                 
 
@@ -323,6 +337,7 @@ namespace Bas.RedYarn
         {
             // Arrange
             var newCharacter = new Character();
+
             // Act
             this.character.RelateTo(newCharacter, relationshipName.ToUnsanitized());
 
@@ -339,7 +354,7 @@ namespace Bas.RedYarn
             this.character.RelateTo(newCharacter, relationshipName, pairedRelationshipName.ToUnsanitized());
 
             // Assert          
-            Assert.IsTrue(newCharacter.GetRelationshipsTo(this.character).Single().Name == pairedRelationshipName.ToSanitized());            
+            Assert.IsTrue(newCharacter.GetRelationshipsTo(this.character).Select(r => r.Name).Contains(pairedRelationshipName.ToSanitized()));            
         }
         #endregion
 

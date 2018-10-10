@@ -63,10 +63,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EssentialPlotElementTest.cs</LastGenOutput>
     </None>
-    <None Update="GeneratedTests\RelationshipInfoTest.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>RelationshipInfoTest.cs</LastGenOutput>
-    </None>
     <None Update="GeneratedTests\StorylineTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineTest.cs</LastGenOutput>

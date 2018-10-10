@@ -9,6 +9,6 @@ namespace Bas.RedYarn
     /// </summary>
     public interface INameable
     {
-        string Name { get; set; }
+        string Name { get; }
     }
 }

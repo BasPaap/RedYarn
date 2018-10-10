@@ -10,8 +10,13 @@ namespace Bas.RedYarn
     /// </summary>
     sealed class PairedRelationship : DirectionalRelationship
     {
-        public DirectionalRelationship OtherRelationship { get; set; }
+        internal DirectionalRelationship OtherRelationship { get; set; }
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(PairedRelationship) : Name;
+
+        internal PairedRelationship(Character firstCharacter, Character secondCharacter, string name)
+            : base(firstCharacter, secondCharacter, name)
+        {
+        }
     }
 }
