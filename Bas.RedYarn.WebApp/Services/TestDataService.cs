@@ -59,6 +59,24 @@ namespace Bas.RedYarn.WebApp.Services
             betrayal.Characters.Add(fernand);
             betrayal.Characters.Add(haydee);
 
+            var haydeesIdentity = new EssentialPlotElement()
+            {
+                Name = "Haydée is Ali Pasha's daughter",
+                Description = "Ali Pasha's daughter was sold into slavery and, after the death of her mother, the only surviving person to know of Ali's betrayer."
+            };
+            haydeesIdentity.OwningCharacters.Add(haydee);
+
+            var alisBetrayer = new EssentialPlotElement()
+            {
+                Name = "Fernand betrayed and murdered Ali Pasha.",
+                Description = "Fernand was the officer who betrayed and murdered Ali Pasha. If this became public, it would cause a scandal."
+            };
+            alisBetrayer.OwningCharacters.Add(fernand);
+            alisBetrayer.NeedingCharacters.Add(haydee);
+            
+            betrayal.EssentialPlotElements.Add(haydeesIdentity);
+            betrayal.EssentialPlotElements.Add(alisBetrayer);
+
             var diagram = new Diagram()
             {
                 Name = "The Count of Monte Cristo"
