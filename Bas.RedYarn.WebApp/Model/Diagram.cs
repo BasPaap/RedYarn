@@ -110,7 +110,8 @@ namespace Bas.RedYarn.WebApp.Model
                 {
                     FromCharacterId = characterDictionary[relationship.FirstCharacter].Id,
                     ToCharacterId = characterDictionary[relationship.SecondCharacter].Id,
-                    Name = relationship.Name
+                    Name = relationship.Name,
+                    IsDirectional = relationship.IsDirectional
                 });
             }
         }

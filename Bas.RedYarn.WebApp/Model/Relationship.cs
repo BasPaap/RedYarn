@@ -10,5 +10,6 @@ namespace Bas.RedYarn.WebApp.Model
         public Guid FromCharacterId { get; set; }
         public Guid ToCharacterId { get; set; }
         public string Name { get; set; }
+        public bool IsDirectional { get; set; }
     }
 }

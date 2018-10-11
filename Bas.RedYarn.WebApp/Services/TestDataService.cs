@@ -36,7 +36,7 @@ namespace Bas.RedYarn.WebApp.Services
             var haydee = new Character { Name = "Haydée" };
             haydee.Authors.Add(dumas);
 
-            edmond.RelateTo(louis, "son", "father");
+            edmond.RelateTo(louis, "son of", "father of");
             edmond.RelateTo(mercedes, "engaged");
             edmond.RelateTo(albert, "is challenged to a duel by", "challenges to a duel");
             edmond.RelateTo(haydee, "owns", true);
@@ -44,8 +44,8 @@ namespace Bas.RedYarn.WebApp.Services
 
             mercedes.RelateTo(fernand, "married");
 
-            albert.RelateTo(mercedes, "son", "mother");
-            albert.RelateTo(fernand, "son", "father");
+            albert.RelateTo(mercedes, "son of", "mother of");
+            albert.RelateTo(fernand, "son of", "father of");
 
             haydee.RelateTo(fernand, "exposes", true);
 
@@ -89,6 +89,9 @@ namespace Bas.RedYarn.WebApp.Services
             diagram.Characters.Add(albert);
             diagram.Characters.Add(haydee);
             diagram.Authors.Add(dumas);
+            diagram.Storylines.Add(betrayal);
+            diagram.EssentialPlotElements.Add(alisBetrayer);
+            diagram.EssentialPlotElements.Add(haydeesIdentity);
 
             return diagram;
         }

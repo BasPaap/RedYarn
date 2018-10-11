@@ -16,6 +16,7 @@ export class DiagramGeneratorService {
 
     for (let relationship of diagram.relationships) {
       edges.add({
+        arrows: relationship.isDirectional ? 'to' : undefined,
         from: relationship.fromCharacterId,
         to: relationship.toCharacterId,
         label: relationship.name,

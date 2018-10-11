@@ -1,20 +1,45 @@
 export interface Character {
   id: string;
   name: string;
-  description: any;
+  description?: any;
   aliases: string[];
+}
+
+export interface Storyline {
+  id: string;
+  name: string;
+  description: string;
+}
+
+export interface EssentialPlotElement {
+  id: string;
+  name: string;
+  description: string;
 }
 
 export interface Relationship {
   fromCharacterId: string;
   toCharacterId: string;
   name: string;
+  isDirectional: boolean;
+}
+
+export interface StorylineCharacterConnection {
+  connectionId: string;
+  storylineId: string;
+}
+
+export interface StorylineEssentialPlotElementConnection {
+  connectionId: string;
+  storylineId: string;
 }
 
 export interface Diagram {
-  name: any;
+  name: string;
   characters: Character[];
-  storylines: any[];
+  storylines: Storyline[];
+  essentialPlotElements: EssentialPlotElement[];
   relationships: Relationship[];
-  storylineConnections: any[];
+  storylineCharacterConnections: StorylineCharacterConnection[];
+  storylineEssentialPlotElementConnections: StorylineEssentialPlotElementConnection[];
 }
