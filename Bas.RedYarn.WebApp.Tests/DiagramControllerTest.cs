@@ -77,9 +77,9 @@ namespace Bas.RedYarn.WebApp.Tests
             {
                 storyline.Id = Guid.Empty;
             }
-            foreach (var storylineConnection in diagram.StorylineConnections)
+            foreach (var storylineConnection in diagram.StorylineCharacterConnections)
             {
-                storylineConnection.CharacterId = Guid.Empty;
+                storylineConnection.ConnectionId = Guid.Empty;
                 storylineConnection.StorylineId = Guid.Empty;
             }
             foreach (var relationship in diagram.Relationships)

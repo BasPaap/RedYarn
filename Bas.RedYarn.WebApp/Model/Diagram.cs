@@ -11,8 +11,11 @@ namespace Bas.RedYarn.WebApp.Model
         public string Name { get; set; }
         public Collection<Character> Characters { get; } = new Collection<Character>();
         public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
+        public Collection<EssentialPlotElement> EssentialPlotElements { get; } = new Collection<EssentialPlotElement>();
+
         public Collection<Relationship> Relationships { get; } = new Collection<Relationship>();
-        public Collection<StorylineConnection> StorylineConnections { get; } = new Collection<StorylineConnection>();
+        public Collection<StorylineConnection> StorylineCharacterConnections { get; } = new Collection<StorylineConnection>();
+        public Collection<StorylineConnection> StorylineEssentialPlotElementConnections { get; } = new Collection<StorylineConnection>();
 
         public Diagram()
         {
@@ -24,11 +27,23 @@ namespace Bas.RedYarn.WebApp.Model
 
             var characterDictionary = new Dictionary<RedYarn.Character, Model.Character>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, Model.Character>(c, new Model.Character(c))));
             var storylineDictionary = new Dictionary<RedYarn.Storyline, Model.Storyline>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, Model.Storyline>(s, new Model.Storyline(s))));
+            var essentialPlotElementDictionary = new Dictionary<RedYarn.EssentialPlotElement, Model.EssentialPlotElement>(diagram.EssentialPlotElements.Select(e => new KeyValuePair<RedYarn.EssentialPlotElement, EssentialPlotElement>(e, new Model.EssentialPlotElement(e))));
 
             AddStorylines(storylineDictionary);
             AddCharacters(characterDictionary);
-            GenerateStorylineConnections(storylineDictionary, characterDictionary);
+            AddEssentialPlotElements(essentialPlotElementDictionary);
+
+            GenerateStorylineCharacterConnections(storylineDictionary, characterDictionary);
             GenerateRelationships(characterDictionary);
+            GenerateStorylineEssentialPlotElementConnections(essentialPlotElementDictionary, storylineDictionary);
+        }
+
+        private void AddEssentialPlotElements(Dictionary<RedYarn.EssentialPlotElement, EssentialPlotElement> essentialPlotElementDictionary)
+        {
+            foreach (var essentialPlotElement in essentialPlotElementDictionary.Keys)
+            {
+                this.EssentialPlotElements.Add(essentialPlotElementDictionary[essentialPlotElement]);
+            }
         }
 
         private void AddStorylines(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
@@ -47,15 +62,30 @@ namespace Bas.RedYarn.WebApp.Model
             }
         }
 
-        private void GenerateStorylineConnections(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
+        private void GenerateStorylineEssentialPlotElementConnections(Dictionary<RedYarn.EssentialPlotElement, EssentialPlotElement> essentialPlotElementDictionary, Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
+        {
+            foreach (var storyline in storylineDictionary.Keys)
+            {
+                foreach (var essentialPlotElement in storyline.EssentialPlotElements)
+                {
+                    StorylineEssentialPlotElementConnections.Add(new StorylineConnection()
+                    {
+                        ConnectionId = essentialPlotElementDictionary[essentialPlotElement].Id,
+                        StorylineId = storylineDictionary[storyline].Id
+                    });
+                }
+            }
+        }
+
+        private void GenerateStorylineCharacterConnections(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
         {
             foreach (var storyline in storylineDictionary.Keys)
             {
                 foreach (var character in storyline.Characters)
                 {
-                    StorylineConnections.Add(new Model.StorylineConnection()
+                    StorylineCharacterConnections.Add(new StorylineConnection()
                     {
-                        CharacterId = characterDictionary[character].Id,
+                        ConnectionId = characterDictionary[character].Id,
                         StorylineId = storylineDictionary[storyline].Id
                     });
                 }

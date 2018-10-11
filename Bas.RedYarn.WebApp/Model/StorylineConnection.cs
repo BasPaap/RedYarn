@@ -7,7 +7,7 @@ namespace Bas.RedYarn.WebApp.Model
 {
     public sealed class StorylineConnection
     {
-        public Guid CharacterId { get; set; }
+        public Guid ConnectionId { get; set; }
         public Guid StorylineId { get; set; }
     }
 }

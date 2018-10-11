@@ -92,9 +92,9 @@ namespace Bas.RedYarn.WebApp.Tests.Services
                 diagramModel.Relationships.Add(firstRelationship);                
                 diagramModel.Relationships.Add(thirdRelationship);
                 diagramModel.Relationships.Add(fourthRelationship);
-                diagramModel.StorylineConnections.Add(firstStorylineConnection);
-                diagramModel.StorylineConnections.Add(secondStorylineConnection);
-                diagramModel.StorylineConnections.Add(thirdStorylineConnection);
+                diagramModel.StorylineCharacterConnections.Add(firstStorylineConnection);
+                diagramModel.StorylineCharacterConnections.Add(secondStorylineConnection);
+                diagramModel.StorylineCharacterConnections.Add(thirdStorylineConnection);
 
                 return diagramModel;
             }
@@ -114,7 +114,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
         {
             return new Model.StorylineConnection()
             {
-                CharacterId = characterModel.Id,
+                ConnectionId = characterModel.Id,
                 StorylineId = storylineModel.Id
             };
         }
