@@ -21,9 +21,17 @@ namespace Bas.RedYarn.WebApp.Model
         public Diagram(RedYarn.Diagram diagram)
         {
             Name = diagram.Name;
+
+            var characterDictionary = new Dictionary<RedYarn.Character, Model.Character>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, Model.Character>(c, new Model.Character(c))));
+            var storylineDictionary = new Dictionary<RedYarn.Storyline, Model.Storyline>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, Model.Storyline>(s, new Model.Storyline(s))));
+
+            AddStorylines(storylineDictionary);
+            AddCharacters(characterDictionary);
+            GenerateStorylineConnections(storylineDictionary, characterDictionary);
+            GenerateRelationships(characterDictionary);
         }
 
-        internal void AddStorylines(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
+        private void AddStorylines(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
         {
             foreach (var storyline in storylineDictionary.Keys)
             {
@@ -31,7 +39,7 @@ namespace Bas.RedYarn.WebApp.Model
             }
         }
 
-        internal void AddCharacters(Dictionary<RedYarn.Character, Character> characterDictionary)
+        private void AddCharacters(Dictionary<RedYarn.Character, Character> characterDictionary)
         {
             foreach (var character in characterDictionary.Keys)
             {
@@ -39,7 +47,7 @@ namespace Bas.RedYarn.WebApp.Model
             }
         }
 
-        internal void GenerateStorylineConnections(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
+        private void GenerateStorylineConnections(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
         {
             foreach (var storyline in storylineDictionary.Keys)
             {
@@ -54,7 +62,7 @@ namespace Bas.RedYarn.WebApp.Model
             }
         }
 
-        internal void GenerateRelationships(Dictionary<RedYarn.Character, Character> characterDictionary)
+        private void GenerateRelationships(Dictionary<RedYarn.Character, Character> characterDictionary)
         {
             var uniqueRelationships = new HashSet<IRelationship>();
             

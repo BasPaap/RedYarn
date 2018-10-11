@@ -25,17 +25,7 @@ namespace Bas.RedYarn.WebApp.Controllers
         public ActionResult<Model.Diagram> GetDiagram(int id)
         {
             var diagram = this.dataService.GetDiagram(id);
-
-            var characterDictionary = new Dictionary<RedYarn.Character, Model.Character>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, Model.Character>(c, new Model.Character(c))));
-            var storylineDictionary = new Dictionary<RedYarn.Storyline, Model.Storyline>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, Model.Storyline>(s, new Model.Storyline(s))));
-
-            var diagramModel = new Model.Diagram(diagram);
-            diagramModel.AddStorylines(storylineDictionary);
-            diagramModel.AddCharacters(characterDictionary);
-            diagramModel.GenerateStorylineConnections(storylineDictionary, characterDictionary);
-            diagramModel.GenerateRelationships(characterDictionary);
-            
-            return diagramModel;
+            return new Model.Diagram(diagram);
         }        
     }
 }
