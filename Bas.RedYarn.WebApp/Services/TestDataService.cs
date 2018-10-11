@@ -33,21 +33,43 @@ namespace Bas.RedYarn.WebApp.Services
             var albert = new Character { Name = "Albert de Morcerf" };
             albert.Authors.Add(dumas);
 
+            var haydee = new Character { Name = "Haydée" };
+            haydee.Authors.Add(dumas);
+
             edmond.RelateTo(louis, "son", "father");
             edmond.RelateTo(mercedes, "engaged");
             edmond.RelateTo(albert, "is challenged to a duel by", "challenges to a duel");
+            edmond.RelateTo(haydee, "owns", true);
+            edmond.RelateTo(haydee, "loves");
 
             mercedes.RelateTo(fernand, "married");
 
             albert.RelateTo(mercedes, "son", "mother");
             albert.RelateTo(fernand, "son", "father");
 
-            var diagram = new Diagram();
+            haydee.RelateTo(fernand, "exposes", true);
+
+            var betrayal = new Storyline()
+            {
+                Name = "The Betrayal of Ali Pasha",
+                Description = "Lorem Ipsum etc.",
+            };
+
+            betrayal.Authors.Add(dumas);
+            betrayal.Characters.Add(fernand);
+            betrayal.Characters.Add(haydee);
+
+            var diagram = new Diagram()
+            {
+                Name = "The Count of Monte Cristo"
+            };
+
             diagram.Characters.Add(edmond);
             diagram.Characters.Add(louis);
             diagram.Characters.Add(mercedes);
             diagram.Characters.Add(fernand);
             diagram.Characters.Add(albert);
+            diagram.Characters.Add(haydee);
             diagram.Authors.Add(dumas);
 
             return diagram;
