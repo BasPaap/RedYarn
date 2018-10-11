@@ -3,6 +3,7 @@ import { DataSet } from 'vis';
 import { HttpClient } from '@angular/common/http';
 import { Diagram } from '../diagram-types';
 import { DiagramService } from '../diagram.service';
+import { DiagramGeneratorService } from '../diagram-generator.service';
 
 @Component({
   selector: 'app-story-diagram',
@@ -12,29 +13,19 @@ import { DiagramService } from '../diagram.service';
 export class StoryDiagramComponent implements OnInit {
 
   graphData = {};
-  
-  constructor(private diagramService: DiagramService) {    
+
+  constructor(private diagramService: DiagramService, private diagramGeneratorService: DiagramGeneratorService) {    
   }
 
   ngOnInit() {
   }
 
   ngAfterContentInit() {
-    var nodes = new DataSet();
-    var edges = new DataSet();
-    
-    this.graphData["nodes"] = nodes;
-    this.graphData["edges"] = edges;
+    this.graphData["nodes"] = new DataSet();
+    this.graphData["edges"] = new DataSet();
 
     this.diagramService.getDiagram(1).subscribe(diagram => {
-      
-      for (let character of diagram.characters) {
-        nodes.add({ id: character.id, label: character.name });
-      }
-            
-      for (let relationship of diagram.relationships) {
-        edges.add({ from: relationship.fromCharacterId, to: relationship.toCharacterId, label: relationship.name });
-      }
+      this.diagramGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);      
     }, error => console.error(error));
   }
 }

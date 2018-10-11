@@ -10,8 +10,17 @@ export class GraphVisDirective {
   constructor(private el: ElementRef) { }
 
   @Input() set appGraphVis(graphData) {
-    let options = {};
-    
+    let options = {   
+      physics: {
+          enabled: true,
+          barnesHut: {
+            springConstant: 0,
+            damping: 1
+          },
+          minVelocity: 0.75
+        }
+      };
+
     if (!this.network) {
       this.network = new Network(this.el.nativeElement, graphData, options);
     }
