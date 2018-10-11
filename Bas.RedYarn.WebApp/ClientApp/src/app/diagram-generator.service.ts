@@ -26,7 +26,8 @@ export class DiagramGeneratorService {
         color: {
           color: '#ff0000',
           hightlight: '#ff0000',
-          hover: '#ff0000'
+          hover: '#ff0000',
+          inherit: false
         },
       });
     }
