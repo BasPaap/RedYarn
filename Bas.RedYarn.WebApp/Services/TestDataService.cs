@@ -36,16 +36,16 @@ namespace Bas.RedYarn.WebApp.Services
             var haydee = new Character { Name = "Haydée" };
             haydee.Authors.Add(dumas);
 
-            edmond.RelateTo(louis, "son of", "father of");
+            edmond.RelateTo(louis, "son of", true);
             edmond.RelateTo(mercedes, "engaged");
-            edmond.RelateTo(albert, "is challenged to a duel by", "challenges to a duel");
             edmond.RelateTo(haydee, "owns", true);
             edmond.RelateTo(haydee, "loves");
 
             mercedes.RelateTo(fernand, "married");
 
-            albert.RelateTo(mercedes, "son of", "mother of");
-            albert.RelateTo(fernand, "son of", "father of");
+            mercedes.RelateTo(albert, "mother of", true);
+            fernand.RelateTo(albert, "father of", true);
+            albert.RelateTo(edmond, "challenges to a duel", true);
 
             haydee.RelateTo(fernand, "exposes", true);
 

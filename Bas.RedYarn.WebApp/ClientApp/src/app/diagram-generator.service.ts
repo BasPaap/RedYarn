@@ -24,12 +24,7 @@ export class DiagramGeneratorService {
           type: "continuous",
           forceDirection: "none"
         },
-        color: {
-          color: '#ff0000',
-          hightlight: '#ff0000',
-          hover: '#ff0000',
-          inherit: false
-        },
+        color: { color: 'rgba(255,0,0,1)', highlight: 'rgba(255,0,0,1)' },
       });
     }
 
@@ -42,12 +37,7 @@ export class DiagramGeneratorService {
         from: connection.connectionId,
         to: connection.storylineId,
         smooth: false,
-        color: {
-          color: '#000000',
-          hightlight: '#000000',
-          hover: '#000000',
-          inherit: false
-        },
+        color: { color: 'rgba(0,0,0,1)', highlight: 'rgba(0,0,0,1)' },
       });
     }
   }
