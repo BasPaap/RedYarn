@@ -32,5 +32,23 @@ export class DiagramGeneratorService {
         },
       });
     }
+
+    for (let storyline of diagram.storylines) {
+      nodes.add({ id: storyline.id, label: storyline.name, shape: 'box' });
+    }
+
+    for (let connection of diagram.storylineCharacterConnections) {
+      edges.add({
+        from: connection.connectionId,
+        to: connection.storylineId,
+        smooth: false,
+        color: {
+          color: '#000000',
+          hightlight: '#000000',
+          hover: '#000000',
+          inherit: false
+        },
+      });
+    }
   }
 }
