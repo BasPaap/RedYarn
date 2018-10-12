@@ -40,5 +40,19 @@ export class DiagramGeneratorService {
         color: { color: 'rgba(0,0,0,1)', highlight: 'rgba(0,0,0,1)' },
       });
     }
+
+    for (let essentialPlotElement of diagram.essentialPlotElements) {
+      nodes.add({ id: essentialPlotElement.id, label: essentialPlotElement.name, shape: 'box' });
+    }
+
+    for (let connection of diagram.storylineEssentialPlotElementConnections) {
+      edges.add({
+        from: connection.connectionId,
+        to: connection.storylineId,
+        smooth: false,
+        arrows: 'to',
+        color: { color: 'rgba(0,0,0,0.5)', highlight: 'rgba(0,0,0,0.5)' },
+      });
+    }
   }
 }
