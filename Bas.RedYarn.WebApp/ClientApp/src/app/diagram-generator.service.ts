@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Diagram, Character, Relationship, Storyline, StorylineCharacterConnection, StorylineEssentialPlotElementConnection, EssentialPlotElement } from './diagram-types';
+import { Diagram, Character, Relationship, Storyline, StorylineCharacterConnection, StorylineEssentialPlotElementConnection, EssentialPlotElement, EssentialPlotElementConnection } from './diagram-types';
 import { DataSet } from 'vis';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class DiagramGeneratorService {
 
   generate(diagram: Diagram, nodes: DataSet<{}>, edges: DataSet<{}>) {
     for (let character of diagram.characters) {
-      nodes.add(this.getCharacterNode(character));      
+      nodes.add(this.getCharacterNode(character));
     }
 
     for (let relationship of diagram.relationships) {
@@ -32,7 +32,24 @@ export class DiagramGeneratorService {
 
     for (let connection of diagram.storylineEssentialPlotElementConnections) {
       edges.add(this.getStorylineEssentialPlotElementConnectionEdge(connection));
-    }    
+    }
+
+    for (let essentialPlotElementConnection of diagram.characterEssentialPlotElementConnections) {
+      edges.add(this.getCharacterEssentialPlotElementConnectionEdge(essentialPlotElementConnection))
+    }
+  }
+
+  private getCharacterEssentialPlotElementConnectionEdge(essentialPlotElementConnection: EssentialPlotElementConnection) {
+    return {
+      from: essentialPlotElementConnection.essentialPlotElementId,
+      to: essentialPlotElementConnection.characterId,
+      smooth: false,
+      dashes: true,
+      arrowStrikethrough: false,
+      arrows: essentialPlotElementConnection.characterOwnsPlotElement ? 'from' : 'to',      
+      color: essentialPlotElementConnection.characterOwnsPlotElement ? { color: 'rgba(0,250,0,1)', highlight: 'rgba(0,250,0,1)' } :
+                                                                       { color: 'rgba(253,106,2,1)', highlight: 'rgba(253,106,2,1)' }
+    };
   }
 
   private getEssentialPlotElementNode(essentialPlotElement: EssentialPlotElement) {

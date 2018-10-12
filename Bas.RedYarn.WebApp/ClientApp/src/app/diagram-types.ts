@@ -42,4 +42,12 @@ export interface Diagram {
   relationships: Relationship[];
   storylineCharacterConnections: StorylineCharacterConnection[];
   storylineEssentialPlotElementConnections: StorylineEssentialPlotElementConnection[];
+  characterEssentialPlotElementConnections: EssentialPlotElementConnection[];
+}
+
+
+export interface EssentialPlotElementConnection {
+  essentialPlotElementId: string;
+  characterId: string;
+  characterOwnsPlotElement: boolean;
 }

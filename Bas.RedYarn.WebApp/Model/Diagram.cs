@@ -16,7 +16,7 @@ namespace Bas.RedYarn.WebApp.Model
         public Collection<Relationship> Relationships { get; } = new Collection<Relationship>();
         public Collection<StorylineConnection> StorylineCharacterConnections { get; } = new Collection<StorylineConnection>();
         public Collection<StorylineConnection> StorylineEssentialPlotElementConnections { get; } = new Collection<StorylineConnection>();
-
+        public Collection<EssentialPlotElementConnection> CharacterEssentialPlotElementConnections { get; set; } = new Collection<EssentialPlotElementConnection>();
         public Diagram()
         {
         }
@@ -36,8 +36,9 @@ namespace Bas.RedYarn.WebApp.Model
             GenerateStorylineCharacterConnections(storylineDictionary, characterDictionary);
             GenerateRelationships(characterDictionary);
             GenerateStorylineEssentialPlotElementConnections(essentialPlotElementDictionary, storylineDictionary);
+            GenerateEssentialPlotElementConnections(essentialPlotElementDictionary, characterDictionary);
         }
-
+                
         private void AddEssentialPlotElements(Dictionary<RedYarn.EssentialPlotElement, EssentialPlotElement> essentialPlotElementDictionary)
         {
             foreach (var essentialPlotElement in essentialPlotElementDictionary.Keys)
@@ -72,6 +73,32 @@ namespace Bas.RedYarn.WebApp.Model
                     {
                         ConnectionId = essentialPlotElementDictionary[essentialPlotElement].Id,
                         StorylineId = storylineDictionary[storyline].Id
+                    });
+                }
+            }
+        }
+
+        private void GenerateEssentialPlotElementConnections(Dictionary<RedYarn.EssentialPlotElement, EssentialPlotElement> essentialPlotElementDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
+        {
+            foreach (var character in characterDictionary.Keys)
+            {
+                foreach (var neededPlotElement in character.NeededPlotElements)
+                {
+                    CharacterEssentialPlotElementConnections.Add(new EssentialPlotElementConnection()
+                    {
+                        EssentialPlotElementId = essentialPlotElementDictionary[neededPlotElement].Id,
+                        CharacterId = characterDictionary[character].Id,
+                        CharacterOwnsPlotElement = false
+                    });
+                }
+
+                foreach (var ownedPlotElement in character.OwnedPlotElements)
+                {
+                    CharacterEssentialPlotElementConnections.Add(new EssentialPlotElementConnection()
+                    {
+                        EssentialPlotElementId = essentialPlotElementDictionary[ownedPlotElement].Id,
+                        CharacterId = characterDictionary[character].Id,
+                        CharacterOwnsPlotElement = true
                     });
                 }
             }
