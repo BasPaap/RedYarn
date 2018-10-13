@@ -5,6 +5,6 @@ WriteBeginning(unitUnderTestName);
 WriteToStringTests(unitUnderTestName);
 WriteManyToManyTests(unitUnderTestName, nameof(Character), nameof(Storyline.Characters), nameof(Character.Storylines));
 WriteManyToManyTests(unitUnderTestName, nameof(Author), nameof(Storyline.Authors), nameof(Author.Storylines));
-WriteManyToManyTests(unitUnderTestName, nameof(EssentialPlotElement), nameof(Storyline.EssentialPlotElements), nameof(EssentialPlotElement.Storylines));
+WriteManyToManyTests(unitUnderTestName, nameof(PlotElement), nameof(Storyline.PlotElements), nameof(PlotElement.Storylines));
 WriteEnd();
 #>

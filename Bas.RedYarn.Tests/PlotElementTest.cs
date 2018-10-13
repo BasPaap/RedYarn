@@ -7,14 +7,14 @@ using System.Text;
 namespace Bas.RedYarn
 {
     [TestClass]
-    public partial class EssentialPlotElementTest
+    public partial class PlotElementTest
     {
-        private EssentialPlotElement essentialPlotElement;
+        private PlotElement plotElement;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.essentialPlotElement = new EssentialPlotElement();
+            this.plotElement = new PlotElement();
         }
                 
     }

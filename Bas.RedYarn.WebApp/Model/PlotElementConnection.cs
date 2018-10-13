@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.Model
 {
-    public sealed class EssentialPlotElementConnection
+    public sealed class PlotElementConnection
     {
         public Guid CharacterId { get; set; }
-        public Guid EssentialPlotElementId { get; set; }
+        public Guid PlotElementId { get; set; }
         public bool CharacterOwnsPlotElement { get; set; }
     }
 }

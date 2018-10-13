@@ -24,11 +24,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DiagramTest.tt</DependentUpon>
     </None>
-    <None Include="GeneratedTests\EssentialPlotElementTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>EssentialPlotElementTest.tt</DependentUpon>
-    </None>
     <None Include="GeneratedTests\StorylineTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -59,9 +54,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiagramTest.cs</LastGenOutput>
     </None>
-    <None Update="GeneratedTests\EssentialPlotElementTest.tt">
+    <None Update="GeneratedTests\PlotElementTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EssentialPlotElementTest.cs</LastGenOutput>
+      <LastGenOutput>PlotElementTest.cs</LastGenOutput>
     </None>
     <None Update="GeneratedTests\StorylineTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -93,10 +88,10 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DiagramTest.tt</DependentUpon>
     </Compile>
-    <Compile Update="GeneratedTests\EssentialPlotElementTest.cs">
+    <Compile Update="GeneratedTests\PlotElementTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>EssentialPlotElementTest.tt</DependentUpon>
+      <DependentUpon>PlotElementTest.tt</DependentUpon>
     </Compile>
     <Compile Update="GeneratedTests\RelationshipInfoTest.cs">
       <DesignTime>True</DesignTime>

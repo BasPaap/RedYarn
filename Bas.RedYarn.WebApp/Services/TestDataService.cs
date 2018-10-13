@@ -59,14 +59,14 @@ namespace Bas.RedYarn.WebApp.Services
             betrayal.Characters.Add(fernand);
             betrayal.Characters.Add(haydee);
 
-            var haydeesIdentity = new EssentialPlotElement()
+            var haydeesIdentity = new PlotElement()
             {
                 Name = "Haydée is Ali Pasha's daughter",
                 Description = "Ali Pasha's daughter was sold into slavery and, after the death of her mother, the only surviving person to know of Ali's betrayer."
             };
             haydeesIdentity.OwningCharacters.Add(haydee);
 
-            var alisBetrayer = new EssentialPlotElement()
+            var alisBetrayer = new PlotElement()
             {
                 Name = "Fernand betrayed and murdered Ali Pasha.",
                 Description = "Fernand was the officer who betrayed and murdered Ali Pasha. If this became public, it would cause a scandal."
@@ -74,8 +74,8 @@ namespace Bas.RedYarn.WebApp.Services
             alisBetrayer.OwningCharacters.Add(fernand);
             alisBetrayer.NeedingCharacters.Add(haydee);
             
-            betrayal.EssentialPlotElements.Add(haydeesIdentity);
-            betrayal.EssentialPlotElements.Add(alisBetrayer);
+            betrayal.PlotElements.Add(haydeesIdentity);
+            betrayal.PlotElements.Add(alisBetrayer);
 
             var diagram = new Diagram()
             {
@@ -90,8 +90,8 @@ namespace Bas.RedYarn.WebApp.Services
             diagram.Characters.Add(haydee);
             diagram.Authors.Add(dumas);
             diagram.Storylines.Add(betrayal);
-            diagram.EssentialPlotElements.Add(alisBetrayer);
-            diagram.EssentialPlotElements.Add(haydeesIdentity);
+            diagram.PlotElements.Add(alisBetrayer);
+            diagram.PlotElements.Add(haydeesIdentity);
 
             return diagram;
         }

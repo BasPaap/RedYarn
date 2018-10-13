@@ -11,7 +11,7 @@ namespace Bas.RedYarn
 
         public Collection<Author> Authors { get; } = new Collection<Author>();
         public Collection<Character> Characters { get; } = new Collection<Character>();
-        public Collection<EssentialPlotElement> EssentialPlotElements { get; } = new Collection<EssentialPlotElement>();
+        public Collection<PlotElement> PlotElements { get; } = new Collection<PlotElement>();
         public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
         public Collection<Tag> Tags { get; } = new Collection<Tag>();
 

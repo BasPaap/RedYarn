@@ -1,0 +1,10 @@
+﻿<#@ include file="BaseTestGenerator.t4" #>
+<# 
+var unitUnderTestName = nameof(PlotElement);
+WriteBeginning(unitUnderTestName);
+WriteToStringTests(unitUnderTestName);
+WriteManyToManyTests(unitUnderTestName, nameof(Storyline), nameof(PlotElement.Storylines), nameof(Storyline.PlotElements));
+WriteManyToManyTests(unitUnderTestName, nameof(Character), nameof(PlotElement.OwningCharacters), nameof(Character.OwnedPlotElements));
+WriteManyToManyTests(unitUnderTestName, nameof(Character), nameof(PlotElement.NeedingCharacters), nameof(Character.NeededPlotElements));
+WriteEnd();
+#>

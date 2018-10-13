@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Diagram, Character, Relationship, Storyline, StorylineCharacterConnection, StorylineEssentialPlotElementConnection, EssentialPlotElement, EssentialPlotElementConnection } from './diagram-types';
+import { Diagram, Character, Relationship, Storyline, StorylineCharacterConnection, StorylinePlotElementConnection, PlotElement, PlotElementConnection } from './diagram-types';
 import { DataSet } from 'vis';
 
 @Injectable({
@@ -12,31 +12,31 @@ export class DiagramGeneratorService {
   generate(diagram: Diagram, nodes: DataSet<{}>, edges: DataSet<{}>) {
     nodes.add(diagram.characters.map(c => this.getCharacterNode(c)));
     nodes.add(diagram.storylines.map(s => this.getStorylineNode(s)));
-    nodes.add(diagram.essentialPlotElements.map(e => this.getEssentialPlotElementNode(e)));
+    nodes.add(diagram.plotElements.map(e => this.getPlotElementNode(e)));
 
     edges.add(diagram.relationships.map(r => this.getRelationshipEdge(r)));
     edges.add(diagram.storylineCharacterConnections.map(s => this.getStorylineCharacterConnectionEdge(s)));
-    edges.add(diagram.storylineEssentialPlotElementConnections.map(s => this.getStorylineEssentialPlotElementConnectionEdge(s)));
-    edges.add(diagram.characterEssentialPlotElementConnections.map(c => this.getCharacterEssentialPlotElementConnectionEdge(c)));
+    edges.add(diagram.storylinePlotElementConnections.map(s => this.getStorylinePlotElementConnectionEdge(s)));
+    edges.add(diagram.characterPlotElementConnections.map(c => this.getCharacterPlotElementConnectionEdge(c)));
   }
 
-  private getCharacterEssentialPlotElementConnectionEdge(essentialPlotElementConnection: EssentialPlotElementConnection) {
+  private getCharacterPlotElementConnectionEdge(plotElementConnection: PlotElementConnection) {
     return {
-      from: essentialPlotElementConnection.essentialPlotElementId,
-      to: essentialPlotElementConnection.characterId,
+      from: plotElementConnection.plotElementId,
+      to: plotElementConnection.characterId,
       smooth: false,
       dashes: true,
       arrowStrikethrough: false,
-      arrows: essentialPlotElementConnection.characterOwnsPlotElement ? 'from' : 'to',      
-      color: essentialPlotElementConnection.characterOwnsPlotElement ? { color: 'rgba(0,250,0,1)', highlight: 'rgba(0,250,0,1)' } :
+      arrows: plotElementConnection.characterOwnsPlotElement ? 'from' : 'to',      
+      color: plotElementConnection.characterOwnsPlotElement ? { color: 'rgba(0,250,0,1)', highlight: 'rgba(0,250,0,1)' } :
                                                                        { color: 'rgba(253,106,2,1)', highlight: 'rgba(253,106,2,1)' }
     };
   }
 
-  private getEssentialPlotElementNode(essentialPlotElement: EssentialPlotElement) {
+  private getPlotElementNode(plotElement: PlotElement) {
     return {
-      id: essentialPlotElement.id,
-      label: essentialPlotElement.name,
+      id: plotElement.id,
+      label: plotElement.name,
       shape: 'box',
       color: {
         border: 'rgba(50,50,50,0.8)',
@@ -94,7 +94,7 @@ export class DiagramGeneratorService {
     };
   }
 
-  private getStorylineEssentialPlotElementConnectionEdge(connection: StorylineEssentialPlotElementConnection) {
+  private getStorylinePlotElementConnectionEdge(connection: StorylinePlotElementConnection) {
     return {
       from: connection.connectionId,
       to: connection.storylineId,

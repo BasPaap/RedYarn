@@ -11,7 +11,7 @@ export interface Storyline {
   description: string;
 }
 
-export interface EssentialPlotElement {
+export interface PlotElement {
   id: string;
   name: string;
   description: string;
@@ -29,7 +29,7 @@ export interface StorylineCharacterConnection {
   storylineId: string;
 }
 
-export interface StorylineEssentialPlotElementConnection {
+export interface StorylinePlotElementConnection {
   connectionId: string;
   storylineId: string;
 }
@@ -38,16 +38,16 @@ export interface Diagram {
   name: string;
   characters: Character[];
   storylines: Storyline[];
-  essentialPlotElements: EssentialPlotElement[];
+  plotElements: PlotElement[];
   relationships: Relationship[];
   storylineCharacterConnections: StorylineCharacterConnection[];
-  storylineEssentialPlotElementConnections: StorylineEssentialPlotElementConnection[];
-  characterEssentialPlotElementConnections: EssentialPlotElementConnection[];
+  storylinePlotElementConnections: StorylinePlotElementConnection[];
+  characterPlotElementConnections: PlotElementConnection[];
 }
 
 
-export interface EssentialPlotElementConnection {
-  essentialPlotElementId: string;
+export interface PlotElementConnection {
+  plotElementId: string;
   characterId: string;
   characterOwnsPlotElement: boolean;
 }

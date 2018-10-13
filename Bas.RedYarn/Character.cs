@@ -23,8 +23,8 @@ namespace Bas.RedYarn
         public Collection<Storyline> Storylines { get; }
         public Collection<Tag> Tags { get; }
         public string ImagePath { get; set; }
-        public Collection<EssentialPlotElement> OwnedPlotElements { get; }
-        public Collection<EssentialPlotElement> NeededPlotElements { get; }
+        public Collection<PlotElement> OwnedPlotElements { get; }
+        public Collection<PlotElement> NeededPlotElements { get; }
         public ReadOnlyCollection<IRelationship> Relationships { get; } 
 
         public Character()
@@ -32,8 +32,8 @@ namespace Bas.RedYarn
             Authors = new CoupledCollection<Author, Character>(this, nameof(Author.Characters));
             Storylines = new CoupledCollection<Storyline, Character>(this, nameof(Storyline.Characters));
             Tags = new CoupledCollection<Tag, Character>(this, nameof(Tag.Characters));
-            OwnedPlotElements = new CoupledCollection<EssentialPlotElement, Character>(this, nameof(EssentialPlotElement.OwningCharacters));
-            NeededPlotElements = new CoupledCollection<EssentialPlotElement, Character>(this, nameof(EssentialPlotElement.NeedingCharacters));
+            OwnedPlotElements = new CoupledCollection<PlotElement, Character>(this, nameof(PlotElement.OwningCharacters));
+            NeededPlotElements = new CoupledCollection<PlotElement, Character>(this, nameof(PlotElement.NeedingCharacters));
             Relationships = new ReadOnlyCollection<IRelationship>(this.relationships);
         }
 

@@ -11,12 +11,12 @@ namespace Bas.RedYarn.WebApp.Model
         public string Name { get; set; }
         public Collection<Character> Characters { get; } = new Collection<Character>();
         public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
-        public Collection<EssentialPlotElement> EssentialPlotElements { get; } = new Collection<EssentialPlotElement>();
+        public Collection<PlotElement> PlotElements { get; } = new Collection<PlotElement>();
 
         public Collection<Relationship> Relationships { get; } = new Collection<Relationship>();
         public Collection<StorylineConnection> StorylineCharacterConnections { get; } = new Collection<StorylineConnection>();
-        public Collection<StorylineConnection> StorylineEssentialPlotElementConnections { get; } = new Collection<StorylineConnection>();
-        public Collection<EssentialPlotElementConnection> CharacterEssentialPlotElementConnections { get; set; } = new Collection<EssentialPlotElementConnection>();
+        public Collection<StorylineConnection> StorylinePlotElementConnections { get; } = new Collection<StorylineConnection>();
+        public Collection<PlotElementConnection> CharacterPlotElementConnections { get; set; } = new Collection<PlotElementConnection>();
         public Diagram()
         {
         }
@@ -27,23 +27,23 @@ namespace Bas.RedYarn.WebApp.Model
 
             var characterDictionary = new Dictionary<RedYarn.Character, Model.Character>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, Model.Character>(c, new Model.Character(c))));
             var storylineDictionary = new Dictionary<RedYarn.Storyline, Model.Storyline>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, Model.Storyline>(s, new Model.Storyline(s))));
-            var essentialPlotElementDictionary = new Dictionary<RedYarn.EssentialPlotElement, Model.EssentialPlotElement>(diagram.EssentialPlotElements.Select(e => new KeyValuePair<RedYarn.EssentialPlotElement, EssentialPlotElement>(e, new Model.EssentialPlotElement(e))));
+            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, Model.PlotElement>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElement>(e, new Model.PlotElement(e))));
 
             AddStorylines(storylineDictionary);
             AddCharacters(characterDictionary);
-            AddEssentialPlotElements(essentialPlotElementDictionary);
+            AddPlotElements(plotElementDictionary);
 
             GenerateStorylineCharacterConnections(storylineDictionary, characterDictionary);
             GenerateRelationships(characterDictionary);
-            GenerateStorylineEssentialPlotElementConnections(essentialPlotElementDictionary, storylineDictionary);
-            GenerateEssentialPlotElementConnections(essentialPlotElementDictionary, characterDictionary);
+            GenerateStorylinePlotElementConnections(plotElementDictionary, storylineDictionary);
+            GeneratePlotElementConnections(plotElementDictionary, characterDictionary);
         }
                 
-        private void AddEssentialPlotElements(Dictionary<RedYarn.EssentialPlotElement, EssentialPlotElement> essentialPlotElementDictionary)
+        private void AddPlotElements(Dictionary<RedYarn.PlotElement, PlotElement> plotElementDictionary)
         {
-            foreach (var essentialPlotElement in essentialPlotElementDictionary.Keys)
+            foreach (var plotElement in plotElementDictionary.Keys)
             {
-                this.EssentialPlotElements.Add(essentialPlotElementDictionary[essentialPlotElement]);
+                this.PlotElements.Add(plotElementDictionary[plotElement]);
             }
         }
 
@@ -63,30 +63,30 @@ namespace Bas.RedYarn.WebApp.Model
             }
         }
 
-        private void GenerateStorylineEssentialPlotElementConnections(Dictionary<RedYarn.EssentialPlotElement, EssentialPlotElement> essentialPlotElementDictionary, Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
+        private void GenerateStorylinePlotElementConnections(Dictionary<RedYarn.PlotElement, PlotElement> plotElementDictionary, Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
         {
             foreach (var storyline in storylineDictionary.Keys)
             {
-                foreach (var essentialPlotElement in storyline.EssentialPlotElements)
+                foreach (var plotElement in storyline.PlotElements)
                 {
-                    StorylineEssentialPlotElementConnections.Add(new StorylineConnection()
+                    StorylinePlotElementConnections.Add(new StorylineConnection()
                     {
-                        ConnectionId = essentialPlotElementDictionary[essentialPlotElement].Id,
+                        ConnectionId = plotElementDictionary[plotElement].Id,
                         StorylineId = storylineDictionary[storyline].Id
                     });
                 }
             }
         }
 
-        private void GenerateEssentialPlotElementConnections(Dictionary<RedYarn.EssentialPlotElement, EssentialPlotElement> essentialPlotElementDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
+        private void GeneratePlotElementConnections(Dictionary<RedYarn.PlotElement, PlotElement> plotElementDictionary, Dictionary<RedYarn.Character, Character> characterDictionary)
         {
             foreach (var character in characterDictionary.Keys)
             {
                 foreach (var neededPlotElement in character.NeededPlotElements)
                 {
-                    CharacterEssentialPlotElementConnections.Add(new EssentialPlotElementConnection()
+                    CharacterPlotElementConnections.Add(new PlotElementConnection()
                     {
-                        EssentialPlotElementId = essentialPlotElementDictionary[neededPlotElement].Id,
+                        PlotElementId = plotElementDictionary[neededPlotElement].Id,
                         CharacterId = characterDictionary[character].Id,
                         CharacterOwnsPlotElement = false
                     });
@@ -94,9 +94,9 @@ namespace Bas.RedYarn.WebApp.Model
 
                 foreach (var ownedPlotElement in character.OwnedPlotElements)
                 {
-                    CharacterEssentialPlotElementConnections.Add(new EssentialPlotElementConnection()
+                    CharacterPlotElementConnections.Add(new PlotElementConnection()
                     {
-                        EssentialPlotElementId = essentialPlotElementDictionary[ownedPlotElement].Id,
+                        PlotElementId = plotElementDictionary[ownedPlotElement].Id,
                         CharacterId = characterDictionary[character].Id,
                         CharacterOwnsPlotElement = true
                     });
