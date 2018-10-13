@@ -10,7 +10,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
-using DeepEqual.Syntax;
 using Bas.RedYarn.WebApp.Model;
 
 namespace Bas.RedYarn.WebApp.Tests
@@ -26,33 +25,9 @@ namespace Bas.RedYarn.WebApp.Tests
         {
             this.diagramController = new DiagramController(dataService);
         }
-
-        private static string SerializeObject<T>(T objectToSerialize)
-        {
-            if (objectToSerialize == null)
-            {
-                return string.Empty;
-            }
-            
-            var stringWriter = new StringWriter();
-            var xmlWriter = XmlWriter.Create(stringWriter);
-            var xmlSerializer = new XmlSerializer(typeof(T));
-            xmlSerializer.Serialize(xmlWriter, objectToSerialize);
-            var serializedXml = stringWriter.ToString();
-            xmlWriter.Close();
-
-            return serializedXml;
-        }
-
-        private static string GetComparableSerialization<T>(T objectToSerialize)
-        {
-            var uncomparableSerialization = SerializeObject(objectToSerialize);
-            const string guidRegexPattern = @"(\{){0,1}[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}(\}){0,1}";
-            return Regex.Replace(uncomparableSerialization, guidRegexPattern, "GUID", RegexOptions.IgnoreCase);
-        }
         
         [TestMethod]
-        public void GetDiagram_IdIsValid_ReturnsDiagramJson()
+        public void GetDiagram_IdIsValid_ReturnsDiagram()
         {
             // Arrange
             var testDataService = new TestDataService();
@@ -60,33 +35,27 @@ namespace Bas.RedYarn.WebApp.Tests
             // Act
             var diagram = this.diagramController.GetDiagram(1).Value;
 
-            // Cleanup
-            ResetGuids(diagram);
             // Assert
-            diagram.ShouldDeepEqual(testDataService.ExpectedModel);
-            
-        }
-
-        private void ResetGuids(Model.Diagram diagram)
-        {
-            foreach (var character in diagram.Characters)
-            {
-                character.Id = Guid.Empty;
-            }
-            foreach (var storyline in diagram.Storylines)
-            {
-                storyline.Id = Guid.Empty;
-            }
-            foreach (var storylineConnection in diagram.StorylineCharacterConnections)
-            {
-                storylineConnection.ConnectionId = Guid.Empty;
-                storylineConnection.StorylineId = Guid.Empty;
-            }
-            foreach (var relationship in diagram.Relationships)
-            {
-                relationship.FromCharacterId = Guid.Empty;
-                relationship.ToCharacterId = Guid.Empty;
-            }
+            Assert.AreEqual(0, diagram.CharacterPlotElementConnections.Count);
+            Assert.AreEqual(6, diagram.Characters.Count);
+            Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FirstCharacter"));
+            Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("SecondCharacter"));
+            Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("ThirdCharacter"));
+            Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FourthCharacter"));
+            Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FifthCharacter"));
+            Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("SixthCharacter"));
+            Assert.AreEqual("Diagram", diagram.Name);
+            Assert.AreEqual(0, diagram.PlotElements.Count);
+            Assert.AreEqual(4, diagram.Relationships.Count);
+            Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromFirstToSecond"));
+            Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromSecondToFirst"));
+            Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromThirdToFourth"));
+            Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromFifthToSixth"));
+            Assert.AreEqual(3, diagram.StorylineCharacterConnections.Count);
+            Assert.AreEqual(0, diagram.StorylinePlotElementConnections.Count);
+            Assert.AreEqual(2, diagram.Storylines.Count);
+            Assert.IsTrue(diagram.Storylines.Select(s => s.Name).Contains("FirstStoryline"));
+            Assert.IsTrue(diagram.Storylines.Select(s => s.Name).Contains("SecondStoryline"));
         }
     }
 }

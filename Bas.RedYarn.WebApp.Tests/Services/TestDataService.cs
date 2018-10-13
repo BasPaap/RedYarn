@@ -23,6 +23,8 @@ namespace Bas.RedYarn.WebApp.Tests.Services
 
         private const string relationshipFromFirstToSecondName = "RelationshipFromFirstToSecond";
         private const string relationshipFromSecondToFirstName = "RelationshipFromSecondToFirst";
+        private const string relationshipFromThirdToFourth = "RelationshipFromThirdToFourth";
+        private const string relationshipFromFifthToSixth = "RelationshipFromFifthToSixth";
 
         public TestDataService()
         {
@@ -37,8 +39,8 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             secondCharacter.Storylines.Add(firstStoryline);
             
             firstCharacter.RelateTo(secondCharacter, relationshipFromFirstToSecondName, relationshipFromSecondToFirstName);
-            thirdCharacter.RelateTo(fourthCharacter, relationshipFromFirstToSecondName);
-            fifthCharacter.RelateTo(sixthCharacter, relationshipFromFirstToSecondName, true);
+            thirdCharacter.RelateTo(fourthCharacter, relationshipFromThirdToFourth);
+            fifthCharacter.RelateTo(sixthCharacter, relationshipFromFifthToSixth, true);
                                     
             diagram.Authors.Add(firstAuthor);
             diagram.Authors.Add(secondAuthor);
