@@ -14,9 +14,9 @@ namespace Bas.RedYarn.WebApp.Tests.Services
         private Character firstCharacter = new Character() { Name = "FirstCharacter" };
         private Character secondCharacter = new Character() { Name = "SecondCharacter" };
         private Character thirdCharacter = new Character() { Name = "ThirdCharacter" };
-        private Character fourthCharacter = new Character() { Name = "FourthCharacter" };
+        private readonly Character fourthCharacter = new Character() { Name = "FourthCharacter" };
         private Character fifthCharacter = new Character() { Name = "FifthCharacter" };
-        private Character sixthCharacter = new Character() { Name = "SixthCharacter" };
+        private readonly Character sixthCharacter = new Character() { Name = "SixthCharacter" };
         private readonly Storyline firstStoryline = new Storyline() { Name = "FirstStoryline", Description = "FirstStorylineDescription" };
         private readonly Storyline secondStoryline = new Storyline() { Name = "SecondStoryline", Description = "SecondStorylineDescription" };
         private Diagram diagram = new Diagram() { Name = "Diagram" };
