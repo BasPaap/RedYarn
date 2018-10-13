@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Bas.RedYarn.WebApp.Extensions;
 
 namespace Bas.RedYarn.WebApp.Model
 {
@@ -41,26 +42,17 @@ namespace Bas.RedYarn.WebApp.Model
                 
         private void AddPlotElements(Dictionary<RedYarn.PlotElement, PlotElement> plotElementDictionary)
         {
-            foreach (var plotElement in plotElementDictionary.Keys)
-            {
-                this.PlotElements.Add(plotElementDictionary[plotElement]);
-            }
+            this.PlotElements.AddRange(plotElementDictionary.Values);
         }
 
         private void AddStorylines(Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
         {
-            foreach (var storyline in storylineDictionary.Keys)
-            {
-                this.Storylines.Add(storylineDictionary[storyline]);
-            }
+            this.Storylines.AddRange(storylineDictionary.Values);            
         }
 
         private void AddCharacters(Dictionary<RedYarn.Character, Character> characterDictionary)
         {
-            foreach (var character in characterDictionary.Keys)
-            {
-                this.Characters.Add(characterDictionary[character]);
-            }
+            this.Characters.AddRange(characterDictionary.Values);            
         }
 
         private void GenerateStorylinePlotElementConnections(Dictionary<RedYarn.PlotElement, PlotElement> plotElementDictionary, Dictionary<RedYarn.Storyline, Storyline> storylineDictionary)
