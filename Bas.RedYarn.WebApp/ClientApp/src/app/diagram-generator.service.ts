@@ -10,33 +10,14 @@ export class DiagramGeneratorService {
   constructor() { }
 
   generate(diagram: Diagram, nodes: DataSet<{}>, edges: DataSet<{}>) {
-    for (let character of diagram.characters) {
-      nodes.add(this.getCharacterNode(character));
-    }
+    nodes.add(diagram.characters.map(c => this.getCharacterNode(c)));
+    nodes.add(diagram.storylines.map(s => this.getStorylineNode(s)));
+    nodes.add(diagram.essentialPlotElements.map(e => this.getEssentialPlotElementNode(e)));
 
-    for (let relationship of diagram.relationships) {
-      edges.add(this.getRelationshipEdge(relationship));
-    }
-
-    for (let storyline of diagram.storylines) {
-      nodes.add(this.getStorylineNode(storyline));
-    }
-
-    for (let connection of diagram.storylineCharacterConnections) {
-      edges.add(this.getStorylineCharacterConnectionEdge(connection));
-    }
-
-    for (let essentialPlotElement of diagram.essentialPlotElements) {
-      nodes.add(this.getEssentialPlotElementNode(essentialPlotElement));
-    }
-
-    for (let connection of diagram.storylineEssentialPlotElementConnections) {
-      edges.add(this.getStorylineEssentialPlotElementConnectionEdge(connection));
-    }
-
-    for (let essentialPlotElementConnection of diagram.characterEssentialPlotElementConnections) {
-      edges.add(this.getCharacterEssentialPlotElementConnectionEdge(essentialPlotElementConnection))
-    }
+    edges.add(diagram.relationships.map(r => this.getRelationshipEdge(r)));
+    edges.add(diagram.storylineCharacterConnections.map(s => this.getStorylineCharacterConnectionEdge(s)));
+    edges.add(diagram.storylineEssentialPlotElementConnections.map(s => this.getStorylineEssentialPlotElementConnectionEdge(s)));
+    edges.add(diagram.characterEssentialPlotElementConnections.map(c => this.getCharacterEssentialPlotElementConnectionEdge(c)));
   }
 
   private getCharacterEssentialPlotElementConnectionEdge(essentialPlotElementConnection: EssentialPlotElementConnection) {
