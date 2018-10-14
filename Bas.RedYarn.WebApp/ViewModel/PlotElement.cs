@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Bas.RedYarn.WebApp.Model
+namespace Bas.RedYarn.WebApp.ViewModel
 {
     public sealed class PlotElement
     {

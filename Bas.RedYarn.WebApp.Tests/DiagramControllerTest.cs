@@ -10,7 +10,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
-using Bas.RedYarn.WebApp.Model;
+using Bas.RedYarn.WebApp.ViewModel;
 
 namespace Bas.RedYarn.WebApp.Tests
 {

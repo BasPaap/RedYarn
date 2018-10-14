@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bas.RedYarn.WebApp.Extensions;
 
-namespace Bas.RedYarn.WebApp.Model
+namespace Bas.RedYarn.WebApp.ViewModel
 {
     public sealed class Diagram
     {
@@ -26,9 +26,9 @@ namespace Bas.RedYarn.WebApp.Model
         {
             Name = diagram.Name;
 
-            var characterDictionary = new Dictionary<RedYarn.Character, Model.Character>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, Model.Character>(c, new Model.Character(c))));
-            var storylineDictionary = new Dictionary<RedYarn.Storyline, Model.Storyline>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, Model.Storyline>(s, new Model.Storyline(s))));
-            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, Model.PlotElement>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElement>(e, new Model.PlotElement(e))));
+            var characterDictionary = new Dictionary<RedYarn.Character, ViewModel.Character>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, ViewModel.Character>(c, new ViewModel.Character(c))));
+            var storylineDictionary = new Dictionary<RedYarn.Storyline, ViewModel.Storyline>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, ViewModel.Storyline>(s, new ViewModel.Storyline(s))));
+            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, ViewModel.PlotElement>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElement>(e, new ViewModel.PlotElement(e))));
 
             AddStorylines(storylineDictionary);
             AddCharacters(characterDictionary);

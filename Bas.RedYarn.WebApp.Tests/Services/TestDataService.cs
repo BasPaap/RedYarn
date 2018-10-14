@@ -1,4 +1,4 @@
-﻿using Bas.RedYarn.WebApp.Model;
+﻿using Bas.RedYarn.WebApp.ViewModel;
 using Bas.RedYarn.WebApp.Services;
 using System;
 using System.Collections.Generic;
@@ -59,19 +59,19 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             return diagram;
         }
 
-        public Model.Diagram ExpectedModel
+        public ViewModel.Diagram ExpectedModel
         {
             get
             {
-                var firstCharacterModel = new Model.Character(firstCharacter) { Id = Guid.Empty };
-                var secondCharacterModel = new Model.Character(secondCharacter) { Id = Guid.Empty };
-                var thirdCharacterModel = new Model.Character(thirdCharacter) { Id = Guid.Empty };
-                var fourthCharacterModel = new Model.Character(fourthCharacter) { Id = Guid.Empty };
-                var fifthCharacterModel = new Model.Character(fifthCharacter) { Id = Guid.Empty };
-                var sixthCharacterModel = new Model.Character(sixthCharacter) { Id = Guid.Empty };
+                var firstCharacterModel = new ViewModel.Character(firstCharacter) { Id = Guid.Empty };
+                var secondCharacterModel = new ViewModel.Character(secondCharacter) { Id = Guid.Empty };
+                var thirdCharacterModel = new ViewModel.Character(thirdCharacter) { Id = Guid.Empty };
+                var fourthCharacterModel = new ViewModel.Character(fourthCharacter) { Id = Guid.Empty };
+                var fifthCharacterModel = new ViewModel.Character(fifthCharacter) { Id = Guid.Empty };
+                var sixthCharacterModel = new ViewModel.Character(sixthCharacter) { Id = Guid.Empty };
 
-                var firstStorylineModel = new Model.Storyline(firstStoryline) { Id = Guid.Empty };
-                var secondStorylineModel = new Model.Storyline(secondStoryline) { Id = Guid.Empty };
+                var firstStorylineModel = new ViewModel.Storyline(firstStoryline) { Id = Guid.Empty };
+                var secondStorylineModel = new ViewModel.Storyline(secondStoryline) { Id = Guid.Empty };
 
                 var firstRelationship = GetRelationship(firstCharacterModel, secondCharacterModel, relationshipFromFirstToSecondName);
                 var secondRelationship = GetRelationship(secondCharacterModel, firstCharacterModel, relationshipFromSecondToFirstName);
@@ -81,7 +81,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
                 var secondStorylineConnection = GetStorylineConnection(firstCharacterModel, secondStorylineModel);
                 var thirdStorylineConnection = GetStorylineConnection(secondCharacterModel, firstStorylineModel);
 
-                var diagramModel = new Model.Diagram(diagram);
+                var diagramModel = new ViewModel.Diagram(diagram);
                 diagramModel.Characters.Add(firstCharacterModel);
                 diagramModel.Characters.Add(secondCharacterModel);
                 diagramModel.Characters.Add(thirdCharacterModel);
@@ -102,9 +102,9 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             }
         }
 
-        private Model.Relationship GetRelationship(Model.Character firstCharacterModel, Model.Character secondCharacterModel, string name)
+        private ViewModel.Relationship GetRelationship(ViewModel.Character firstCharacterModel, ViewModel.Character secondCharacterModel, string name)
         {
-            return new Model.Relationship()
+            return new ViewModel.Relationship()
             {
                 FromCharacterId = firstCharacterModel.Id,
                 ToCharacterId = secondCharacterModel.Id,
@@ -112,9 +112,9 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             };
         }
 
-        private Model.StorylineConnection GetStorylineConnection(Model.Character characterModel, Model.Storyline storylineModel)
+        private ViewModel.StorylineConnection GetStorylineConnection(ViewModel.Character characterModel, ViewModel.Storyline storylineModel)
         {
-            return new Model.StorylineConnection()
+            return new ViewModel.StorylineConnection()
             {
                 ConnectionId = characterModel.Id,
                 StorylineId = storylineModel.Id

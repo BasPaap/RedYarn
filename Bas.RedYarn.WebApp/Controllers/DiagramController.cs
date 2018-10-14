@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Bas.RedYarn.WebApp.Model;
+using Bas.RedYarn.WebApp.ViewModel;
 using Bas.RedYarn.WebApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,10 +22,10 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Model.Diagram> GetDiagram(int id)
+        public ActionResult<ViewModel.Diagram> GetDiagram(int id)
         {
             var diagram = this.dataService.GetDiagram(id);
-            return new Model.Diagram(diagram);
+            return new ViewModel.Diagram(diagram);
         }        
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace Bas.RedYarn.WebApp.Model
+namespace Bas.RedYarn.WebApp.ViewModel
 {
     public sealed class Storyline
     {
