@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bas.RedYarn.Tests", "Bas.Re
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bas.RedYarn.WebApp", "Bas.RedYarn.WebApp\Bas.RedYarn.WebApp.csproj", "{BDE1BA1C-A59E-4F01-AA56-8CB2CEF7C537}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bas.RedYarn.WebApp.Tests", "Bas.RedYarn.WebApp.Tests\Bas.RedYarn.WebApp.Tests.csproj", "{627E05C5-617A-4890-917F-4C36E610ACBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bas.RedYarn.WebApp.Tests", "Bas.RedYarn.WebApp.Tests\Bas.RedYarn.WebApp.Tests.csproj", "{627E05C5-617A-4890-917F-4C36E610ACBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bas.RedYarn.WebApp.Database", "Bas.RedYarn.WebApp.Database\Bas.RedYarn.WebApp.Database.csproj", "{269BF184-8D62-4F77-96EE-09205917C63A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{627E05C5-617A-4890-917F-4C36E610ACBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{627E05C5-617A-4890-917F-4C36E610ACBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{627E05C5-617A-4890-917F-4C36E610ACBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{269BF184-8D62-4F77-96EE-09205917C63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{269BF184-8D62-4F77-96EE-09205917C63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{269BF184-8D62-4F77-96EE-09205917C63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{269BF184-8D62-4F77-96EE-09205917C63A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
