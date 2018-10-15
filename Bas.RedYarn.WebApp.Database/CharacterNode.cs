@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Bas.RedYarn.WebApp.Database
 {
-    public sealed class StorylineNode : Node
+    public sealed class CharacterNode : Node
     {
-        public Storyline Storyline { get; set; }
+        public Character Character { get; set; }
     }
 }
