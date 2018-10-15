@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.ViewModel
 {
-    public sealed class PlotElementConnection
+    public sealed class PlotElementConnectionViewModel
     {
         public Guid CharacterId { get; set; }
         public Guid PlotElementId { get; set; }

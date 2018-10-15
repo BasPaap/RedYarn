@@ -22,10 +22,10 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ViewModel.Diagram> GetDiagram(int id)
+        public ActionResult<ViewModel.DiagramViewModel> GetDiagram(int id)
         {
             var diagram = this.dataService.GetDiagram(id);
-            return new ViewModel.Diagram(diagram);
+            return new ViewModel.DiagramViewModel(diagram);
         }        
     }
 }

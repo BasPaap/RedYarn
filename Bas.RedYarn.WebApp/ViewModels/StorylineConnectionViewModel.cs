@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.ViewModel
 {
-    public sealed class StorylineConnection
+    public sealed class StorylineConnectionViewModel
     {
         public Guid ConnectionId { get; set; }
         public Guid StorylineId { get; set; }

@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.ViewModel
 {
-    public sealed class PlotElement
+    public sealed class PlotElementViewModel
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
-        public PlotElement(RedYarn.PlotElement plotElement)
+        public PlotElementViewModel(RedYarn.PlotElement plotElement)
         {
             Id = Guid.NewGuid();
             Name = plotElement.Name;

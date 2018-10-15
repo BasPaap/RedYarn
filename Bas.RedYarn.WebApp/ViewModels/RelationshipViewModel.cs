@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.ViewModel
 {
-    public sealed class Relationship
+    public sealed class RelationshipViewModel
     {
         public Guid FromCharacterId { get; set; }
         public Guid ToCharacterId { get; set; }
