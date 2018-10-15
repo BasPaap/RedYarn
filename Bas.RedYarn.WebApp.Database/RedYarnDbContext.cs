@@ -17,7 +17,7 @@ namespace Bas.RedYarn.WebApp.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
-
+            
             modelBuilder.Entity<Diagram>().Property<Guid>(ShadowPropertyNames.Id)
                                           .ValueGeneratedOnAdd()
                                           .HasAnnotation("Key", 0);

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -31,6 +32,8 @@ namespace Bas.RedYarn.WebApp
             });
 
             services.AddTransient<IDataService, TestDataService>();
+
+            services.AddDbContext<Database.RedYarnDbContext>(optionsBuilder => optionsBuilder.UseSqlite(Configuration.GetConnectionString("RedYarnDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
