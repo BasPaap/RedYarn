@@ -54,7 +54,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             diagram.Storylines.Add(secondStoryline);
         }
         
-        public DiagramViewModel GetDiagramViewModel(int id)
+        public DiagramViewModel GetDiagramViewModel(Guid id)
         {            
             return new DiagramViewModel(this.diagram);
         }

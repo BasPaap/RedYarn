@@ -24,7 +24,7 @@ export class StoryDiagramComponent implements OnInit {
     this.graphData["nodes"] = new DataSet();
     this.graphData["edges"] = new DataSet();
 
-    this.diagramService.getDiagram(1).subscribe(diagram => {
+    this.diagramService.getDiagram('CA275778-7781-46CE-A9AB-323BF0BF7B55').subscribe(diagram => {
       this.diagramGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);      
     }, error => console.error(error));
   }

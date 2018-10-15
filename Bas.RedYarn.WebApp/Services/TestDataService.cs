@@ -8,7 +8,7 @@ namespace Bas.RedYarn.WebApp.Services
 {
     sealed class TestDataService : IDataService
     {
-        public DiagramViewModel GetDiagramViewModel(int id)
+        public DiagramViewModel GetDiagramViewModel(Guid id)
         {
             var dumas = new Author() { Name = "Alexandre Dumas" };
 

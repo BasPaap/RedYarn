@@ -8,6 +8,6 @@ namespace Bas.RedYarn.WebApp.Services
 {
     public interface IDataService
     {
-        DiagramViewModel GetDiagramViewModel(int id);
+        DiagramViewModel GetDiagramViewModel(Guid id);
     }
 }

@@ -11,7 +11,7 @@ export class DiagramService {
   constructor(private httpClient: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
   }
 
-  public getDiagram(diagramId: number): Observable<Diagram> {
+  public getDiagram(diagramId: string): Observable<Diagram> {
     return this.httpClient.get<Diagram>(this.baseUrl + `api/diagram/${diagramId}`);
   }
 }

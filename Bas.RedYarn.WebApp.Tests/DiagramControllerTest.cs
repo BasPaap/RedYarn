@@ -33,7 +33,7 @@ namespace Bas.RedYarn.WebApp.Tests
             var testDataService = new TestDataService();
 
             // Act
-            var diagram = this.diagramController.GetDiagramViewModel(1).Value;
+            var diagram = this.diagramController.GetDiagramViewModel(Guid.Empty).Value;
 
             // Assert
             Assert.AreEqual(0, diagram.CharacterPlotElementConnections.Count);
