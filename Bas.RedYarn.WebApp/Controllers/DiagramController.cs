@@ -25,6 +25,12 @@ namespace Bas.RedYarn.WebApp.Controllers
         public ActionResult<ViewModel.DiagramViewModel> GetDiagramViewModel(Guid id)
         {
             return this.dataService.GetDiagramViewModel(id);            
-        }        
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ViewModel.DiagramViewModel>> CreateDiagramAsync([FromBody]string name)
+        {
+            return await this.dataService.CreateDiagramAsync(name).ConfigureAwait(false);
+        }
     }
 }

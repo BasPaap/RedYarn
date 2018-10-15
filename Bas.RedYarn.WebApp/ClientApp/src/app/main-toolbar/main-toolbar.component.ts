@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { DiagramService } from '../diagram.service';
 
 @Component({
   selector: 'app-main-toolbar',
@@ -9,13 +10,17 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class MainToolbarComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private diagramService: DiagramService) { }
 
   ngOnInit() {
   }
 
   public openLoginDialog() {
     const dialogRef = this.dialog.open(LoginDialogComponent);
+  }
+
+  public createNewDiagram() {
+    this.diagramService.createDiagram("Bananaphone!");
   }
 
 }

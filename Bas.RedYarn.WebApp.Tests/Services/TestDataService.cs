@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.Tests.Services
 {
@@ -119,6 +120,21 @@ namespace Bas.RedYarn.WebApp.Tests.Services
                 ConnectionId = characterModel.Id,
                 StorylineId = storylineModel.Id
             };
+        }
+
+        public Task<DiagramViewModel> CreateDiagramAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

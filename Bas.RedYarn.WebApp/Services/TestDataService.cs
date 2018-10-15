@@ -8,6 +8,21 @@ namespace Bas.RedYarn.WebApp.Services
 {
     sealed class TestDataService : IDataService
     {
+        public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<DiagramViewModel> CreateDiagramAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public DiagramViewModel GetDiagramViewModel(Guid id)
         {
             var dumas = new Author() { Name = "Alexandre Dumas" };

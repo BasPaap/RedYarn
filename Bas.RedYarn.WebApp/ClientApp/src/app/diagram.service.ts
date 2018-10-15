@@ -14,6 +14,14 @@ export class DiagramService {
   public getDiagram(diagramId: string): Observable<Diagram> {
     return this.httpClient.get<Diagram>(this.baseUrl + `api/diagram/${diagramId}`);
   }
+
+  public createDiagram(name: string) {    
+    let returnValue = this.httpClient.post(this.baseUrl + 'api/diagram', name);
+
+    returnValue.subscribe(test => {
+      
+    }, error => console.error(error));
+  }
 }
 
 
