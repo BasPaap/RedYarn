@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bas.RedYarn.WebApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace Bas.RedYarn.WebApp.Services
 {
     sealed class TestDataService : IDataService
     {
-        public Diagram GetDiagram(int id)
+        public DiagramViewModel GetDiagramViewModel(int id)
         {
             var dumas = new Author() { Name = "Alexandre Dumas" };
 
@@ -93,7 +94,7 @@ namespace Bas.RedYarn.WebApp.Services
             diagram.PlotElements.Add(alisBetrayer);
             diagram.PlotElements.Add(haydeesIdentity);
 
-            return diagram;
+            return new DiagramViewModel(diagram);
         }
     }
 }
