@@ -12,15 +12,30 @@ namespace Bas.RedYarn.WebApp.Database
         public DbSet<Character> Characters { get; set; }
         public DbSet<StorylineNode> StorylineNodes { get; set; }
         public DbSet<CharacterNode> CharacterNodes { get; set; }
-
         public DbSet<Node> Nodes { get; set; }
+
+        public RedYarnDbContext(DbContextOptions<RedYarnDbContext> options)
+            : base(options)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //base.OnModelCreating(modelBuilder);
-            
-            modelBuilder.Entity<Diagram>().Property<Guid>(ShadowPropertyNames.Id)
-                                          .ValueGeneratedOnAdd()
-                                          .HasAnnotation("Key", 0);
+
+            AddIdShadowProperty<Diagram>(modelBuilder);
+            AddIdShadowProperty<Storyline>(modelBuilder);
+            AddIdShadowProperty<Character>(modelBuilder);
+            AddIdShadowProperty<Author>(modelBuilder);
+            AddIdShadowProperty<PlotElement>(modelBuilder);
+            AddIdShadowProperty<Tag>(modelBuilder);
+        }
+
+        private static void AddIdShadowProperty<T>(ModelBuilder modelBuilder) where T : class
+        {
+            modelBuilder.Entity<T>().Property<Guid>(ShadowPropertyNames.Id)
+                                    .ValueGeneratedOnAdd()
+                                    .HasAnnotation("Key", 0);
         }
     }
 }
