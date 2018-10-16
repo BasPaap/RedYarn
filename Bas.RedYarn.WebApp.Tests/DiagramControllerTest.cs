@@ -25,13 +25,25 @@ namespace Bas.RedYarn.WebApp.Tests
         {
             this.diagramController = new DiagramController(dataService);
         }
-        
+
+        // UpdateDiagram
+        // arg null -> 400 bad request
+        // id bestaat niet -> 404 not found
+        // vm is okee -> 204 no content (https://stackoverflow.com/questions/797834/should-a-restful-put-operation-return-something)
+
+        // CreateDiagram
+        // arg null -> 400 bad request
+        // id bestaat -> 201 Created met Uri naar GetDiagram(nieuw id)
+
+        // DeleteDiagram
+        // id bestaat niet -> 404 not found
+        // id bestaat -> 204 no content
+
         [TestMethod]
         public void GetDiagram_IdIsValid_ReturnsDiagram()
         {
             // Arrange
-            var testDataService = new TestDataService();
-
+            
             // Act
             var diagram = this.diagramController.GetDiagramViewModel(Guid.Empty).Value;
 

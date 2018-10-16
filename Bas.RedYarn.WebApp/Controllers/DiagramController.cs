@@ -28,9 +28,21 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ViewModel.DiagramViewModel>> CreateDiagramAsync([FromBody]string name)
+        public async Task<ActionResult<Guid>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
         {
-            return await this.dataService.CreateDiagramAsync(name).ConfigureAwait(false);
+            throw new NotImplementedException();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateDiagramAsync(DiagramViewModel diagramViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteDiagramAsync(DiagramViewModel diagramViewModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }
