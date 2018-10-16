@@ -30,33 +30,6 @@ namespace Bas.RedYarn.WebApp.Tests
 
 		#region Create
 		[TestMethod]
-		public void CreateDiagram_ArgumentIsNull_Returns400BadRequest()
-		{
-			// Arrange
-			// Act
-			var result = this.diagramController.CreateDiagramAsync(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-		}
-
-		[TestMethod]
-		public void CreateDiagram_ModelIsInvalud_Returns400BadRequest()
-		{
-			// Arrange
-			var diagramViewModel = new DiagramViewModel()
-			{
-				Name = ""
-			};
-
-			// Act
-			var result = this.diagramController.CreateDiagramAsync(diagramViewModel);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-		}
-		
-		[TestMethod]
 		public void CreateDiagram_ArgumentIsOk_Returns201Created()
 		{
 			// Arrange

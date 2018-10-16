@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Bas.RedYarn.WebApp.Extensions;
@@ -10,7 +11,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
     public sealed class DiagramViewModel
     {
         public Guid Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
         public Collection<CharacterViewModel> Characters { get; } = new Collection<CharacterViewModel>();
         public Collection<StorylineViewModel> Storylines { get; } = new Collection<StorylineViewModel>();
         public Collection<PlotElementViewModel> PlotElements { get; } = new Collection<PlotElementViewModel>();

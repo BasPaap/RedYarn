@@ -28,10 +28,14 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
         public async Task<ActionResult<DiagramViewModel>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
         {
-            var result = new DiagramViewModel() { Id = Guid.NewGuid(), Name = "Hallo!" };
-            return CreatedAtAction(nameof(GetDiagramViewModel), nameof(DiagramController), new { result.Id }, result);
+            //var result = new DiagramViewModel() { Id = Guid.NewGuid(), Name = "Hallo!" };
+            //return CreatedAtAction(nameof(GetDiagramViewModel), nameof(DiagramController), new { result.Id }, result);
+
+            throw new NotImplementedException();
         }
 
         [HttpPut]

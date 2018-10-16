@@ -81,33 +81,6 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 
 		#region Create
 		[TestMethod]
-		public void Create<#= subjectName #>_ArgumentIsNull_Returns400BadRequest()
-		{
-			// Arrange
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-		}
-
-		[TestMethod]
-		public void Create<#= subjectName #>_ModelIsInvalud_Returns400BadRequest()
-		{
-			// Arrange
-			var <#= viewModelInstanceName #> = new <#= viewModelTypeName #>()
-			{
-				Name = ""
-			};
-
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(<#=viewModelInstanceName#>);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-		}
-		
-		[TestMethod]
 		public void Create<#= subjectName #>_ArgumentIsOk_Returns201Created()
 		{
 			// Arrange
