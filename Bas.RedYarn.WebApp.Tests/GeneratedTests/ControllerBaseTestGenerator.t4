@@ -96,7 +96,7 @@ private void WriteCreateTests(string subjectName, string subjectObjectName, stri
 			// Assert
 			Assert.IsInstanceOfType(result, typeof(CreatedAtResult));
 			// Wijst naar juiste url
-			// nieuwe entiteit bestaat in dataservice.
+			AssertCreatedD<#= subjectName #>(result);
 		}
 
 		#endregion

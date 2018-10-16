@@ -17,7 +17,7 @@ namespace Bas.RedYarn.WebApp.Tests
     [TestClass]
     public partial class DiagramControllerTest
     {
-        
+
 
         // UpdateDiagram
         // arg null -> 400 bad request
@@ -32,15 +32,8 @@ namespace Bas.RedYarn.WebApp.Tests
         // id bestaat niet -> 404 not found
         // id bestaat -> 204 no content
 
-        [TestMethod]
-        public void GetDiagram_IdIsValid_ReturnsDiagram()
+        public void AssertCreatedDiagram(DiagramViewModel diagram)
         {
-            // Arrange
-            
-            // Act
-            var diagram = this.diagramController.GetDiagramViewModel(Guid.Empty).Value;
-
-            // Assert
             Assert.AreEqual(0, diagram.CharacterPlotElementConnections.Count);
             Assert.AreEqual(6, diagram.Characters.Count);
             Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FirstCharacter"));
