@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using Bas.RedYarn.WebApp.ViewModel;
+using Bas.RedYarn.WebApp.ViewModels;
 using Bas.RedYarn.WebApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +22,16 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ViewModel.DiagramViewModel> GetDiagramViewModel(Guid id)
+        public ActionResult<ViewModels.DiagramViewModel> GetDiagramViewModel(Guid id)
         {
             return this.dataService.GetDiagramViewModel(id);            
         }
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
-        {   
-            throw new NotImplementedException();            
+        public async Task<ActionResult<DiagramViewModel>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
+        {
+            var result = new DiagramViewModel() { Id = Guid.NewGuid(), Name = "Hallo!" };
+            return CreatedAtAction(nameof(GetDiagramViewModel), nameof(DiagramController), new { result.Id }, result);
         }
 
         [HttpPut]

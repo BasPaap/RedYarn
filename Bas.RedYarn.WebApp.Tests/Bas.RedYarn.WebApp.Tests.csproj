@@ -26,6 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="GeneratedTests\ControllerBaseTestGenerator.t4">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ControllerBaseTestGenerator.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\DiagramControllerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiagramControllerTest.cs</LastGenOutput>
@@ -37,6 +41,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="GeneratedTests\ControllerBaseTestGenerator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ControllerBaseTestGenerator.t4</DependentUpon>
+    </Compile>
     <Compile Update="GeneratedTests\DiagramControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

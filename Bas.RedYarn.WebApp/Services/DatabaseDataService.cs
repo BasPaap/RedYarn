@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bas.RedYarn.WebApp.Database;
-using Bas.RedYarn.WebApp.ViewModel;
+using Bas.RedYarn.WebApp.ViewModels;
 
 namespace Bas.RedYarn.WebApp.Services
 {

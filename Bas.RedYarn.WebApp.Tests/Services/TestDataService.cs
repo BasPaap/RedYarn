@@ -1,4 +1,4 @@
-﻿using Bas.RedYarn.WebApp.ViewModel;
+﻿using Bas.RedYarn.WebApp.ViewModels;
 using Bas.RedYarn.WebApp.Services;
 using System;
 using System.Collections.Generic;
@@ -60,19 +60,19 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             return new DiagramViewModel(this.diagram);
         }
 
-        public ViewModel.DiagramViewModel ExpectedModel
+        public ViewModels.DiagramViewModel ExpectedModel
         {
             get
             {
-                var firstCharacterModel = new ViewModel.CharacterViewModel(firstCharacter) { Id = Guid.Empty };
-                var secondCharacterModel = new ViewModel.CharacterViewModel(secondCharacter) { Id = Guid.Empty };
-                var thirdCharacterModel = new ViewModel.CharacterViewModel(thirdCharacter) { Id = Guid.Empty };
-                var fourthCharacterModel = new ViewModel.CharacterViewModel(fourthCharacter) { Id = Guid.Empty };
-                var fifthCharacterModel = new ViewModel.CharacterViewModel(fifthCharacter) { Id = Guid.Empty };
-                var sixthCharacterModel = new ViewModel.CharacterViewModel(sixthCharacter) { Id = Guid.Empty };
+                var firstCharacterModel = new ViewModels.CharacterViewModel(firstCharacter) { Id = Guid.Empty };
+                var secondCharacterModel = new ViewModels.CharacterViewModel(secondCharacter) { Id = Guid.Empty };
+                var thirdCharacterModel = new ViewModels.CharacterViewModel(thirdCharacter) { Id = Guid.Empty };
+                var fourthCharacterModel = new ViewModels.CharacterViewModel(fourthCharacter) { Id = Guid.Empty };
+                var fifthCharacterModel = new ViewModels.CharacterViewModel(fifthCharacter) { Id = Guid.Empty };
+                var sixthCharacterModel = new ViewModels.CharacterViewModel(sixthCharacter) { Id = Guid.Empty };
 
-                var firstStorylineModel = new ViewModel.StorylineViewModel(firstStoryline) { Id = Guid.Empty };
-                var secondStorylineModel = new ViewModel.StorylineViewModel(secondStoryline) { Id = Guid.Empty };
+                var firstStorylineModel = new ViewModels.StorylineViewModel(firstStoryline) { Id = Guid.Empty };
+                var secondStorylineModel = new ViewModels.StorylineViewModel(secondStoryline) { Id = Guid.Empty };
 
                 var firstRelationship = GetRelationship(firstCharacterModel, secondCharacterModel, relationshipFromFirstToSecondName);
                 var secondRelationship = GetRelationship(secondCharacterModel, firstCharacterModel, relationshipFromSecondToFirstName);
@@ -82,7 +82,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
                 var secondStorylineConnection = GetStorylineConnection(firstCharacterModel, secondStorylineModel);
                 var thirdStorylineConnection = GetStorylineConnection(secondCharacterModel, firstStorylineModel);
 
-                var diagramModel = new ViewModel.DiagramViewModel(diagram);
+                var diagramModel = new ViewModels.DiagramViewModel(diagram);
                 diagramModel.Characters.Add(firstCharacterModel);
                 diagramModel.Characters.Add(secondCharacterModel);
                 diagramModel.Characters.Add(thirdCharacterModel);
@@ -103,9 +103,9 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             }
         }
 
-        private ViewModel.RelationshipViewModel GetRelationship(ViewModel.CharacterViewModel firstCharacterModel, ViewModel.CharacterViewModel secondCharacterModel, string name)
+        private ViewModels.RelationshipViewModel GetRelationship(ViewModels.CharacterViewModel firstCharacterModel, ViewModels.CharacterViewModel secondCharacterModel, string name)
         {
-            return new ViewModel.RelationshipViewModel()
+            return new ViewModels.RelationshipViewModel()
             {
                 FromCharacterId = firstCharacterModel.Id,
                 ToCharacterId = secondCharacterModel.Id,
@@ -113,9 +113,9 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             };
         }
 
-        private ViewModel.StorylineConnectionViewModel GetStorylineConnection(ViewModel.CharacterViewModel characterModel, ViewModel.StorylineViewModel storylineModel)
+        private ViewModels.StorylineConnectionViewModel GetStorylineConnection(ViewModels.CharacterViewModel characterModel, ViewModels.StorylineViewModel storylineModel)
         {
-            return new ViewModel.StorylineConnectionViewModel()
+            return new ViewModels.StorylineConnectionViewModel()
             {
                 ConnectionId = characterModel.Id,
                 StorylineId = storylineModel.Id

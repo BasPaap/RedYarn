@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-namespace Bas.RedYarn.WebApp.ViewModel
+namespace Bas.RedYarn.WebApp.ViewModels
 {
     public sealed class CharacterViewModel
     {

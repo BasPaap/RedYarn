@@ -23,19 +23,23 @@ private void WriteBeginning(string unitUnderTestName)
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Bas.RedYarn.WebApp.Controllers;
+using Bas.RedYarn.WebApp.Tests.Services;
 using Bas.RedYarn.WebApp.ViewModels;
 
 namespace Bas.RedYarn.WebApp.Tests
 {
     public partial class <#= unitUnderTestName #>Test
     {
-		private readonly TestDataService dataService = new TestDataService();
+		private TestDataService dataService;
         private <#= unitUnderTestName #> <#= Decapitalize(unitUnderTestName) #>;
 
         [TestInitialize]
         public void Initialize()
         {
-            this.<#= Decapitalize(unitUnderTestName)#> = new <#= unitUnderTestName #>(dataService);
+			this.dataService = new TestDataService();
+            this.<#= Decapitalize(unitUnderTestName)#> = new <#= unitUnderTestName #>(this.dataService);
         }
 <#+
 }
@@ -55,7 +59,7 @@ private string Decapitalize(string capitalizedString)
 
 private string GetSubjectName(string unitUnderTestName)
 {
-	return unitUnderTestName.SubString(0, unitUnderTestName.IndexOf("Controller"));
+	return unitUnderTestName.Substring(0, unitUnderTestName.IndexOf("Controller"));
 }
 
 private void WriteTests(string unitUnderTestName)
@@ -74,6 +78,7 @@ private void WriteTests(string unitUnderTestName)
 private void WriteCreateTests(string unitUnderTestName, string subjectName, string viewModelTypeName, string viewModelInstanceName, string controllerObjectName)
 {
 #>
+
 		#region Create
 		[TestMethod]
 		public void Create<#= subjectName #>_ArgumentIsNull_Returns400BadRequest()
@@ -86,7 +91,6 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
 		}
 
-		#region Create
 		[TestMethod]
 		public void Create<#= subjectName #>_ModelIsInvalud_Returns400BadRequest()
 		{
@@ -109,20 +113,21 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 			// Arrange
 
 			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
+			var result = ((this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null)).Result.Result) as CreatedAtActionResult;
 			
 			// Assert
-			Assert.IsInstanceOfType(result, typeof(CreatedAtResult));
+			Assert.IsNotNull(result);
 			Assert.AreEqual(201, (int)result.StatusCode);
-			Assert.AreEqual("<#= unitUnderTestName #>", result.ControllerName);
-			Assert.AreEqual("Get<#= subjectName #>ViewModel", result.ActionName);
+			Assert.AreEqual(nameof(<#= unitUnderTestName #>), result.ControllerName);
+			Assert.AreEqual(nameof(<#= unitUnderTestName #>.Get<#= subjectName #>ViewModel), result.ActionName);
 			Assert.IsInstanceOfType(result.Value, typeof(<#= viewModelTypeName #>));
 			Assert.IsNotNull(result.RouteValues["id"]);
-			Assert.AreEqual((result.Value as <#= viewModelTypeName #>).Id, (Guid)result.RouteValues["id"]);
-			AssertCreated<#= subjectName #>(result.Value as <#= viewModelTypeName#>);
+			Assert.AreEqual((result.Value as <#=viewModelTypeName#>).Id, (Guid)result.RouteValues["id"]);
+			AssertCreated<#= subjectName #>(result.Value as <#=viewModelTypeName#>);
 		}
 
 		#endregion
+
 <#+
 }
 #>
@@ -134,6 +139,7 @@ private void WriteUpdateTests(string unitUnderTestName, string subjectName, stri
 		#region Update
 		
 		#endregion
+
 <#+
 }
 #>
@@ -145,6 +151,7 @@ private void WriteDeleteTests(string unitUnderTestName, string subjectName, stri
 		#region Delete
 		
 		#endregion
+
 <#+
 }
 #>
@@ -156,6 +163,7 @@ private void WriteGetTests(string unitUnderTestName, string subjectName, string 
 		#region Get
 		
 		#endregion
+
 <#+
 }
 #>

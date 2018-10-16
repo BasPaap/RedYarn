@@ -5,10 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Bas.RedYarn.WebApp.Extensions;
 
-namespace Bas.RedYarn.WebApp.ViewModel
+namespace Bas.RedYarn.WebApp.ViewModels
 {
     public sealed class DiagramViewModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public Collection<CharacterViewModel> Characters { get; } = new Collection<CharacterViewModel>();
         public Collection<StorylineViewModel> Storylines { get; } = new Collection<StorylineViewModel>();
@@ -26,9 +27,9 @@ namespace Bas.RedYarn.WebApp.ViewModel
         {
             Name = diagram.Name;
 
-            var characterDictionary = new Dictionary<RedYarn.Character, ViewModel.CharacterViewModel>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, ViewModel.CharacterViewModel>(c, new ViewModel.CharacterViewModel(c))));
-            var storylineDictionary = new Dictionary<RedYarn.Storyline, ViewModel.StorylineViewModel>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, ViewModel.StorylineViewModel>(s, new ViewModel.StorylineViewModel(s))));
-            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, ViewModel.PlotElementViewModel>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElementViewModel>(e, new ViewModel.PlotElementViewModel(e))));
+            var characterDictionary = new Dictionary<RedYarn.Character, ViewModels.CharacterViewModel>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, ViewModels.CharacterViewModel>(c, new ViewModels.CharacterViewModel(c))));
+            var storylineDictionary = new Dictionary<RedYarn.Storyline, ViewModels.StorylineViewModel>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, ViewModels.StorylineViewModel>(s, new ViewModels.StorylineViewModel(s))));
+            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, ViewModels.PlotElementViewModel>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElementViewModel>(e, new ViewModels.PlotElementViewModel(e))));
 
             AddStorylines(storylineDictionary);
             AddCharacters(characterDictionary);
