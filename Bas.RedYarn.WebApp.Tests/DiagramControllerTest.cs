@@ -15,16 +15,9 @@ using Bas.RedYarn.WebApp.ViewModel;
 namespace Bas.RedYarn.WebApp.Tests
 {
     [TestClass]
-    public class DiagramControllerTest
+    public partial class DiagramControllerTest
     {
-        private readonly TestDataService dataService = new TestDataService();
-        private DiagramController diagramController;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            this.diagramController = new DiagramController(dataService);
-        }
+        
 
         // UpdateDiagram
         // arg null -> 400 bad request
@@ -33,7 +26,7 @@ namespace Bas.RedYarn.WebApp.Tests
 
         // CreateDiagram
         // arg null -> 400 bad request
-        // id bestaat -> 201 Created met Uri naar GetDiagram(nieuw id)
+        // model okee -> 201 Created met Uri naar GetDiagram(nieuw id)
 
         // DeleteDiagram
         // id bestaat niet -> 404 not found

@@ -1,0 +1,8 @@
+﻿<#@ include file="ControllerBaseTestGenerator.t4" #>
+<# 
+var unitUnderTestName = nameof(DiagramController);
+
+WriteBeginning(unitUnderTestName);
+WriteTests(unitUnderTestName);
+WriteEnd();
+#>
