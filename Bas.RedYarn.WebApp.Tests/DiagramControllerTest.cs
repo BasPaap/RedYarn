@@ -33,7 +33,7 @@ namespace Bas.RedYarn.WebApp.Tests
         // id bestaat -> 204 no content
 
         public void AssertCreatedDiagram(DiagramViewModel diagram)
-        {
+        {            
             Assert.AreEqual(0, diagram.CharacterPlotElementConnections.Count);
             Assert.AreEqual(6, diagram.Characters.Count);
             Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FirstCharacter"));

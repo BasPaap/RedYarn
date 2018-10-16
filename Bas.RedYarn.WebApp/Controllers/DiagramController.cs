@@ -29,7 +29,7 @@ namespace Bas.RedYarn.WebApp.Controllers
 
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
-        {            
+        {   
             throw new NotImplementedException();            
         }
 

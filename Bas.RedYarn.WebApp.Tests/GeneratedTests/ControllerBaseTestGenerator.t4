@@ -57,19 +57,21 @@ private string GetSubjectName(string unitUnderTestName)
 {
 	return unitUnderTestName.SubString(0, unitUnderTestName.IndexOf("Controller"));
 }
+
 private void WriteTests(string unitUnderTestName)
 {
-	string subjectName = GetSubjectName(unitUnderTestName);
-	string subjectObjectName = Decapitalize(subjectName);
-	string controllerObjectName = Decapitalize(subjectUnderTestName);
+	string subjectName = GetSubjectName(unitUnderTestName);			// "Diagram"
+	string viewModelTypeName = subjectName + "ViewModel";			// "DiagramViewModel"
+	string viewModelInstanceName = Decapitalize(viewModelTypeName); // "diagramViewModel"
+	string controllerObjectName = Decapitalize(unitUnderTestName);	// "diagramController"
 
-	WriteCreateTests(subjectName, subjectObjectName, controllerObjectName);
-	WriteUpdateTests(subjectName, subjectObjectName, controllerObjectName);
-	WriteDeleteTests(subjectName, subjectObjectName, controllerObjectName);
-	WriteGetTests(subjectName, subjectObjectName, controllerObjectName);
+	WriteCreateTests(unitUnderTestName, subjectName, viewModelTypeName, viewModelInstanceName, controllerObjectName);
+	WriteUpdateTests(unitUnderTestName, subjectName, viewModelTypeName, viewModelInstanceName, controllerObjectName);
+	WriteDeleteTests(unitUnderTestName, subjectName, viewModelTypeName, viewModelInstanceName, controllerObjectName);
+	WriteGetTests(unitUnderTestName, subjectName, viewModelTypeName, viewModelInstanceName, controllerObjectName);
 }
 
-private void WriteCreateTests(string subjectName, string subjectObjectName, string controllerObjectName)
+private void WriteCreateTests(string unitUnderTestName, string subjectName, string viewModelTypeName, string viewModelInstanceName, string controllerObjectName)
 {
 #>
 		#region Create
@@ -86,6 +88,22 @@ private void WriteCreateTests(string subjectName, string subjectObjectName, stri
 
 		#region Create
 		[TestMethod]
+		public void Create<#= subjectName #>_ModelIsInvalud_Returns400BadRequest()
+		{
+			// Arrange
+			var <#= viewModelInstanceName #> = new <#= viewModelTypeName #>()
+			{
+				Name = ""
+			};
+
+			// Act
+			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(<#=viewModelInstanceName#>);
+			
+			// Assert
+			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+		}
+		
+		[TestMethod]
 		public void Create<#= subjectName #>_ArgumentIsOk_Returns201Created()
 		{
 			// Arrange
@@ -95,8 +113,13 @@ private void WriteCreateTests(string subjectName, string subjectObjectName, stri
 			
 			// Assert
 			Assert.IsInstanceOfType(result, typeof(CreatedAtResult));
-			// Wijst naar juiste url
-			AssertCreatedD<#= subjectName #>(result);
+			Assert.AreEqual(201, (int)result.StatusCode);
+			Assert.AreEqual("<#= unitUnderTestName #>", result.ControllerName);
+			Assert.AreEqual("Get<#= subjectName #>ViewModel", result.ActionName);
+			Assert.IsInstanceOfType(result.Value, typeof(<#= viewModelTypeName #>));
+			Assert.IsNotNull(result.RouteValues["id"]);
+			Assert.AreEqual((result.Value as <#= viewModelTypeName #>).Id, (Guid)result.RouteValues["id"]);
+			AssertCreated<#= subjectName #>(result.Value as <#= viewModelTypeName#>);
 		}
 
 		#endregion
@@ -105,108 +128,33 @@ private void WriteCreateTests(string subjectName, string subjectObjectName, stri
 #>
 
 <#+
-private void WriteUpdateTests(string subjectName, string subjectObjectName, string controllerObjectName)
+private void WriteUpdateTests(string unitUnderTestName, string subjectName, string viewModelTypeName, string viewModelInstanceName, string controllerObjectName)
 {
 #>
 		#region Update
-		[TestMethod]
-		public void Create<#= subjectName #>_ArgumentIsNull_Returns400BadRequest()
-		{
-			// Arrange
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-		}
-
-		#region Create
-		[TestMethod]
-		public void Create<#= subjectName #>_ArgumentIsOk_Returns201Created()
-		{
-			// Arrange
-
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(CreatedAtResult));
-			// Wijst naar juiste url
-			// nieuwe entiteit bestaat in dataservice.
-		}
-
+		
 		#endregion
 <#+
 }
 #>
 
 <#+
-private void WriteDeleteTests(string subjectName, string subjectObjectName, string controllerObjectName)
+private void WriteDeleteTests(string unitUnderTestName, string subjectName, string viewModelTypeName, string viewModelInstanceName, string controllerObjectName)
 {
 #>
-		#region Create
-		[TestMethod]
-		public void Create<#= subjectName #>_ArgumentIsNull_Returns400BadRequest()
-		{
-			// Arrange
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-		}
-
-		#region Create
-		[TestMethod]
-		public void Create<#= subjectName #>_ArgumentIsOk_Returns201Created()
-		{
-			// Arrange
-
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(CreatedAtResult));
-			// Wijst naar juiste url
-			// nieuwe entiteit bestaat in dataservice.
-		}
-
+		#region Delete
+		
 		#endregion
 <#+
 }
 #>
 
 <#+
-private void WriteGetTests(string subjectName, string subjectObjectName, string controllerObjectName)
+private void WriteGetTests(string unitUnderTestName, string subjectName, string viewModelTypeName, string viewModelInstanceName, string controllerObjectName)
 {
 #>
 		#region Get
-		[TestMethod]
-		public void Create<#= subjectName #>_ArgumentIsNull_Returns400BadRequest()
-		{
-			// Arrange
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(BadRequestResult));
-		}
-
-		#region Create
-		[TestMethod]
-		public void Create<#= subjectName #>_ArgumentIsOk_Returns201Created()
-		{
-			// Arrange
-
-			// Act
-			var result = this.<#= controllerObjectName #>.Create<#= subjectName #>Async(null);
-			
-			// Assert
-			Assert.IsInstanceOfType(result, typeof(CreatedAtResult));
-			// Wijst naar juiste url
-			// nieuwe entiteit bestaat in dataservice.
-		}
-
+		
 		#endregion
 <#+
 }
