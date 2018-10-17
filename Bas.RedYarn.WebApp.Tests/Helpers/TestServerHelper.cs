@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Net.Http;
 
 
@@ -18,8 +19,7 @@ namespace Bas.RedYarn.WebApp.Tests.Helpers
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
                     var hostingEnvironment = builderContext.HostingEnvironment;
-                    config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                          .AddJsonFile($"appsettings.{builderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                    config.AddInMemoryCollection(new Dictionary<string, string> { { "ConnectionStrings:RedYarnDatabase", "Data Source=redyarn.db" } });
                 })
                 .ConfigureServices(s => s.AddTransient<IDataService, IDataService>(serviceProvider => dataService));
 
