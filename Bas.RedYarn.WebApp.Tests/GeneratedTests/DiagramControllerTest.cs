@@ -7,12 +7,15 @@
 // </auto-generated> 
 //------------------------------------------------------------------------------
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using Bas.RedYarn.WebApp.Controllers;
 using Bas.RedYarn.WebApp.Tests.Services;
 using Bas.RedYarn.WebApp.ViewModels;
+using Bas.RedYarn.WebApp.Tests.Extensions;
+using Bas.RedYarn.WebApp.Tests.Helpers;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Net.Http;
 
 namespace Bas.RedYarn.WebApp.Tests
 {
@@ -20,32 +23,43 @@ namespace Bas.RedYarn.WebApp.Tests
     {
 		private TestDataService dataService;
         private DiagramController diagramController;
+		private HttpClient httpClient;
+
+		public DiagramControllerTest()
+		{
+			this.httpClient = TestServerHelper.GetTestClient(this.dataService);
+		}
 
         [TestInitialize]
         public void Initialize()
         {
 			this.dataService = new TestDataService();
-            this.diagramController = new DiagramController(this.dataService);
+            //this.diagramController = new DiagramController(this.dataService);
+			//this.httpClient = TestServerHelper.GetTestClient(this.dataService);
         }
 
 		#region Create
 		[TestMethod]
-		public void CreateDiagram_ArgumentIsOk_Returns201Created()
+		public void CreateDiagram_ArgumentIsOk_CreatesObjectAndReturns201Created()
 		{
 			// Arrange
+			var diagramViewModel = new DiagramViewModel()
+			{
+				Name = "NewDiagramViewModel"
+			};
 
 			// Act
-			var result = ((this.diagramController.CreateDiagramAsync(null)).Result.Result) as CreatedAtActionResult;
-			
+			var result = (httpClient.PostAsync("api/Diagram", diagramViewModel.ToJsonStringContent())).Result;
+
 			// Assert
 			Assert.IsNotNull(result);
-			Assert.AreEqual(201, (int)result.StatusCode);
-			Assert.AreEqual(nameof(DiagramController), result.ControllerName);
-			Assert.AreEqual(nameof(DiagramController.GetDiagramViewModel), result.ActionName);
-			Assert.IsInstanceOfType(result.Value, typeof(DiagramViewModel));
-			Assert.IsNotNull(result.RouteValues["id"]);
-			Assert.AreEqual((result.Value as DiagramViewModel).Id, (Guid)result.RouteValues["id"]);
-			AssertCreatedDiagram(result.Value as DiagramViewModel);
+			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
+			//Assert.AreEqual(nameof(DiagramController), result.ControllerName);
+			//Assert.AreEqual(nameof(DiagramController.GetDiagramViewModel), result.ActionName);
+			//Assert.IsInstanceOfType(result.Value, typeof(DiagramViewModel));
+			//Assert.IsNotNull(result.RouteValues["id"]);
+			//Assert.AreEqual((result.Value as DiagramViewModel).Id, (Guid)result.RouteValues["id"]);
+			//AssertCreatedDiagram(result.Value as DiagramViewModel);
 		}
 
 		#endregion
