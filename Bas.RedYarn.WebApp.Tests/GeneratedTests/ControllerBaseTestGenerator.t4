@@ -21,14 +21,11 @@ private void WriteBeginning(string unitUnderTestName)
 // </auto-generated> 
 //------------------------------------------------------------------------------
 
-using Bas.RedYarn.WebApp.Controllers;
-using Bas.RedYarn.WebApp.Tests.Services;
-using Bas.RedYarn.WebApp.ViewModels;
 using Bas.RedYarn.WebApp.Tests.Extensions;
 using Bas.RedYarn.WebApp.Tests.Helpers;
-using Microsoft.AspNetCore.Mvc;
+using Bas.RedYarn.WebApp.Tests.Services;
+using Bas.RedYarn.WebApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Net.Http;
 
 namespace Bas.RedYarn.WebApp.Tests
@@ -36,8 +33,7 @@ namespace Bas.RedYarn.WebApp.Tests
     public partial class <#= unitUnderTestName #>Test
     {
 		private TestDataService dataService;
-        private <#= unitUnderTestName #> <#= Decapitalize(unitUnderTestName) #>;
-		private HttpClient httpClient;
+        private HttpClient httpClient;
 
 		public <#= unitUnderTestName #>Test()
 		{
@@ -48,8 +44,6 @@ namespace Bas.RedYarn.WebApp.Tests
         public void Initialize()
         {
 			this.dataService = new TestDataService();
-            //this.<#= Decapitalize(unitUnderTestName)#> = new <#= unitUnderTestName #>(this.dataService);
-			//this.httpClient = TestServerHelper.GetTestClient(this.dataService);
         }
 <#+
 }
@@ -103,15 +97,39 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 			var result = (httpClient.PostAsync("api/<#= subjectName #>", <#=viewModelInstanceName#>.ToJsonStringContent())).Result;
 
 			// Assert
+            var content = result.Content.FromJsonString<<#=viewModelTypeName#>>();
 			Assert.IsNotNull(result);
+            Assert.IsNotNull(content);
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
-			//Assert.AreEqual(nameof(<#= unitUnderTestName #>), result.ControllerName);
-			//Assert.AreEqual(nameof(<#= unitUnderTestName #>.Get<#= subjectName #>ViewModel), result.ActionName);
-			//Assert.IsInstanceOfType(result.Value, typeof(<#= viewModelTypeName #>));
-			//Assert.IsNotNull(result.RouteValues["id"]);
-			//Assert.AreEqual((result.Value as <#=viewModelTypeName#>).Id, (Guid)result.RouteValues["id"]);
-			//AssertCreated<#= subjectName #>(result.Value as <#=viewModelTypeName#>);
+            Assert.AreEqual($"/api/<#=subjectName#>?id={content.Id.ToString()}", result.Headers.Location.PathAndQuery);
+            AssertCreated<#= subjectName #>(content);
 		}
+
+		[TestMethod]
+        public void <#=subjectName#>Create_WithInvalidModel_Returns400BadRequest()
+        {
+            // Arrange
+            
+            // Act
+            var result = (httpClient.PostAsync("api/<#=subjectName#>", (new <#=viewModelTypeName#>()).ToJsonStringContent())).Result;
+
+            // Assert          
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [TestMethod]
+        public void <#=subjectName#>Create_WithoutContent_Returns400BadRequest()
+        {
+            // Arrange
+            var httpClient = TestServerHelper.GetTestClient(this.dataService);
+
+            // Act
+            var result = (httpClient.PostAsync("api/<#=subjectName#>", null)).Result;
+
+            // Assert          
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
 
 		#endregion
 

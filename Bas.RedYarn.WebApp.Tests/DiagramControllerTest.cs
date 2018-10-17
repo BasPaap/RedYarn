@@ -10,40 +10,11 @@ namespace Bas.RedYarn.WebApp.Tests
     [TestClass]
     public partial class DiagramControllerTest
     {
-        //[TestMethod]
-        //public void DiagramCreate_WithInvalidModel_Returns400BadRequest()
-        //{
-        //    // Arrange
-        //    var httpClient = TestServerHelper.GetTestClient(this.dataService);
-            
-        //    // Act
-        //    var result = (httpClient.PostAsync("api/Diagram", (new DiagramViewModel()).ToJsonStringContent())).Result;
-
-        //    // Assert          
-        //    Assert.AreEqual(System.Net.HttpStatusCode..BadRequest, result.StatusCode);
-        //}
-
-        //[TestMethod]
-        //public void DiagramCreate_WithoutContent_Returns400BadRequest()
-        //{
-        //    // Arrange
-        //    var httpClient = TestServerHelper.GetTestClient(this.dataService);
-
-        //    // Act
-        //    var result = (httpClient.PostAsync("api/Diagram", null)).Result;
-
-        //    // Assert          
-        //    Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
-        //}
-
+        
         // UpdateDiagram
         // arg null -> 400 bad request
         // id bestaat niet -> 404 not found
         // vm is okee -> 204 no content (https://stackoverflow.com/questions/797834/should-a-restful-put-operation-return-something)
-
-        // CreateDiagram
-        // arg null -> 400 bad request
-        // model okee -> 201 Created met Uri naar GetDiagram(nieuw id)
 
         // DeleteDiagram
         // id bestaat niet -> 404 not found

@@ -7,14 +7,11 @@
 // </auto-generated> 
 //------------------------------------------------------------------------------
 
-using Bas.RedYarn.WebApp.Controllers;
-using Bas.RedYarn.WebApp.Tests.Services;
-using Bas.RedYarn.WebApp.ViewModels;
 using Bas.RedYarn.WebApp.Tests.Extensions;
 using Bas.RedYarn.WebApp.Tests.Helpers;
-using Microsoft.AspNetCore.Mvc;
+using Bas.RedYarn.WebApp.Tests.Services;
+using Bas.RedYarn.WebApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Net.Http;
 
 namespace Bas.RedYarn.WebApp.Tests
@@ -22,8 +19,7 @@ namespace Bas.RedYarn.WebApp.Tests
     public partial class DiagramControllerTest
     {
 		private TestDataService dataService;
-        private DiagramController diagramController;
-		private HttpClient httpClient;
+        private HttpClient httpClient;
 
 		public DiagramControllerTest()
 		{
@@ -34,8 +30,6 @@ namespace Bas.RedYarn.WebApp.Tests
         public void Initialize()
         {
 			this.dataService = new TestDataService();
-            //this.diagramController = new DiagramController(this.dataService);
-			//this.httpClient = TestServerHelper.GetTestClient(this.dataService);
         }
 
 		#region Create
@@ -52,15 +46,39 @@ namespace Bas.RedYarn.WebApp.Tests
 			var result = (httpClient.PostAsync("api/Diagram", diagramViewModel.ToJsonStringContent())).Result;
 
 			// Assert
+            var content = result.Content.FromJsonString<DiagramViewModel>();
 			Assert.IsNotNull(result);
+            Assert.IsNotNull(content);
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
-			//Assert.AreEqual(nameof(DiagramController), result.ControllerName);
-			//Assert.AreEqual(nameof(DiagramController.GetDiagramViewModel), result.ActionName);
-			//Assert.IsInstanceOfType(result.Value, typeof(DiagramViewModel));
-			//Assert.IsNotNull(result.RouteValues["id"]);
-			//Assert.AreEqual((result.Value as DiagramViewModel).Id, (Guid)result.RouteValues["id"]);
-			//AssertCreatedDiagram(result.Value as DiagramViewModel);
+            Assert.AreEqual($"/api/Diagram?id={content.Id.ToString()}", result.Headers.Location.PathAndQuery);
+            AssertCreatedDiagram(content);
 		}
+
+		[TestMethod]
+        public void DiagramCreate_WithInvalidModel_Returns400BadRequest()
+        {
+            // Arrange
+            
+            // Act
+            var result = (httpClient.PostAsync("api/Diagram", (new DiagramViewModel()).ToJsonStringContent())).Result;
+
+            // Assert          
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
+        [TestMethod]
+        public void DiagramCreate_WithoutContent_Returns400BadRequest()
+        {
+            // Arrange
+            var httpClient = TestServerHelper.GetTestClient(this.dataService);
+
+            // Act
+            var result = (httpClient.PostAsync("api/Diagram", null)).Result;
+
+            // Assert          
+            Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
+        }
+
 
 		#endregion
 
