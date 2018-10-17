@@ -8,8 +8,11 @@ namespace Bas.RedYarn.WebApp.Services
 {
     public interface IDataService
     {
-        DiagramViewModel GetDiagramViewModel(Guid id);
-        Task<DiagramViewModel> CreateDiagramAsync(string name);
+        Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id);
+        Task<DiagramViewModel> CreateDiagramAsync(DiagramViewModel diagramViewModel);
+        Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel);
+        Task DeleteDiagramViewModelAsync(Guid id);
+        
         void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel);
         void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel);
     }

@@ -13,22 +13,19 @@ namespace Bas.RedYarn.WebApp.Services
         {
             this.dbContext = redYarnDbContext;
         }
+
         private RedYarnDbContext dbContext;
-        public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
+
+        public async Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return new DiagramViewModel();
         }
 
-        public void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<DiagramViewModel> CreateDiagramAsync(string name)
+        public async Task<DiagramViewModel> CreateDiagramAsync(DiagramViewModel diagramViewModel)
         {
             var diagram = new Diagram()
             {
-                Name = name
+                Name = diagramViewModel.Name
             };
 
             dbContext.Diagrams.Add(diagram);
@@ -37,9 +34,24 @@ namespace Bas.RedYarn.WebApp.Services
             return new DiagramViewModel(diagram);
         }
 
-        public DiagramViewModel GetDiagramViewModel(Guid id)
+        public async Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
         {
-            return new DiagramViewModel();
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteDiagramViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

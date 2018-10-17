@@ -22,9 +22,9 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ViewModels.DiagramViewModel> GetDiagramViewModel(Guid id)
+        public async Task<ActionResult<ViewModels.DiagramViewModel>> GetDiagramViewModelAsync(Guid id)
         {
-            return this.dataService.GetDiagramViewModel(id);            
+            return await this.dataService.GetDiagramViewModelAsync(id);            
         }
 
         [HttpPost]
@@ -32,7 +32,7 @@ namespace Bas.RedYarn.WebApp.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<DiagramViewModel>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
         {
-            var vm = await this.dataService.CreateDiagramAsync(diagramViewModel.Name);
+            var vm = await this.dataService.CreateDiagramAsync(diagramViewModel);
 
             return CreatedAtAction(RouteData.Values["Action"].ToString(), RouteData.Values["Controller"].ToString(), new { id = vm.Id }, vm);
                         

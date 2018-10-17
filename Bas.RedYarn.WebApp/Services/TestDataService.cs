@@ -8,22 +8,22 @@ namespace Bas.RedYarn.WebApp.Services
 {
     sealed class TestDataService : IDataService
     {
-        public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
+        public async Task<DiagramViewModel> CreateDiagramAsync(DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel)
+        public async Task DeleteDiagramViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+        
+        public async Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task<DiagramViewModel> CreateDiagramAsync(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DiagramViewModel GetDiagramViewModel(Guid id)
+        public async Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id)
         {
             var dumas = new Author() { Name = "Alexandre Dumas" };
 
@@ -110,6 +110,16 @@ namespace Bas.RedYarn.WebApp.Services
             diagram.PlotElements.Add(haydeesIdentity);
 
             return new DiagramViewModel(diagram);
+        }
+
+        public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel)
+        {
+            throw new NotImplementedException();
         }
     }
 }

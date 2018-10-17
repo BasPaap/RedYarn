@@ -3,6 +3,7 @@ using Bas.RedYarn.WebApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,23 +16,35 @@ namespace Bas.RedYarn.WebApp.Tests.Services
         public TestDataService()
         {
         }
-        
-        public DiagramViewModel GetDiagramViewModel(Guid id)
+                
+        public async Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return DiagramViewModels.SingleOrDefault(d => d.Id == id);
         }
-        
-        public async Task<DiagramViewModel> CreateDiagramAsync(string name)
-        {
-            var diagramViewModel = new DiagramViewModel()
-            {
-                Id = Guid.NewGuid(),
-                Name = name
-            };
 
+        public async Task<DiagramViewModel> CreateDiagramAsync(DiagramViewModel diagramViewModel)
+        {
+            diagramViewModel.Id = Guid.NewGuid();
             DiagramViewModels.Add(diagramViewModel);
 
             return diagramViewModel;
+        }
+
+        public async Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
+        {
+            var existingViewModel = DiagramViewModels.SingleOrDefault(d => d.Id == id);
+            existingViewModel = diagramViewModel;
+            existingViewModel.Id = id;
+
+            return existingViewModel;
+        }
+
+        public async Task DeleteDiagramViewModelAsync(Guid id)
+        {
+            var existingViewModel = DiagramViewModels.SingleOrDefault(d => d.Id == id);
+            DiagramViewModels.Remove(existingViewModel);
+
+            return;
         }
 
         public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
