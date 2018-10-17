@@ -277,7 +277,7 @@ private void WriteGetTests(string unitUnderTestName, string subjectName, string 
 #>
 		#region Get
 		[TestMethod]
-		public void Get<#= subjectName #>_ArgumentIsOk_CreatesObjectAndReturns201Created()
+		public void Get<#= subjectName #>_ArgumentIsOk_CreatesObjectAndReturns200Ok()
 		{
 			// Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()

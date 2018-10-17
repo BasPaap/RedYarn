@@ -21,10 +21,18 @@ namespace Bas.RedYarn.WebApp.Controllers
             this.dataService = dataService;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ViewModels.DiagramViewModel>> GetDiagramViewModelAsync(Guid id)
-        {
-            return await this.dataService.GetDiagramViewModelAsync(id);            
+        [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<DiagramViewModel>> GetDiagramViewModelAsync(Guid id)
+        {            
+            var diagramViewModel = await this.dataService.GetDiagramViewModelAsync(id);            
+            if (diagramViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return diagramViewModel;            
         }
 
         [HttpPost]
@@ -37,16 +45,24 @@ namespace Bas.RedYarn.WebApp.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpPut]
+        [HttpPut]        
         public async Task<ActionResult> UpdateDiagramAsync(DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteDiagramAsync(DiagramViewModel diagramViewModel)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult> DeleteDiagramAsync(Guid id)
         {
-            throw new NotImplementedException();
+            if (await this.dataService.GetDiagramViewModelAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            await this.dataService.DeleteDiagramViewModelAsync(id);
+            return NoContent();
         }
     }
 }
