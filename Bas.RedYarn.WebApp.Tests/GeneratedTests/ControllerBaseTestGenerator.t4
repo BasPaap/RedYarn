@@ -26,6 +26,7 @@ using Bas.RedYarn.WebApp.Tests.Helpers;
 using Bas.RedYarn.WebApp.Tests.Services;
 using Bas.RedYarn.WebApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using System.Net.Http;
 
 namespace Bas.RedYarn.WebApp.Tests
@@ -34,16 +35,12 @@ namespace Bas.RedYarn.WebApp.Tests
     {
 		private TestDataService dataService;
         private HttpClient httpClient;
-
-		public <#= unitUnderTestName #>Test()
-		{
-			this.httpClient = TestServerHelper.GetTestClient(this.dataService);
-		}
-
+		
         [TestInitialize]
         public void Initialize()
         {
 			this.dataService = new TestDataService();
+			this.httpClient = TestServerHelper.GetTestClient(this.dataService);
         }
 <#+
 }
@@ -102,6 +99,8 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
             Assert.IsNotNull(content);
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
             Assert.AreEqual($"/api/<#=subjectName#>?id={content.Id.ToString()}", result.Headers.Location.PathAndQuery);
+			Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=subjectName#>ViewModels.Single().Name);
+            Assert.AreEqual(content.Id, this.dataService.<#=subjectName#>ViewModels.Single().Id);
             AssertCreated<#= subjectName #>(content);
 		}
 
