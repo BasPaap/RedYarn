@@ -33,7 +33,6 @@ namespace Bas.RedYarn.WebApp
 
             services.AddDbContext<Database.RedYarnDbContext>(optionsBuilder => optionsBuilder.UseSqlite(Configuration.GetConnectionString("RedYarnDatabase")));
             services.AddTransient<IDataService, DatabaseDataService>(serviceProvider => new DatabaseDataService(serviceProvider.GetService<Database.RedYarnDbContext>()));
-            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

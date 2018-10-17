@@ -31,12 +31,11 @@ namespace Bas.RedYarn.WebApp.Controllers
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<DiagramViewModel>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
-        {            
-            var result = new DiagramViewModel() { Id = Guid.NewGuid(), Name = "Hallo!" };
-            
-            var ca =  CreatedAtAction(RouteData.Values["Action"].ToString(), RouteData.Values["Controller"].ToString(), new { id = result.Id }, result);
-            return ca;
+        {
+            var vm = await this.dataService.CreateDiagramAsync(diagramViewModel.Name);
 
+            return CreatedAtAction(RouteData.Values["Action"].ToString(), RouteData.Values["Controller"].ToString(), new { id = vm.Id }, vm);
+                        
             //throw new NotImplementedException();
         }
 
