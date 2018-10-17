@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /Bas.RedYarn.Tests/GeneratedTests/*.cs
 /Bas.RedYarn.WebApp/redyarn.db
+/Bas.RedYarn.WebApp.Tests/GeneratedTests/DiagramControllerTest.cs
