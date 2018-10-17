@@ -26,6 +26,7 @@ using Bas.RedYarn.WebApp.Tests.Helpers;
 using Bas.RedYarn.WebApp.Tests.Services;
 using Bas.RedYarn.WebApp.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 using System.Net.Http;
 
@@ -105,7 +106,7 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 		}
 
 		[TestMethod]
-        public void <#=subjectName#>Create_WithInvalidModel_Returns400BadRequest()
+        public void Create<#=subjectName#>_WithInvalidModel_Returns400BadRequest()
         {
             // Arrange
             
@@ -117,7 +118,7 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
         }
 
         [TestMethod]
-        public void <#=subjectName#>Create_WithoutContent_Returns400BadRequest()
+        public void Create<#=subjectName#>_WithoutContent_Returns400BadRequest()
         {
             // Arrange
             var httpClient = TestServerHelper.GetTestClient(this.dataService);
@@ -165,7 +166,48 @@ private void WriteGetTests(string unitUnderTestName, string subjectName, string 
 {
 #>
 		#region Get
-		
+		[TestMethod]
+		public void Get<#= subjectName #>_ArgumentIsOk_CreatesObjectAndReturns201Created()
+		{
+			// Arrange
+            var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
+			{
+				Id = Guid.NewGuid(),
+				Name = "New<#=viewModelTypeName#>"
+			};
+			this.dataService.<#= subjectName #>ViewModels.Add(<#=viewModelInstanceName#>);
+
+            // Act
+            var result = (httpClient.GetAsync($"api/<#=subjectName#>?id={<#=viewModelInstanceName#>.Id}")).Result;
+
+            // Assert
+			var content = result.Content.FromJsonString<<#=viewModelTypeName#>>();
+			Assert.IsNotNull(result);
+			Assert.IsNotNull(content);
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, result.StatusCode);
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, content.Id);
+			Assert.AreEqual(<#=viewModelInstanceName#>.Name, content.Name);
+		}
+
+		[TestMethod]
+        public void Get<#=subjectName#>_WithInvalidId_Returns404NotFound()
+        {
+            // Arrange
+            var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
+			{
+				Id = Guid.NewGuid(),
+				Name = "New<#=viewModelTypeName#>"
+			};
+			this.dataService.<#= subjectName #>ViewModels.Add(<#=viewModelInstanceName#>);
+
+            // Act
+            var result = (httpClient.GetAsync("api/<#=subjectName#>?id=28BABB19-2A14-421D-9147-26F1D0903F5A")).Result;
+
+            // Assert
+			Assert.IsNotNull(result);
+            Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
+        }
+
 		#endregion
 
 <#+

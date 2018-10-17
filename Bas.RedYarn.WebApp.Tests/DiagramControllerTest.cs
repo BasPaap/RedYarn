@@ -20,28 +20,13 @@ namespace Bas.RedYarn.WebApp.Tests
         // id bestaat niet -> 404 not found
         // id bestaat -> 204 no content
 
+        // GetDiagram
+        // id bestaat => 200
+        // id bestaat niet => 404 not found
+
         public void AssertCreatedDiagram(DiagramViewModel diagram)
-        {            
-            //Assert.AreEqual(0, diagram.CharacterPlotElementConnections.Count);
-            //Assert.AreEqual(6, diagram.Characters.Count);
-            //Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FirstCharacter"));
-            //Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("SecondCharacter"));
-            //Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("ThirdCharacter"));
-            //Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FourthCharacter"));
-            //Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("FifthCharacter"));
-            //Assert.IsTrue(diagram.Characters.Select(c => c.Name).Contains("SixthCharacter"));
-            //Assert.AreEqual("Diagram", diagram.Name);
-            //Assert.AreEqual(0, diagram.PlotElements.Count);
-            //Assert.AreEqual(4, diagram.Relationships.Count);
-            //Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromFirstToSecond"));
-            //Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromSecondToFirst"));
-            //Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromThirdToFourth"));
-            //Assert.IsTrue(diagram.Relationships.Select(r => r.Name).Contains("RelationshipFromFifthToSixth"));
-            //Assert.AreEqual(3, diagram.StorylineCharacterConnections.Count);
-            //Assert.AreEqual(0, diagram.StorylinePlotElementConnections.Count);
-            //Assert.AreEqual(2, diagram.Storylines.Count);
-            //Assert.IsTrue(diagram.Storylines.Select(s => s.Name).Contains("FirstStoryline"));
-            //Assert.IsTrue(diagram.Storylines.Select(s => s.Name).Contains("SecondStoryline"));
+        {           
+            
         }
     }
 }
