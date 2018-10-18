@@ -50,6 +50,30 @@
     <TypeScriptCompile Include="ClientApp\src\app\diagram-types.ts" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Controllers\GeneratedControllers\ControllerGenerator.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ControllerGenerator.t4</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\GeneratedControllers\DiagramController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramController.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Controllers\GeneratedControllers\ControllerGenerator.t4">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ControllerGenerator.cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\DiagramController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramController.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
