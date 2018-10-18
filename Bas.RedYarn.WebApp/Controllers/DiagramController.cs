@@ -40,15 +40,15 @@ namespace Bas.RedYarn.WebApp.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<DiagramViewModel>> CreateDiagramAsync(DiagramViewModel diagramViewModel)
         {
-            //var vm = await this.dataService.CreateDiagramAsync(diagramViewModel);
-            //return CreatedAtAction(RouteData.Values["Action"].ToString(), RouteData.Values["Controller"].ToString(), new { id = vm.Id }, vm);                        
-            throw new NotImplementedException();
+            var createdDiagramViewModel = await this.dataService.CreateDiagramAsync(diagramViewModel);
+            return CreatedAtAction(RouteData.Values["Action"].ToString(), RouteData.Values["Controller"].ToString(), new { id = createdDiagramViewModel.Id }, createdDiagramViewModel);            
         }
 
         [HttpPut]        
-        public async Task<ActionResult> UpdateDiagramAsync(DiagramViewModel diagramViewModel)
+        public async Task<ActionResult> UpdateDiagramAsync(Guid id, DiagramViewModel diagramViewModel)
         {
-            throw new NotImplementedException();
+            await this.dataService.UpdateDiagramViewModelAsync(id, diagramViewModel);
+            return NoContent();
         }
 
         [HttpDelete]
