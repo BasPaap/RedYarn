@@ -47,12 +47,62 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             return;
         }
 
-        public void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel)
+        public Task<CharacterViewModel> GetCharacterViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel)
+        public Task<CharacterViewModel> CreateCharacterAsync(CharacterViewModel characterViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CharacterViewModel> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteCharacterViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StorylineViewModel> GetStorylineViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StorylineViewModel> CreateStorylineAsync(StorylineViewModel storylineViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StorylineViewModel> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteStorylineViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AuthorViewModel> GetAuthorViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AuthorViewModel> CreateAuthorAsync(AuthorViewModel authorViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AuthorViewModel> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAuthorViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }

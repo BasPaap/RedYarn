@@ -37,13 +37,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="GeneratedTests\ControllerBaseTestGenerator.t4">
+    <None Update="GeneratedTests\AuthorControllerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ControllerBaseTestGenerator.cs</LastGenOutput>
+      <LastGenOutput>AuthorControllerTest.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\CharacterControllerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CharacterControllerTest.cs</LastGenOutput>
     </None>
     <None Update="GeneratedTests\DiagramControllerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiagramControllerTest.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\StorylineControllerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StorylineControllerTest.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -52,6 +60,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="GeneratedTests\AuthorControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\CharacterControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterControllerTest.tt</DependentUpon>
+    </Compile>
     <Compile Update="GeneratedTests\ControllerBaseTestGenerator.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,6 +79,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DiagramControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\StorylineControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineControllerTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

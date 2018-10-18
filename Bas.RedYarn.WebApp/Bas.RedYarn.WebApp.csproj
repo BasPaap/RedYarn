@@ -51,6 +51,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controllers\GeneratedControllers\AuthorController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\GeneratedControllers\CharacterController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterController.tt</DependentUpon>
+    </Compile>
     <Compile Update="Controllers\GeneratedControllers\ControllerGenerator.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,16 +71,45 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DiagramController.tt</DependentUpon>
     </Compile>
+    <Compile Update="Controllers\GeneratedControllers\StorylineController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineController.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Controllers\GeneratedControllers\ControllerGenerator.t4">
+    <None Update="Controllers\GeneratedControllers\AuthorController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ControllerGenerator.cs</LastGenOutput>
+      <LastGenOutput>AuthorController.cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\CharacterController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CharacterController.cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\DiagramController - kopie %282%29.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramController - kopie (2).cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\DiagramController - kopie %283%29.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramController - kopie (3).cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\DiagramController - kopie.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramController - kopie.cs</LastGenOutput>
     </None>
     <None Update="Controllers\GeneratedControllers\DiagramController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiagramController.cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\StorylineController.t4">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StorylineController.cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\StorylineController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StorylineController.cs</LastGenOutput>
     </None>
   </ItemGroup>
 

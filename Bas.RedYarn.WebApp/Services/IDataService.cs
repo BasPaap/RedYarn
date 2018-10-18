@@ -12,8 +12,20 @@ namespace Bas.RedYarn.WebApp.Services
         Task<DiagramViewModel> CreateDiagramAsync(DiagramViewModel diagramViewModel);
         Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel);
         Task DeleteDiagramViewModelAsync(Guid id);
-        
-        void AddCharacter(Guid diagramId, CharacterViewModel characterViewModel);
-        void AddStoryline(Guid diagramId, StorylineViewModel storylineViewModel);
+
+        Task<CharacterViewModel> GetCharacterViewModelAsync(Guid id);
+        Task<CharacterViewModel> CreateCharacterAsync(CharacterViewModel characterViewModel);
+        Task<CharacterViewModel> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel);
+        Task DeleteCharacterViewModelAsync(Guid id);
+
+        Task<StorylineViewModel> GetStorylineViewModelAsync(Guid id);
+        Task<StorylineViewModel> CreateStorylineAsync(StorylineViewModel storylineViewModel);
+        Task<StorylineViewModel> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel);
+        Task DeleteStorylineViewModelAsync(Guid id);
+
+        Task<AuthorViewModel> GetAuthorViewModelAsync(Guid id);
+        Task<AuthorViewModel> CreateAuthorAsync(AuthorViewModel authorViewModel);
+        Task<AuthorViewModel> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel);
+        Task DeleteAuthorViewModelAsync(Guid id);
     }
 }

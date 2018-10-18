@@ -8,8 +8,8 @@ namespace Bas.RedYarn.WebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public partial class DiagramController : ControllerBase
+    public partial class CharacterController : ControllerBase
     {
-        // CRUD actions and IDataService instance are declared in GeneratedController\DiagramController.cs
+        // CRUD actions and IDataService instance are declared in GeneratedController\CharacterController.cs
     }
 }
