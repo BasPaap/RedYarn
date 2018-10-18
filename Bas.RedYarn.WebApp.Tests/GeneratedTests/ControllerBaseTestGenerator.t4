@@ -9,6 +9,13 @@
 <#@ import namespace="Bas.RedYarn.WebApp.Controllers" #>
 <#@ output extension=".cs" #><#+
 
+private void WriteTestClass(string unitUnderTestName)
+{
+	WriteBeginning(unitUnderTestName);
+	WriteTests(unitUnderTestName);
+	WriteEnd();
+}
+
 private void WriteBeginning(string unitUnderTestName)
 {
 #>
