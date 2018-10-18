@@ -106,7 +106,7 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 			Assert.IsNotNull(result);
             Assert.IsNotNull(content);
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
-            Assert.AreEqual($"/api/<#=subjectName#>?id={content.Id.ToString()}", result.Headers.Location.PathAndQuery);
+            Assert.AreEqual($"/api/<#=subjectName#>/{content.Id.ToString()}", result.Headers.Location.PathAndQuery);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=subjectName#>ViewModels.Single().Name);
             Assert.AreEqual(content.Id, this.dataService.<#=subjectName#>ViewModels.Single().Id);
             AssertCreated<#= subjectName #>(content);
@@ -166,7 +166,7 @@ private void WriteUpdateTests(string unitUnderTestName, string subjectName, stri
             this.dataService.<#=viewModelTypeName#>s.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=subjectName#>?id={<#=viewModelInstanceName#>.Id}", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
+            var result = (httpClient.PutAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
@@ -187,7 +187,7 @@ private void WriteUpdateTests(string unitUnderTestName, string subjectName, stri
             this.dataService.<#=viewModelTypeName#>s.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=subjectName#>?id={<#=viewModelInstanceName#>.Id}", string.Empty.ToJsonStringContent())).Result;
+            var result = (httpClient.PutAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}", string.Empty.ToJsonStringContent())).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
@@ -214,7 +214,7 @@ private void WriteUpdateTests(string unitUnderTestName, string subjectName, stri
             this.dataService.<#=viewModelTypeName#>s.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=subjectName#>?id=4ECDD1BB-28D8-49FC-BF6D-CB4AA4716B1A", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
+            var result = (httpClient.PutAsync($"api/<#=subjectName#>/4ECDD1BB-28D8-49FC-BF6D-CB4AA4716B1A", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
@@ -245,7 +245,7 @@ private void WriteDeleteTests(string unitUnderTestName, string subjectName, stri
             this.dataService.<#=viewModelTypeName#>s.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>?id={<#=viewModelInstanceName#>.Id}")).Result;
+            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}")).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
@@ -265,7 +265,7 @@ private void WriteDeleteTests(string unitUnderTestName, string subjectName, stri
             this.dataService.<#=viewModelTypeName#>s.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>?id=4ECDD1BB-28D8-49FC-BF6D-CB4AA4716B1A")).Result;
+            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>/4ECDD1BB-28D8-49FC-BF6D-CB4AA4716B1A")).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
@@ -295,7 +295,7 @@ private void WriteGetTests(string unitUnderTestName, string subjectName, string 
 			this.dataService.<#= subjectName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.GetAsync($"api/<#=subjectName#>?id={<#=viewModelInstanceName#>.Id}")).Result;
+            var result = (httpClient.GetAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}")).Result;
 
             // Assert
 			var content = result.Content.FromJsonString<<#=viewModelTypeName#>>();
@@ -318,7 +318,7 @@ private void WriteGetTests(string unitUnderTestName, string subjectName, string 
 			this.dataService.<#= subjectName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.GetAsync("api/<#=subjectName#>?id=28BABB19-2A14-421D-9147-26F1D0903F5A")).Result;
+            var result = (httpClient.GetAsync("api/<#=subjectName#>/28BABB19-2A14-421D-9147-26F1D0903F5A")).Result;
 
             // Assert
 			Assert.IsNotNull(result);
