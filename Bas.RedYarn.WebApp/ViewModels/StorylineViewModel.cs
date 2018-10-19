@@ -8,7 +8,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        
+
+        public StorylineViewModel()
+        {
+        }
+
         public StorylineViewModel(RedYarn.Storyline storyline)
         {
             Id = Guid.NewGuid();

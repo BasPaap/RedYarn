@@ -12,6 +12,9 @@ namespace Bas.RedYarn.WebApp.Tests.Services
     sealed class TestDataService : IDataService
     {
         public Collection<DiagramViewModel> DiagramViewModels { get; set; } = new Collection<DiagramViewModel>();
+        public Collection<StorylineViewModel> StorylineViewModels { get; set; } = new Collection<StorylineViewModel>();
+        public Collection<AuthorViewModel> AuthorViewModels { get; set; } = new Collection<AuthorViewModel>();
+        public Collection<CharacterViewModel> CharacterViewModels { get; set; } = new Collection<CharacterViewModel>();
 
         public TestDataService()
         {
