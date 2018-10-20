@@ -25,7 +25,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             return DiagramViewModels.SingleOrDefault(d => d.Id == id);
         }
 
-        public async Task<DiagramViewModel> CreateDiagramAsync(DiagramViewModel diagramViewModel)
+        public async Task<DiagramViewModel> CreateDiagramViewModelAsync(DiagramViewModel diagramViewModel)
         {
             diagramViewModel.Id = Guid.NewGuid();
             DiagramViewModels.Add(diagramViewModel);
@@ -55,7 +55,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             throw new NotImplementedException();
         }
 
-        public Task<CharacterViewModel> CreateCharacterAsync(CharacterViewModel characterViewModel)
+        public Task<CharacterViewModel> CreateCharacterViewModelAsync(CharacterViewModel characterViewModel)
         {
             throw new NotImplementedException();
         }
@@ -75,7 +75,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             throw new NotImplementedException();
         }
 
-        public Task<StorylineViewModel> CreateStorylineAsync(StorylineViewModel storylineViewModel)
+        public Task<StorylineViewModel> CreateStorylineViewModelAsync(StorylineViewModel storylineViewModel)
         {
             throw new NotImplementedException();
         }
@@ -95,7 +95,7 @@ namespace Bas.RedYarn.WebApp.Tests.Services
             throw new NotImplementedException();
         }
 
-        public Task<AuthorViewModel> CreateAuthorAsync(AuthorViewModel authorViewModel)
+        public Task<AuthorViewModel> CreateAuthorViewModelAsync(AuthorViewModel authorViewModel)
         {
             throw new NotImplementedException();
         }

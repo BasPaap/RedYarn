@@ -63,7 +63,7 @@ namespace Bas.RedYarn.WebApp.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<<#=className#>ViewModel>> Create<#=className#>Async(<#=className#>ViewModel <#=instanceName#>ViewModel)
         {
-            var created<#=className#>ViewModel = await this.dataService.Create<#=className#>Async(<#=instanceName#>ViewModel);
+            var created<#=className#>ViewModel = await this.dataService.Create<#=className#>ViewModelAsync(<#=instanceName#>ViewModel);
             return CreatedAtAction(RouteData.Values["Action"].ToString(), RouteData.Values["Controller"].ToString(), new { id = created<#=className#>ViewModel.Id }, created<#=className#>ViewModel);            
         }
 

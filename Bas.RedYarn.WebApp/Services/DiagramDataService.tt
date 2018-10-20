@@ -1,0 +1,54 @@
+﻿<#@ include file="DataServiceGenerator.t4" #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Bas.RedYarn.WebApp.Database;
+using Bas.RedYarn.WebApp.ViewModels;
+
+namespace Bas.RedYarn.WebApp.Services
+{
+    public sealed class DatabaseDataService : IDataService
+    {
+        public DatabaseDataService(RedYarnDbContext redYarnDbContext)
+        {
+            this.dbContext = redYarnDbContext;
+        }
+
+        private RedYarnDbContext dbContext;
+
+<#
+foreach (var viewModelName in viewModelNames)
+{#>
+		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
+        {
+            return new <#=viewModelName#>();
+        }
+
+        public async Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        {
+			throw new NotImplementedException();
+            // var diagram = new Diagram()
+            // {
+            //     Name = diagramViewModel.Name
+            // };
+			// 
+            // dbContext.Diagrams.Add(diagram);
+            // await dbContext.SaveChangesAsync().ConfigureAwait(false);
+			// 
+            // return new DiagramViewModel(diagram);
+        }
+
+        public async Task<<#=viewModelName#>> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task Delete<#=viewModelName#>Async(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+<#
+}#>
+	}
+}

@@ -76,6 +76,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>StorylineController.tt</DependentUpon>
     </Compile>
+    <Compile Update="Services\DiagramDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramDataService.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Services\IDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IDataService.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -110,6 +120,14 @@
     <None Update="Controllers\GeneratedControllers\StorylineController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineController.cs</LastGenOutput>
+    </None>
+    <None Update="Services\DiagramDataService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramDataService.cs</LastGenOutput>
+    </None>
+    <None Update="Services\IDataService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IDataService.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
