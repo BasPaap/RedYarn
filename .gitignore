@@ -266,3 +266,4 @@ __pycache__/
 /Bas.RedYarn.WebApp/Controllers/GeneratedControllers/*.cs
 /Bas.RedYarn.WebApp.Tests/GeneratedTests/*.cs
 /Bas.RedYarn.WebApp/Services/DiagramDataService.cs
+/Bas.RedYarn.WebApp/Services/IDataService.cs
