@@ -1,5 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
-
+﻿<!-- Because we need to control the order in which sdk.targets and texttemplating.targets are imported, the Sdk attribute on the <Project> element is removed:
+     This attribute would implicitly import sdk.targets at the end of the project file, which would generate a build warning because we already import it here 
+     in the project file. As such, we are explicitly importing Sdk.props from the Microsoft.NET.Sdk.Web SDK at the top of the project file, and explicitly 
+     importing sdk.targets right before we import texttemplating.targets at the end of the project file.
+     See this article: https://www.thomaslevesque.com/2017/11/13/transform-t4-templates-as-part-of-the-build-and-pass-variables-from-the-project/
+     and this comment: https://www.thomaslevesque.com/2017/11/13/transform-t4-templates-as-part-of-the-build-and-pass-variables-from-the-project/#comment-91621
+     for more information. Documentation on implicityly or explicitly referencing Sdk's is here: https://docs.microsoft.com/en-us/visualstudio/msbuild/how-to-use-project-sdk?view=vs-2017
+     (note that the SDK path is likely C:\Program Files\dotnet\sdk\2.1.403\Sdks\{value  of the Sdk attribute, i.e. Microsoft.NET.Sdk.Web}\Sdk.)-->
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Web" />
+  
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -12,6 +21,32 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
   </PropertyGroup>
 
+  <!-- This PropertyGroup allows the transform of T4 templates on build. Note that VisualStudioVersion needs to equal the VS version being used to build this! -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+
+  <!-- This itemgroup is required to expand the $(SolutionDir) and $(Configuration) variables on build.
+       This is because the MSBuild target that transforms the template and the TextTemplatingFileGenerator used in VS don't
+       use the same transformation engine, and the MSBuild one doesn't automatically recognize MSBuild properties...
+       See also: https://www.thomaslevesque.com/2017/11/13/transform-t4-templates-as-part-of-the-build-and-pass-variables-from-the-project/
+  -->
+  <ItemGroup>
+    <T4ParameterValues Include="SolutionDir">
+      <Value>$(SolutionDir)</Value>
+      <Visible>False</Visible>
+    </T4ParameterValues>
+    <T4ParameterValues Include="Configuration">
+      <Value>$(Configuration)</Value>
+      <Visible>False</Visible>
+    </T4ParameterValues>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TransformOnBuild>true</TransformOnBuild>
+  </PropertyGroup>
+    
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
@@ -51,44 +86,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Controllers\GeneratedControllers\AuthorController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AuthorController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\CharacterController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharacterController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\ControllerGenerator.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ControllerGenerator.t4</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\DiagramController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DiagramController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\StorylineController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StorylineController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Services\DiagramDataService.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DiagramDataService.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Services\IDataService.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IDataService.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Controllers\GeneratedControllers\AuthorController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AuthorController.cs</LastGenOutput>
@@ -97,39 +94,60 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CharacterController.cs</LastGenOutput>
     </None>
-    <None Update="Controllers\GeneratedControllers\DiagramController - kopie %282%29.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DiagramController - kopie (2).cs</LastGenOutput>
-    </None>
-    <None Update="Controllers\GeneratedControllers\DiagramController - kopie %283%29.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DiagramController - kopie (3).cs</LastGenOutput>
-    </None>
-    <None Update="Controllers\GeneratedControllers\DiagramController - kopie.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DiagramController - kopie.cs</LastGenOutput>
-    </None>
     <None Update="Controllers\GeneratedControllers\DiagramController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiagramController.cs</LastGenOutput>
-    </None>
-    <None Update="Controllers\GeneratedControllers\StorylineController.t4">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StorylineController.cs</LastGenOutput>
     </None>
     <None Update="Controllers\GeneratedControllers\StorylineController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineController.cs</LastGenOutput>
     </None>
-    <None Update="Services\DiagramDataService.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DiagramDataService.cs</LastGenOutput>
-    </None>
     <None Update="Services\IDataService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IDataService.cs</LastGenOutput>
     </None>
+    <None Update="Services\DiagramDataService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DiagramDataService.cs</LastGenOutput>
+    </None>    
   </ItemGroup>
+
+  <!-- These generated files need to be included in the compilation, but adding them with the Include option here will
+       generate a build error if the files already exist on disk - because then MSBuild will already have included them
+       implicitly. Therefore, we only include these here with the condition that they do not yet exist on disk. -->
+  <ItemGroup>
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\AuthorController.cs')"  Include="Controllers\GeneratedControllers\AuthorController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorController.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\CharacterController.cs')"  Include="Controllers\GeneratedControllers\CharacterController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterController.tt</DependentUpon>
+    </Compile>    
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\DiagramController.cs')"  Include="Controllers\GeneratedControllers\DiagramController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramController.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\StorylineController.cs')"  Include="Controllers\GeneratedControllers\StorylineController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineController.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Services\IDataService.cs')" Include="Services\IDataService.cs" >
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IDataService.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Services\DiagramDataService.cs')" Include="Services\DiagramDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DiagramDataService.tt</DependentUpon>
+    </Compile>    
+  </ItemGroup>
+
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
@@ -155,7 +173,14 @@
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
-    </ItemGroup>
+    </ItemGroup> 
+ 
   </Target>
 
+  <!-- Because we are no longer implicitly importing Sdk.Targets at the end of the project file, we explicitly import it here. 
+       Note that it needs to be imported -before- Microsoft.TextTemplating.targets, because otherwise it would overwrite
+       the BuildDependsOn variable that texttemplating.targets modifies.
+       See also: https://www.thomaslevesque.com/2017/11/13/transform-t4-templates-as-part-of-the-build-and-pass-variables-from-the-project/ -->
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />
+  <Import Project="$(VSToolsPath)\TextTemplating\Microsoft.TextTemplating.targets" />
 </Project>
