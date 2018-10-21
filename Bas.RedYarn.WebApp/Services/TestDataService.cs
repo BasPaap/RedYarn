@@ -8,22 +8,22 @@ namespace Bas.RedYarn.WebApp.Services
 {
     sealed class TestDataService : IDataService
     {
-        public async Task<DiagramViewModel> CreateDiagramViewModelAsync(DiagramViewModel diagramViewModel)
+        public Task<DiagramViewModel> CreateDiagramViewModelAsync(DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteDiagramViewModelAsync(Guid id)
+        public Task DeleteDiagramViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
         
-        public async Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
+        public Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id)
+        public Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id)
         {
             var dumas = new Author() { Name = "Alexandre Dumas" };
 
@@ -109,7 +109,7 @@ namespace Bas.RedYarn.WebApp.Services
             diagram.PlotElements.Add(alisBetrayer);
             diagram.PlotElements.Add(haydeesIdentity);
 
-            return new DiagramViewModel(diagram);
+            return Task.FromResult(new DiagramViewModel(diagram));
         }
 
         public Task<CharacterViewModel> GetCharacterViewModelAsync(Guid id)

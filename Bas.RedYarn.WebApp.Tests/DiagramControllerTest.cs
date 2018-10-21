@@ -11,8 +11,8 @@ namespace Bas.RedYarn.WebApp.Tests
     public partial class DiagramControllerTest
     {
         public void AssertCreatedDiagram(DiagramViewModel diagram)
-        {           
-            
+        {
+            throw new NotImplementedException();
         }
     }
 }

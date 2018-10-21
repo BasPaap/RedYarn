@@ -12,7 +12,7 @@ namespace Bas.RedYarn.WebApp.Tests
     {
         public void AssertCreatedStoryline(StorylineViewModel storyline)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

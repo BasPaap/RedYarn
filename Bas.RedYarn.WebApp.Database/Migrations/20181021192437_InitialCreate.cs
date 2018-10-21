@@ -20,7 +20,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Author",
+                name: "Authors",
                 columns: table => new
                 {
                     Name = table.Column<string>(nullable: true),
@@ -29,9 +29,9 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Author", x => x.Id);
+                    table.PrimaryKey("PK_Authors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Author_Diagrams_DiagramId",
+                        name: "FK_Authors_Diagrams_DiagramId",
                         column: x => x.DiagramId,
                         principalTable: "Diagrams",
                         principalColumn: "Id",
@@ -148,8 +148,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Author_DiagramId",
-                table: "Author",
+                name: "IX_Authors_DiagramId",
+                table: "Authors",
                 column: "DiagramId");
 
             migrationBuilder.CreateIndex(
@@ -186,7 +186,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Author");
+                name: "Authors");
 
             migrationBuilder.DropTable(
                 name: "Nodes");

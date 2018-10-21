@@ -12,7 +12,7 @@ namespace Bas.RedYarn.WebApp.Tests
     {
         public void AssertCreatedCharacter(CharacterViewModel character)
         {
-
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bas.RedYarn.WebApp.Database.Migrations
 {
     [DbContext(typeof(RedYarnDbContext))]
-    [Migration("20181015192839_InitialCreate")]
+    [Migration("20181021192437_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
                     b.HasIndex("DiagramId");
 
-                    b.ToTable("Author");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.Character", b =>

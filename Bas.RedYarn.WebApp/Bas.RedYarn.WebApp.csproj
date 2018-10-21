@@ -106,9 +106,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>IDataService.cs</LastGenOutput>
     </None>
-    <None Update="Services\DiagramDataService.tt">
+    <None Update="Services\DatabaseDataService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DiagramDataService.cs</LastGenOutput>
+      <LastGenOutput>DatabaseDataService.cs</LastGenOutput>
     </None>    
   </ItemGroup>
 
@@ -116,38 +116,45 @@
        generate a build error if the files already exist on disk - because then MSBuild will already have included them
        implicitly. Therefore, we only include these here with the condition that they do not yet exist on disk. -->
   <ItemGroup>
-    <Compile Condition="!Exists('Controllers\GeneratedControllers\AuthorController.cs')"  Include="Controllers\GeneratedControllers\AuthorController.cs">
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\AuthorController.cs')" Include="Controllers\GeneratedControllers\AuthorController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorController.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('Controllers\GeneratedControllers\CharacterController.cs')"  Include="Controllers\GeneratedControllers\CharacterController.cs">
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\CharacterController.cs')" Include="Controllers\GeneratedControllers\CharacterController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterController.tt</DependentUpon>
     </Compile>    
-    <Compile Condition="!Exists('Controllers\GeneratedControllers\DiagramController.cs')"  Include="Controllers\GeneratedControllers\DiagramController.cs">
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\DiagramController.cs')" Include="Controllers\GeneratedControllers\DiagramController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DiagramController.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('Controllers\GeneratedControllers\StorylineController.cs')"  Include="Controllers\GeneratedControllers\StorylineController.cs">
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\StorylineController.cs')" Include="Controllers\GeneratedControllers\StorylineController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>StorylineController.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('Services\IDataService.cs')" Include="Services\IDataService.cs" >
+    <Compile Condition="!Exists('Services\IDataService.cs')" Include="Services\IDataService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>IDataService.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('Services\DiagramDataService.cs')" Include="Services\DiagramDataService.cs">
+    <Compile Condition="!Exists('Services\DatabaseDataService.cs')" Include="Services\DatabaseDataService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>DiagramDataService.tt</DependentUpon>
-    </Compile>    
+      <DependentUpon>DatabaseDataService.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Update="Services\DatabaseDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DatabaseDataService.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->

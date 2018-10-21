@@ -30,7 +30,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
                     b.HasIndex("DiagramId");
 
-                    b.ToTable("Author");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.Character", b =>

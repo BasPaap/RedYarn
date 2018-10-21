@@ -1,0 +1,126 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="../ViewModelTestGenerator.t4" #>
+using Bas.RedYarn.WebApp.Database;
+using Bas.RedYarn.WebApp.Services;
+using Bas.RedYarn.WebApp.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+
+namespace Bas.RedYarn.WebApp.Tests
+{	
+    public abstract class DatabaseDataServiceTestBase
+    {
+        private DatabaseDataService dataService;
+        private RedYarnDbContext dbContextToAddTo;
+		private RedYarnDbContext dbContextToTest;
+
+        public TestContext TestContext { get; set; }
+		
+		[TestInitialize]
+		public void Initialize()
+        {            
+			var options = new DbContextOptionsBuilder<RedYarnDbContext>()
+                .UseInMemoryDatabase(databaseName: $"{TestContext.TestName}_InMemoryDatabase")
+                .Options;
+							   		
+			this.dataService = new DatabaseDataService(new RedYarnDbContext(options));
+            this.dbContextToAddTo = new RedYarnDbContext(options); // This needs to be a separate instance from the one used in DatabaseDataService in order to properly test!
+			this.dbContextToTest = new RedYarnDbContext(options); // This needs to be a separate instance from the other two in order to properly test!
+        }
+
+<#
+List<string> nodeTypeNames = new List<string>() { "StorylineNode", "CharacterNode" };
+
+foreach (var viewModelName in viewModelNames)
+{
+	var modelName = GetModelName(viewModelName);
+	if (nodeTypeNames.Contains($"{modelName}Node"))
+	{
+#>
+		protected abstract (<#=modelName#> model, <#=modelName#>Node node) GetTest<#=modelName#>();		
+<#	}
+	else
+	{
+#>
+		protected abstract <#=modelName#> GetTest<#=modelName#>();		
+<#	}
+#>
+		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> <#=Decapitalize(viewModelName)#>);
+
+		[TestMethod]
+		public void Get<#=viewModelName#>Async_IdIsUnknown_ReturnsNull()
+		{
+			// Arrange
+			var test<#=modelName#> = GetTest<#=modelName#>();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+<#			}
+			else
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+<#			}#>
+			this.dbContextToAddTo.SaveChanges();
+
+			// Act
+			var result = this.dataService.Get<#=viewModelName#>Async(Guid.Empty).Result;
+
+			// Assert			
+			Assert.IsNull(result);
+		}
+
+		[TestMethod]
+		public void Get<#=viewModelName#>Async_IdIsOK_Returns<#=viewModelName#>()
+		{
+			// Arrange
+			var test<#=modelName#> = GetTest<#=modelName#>();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+<#			}
+			else
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+<#			}#>
+			this.dbContextToAddTo.SaveChanges();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
+<#			}
+			else
+			{#>
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
+<#			}#>			
+			// Act
+			var viewModel = this.dataService.Get<#=viewModelName#>Async(newId).Result;
+
+			// Assert
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+			Assert<#=viewModelName#>(viewModel);
+		}
+
+<#}#>
+	}
+}
+
+<#+
+public string GetModelName(string viewModelName)
+{
+	return viewModelName.Substring(0, viewModelName.IndexOf("ViewModel"));
+}
+#>

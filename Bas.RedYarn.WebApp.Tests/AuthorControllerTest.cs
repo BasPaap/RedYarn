@@ -12,7 +12,7 @@ namespace Bas.RedYarn.WebApp.Tests
     {
         public void AssertCreatedAuthor(AuthorViewModel author)
         {
-
+            throw new NotImplementedException();
         }
     }
 }
