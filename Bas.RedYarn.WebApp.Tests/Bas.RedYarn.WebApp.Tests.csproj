@@ -14,7 +14,7 @@
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
-  
+
   <!-- This PropertyGroup allows the transform of T4 templates on build. Note that VisualStudioVersion needs to equal the VS version being used to build this! -->
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
@@ -26,7 +26,7 @@
        use the same transformation engine, and the MSBuild one doesn't automatically recognize MSBuild properties...
        See also: https://www.thomaslevesque.com/2017/11/13/transform-t4-templates-as-part-of-the-build-and-pass-variables-from-the-project/
   -->
-  
+
   <ItemGroup>
     <T4ParameterValues Include="SolutionDir">
       <Value>$(SolutionDir)</Value>
@@ -41,7 +41,7 @@
   <PropertyGroup>
     <TransformOnBuild>true</TransformOnBuild>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <None Include="GeneratedTests\DiagramControllerTest.cs">
       <DesignTime>True</DesignTime>
@@ -89,6 +89,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineControllerTest.cs</LastGenOutput>
     </None>
+    <None Update="Services\TestDataService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TestDataService.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -119,6 +123,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>StorylineControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Services\TestDataService.cs')" Include="Services\TestDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TestDataService.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 
