@@ -50,8 +50,16 @@ foreach (var viewModelName in viewModelNames)
         public Task<<#=viewModelName#>> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
             var existingViewModel = <#=viewModelName#>s.SingleOrDefault(d => d.Id == id);
+
+			if (existingViewModel == null)
+			{
+				throw new ArgumentException("<#=viewModelName#> not found.", nameof(id));
+			}
+						
+            var indexOfViewModel = <#=viewModelName#>s.IndexOf(existingViewModel);
             existingViewModel = <#=Decapitalize(viewModelName)#>;
             existingViewModel.Id = id;
+			<#=viewModelName#>s[indexOfViewModel] = existingViewModel;
 
             return Task.FromResult(existingViewModel);
         }

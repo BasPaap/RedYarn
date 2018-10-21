@@ -70,8 +70,20 @@ namespace Bas.RedYarn.WebApp.Controllers
         [HttpPut("{id}")]        
         public async Task<ActionResult> Update<#=className#>Async(Guid id, <#=className#>ViewModel <#=instanceName#>ViewModel)
         {
-            await this.dataService.Update<#=className#>ViewModelAsync(id, <#=instanceName#>ViewModel);
-            return NoContent();
+			try
+			{
+				await this.dataService.Update<#=className#>ViewModelAsync(id, <#=instanceName#>ViewModel);
+				return NoContent();
+			}
+			catch (ArgumentException argumentException)
+			{
+				if (argumentException.ParamName == nameof(id))
+				{
+					return NotFound();
+				}
+			}
+            
+			return BadRequest();
         }
 
         [HttpDelete("{id}")]
