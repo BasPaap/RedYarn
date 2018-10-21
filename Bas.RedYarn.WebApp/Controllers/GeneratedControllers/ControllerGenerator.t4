@@ -44,7 +44,7 @@ namespace Bas.RedYarn.WebApp.Controllers
             this.dataService = dataService;
         }
 
-		[HttpGet]
+		[HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
         public async Task<ActionResult<<#=className#>ViewModel>> Get<#=className#>ViewModelAsync(Guid id)
@@ -64,17 +64,17 @@ namespace Bas.RedYarn.WebApp.Controllers
         public async Task<ActionResult<<#=className#>ViewModel>> Create<#=className#>Async(<#=className#>ViewModel <#=instanceName#>ViewModel)
         {
             var created<#=className#>ViewModel = await this.dataService.Create<#=className#>ViewModelAsync(<#=instanceName#>ViewModel);
-            return CreatedAtAction(RouteData.Values["Action"].ToString(), RouteData.Values["Controller"].ToString(), new { id = created<#=className#>ViewModel.Id }, created<#=className#>ViewModel);            
+            return CreatedAtAction(nameof(Get<#=className#>ViewModelAsync), new { id = created<#=className#>ViewModel.Id }, created<#=className#>ViewModel);            
         }
 
-        [HttpPut]        
+        [HttpPut("{id}")]        
         public async Task<ActionResult> Update<#=className#>Async(Guid id, <#=className#>ViewModel <#=instanceName#>ViewModel)
         {
             await this.dataService.Update<#=className#>ViewModelAsync(id, <#=instanceName#>ViewModel);
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete<#=className#>Async(Guid id)
