@@ -111,7 +111,82 @@ foreach (var viewModelName in viewModelNames)
 
 			// Assert
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+<#			}#>
 			Assert<#=viewModelName#>(viewModel);
+		}
+
+		[TestMethod]
+		public void Delete<#=viewModelName#>Async_IdIsUnknown_ReturnsFalse()
+		{
+			// Arrange
+			var test<#=modelName#> = GetTest<#=modelName#>();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+<#			}
+			else
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+<#			}#>
+			this.dbContextToAddTo.SaveChanges();
+
+			// Act
+			var result = this.dataService.Delete<#=viewModelName#>Async(Guid.Empty).Result;
+
+			// Assert			
+			Assert.IsFalse(result);
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+<#			}#>
+		}
+
+		[TestMethod]
+		public void Delete<#=viewModelName#>Async_IdIsOK_<#=viewModelName#>IsDeleted()
+		{
+			// Arrange
+			var test<#=modelName#> = GetTest<#=modelName#>();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+<#			}
+			else
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+<#			}#>
+			this.dbContextToAddTo.SaveChanges();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
+<#			}
+			else
+			{#>
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
+<#			}#>		
+
+			// Act
+			var result = this.dataService.Delete<#=viewModelName#>Async(newId).Result;
+
+			// Assert
+			Assert.IsTrue(result);
+			Assert.AreEqual(0, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			Assert.AreEqual(0, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+<#			}#>
 		}
 
 <#}#>
