@@ -44,12 +44,12 @@ namespace Bas.RedYarn.WebApp.Services
             // return new DiagramViewModel(diagram);
         }
 
-        public async Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
+        public async Task<(DiagramViewModel result, bool isFound)> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteDiagramViewModelAsync(Guid id)
+        public async Task<bool> DeleteDiagramViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -72,12 +72,12 @@ namespace Bas.RedYarn.WebApp.Services
             // return new DiagramViewModel(diagram);
         }
 
-        public async Task<CharacterViewModel> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel)
+        public async Task<(CharacterViewModel result, bool isFound)> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteCharacterViewModelAsync(Guid id)
+        public async Task<bool> DeleteCharacterViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -100,12 +100,12 @@ namespace Bas.RedYarn.WebApp.Services
             // return new DiagramViewModel(diagram);
         }
 
-        public async Task<StorylineViewModel> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel)
+        public async Task<(StorylineViewModel result, bool isFound)> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteStorylineViewModelAsync(Guid id)
+        public async Task<bool> DeleteStorylineViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -128,12 +128,12 @@ namespace Bas.RedYarn.WebApp.Services
             // return new DiagramViewModel(diagram);
         }
 
-        public async Task<AuthorViewModel> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel)
+        public async Task<(AuthorViewModel result, bool isFound)> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public async Task DeleteAuthorViewModelAsync(Guid id)
+        public async Task<bool> DeleteAuthorViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }

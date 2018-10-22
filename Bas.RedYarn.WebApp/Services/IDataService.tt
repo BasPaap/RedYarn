@@ -13,8 +13,8 @@ foreach (var viewModelName in viewModelNames)
 
 		Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id);
         Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>);
-        Task<<#=viewModelName#>> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
-        Task Delete<#=viewModelName#>Async(Guid id);
+        Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
+        Task<bool> Delete<#=viewModelName#>Async(Guid id);
 <#
 }
 #>

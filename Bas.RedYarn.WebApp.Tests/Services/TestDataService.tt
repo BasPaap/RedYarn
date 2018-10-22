@@ -39,13 +39,13 @@ foreach (var viewModelName in viewModelNames)
             return Task.FromResult(<#=Decapitalize(viewModelName)#>);
         }
 
-        public Task<<#=viewModelName#>> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
             var existingViewModel = <#=viewModelName#>s.SingleOrDefault(d => d.Id == id);
 
 			if (existingViewModel == null)
 			{
-				throw new ArgumentException("<#=viewModelName#> not found.", nameof(id));
+				return Task.FromResult(((<#=viewModelName#>)null, false));
 			}
 						
             var indexOfViewModel = <#=viewModelName#>s.IndexOf(existingViewModel);
@@ -53,15 +53,19 @@ foreach (var viewModelName in viewModelNames)
             existingViewModel.Id = id;
 			<#=viewModelName#>s[indexOfViewModel] = existingViewModel;
 
-            return Task.FromResult(existingViewModel);
+            return Task.FromResult((existingViewModel, true));
         }
 
-        public Task Delete<#=viewModelName#>Async(Guid id)
+        public Task<bool> Delete<#=viewModelName#>Async(Guid id)
         {
             var existingViewModel = <#=viewModelName#>s.SingleOrDefault(d => d.Id == id);
-            <#=viewModelName#>s.Remove(existingViewModel);
+			if (existingViewModel == null)
+			{
+				return Task.FromResult(false);
+			}
 
-            return Task.CompletedTask;
+			<#=viewModelName#>s.Remove(existingViewModel);
+            return Task.FromResult(true);
         }
 <#}
 #>

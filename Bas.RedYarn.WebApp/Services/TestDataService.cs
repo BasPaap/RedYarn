@@ -13,12 +13,12 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task DeleteDiagramViewModelAsync(Guid id)
+        public Task<bool> DeleteDiagramViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
         
-        public Task<DiagramViewModel> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
+        public Task<(DiagramViewModel result, bool isFound)> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();
         }
@@ -122,12 +122,12 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<CharacterViewModel> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel)
+        public Task<(CharacterViewModel result, bool isFound)> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteCharacterViewModelAsync(Guid id)
+        public Task<bool> DeleteCharacterViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -142,12 +142,12 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<StorylineViewModel> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel)
+        public Task<(StorylineViewModel result, bool isFound)> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteStorylineViewModelAsync(Guid id)
+        public Task<bool> DeleteStorylineViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -162,12 +162,12 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<AuthorViewModel> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel)
+        public Task<(AuthorViewModel result, bool isFound)> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAuthorViewModelAsync(Guid id)
+        public Task<bool> DeleteAuthorViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }

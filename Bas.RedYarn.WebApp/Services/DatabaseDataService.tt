@@ -39,12 +39,12 @@ foreach (var viewModelName in viewModelNames)
             // return new DiagramViewModel(diagram);
         }
 
-        public async Task<<#=viewModelName#>> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        public async Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
             throw new NotImplementedException();
         }
 
-        public async Task Delete<#=viewModelName#>Async(Guid id)
+        public async Task<bool> Delete<#=viewModelName#>Async(Guid id)
         {
             throw new NotImplementedException();
         }
