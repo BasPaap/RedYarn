@@ -68,22 +68,20 @@ namespace Bas.RedYarn.WebApp.Controllers
         }
 
         [HttpPut("{id}")]        
+		[ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult> Update<#=className#>Async(Guid id, <#=className#>ViewModel <#=instanceName#>ViewModel)
         {
 			try
 			{
-				await this.dataService.Update<#=className#>ViewModelAsync(id, <#=instanceName#>ViewModel);
-				return NoContent();
+				var response = await this.dataService.Update<#=className#>ViewModelAsync(id, <#=instanceName#>ViewModel);
+				return response.isFound ? NoContent() : NotFound();
 			}
 			catch (ArgumentException argumentException)
 			{
-				if (argumentException.ParamName == nameof(id))
-				{
-					return NotFound();
-				}
+				return BadRequest();	
 			}
-            
-			return BadRequest();
         }
 
         [HttpDelete("{id}")]
@@ -91,13 +89,8 @@ namespace Bas.RedYarn.WebApp.Controllers
         [ProducesResponseType(404)]
         public async Task<ActionResult> Delete<#=className#>Async(Guid id)
         {
-            if (await this.dataService.Get<#=className#>ViewModelAsync(id) == null)
-            {
-                return NotFound();
-            }
-
-            await this.dataService.Delete<#=className#>ViewModelAsync(id);
-            return NoContent();
+            var isFound = await this.dataService.Delete<#=className#>ViewModelAsync(id);
+            return isFound ? NoContent() : NotFound();
         }
 	}
 }
