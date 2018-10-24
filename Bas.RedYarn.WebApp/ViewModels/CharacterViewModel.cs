@@ -12,6 +12,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public string Name { get; set; }
         public string Description { get; set; }
         public Collection<string> Aliases { get; } = new Collection<string>();
+        public float XPosition { get; set; }
+        public float YPosition { get; set; }
 
         public CharacterViewModel()
         {
