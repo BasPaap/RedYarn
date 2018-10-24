@@ -153,6 +153,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataService.tt</DependentUpon>
     </Compile>
+    <Compile Update="Services\IDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IDataService.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   
 

@@ -22,6 +22,8 @@ namespace Bas.RedYarn.WebApp.Tests
 
         public TestContext TestContext { get; set; }
 		
+		protected const string updatedViewModelName = "UpdatedViewModel";
+
 		[TestInitialize]
 		public void Initialize()
         {            
@@ -44,14 +46,16 @@ foreach (var viewModelName in viewModelNames)
 	{
 #>
 		protected abstract (<#=modelName#> model, <#=modelName#>Node node) GetTest<#=modelName#>();		
+		protected abstract void Assert<#=modelName#>(<#=modelName#> model, <#=modelName#>Node node);		
 <#	}
 	else
 	{
 #>
 		protected abstract <#=modelName#> GetTest<#=modelName#>();		
-<#	}
-#>
-		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> <#=Decapitalize(viewModelName)#>);
+		protected abstract void Assert<#=modelName#>(<#=modelName#> model);		
+<#	}#>		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>();
+		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);
+		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
 
 		[TestMethod]
 		public void Get<#=viewModelName#>Async_IdIsUnknown_ReturnsNull()
@@ -110,11 +114,6 @@ foreach (var viewModelName in viewModelNames)
 			var viewModel = this.dataService.Get<#=viewModelName#>Async(newId).Result;
 
 			// Assert
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
-			{#>
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
-<#			}#>
 			Assert<#=viewModelName#>(viewModel);
 		}
 
@@ -140,7 +139,7 @@ foreach (var viewModelName in viewModelNames)
 			// Act
 			var result = this.dataService.Delete<#=viewModelName#>Async(Guid.Empty).Result;
 
-			// Assert			
+			// Assert	
 			Assert.IsFalse(result);
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
 <#			if (nodeTypeNames.Contains($"{modelName}Node"))
@@ -150,7 +149,7 @@ foreach (var viewModelName in viewModelNames)
 		}
 
 		[TestMethod]
-		public void Delete<#=viewModelName#>Async_IdIsOK_<#=viewModelName#>IsDeleted()
+		public void Delete<#=viewModelName#>Async_IdIsOK_<#=viewModelName#>IsDeletedAndReturnsTrue()
 		{
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
@@ -176,7 +175,6 @@ foreach (var viewModelName in viewModelNames)
 			{#>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
 <#			}#>		
-
 			// Act
 			var result = this.dataService.Delete<#=viewModelName#>Async(newId).Result;
 
@@ -193,19 +191,158 @@ foreach (var viewModelName in viewModelNames)
 		[TestMethod]
 		public void Create<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullException()
 		{
+			// Arrange
+			// Act
+			// Assert
+			var exception = Assert.ThrowsException<ArgumentNullException>(() => this.dataService.Create<#=viewModelName#>Async(null) );
+			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
 		}
 
 		[TestMethod]
-		public void Create<#=viewModelName#>Async_ModelIsInvalid_ThrowsArgumentException()
+		public void Create<#=viewModelName#>Async_ModelIsInvalid_ReturnsNull()
 		{
+			// Arrange
+			var viewModel = GetTest<#=viewModelName#>();
+			viewModel.Name = null;
+
+			// Act
+			var result = this.dataService.Create<#=viewModelName#>Async(viewModel).Result;
+			
+			// Assert
+			Assert.IsNull(result);
 		}
 			   		
 		[TestMethod]
-		public void Create<#=viewModelName#>Async_ArgumentIsValid_ThrowsArgumentException()
+		public void Create<#=viewModelName#>Async_ViewModelIsValid_AddsModelAndReturnsViewModel()
 		{
+			// Arrange
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
+
+			// Act
+			var returnedViewModel = this.dataService.Create<#=viewModelName#>Async(test<#=viewModelName#>).Result;
+
+			// Assert
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result).Property("Id").CurrentValue, returnedViewModel.Id);
+			Assert<#=viewModelName#>(returnedViewModel);
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+			Assert<#=modelName#>(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result, this.dbContextToTest.<#=modelName#>Nodes.SingleAsync().Result);
+<#			}
+			else
+			{#>
+			Assert<#=modelName#>(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result);
+<#			}#>
 		}
 
-		
+		[TestMethod]
+		public void Update<#=viewModelName#>Async_IdIsUnknown_ReturnsNullAndFalse()
+		{
+			// Arrange			
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
+			var test<#=modelName#> = GetTest<#=modelName#>();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+<#			}
+			else
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+<#			}#>
+			this.dbContextToAddTo.SaveChanges();
+
+			// Act
+			var result = this.dataService.Update<#=viewModelName#>Async(Guid.Empty, test<#=viewModelName#>).Result;
+
+			// Assert
+			Assert.IsNull(result.result);
+			Assert.IsFalse(result.isFound);
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+<#			}#>
+		}
+
+		[TestMethod]
+		public void Update<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullException()
+		{
+			// Arrange			
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
+			var test<#=modelName#> = GetTest<#=modelName#>();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+<#			}
+			else
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+<#			}#>
+			this.dbContextToAddTo.SaveChanges();
+
+			// Act
+			// Assert
+			var exception = Assert.ThrowsException<ArgumentNullException>(() => this.dataService.Update<#=viewModelName#>Async(Guid.Empty, null));
+			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+<#			}#>
+		}
+
+		[TestMethod]
+		public void Update<#=viewModelName#>Async_ArgumentsAreOK_ReturnsUpdatedModelAndTrue()
+		{
+			// Arrange			
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
+			var test<#=modelName#> = GetTest<#=modelName#>();
+<#
+			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+<#			}
+			else
+			{
+#>
+			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+<#			}#>
+			this.dbContextToAddTo.SaveChanges();
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
+<#			}
+			else
+			{#>
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
+<#			}#>			test<#=viewModelName#>.Name = updatedViewModelName;
+
+			// Act
+			var result = this.dataService.Update<#=viewModelName#>Async(newId, test<#=viewModelName#>).Result;
+
+			// Assert
+			Assert.IsNotNull(result.result);
+			Assert.IsTrue(result.isFound);
+			Assert.AreEqual(newId, result.result.Id);
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+			{#>
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+<#			}#>
+			
+			AssertUpdated<#=viewModelName#>(result.result);
+		}
 
 <#}#>
 	}

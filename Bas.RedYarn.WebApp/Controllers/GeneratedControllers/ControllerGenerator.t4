@@ -83,7 +83,14 @@ namespace Bas.RedYarn.WebApp.Controllers
 			try
 			{
 				var response = await this.dataService.Update<#=className#>ViewModelAsync(id, <#=instanceName#>ViewModel);
-				return response.isFound ? NoContent() : NotFound();
+				if (response.isFound)
+				{
+					return NoContent();
+				}
+				else
+				{
+					return NotFound();
+				}				
 			}
 			catch (ArgumentException argumentException)
 			{
@@ -97,7 +104,14 @@ namespace Bas.RedYarn.WebApp.Controllers
         public async Task<ActionResult> Delete<#=className#>Async(Guid id)
         {
             var isFound = await this.dataService.Delete<#=className#>ViewModelAsync(id);
-            return isFound ? NoContent() : NotFound();
+            if (isFound)
+			{
+				return NoContent();
+			}
+			else
+			{
+				return NotFound();
+			}
         }
 	}
 }

@@ -10,22 +10,62 @@ namespace Bas.RedYarn.WebApp.Tests
     [TestClass]
     public class DatabaseDataServiceTest : DatabaseDataServiceTestBase
     {
-        protected override void AssertAuthorViewModel(AuthorViewModel authorViewModel)
+        protected override void AssertAuthor(Author model)
         {
             throw new NotImplementedException();
         }
 
-        protected override void AssertCharacterViewModel(CharacterViewModel characterViewModel)
+        protected override void AssertAuthorViewModel(AuthorViewModel viewModel)
         {
             throw new NotImplementedException();
         }
 
-        protected override void AssertDiagramViewModel(DiagramViewModel diagramViewModel)
+        protected override void AssertCharacter(Character model, CharacterNode node)
         {
             throw new NotImplementedException();
         }
 
-        protected override void AssertStorylineViewModel(StorylineViewModel storylineViewModel)
+        protected override void AssertCharacterViewModel(CharacterViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertDiagram(Diagram model)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertDiagramViewModel(DiagramViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertStoryline(Storyline model, StorylineNode node)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertStorylineViewModel(StorylineViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertUpdatedAuthorViewModel(AuthorViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertUpdatedCharacterViewModel(CharacterViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertUpdatedDiagramViewModel(DiagramViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertUpdatedStorylineViewModel(StorylineViewModel viewModel)
         {
             throw new NotImplementedException();
         }
@@ -35,7 +75,17 @@ namespace Bas.RedYarn.WebApp.Tests
             throw new NotImplementedException();
         }
 
+        protected override AuthorViewModel GetTestAuthorViewModel()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override (Character model, CharacterNode node) GetTestCharacter()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override CharacterViewModel GetTestCharacterViewModel()
         {
             throw new NotImplementedException();
         }
@@ -45,7 +95,17 @@ namespace Bas.RedYarn.WebApp.Tests
             throw new NotImplementedException();
         }
 
+        protected override DiagramViewModel GetTestDiagramViewModel()
+        {
+            throw new NotImplementedException();
+        }
+
         protected override (Storyline model, StorylineNode node) GetTestStoryline()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override StorylineViewModel GetTestStorylineViewModel()
         {
             throw new NotImplementedException();
         }
