@@ -8,6 +8,15 @@ namespace Bas.RedYarn.WebApp.ViewModels
 {
     public sealed class AuthorViewModel
     {
+        public AuthorViewModel()
+        {
+        }
+
+        public AuthorViewModel(Author author)
+        {
+            Name = author.Name;
+        }
+
         public Guid Id { get; set; }
 
         [Required]

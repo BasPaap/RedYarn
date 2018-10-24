@@ -24,5 +24,12 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Name = storyline.Name;
             Description = storyline.Description;
         }
+
+        public StorylineViewModel(Storyline storyline, float xPosition, float yPosition)
+            : this(storyline)
+        {
+            XPosition = xPosition;
+            YPosition = yPosition;
+        }
     }
 }

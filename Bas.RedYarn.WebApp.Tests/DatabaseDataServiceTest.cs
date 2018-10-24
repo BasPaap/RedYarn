@@ -21,10 +21,7 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override AuthorViewModel GetTestAuthorViewModel()
         {
-            return new AuthorViewModel()
-            {
-                Name = GetTestAuthor().Name
-            };
+            return new AuthorViewModel(GetTestAuthor());
         }
 
         protected override void AssertAuthor(Author model)
@@ -65,44 +62,35 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override CharacterViewModel GetTestCharacterViewModel()
         {
             var (character, node) = GetTestCharacter();
-            return new CharacterViewModel()
-            {
-                Name = character.Name,
-                Description = character.Description,
-                XPosition = node.XPosition,
-                YPosition = node.YPosition
-            };
+            return new CharacterViewModel(character, node.XPosition, node.YPosition);
         }
 
         protected override void AssertCharacter(Character model, CharacterNode node)
         {
             var (testCharacter, testNode) = GetTestCharacter();
-
-            Assert.AreEqual(testCharacter.Name, model.Name);
-            Assert.AreEqual(testCharacter.Description, model.Description);
-            Assert.AreEqual(testNode.Character, model);
-            Assert.AreEqual(testNode.XPosition, node.XPosition);
-            Assert.AreEqual(testNode.YPosition, node.YPosition);
+            AssertPropertiesAreEqual(testCharacter, model, nameof(model.Name), 
+                                                           nameof(model.Description));
+            AssertPropertiesAreEqual(testNode, node, nameof(node.XPosition), 
+                                                     nameof(node.YPosition), 
+                                                     nameof(node.Character));                        
         }
-
+        
         protected override void AssertCharacterViewModel(CharacterViewModel viewModel)
         {
             var testViewModel = GetTestCharacterViewModel();
-
-            Assert.AreEqual(testViewModel.Name, viewModel.Name);
-            Assert.AreEqual(testViewModel.Description, viewModel.Description);
-            Assert.AreEqual(testViewModel.XPosition, viewModel.XPosition);
-            Assert.AreEqual(testViewModel.YPosition, viewModel.YPosition);
+            AssertPropertiesAreEqual(testViewModel, viewModel, nameof(viewModel.Name),
+                                                               nameof(viewModel.Description),
+                                                               nameof(viewModel.XPosition),
+                                                               nameof(viewModel.YPosition));            
         }
 
         protected override void AssertUpdatedCharacterViewModel(CharacterViewModel viewModel)
         {
             var testViewModel = GetTestCharacterViewModel();
-
             Assert.AreEqual(updatedViewModelName, viewModel.Name);
-            Assert.AreEqual(testViewModel.Description, viewModel.Description);
-            Assert.AreEqual(testViewModel.XPosition, viewModel.XPosition);
-            Assert.AreEqual(testViewModel.YPosition, viewModel.YPosition);
+            AssertPropertiesAreEqual(testViewModel, viewModel, nameof(viewModel.Description),
+                                                               nameof(viewModel.XPosition),
+                                                               nameof(viewModel.YPosition));
         }
         #endregion
 
@@ -117,10 +105,7 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override DiagramViewModel GetTestDiagramViewModel()
         {
-            return new DiagramViewModel()
-            {
-                Name = GetTestDiagram().Name
-            };
+            return new DiagramViewModel(GetTestDiagram());
         }
 
         protected override void AssertDiagram(Diagram model)
@@ -161,41 +146,35 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override StorylineViewModel GetTestStorylineViewModel()
         {
             var (storyline, node) = GetTestStoryline();
-            return new StorylineViewModel()
-            {
-                Name = storyline.Name,
-                Description = storyline.Description,
-                XPosition = node.XPosition,
-                YPosition = node.YPosition
-            };
+            return new StorylineViewModel(storyline, node.XPosition, node.YPosition);            
         }
 
         protected override void AssertStoryline(Storyline model, StorylineNode node)
         {
             var (testStoryline, testNode) = GetTestStoryline();
-            Assert.AreEqual(testStoryline.Name, model.Name);
-            Assert.AreEqual(testStoryline.Description, model.Description);
-            Assert.AreEqual(testNode.Storyline, node.Storyline);
-            Assert.AreEqual(testNode.XPosition, node.XPosition);
-            Assert.AreEqual(testNode.YPosition, node.YPosition);
+            AssertPropertiesAreEqual(testStoryline, model, nameof(model.Name),
+                                                           nameof(model.Description));
+            AssertPropertiesAreEqual(testNode, node, nameof(node.Storyline),
+                                                     nameof(node.XPosition),
+                                                     nameof(node.YPosition));
         }
 
         protected override void AssertStorylineViewModel(StorylineViewModel viewModel)
         {
             var testStorylineViewModel = GetTestStorylineViewModel();
-            Assert.AreEqual(testStorylineViewModel.Name, viewModel.Name);
-            Assert.AreEqual(testStorylineViewModel.Description, viewModel.Description);
-            Assert.AreEqual(testStorylineViewModel.XPosition, viewModel.XPosition);
-            Assert.AreEqual(testStorylineViewModel.YPosition, viewModel.YPosition);
+            AssertPropertiesAreEqual(testStorylineViewModel, viewModel, nameof(viewModel.Name),
+                                                                        nameof(viewModel.Description),
+                                                                        nameof(viewModel.XPosition),
+                                                                        nameof(viewModel.YPosition));
         }
 
         protected override void AssertUpdatedStorylineViewModel(StorylineViewModel viewModel)
         {
             var testStorylineViewModel = GetTestStorylineViewModel();
             Assert.AreEqual(updatedViewModelName, viewModel.Name);
-            Assert.AreEqual(testStorylineViewModel.Description, viewModel.Description);
-            Assert.AreEqual(testStorylineViewModel.XPosition, viewModel.XPosition);
-            Assert.AreEqual(testStorylineViewModel.YPosition, viewModel.YPosition);
+            AssertPropertiesAreEqual(testStorylineViewModel, viewModel, nameof(viewModel.Description),
+                                                                        nameof(viewModel.XPosition),
+                                                                        nameof(viewModel.YPosition));            
         }
         #endregion
     }

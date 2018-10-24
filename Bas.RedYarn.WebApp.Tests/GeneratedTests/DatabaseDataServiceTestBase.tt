@@ -24,6 +24,15 @@ namespace Bas.RedYarn.WebApp.Tests
 		
 		protected const string updatedViewModelName = "UpdatedViewModel";
 
+		protected static void AssertPropertiesAreEqual<T>(T testObject, T actualObject, params string[] propertyNames)
+        {
+            foreach (var propertyName in propertyNames)
+            {
+                var property = typeof(T).GetProperty(propertyName);
+                Assert.AreEqual(property.GetValue(testObject), property.GetValue(actualObject));
+            }
+        }
+
 		[TestInitialize]
 		public void Initialize()
         {            

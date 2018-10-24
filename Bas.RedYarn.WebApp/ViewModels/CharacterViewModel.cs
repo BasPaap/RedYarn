@@ -30,5 +30,12 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Aliases.Add(alias);
             }
         }
+
+        public CharacterViewModel(RedYarn.Character character, float xPosition, float yPosition)
+            : this(character)
+        {            
+            XPosition = xPosition;
+            YPosition = yPosition;
+        }
     }
 }
