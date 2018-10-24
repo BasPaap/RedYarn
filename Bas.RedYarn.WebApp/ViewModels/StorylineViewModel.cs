@@ -11,6 +11,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        public float YPosition { get; set; }
+        public float XPosition { get; set; }
 
         public StorylineViewModel()
         {

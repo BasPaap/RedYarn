@@ -109,54 +109,93 @@ namespace Bas.RedYarn.WebApp.Tests
         #region Diagram
         protected override Diagram GetTestDiagram()
         {
-            throw new NotImplementedException();
+            return new Diagram()
+            {
+                Name = "DiagramName"
+            };
         }
 
         protected override DiagramViewModel GetTestDiagramViewModel()
         {
-            throw new NotImplementedException();
+            return new DiagramViewModel()
+            {
+                Name = GetTestDiagram().Name
+            };
         }
 
         protected override void AssertDiagram(Diagram model)
         {
-            throw new NotImplementedException();
+            Assert.AreEqual(GetTestDiagram().Name, model.Name);
         }
 
         protected override void AssertDiagramViewModel(DiagramViewModel viewModel)
         {
-            throw new NotImplementedException();
+            Assert.AreEqual(GetTestDiagramViewModel().Name, viewModel.Name);
         }
                 
         protected override void AssertUpdatedDiagramViewModel(DiagramViewModel viewModel)
         {
-            throw new NotImplementedException();
+            Assert.AreEqual(updatedViewModelName, viewModel.Name);
         }
         #endregion
 
         #region Storyline
         protected override (Storyline model, StorylineNode node) GetTestStoryline()
         {
-            throw new NotImplementedException();
+            var storyline = new Storyline()
+            {
+                Name = "StorylineName",
+                Description = "StorylineDescription"
+            };
+
+            var node = new StorylineNode()
+            {
+                Storyline = storyline,
+                XPosition = 10,
+                YPosition = 20
+            };
+
+            return (storyline, node);
         }
 
         protected override StorylineViewModel GetTestStorylineViewModel()
         {
-            throw new NotImplementedException();
+            var (storyline, node) = GetTestStoryline();
+            return new StorylineViewModel()
+            {
+                Name = storyline.Name,
+                Description = storyline.Description,
+                XPosition = node.XPosition,
+                YPosition = node.YPosition
+            };
         }
 
         protected override void AssertStoryline(Storyline model, StorylineNode node)
         {
-            throw new NotImplementedException();
+            var (testStoryline, testNode) = GetTestStoryline();
+            Assert.AreEqual(testStoryline.Name, model.Name);
+            Assert.AreEqual(testStoryline.Description, model.Description);
+            Assert.AreEqual(testNode.Storyline, node.Storyline);
+            Assert.AreEqual(testNode.XPosition, node.XPosition);
+            Assert.AreEqual(testNode.YPosition, node.YPosition);
         }
 
         protected override void AssertStorylineViewModel(StorylineViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var testStorylineViewModel = GetTestStorylineViewModel();
+            Assert.AreEqual(testStorylineViewModel.Name, viewModel.Name);
+            Assert.AreEqual(testStorylineViewModel.Description, viewModel.Description);
+            Assert.AreEqual(testStorylineViewModel.XPosition, viewModel.XPosition);
+            Assert.AreEqual(testStorylineViewModel.YPosition, viewModel.YPosition);
         }
 
         protected override void AssertUpdatedStorylineViewModel(StorylineViewModel viewModel)
         {
-            throw new NotImplementedException();
+            var testStorylineViewModel = GetTestStorylineViewModel();
+            Assert.AreEqual(updatedViewModelName, viewModel.Name);
+            Assert.AreEqual(testStorylineViewModel.Description, viewModel.Description);
+            Assert.AreEqual(testStorylineViewModel.XPosition, viewModel.XPosition);
+            Assert.AreEqual(testStorylineViewModel.YPosition, viewModel.YPosition);
         }
         #endregion
     }
