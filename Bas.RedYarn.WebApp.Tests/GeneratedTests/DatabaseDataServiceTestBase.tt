@@ -189,6 +189,24 @@ foreach (var viewModelName in viewModelNames)
 <#			}#>
 		}
 
+		// Create
+		[TestMethod]
+		public void Create<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullException()
+		{
+		}
+
+		[TestMethod]
+		public void Create<#=viewModelName#>Async_ModelIsInvalid_ThrowsArgumentException()
+		{
+		}
+			   		
+		[TestMethod]
+		public void Create<#=viewModelName#>Async_ArgumentIsValid_ThrowsArgumentException()
+		{
+		}
+
+		
+
 <#}#>
 	}
 }
