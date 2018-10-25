@@ -10,6 +10,11 @@ namespace Bas.RedYarn.WebApp.Tests
     [TestClass]
     public class DatabaseDataServiceTest : DatabaseDataServiceTestBase
     {
+        private const string updatedName = "UpdatedName";
+        private const string updatedDescription = "UpdatedDescription";
+        private const float updatedXPosition = 50.0f;
+        private const float updatedYPosition = 60.0f;
+
         #region Author
         protected override Author GetTestAuthor()
         {
@@ -33,10 +38,17 @@ namespace Bas.RedYarn.WebApp.Tests
         {
             Assert.AreEqual(GetTestAuthorViewModel().Name, viewModel.Name);
         }
-        
+
+        protected override AuthorViewModel GetUpdatedAuthorViewModel()
+        {
+            var viewModel = GetTestAuthorViewModel();
+            viewModel.Name = updatedName;
+            return viewModel;
+        }
+
         protected override void AssertUpdatedAuthorViewModel(AuthorViewModel viewModel)
         {
-            Assert.AreEqual(updatedViewModelName, viewModel.Name);
+            Assert.AreEqual(updatedName, viewModel.Name);
         }
         #endregion
 
@@ -84,13 +96,22 @@ namespace Bas.RedYarn.WebApp.Tests
                                                                nameof(viewModel.YPosition));            
         }
 
+        protected override CharacterViewModel GetUpdatedCharacterViewModel()
+        {
+            var viewModel = GetTestCharacterViewModel();
+            viewModel.Name = updatedName;
+            viewModel.Description = updatedDescription;
+            viewModel.XPosition = updatedXPosition;
+            viewModel.YPosition = updatedYPosition;
+            return viewModel;
+        }
+
         protected override void AssertUpdatedCharacterViewModel(CharacterViewModel viewModel)
         {
-            var testViewModel = GetTestCharacterViewModel();
-            Assert.AreEqual(updatedViewModelName, viewModel.Name);
-            AssertPropertiesAreEqual(testViewModel, viewModel, nameof(viewModel.Description),
-                                                               nameof(viewModel.XPosition),
-                                                               nameof(viewModel.YPosition));
+            Assert.AreEqual(updatedName, viewModel.Name);
+            Assert.AreEqual(updatedDescription, viewModel.Description);
+            Assert.AreEqual(updatedXPosition, viewModel.XPosition);
+            Assert.AreEqual(updatedYPosition, viewModel.YPosition);
         }
         #endregion
 
@@ -117,10 +138,17 @@ namespace Bas.RedYarn.WebApp.Tests
         {
             Assert.AreEqual(GetTestDiagramViewModel().Name, viewModel.Name);
         }
-                
+
+        protected override DiagramViewModel GetUpdatedDiagramViewModel()
+        {
+            var viewModel = GetTestDiagramViewModel();
+            viewModel.Name = updatedName;
+            return viewModel;
+        }
+
         protected override void AssertUpdatedDiagramViewModel(DiagramViewModel viewModel)
         {
-            Assert.AreEqual(updatedViewModelName, viewModel.Name);
+            Assert.AreEqual(updatedName, viewModel.Name);
         }
         #endregion
 
@@ -168,13 +196,23 @@ namespace Bas.RedYarn.WebApp.Tests
                                                                         nameof(viewModel.YPosition));
         }
 
+        protected override StorylineViewModel GetUpdatedStorylineViewModel()
+        {
+            var viewModel = GetTestStorylineViewModel();
+            viewModel.Name = updatedName;
+            viewModel.Description = updatedDescription;
+            viewModel.XPosition = updatedXPosition;
+            viewModel.YPosition = updatedYPosition;
+            return viewModel;
+        }
+
         protected override void AssertUpdatedStorylineViewModel(StorylineViewModel viewModel)
         {
             var testStorylineViewModel = GetTestStorylineViewModel();
-            Assert.AreEqual(updatedViewModelName, viewModel.Name);
-            AssertPropertiesAreEqual(testStorylineViewModel, viewModel, nameof(viewModel.Description),
-                                                                        nameof(viewModel.XPosition),
-                                                                        nameof(viewModel.YPosition));            
+            Assert.AreEqual(updatedName, viewModel.Name);
+            Assert.AreEqual(updatedDescription, viewModel.Description);
+            Assert.AreEqual(updatedXPosition, viewModel.XPosition);
+            Assert.AreEqual(updatedYPosition, viewModel.YPosition);
         }
         #endregion
     }

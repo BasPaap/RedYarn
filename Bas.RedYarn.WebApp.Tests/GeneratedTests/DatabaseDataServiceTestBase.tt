@@ -22,8 +22,6 @@ namespace Bas.RedYarn.WebApp.Tests
 
         public TestContext TestContext { get; set; }
 		
-		protected const string updatedViewModelName = "UpdatedViewModel";
-
 		protected static void AssertPropertiesAreEqual<T>(T testObject, T actualObject, params string[] propertyNames)
         {
             foreach (var propertyName in propertyNames)
@@ -63,6 +61,7 @@ foreach (var viewModelName in viewModelNames)
 		protected abstract <#=modelName#> GetTest<#=modelName#>();		
 		protected abstract void Assert<#=modelName#>(<#=modelName#> model);		
 <#	}#>		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>();
+		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>();
 		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);
 		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
 
@@ -335,10 +334,11 @@ foreach (var viewModelName in viewModelNames)
 			else
 			{#>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
-<#			}#>			test<#=viewModelName#>.Name = updatedViewModelName;
+<#			}#>			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
+			updated<#=viewModelName#>.Id = newId;
 
 			// Act
-			var result = this.dataService.Update<#=viewModelName#>Async(newId, test<#=viewModelName#>).Result;
+			var result = this.dataService.Update<#=viewModelName#>Async(newId, updated<#=viewModelName#>).Result;
 
 			// Assert
 			Assert.IsNotNull(result.result);
