@@ -44,7 +44,6 @@ namespace Bas.RedYarn.WebApp.Services
         public async Task<bool> DeleteDiagramViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Diagrams.FindAsync(id);
-			var viewModel = new DiagramViewModel(model);
 			if (model == null)
 			{
 				return false;
@@ -144,7 +143,6 @@ namespace Bas.RedYarn.WebApp.Services
         public async Task<bool> DeleteAuthorViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Authors.FindAsync(id);
-			var viewModel = new AuthorViewModel(model);
 			if (model == null)
 			{
 				return false;

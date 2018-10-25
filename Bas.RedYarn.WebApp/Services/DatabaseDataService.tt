@@ -55,7 +55,6 @@ else
 <#}
 else
 {#>
-			var viewModel = new <#=viewModelName#>(model);
 			if (model == null)
 <#}#>			{
 				return false;

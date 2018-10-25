@@ -157,8 +157,8 @@ foreach (var viewModelName in viewModelNames)
 			if (EntityHasNode(modelName))
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 <#			}
 			else
 			{
