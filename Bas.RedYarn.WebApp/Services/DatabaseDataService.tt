@@ -1,4 +1,11 @@
 ﻿<#@ include file="DataServiceGenerator.t4" #>
+<#
+	List<string> entitiesWithNodes = new List<string>
+	{
+		"Character",
+		"Storyline"
+	};
+#>
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +26,22 @@ namespace Bas.RedYarn.WebApp.Services
 
 <#
 foreach (var viewModelName in viewModelNames)
-{#>
+{
+	var modelName = GetModelName(viewModelName);#>
 		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
-            return new <#=viewModelName#>();
+            var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
+<# if (entitiesWithNodes.Contains(modelName))
+{#>
+			var node = await this.dbContext.<#=modelName#>Nodes.FindAsync(id);
+			var viewModel = new <#=viewModelName#>(model, node.XPosition, node.YPosition);
+<#}
+else
+{#>
+			var viewModel = new <#=viewModelName#>(model);
+<#}#>
+
+			return viewModel;
         }
 
         public async Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
@@ -48,6 +67,7 @@ foreach (var viewModelName in viewModelNames)
         {
             throw new NotImplementedException();
         }
+
 <#
 }#>
 	}

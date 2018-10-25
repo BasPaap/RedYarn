@@ -27,7 +27,10 @@ namespace Bas.RedYarn.WebApp.Services
 
 		public async Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id)
         {
-            return new DiagramViewModel();
+            var model = await this.dbContext.Diagrams.FindAsync(id);
+			var viewModel = new DiagramViewModel(model);
+
+			return viewModel;
         }
 
         public async Task<DiagramViewModel> CreateDiagramViewModelAsync(DiagramViewModel diagramViewModel)
@@ -53,9 +56,14 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
 		public async Task<CharacterViewModel> GetCharacterViewModelAsync(Guid id)
         {
-            return new CharacterViewModel();
+            var model = await this.dbContext.Characters.FindAsync(id);
+			var node = await this.dbContext.CharacterNodes.FindAsync(id);
+			var viewModel = new CharacterViewModel(model, node.XPosition, node.YPosition);
+
+			return viewModel;
         }
 
         public async Task<CharacterViewModel> CreateCharacterViewModelAsync(CharacterViewModel characterViewModel)
@@ -81,9 +89,14 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
 		public async Task<StorylineViewModel> GetStorylineViewModelAsync(Guid id)
         {
-            return new StorylineViewModel();
+            var model = await this.dbContext.Storylines.FindAsync(id);
+			var node = await this.dbContext.StorylineNodes.FindAsync(id);
+			var viewModel = new StorylineViewModel(model, node.XPosition, node.YPosition);
+
+			return viewModel;
         }
 
         public async Task<StorylineViewModel> CreateStorylineViewModelAsync(StorylineViewModel storylineViewModel)
@@ -109,9 +122,13 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
 		public async Task<AuthorViewModel> GetAuthorViewModelAsync(Guid id)
         {
-            return new AuthorViewModel();
+            var model = await this.dbContext.Authors.FindAsync(id);
+			var viewModel = new AuthorViewModel(model);
+
+			return viewModel;
         }
 
         public async Task<AuthorViewModel> CreateAuthorViewModelAsync(AuthorViewModel authorViewModel)
@@ -137,5 +154,6 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
 	}
 }

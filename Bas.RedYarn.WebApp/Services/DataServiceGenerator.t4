@@ -19,6 +19,11 @@ private string Decapitalize(string capitalizedString)
 	return Char.ToLowerInvariant(capitalizedString[0]) + capitalizedString.Substring(1);
 }
 
+private string GetModelName(string viewModelName)
+{
+	return viewModelName.Substring(0, viewModelName.IndexOf("ViewModel"));
+}
+
 List<string> viewModelNames = new List<string> { 
 	"DiagramViewModel", 
 	"CharacterViewModel", 
