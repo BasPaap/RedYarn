@@ -1,10 +1,4 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ output extension=".cs" #>
-<#@ include file="../ViewModelTestGenerator.t4" #>
+﻿<#@ include file="$(SolutionDir)common.t4" #>
 using Bas.RedYarn.WebApp.Database;
 using Bas.RedYarn.WebApp.Services;
 using Bas.RedYarn.WebApp.ViewModels;
@@ -44,12 +38,10 @@ namespace Bas.RedYarn.WebApp.Tests
         }
 
 <#
-List<string> nodeTypeNames = new List<string>() { "StorylineNode", "CharacterNode" };
-
 foreach (var viewModelName in viewModelNames)
 {
 	var modelName = GetModelName(viewModelName);
-	if (nodeTypeNames.Contains($"{modelName}Node"))
+	if (EntityHasNode(modelName))
 	{
 #>
 		protected abstract (<#=modelName#> model, <#=modelName#>Node node) GetTest<#=modelName#>();		
@@ -71,7 +63,7 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
@@ -97,7 +89,7 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
@@ -110,7 +102,7 @@ foreach (var viewModelName in viewModelNames)
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{#>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
 <#			}
@@ -131,7 +123,7 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
@@ -150,7 +142,7 @@ foreach (var viewModelName in viewModelNames)
 			// Assert	
 			Assert.IsFalse(result);
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+<#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 <#			}#>
@@ -162,7 +154,7 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
@@ -175,7 +167,7 @@ foreach (var viewModelName in viewModelNames)
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{#>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
 <#			}
@@ -189,7 +181,7 @@ foreach (var viewModelName in viewModelNames)
 			// Assert
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+<#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(0, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 <#			}#>
@@ -233,7 +225,7 @@ foreach (var viewModelName in viewModelNames)
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
 			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result).Property("Id").CurrentValue, returnedViewModel.Id);
 			Assert<#=viewModelName#>(returnedViewModel);
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+<#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 			Assert<#=modelName#>(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result, this.dbContextToTest.<#=modelName#>Nodes.SingleAsync().Result);
@@ -251,7 +243,7 @@ foreach (var viewModelName in viewModelNames)
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
@@ -271,7 +263,7 @@ foreach (var viewModelName in viewModelNames)
 			Assert.IsNull(result.result);
 			Assert.IsFalse(result.isFound);
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+<#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 <#			}#>
@@ -284,7 +276,7 @@ foreach (var viewModelName in viewModelNames)
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
@@ -302,7 +294,7 @@ foreach (var viewModelName in viewModelNames)
 			var exception = Assert.ThrowsException<ArgumentNullException>(() => this.dataService.Update<#=viewModelName#>Async(Guid.Empty, null));
 			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+<#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 <#			}#>
@@ -315,7 +307,7 @@ foreach (var viewModelName in viewModelNames)
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (nodeTypeNames.Contains($"{modelName}Node"))
+			if (EntityHasNode(modelName))
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
@@ -327,7 +319,7 @@ foreach (var viewModelName in viewModelNames)
 			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+<#			if (EntityHasNode(modelName))
 			{#>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
 <#			}
@@ -345,7 +337,7 @@ foreach (var viewModelName in viewModelNames)
 			Assert.IsTrue(result.isFound);
 			Assert.AreEqual(newId, result.result.Id);
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
-<#			if (nodeTypeNames.Contains($"{modelName}Node"))
+<#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 <#			}#>
@@ -356,10 +348,3 @@ foreach (var viewModelName in viewModelNames)
 <#}#>
 	}
 }
-
-<#+
-public string GetModelName(string viewModelName)
-{
-	return viewModelName.Substring(0, viewModelName.IndexOf("ViewModel"));
-}
-#>

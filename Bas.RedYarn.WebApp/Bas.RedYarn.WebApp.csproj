@@ -148,6 +148,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controllers\GeneratedControllers\AuthorController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorController.tt</DependentUpon>
+    </Compile>
     <Compile Update="Services\DatabaseDataService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

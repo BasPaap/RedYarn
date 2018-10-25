@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bas.RedYarn.WebApp", "Bas.R
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bas.RedYarn.WebApp.Tests", "Bas.RedYarn.WebApp.Tests\Bas.RedYarn.WebApp.Tests.csproj", "{627E05C5-617A-4890-917F-4C36E610ACBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bas.RedYarn.WebApp.Database", "Bas.RedYarn.WebApp.Database\Bas.RedYarn.WebApp.Database.csproj", "{269BF184-8D62-4F77-96EE-09205917C63A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bas.RedYarn.WebApp.Database", "Bas.RedYarn.WebApp.Database\Bas.RedYarn.WebApp.Database.csproj", "{269BF184-8D62-4F77-96EE-09205917C63A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{927BA89E-C041-436B-A54B-C6B0D476DE6E}"
+	ProjectSection(SolutionItems) = preProject
+		common.t4 = common.t4
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

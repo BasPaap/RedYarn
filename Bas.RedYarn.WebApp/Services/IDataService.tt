@@ -1,4 +1,4 @@
-﻿<#@ include file="DataServiceGenerator.t4" #>
+﻿<#@ include file="$(SolutionDir)common.t4" #>
 using Bas.RedYarn.WebApp.ViewModels;
 using System;
 using System.Threading.Tasks;

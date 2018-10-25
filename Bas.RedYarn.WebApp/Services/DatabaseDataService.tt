@@ -1,14 +1,5 @@
-﻿<#@ include file="DataServiceGenerator.t4" #>
-<#
-	List<string> entitiesWithNodes = new List<string>
-	{
-		"Character",
-		"Storyline"
-	};
-#>
+﻿<#@ include file="$(SolutionDir)common.t4" #>
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Bas.RedYarn.WebApp.Database;
 using Bas.RedYarn.WebApp.ViewModels;
@@ -31,7 +22,7 @@ foreach (var viewModelName in viewModelNames)
 		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
             var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
-<# if (entitiesWithNodes.Contains(modelName))
+<# if (EntityHasNode(modelName))
 {#>
 			var node = await this.dbContext.<#=modelName#>Nodes.FindAsync(id);
 			var viewModel = new <#=viewModelName#>(model, node.XPosition, node.YPosition);
@@ -57,7 +48,7 @@ else
         public async Task<bool> Delete<#=viewModelName#>Async(Guid id)
         {
             var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
-<# if (entitiesWithNodes.Contains(modelName))
+<# if (EntityHasNode(modelName))
 {#>
 			var node = await this.dbContext.<#=modelName#>Nodes.FindAsync(id);
 			if (model == null || node == null)
@@ -71,7 +62,7 @@ else
 			}
 
 			this.dbContext.<#=modelName#>s.Remove(model);
-<# if (entitiesWithNodes.Contains(modelName))
+<# if (EntityHasNode(modelName))
 {#>
 			this.dbContext.<#=modelName#>Nodes.Remove(node);
 <#}#>

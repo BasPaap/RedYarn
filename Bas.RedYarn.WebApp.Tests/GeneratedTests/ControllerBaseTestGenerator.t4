@@ -1,26 +1,15 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ assembly name="System.Runtime" #>
-<#@ assembly name="$(SolutionDir)\Bas.RedYarn.WebApp\bin\Debug\netcoreapp2.1\Bas.RedYarn.WebApp.dll" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="Bas.RedYarn.WebApp" #>
-<#@ import namespace="Bas.RedYarn.WebApp.Controllers" #>
-<#@ output extension=".cs" #>
-<#@ include file="../ViewModelTestGenerator.t4" #><#+
-
+﻿<#@ include file="$(SolutionDir)common.t4" #><#+
 private void WriteTestClass(string unitUnderTestName)
 {
-	WriteBeginning(unitUnderTestName);
-	WriteTests(unitUnderTestName);
+	var controllerName = $"{unitUnderTestName}Controller";
+	WriteBeginning(controllerName);
+	WriteTests(controllerName);
 	WriteEnd();
 }
 
 private void WriteBeginning(string unitUnderTestName)
 {
-#>
-using Bas.RedYarn.WebApp.Tests.Extensions;
+#>using Bas.RedYarn.WebApp.Tests.Extensions;
 using Bas.RedYarn.WebApp.Tests.Helpers;
 using Bas.RedYarn.WebApp.Tests.Services;
 using Bas.RedYarn.WebApp.ViewModels;

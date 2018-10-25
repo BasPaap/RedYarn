@@ -1,12 +1,5 @@
-﻿<#@ template debug="false" hostspecific="false" language="C#" #>
-<#@ assembly name="System.Core" #>
-<#@ assembly name="System.Runtime" #>
-<#@ assembly name="$(SolutionDir)\Bas.RedYarn\bin\Debug\netcoreapp2.1\Bas.RedYarn.dll" #>
-<#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Text" #>
-<#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="Bas.RedYarn" #>
-<#@ output extension=".cs" #><#+
+﻿<#@ include file="$(SolutionDir)common.t4" #>
+<#+
 private void WriteBeginning(string unitUnderTestName)
 {
 #>
@@ -37,11 +30,6 @@ private void WriteEnd()
 <#+
 }
 
-private string Decapitalize(string capitalizedString)
-{
-	return Char.ToLowerInvariant(capitalizedString[0]) + capitalizedString.Substring(1);
-}
-
 private void WriteToStringTests(string testObjectName)
 {
 #>
@@ -49,13 +37,13 @@ private void WriteToStringTests(string testObjectName)
         [TestMethod]
         public void ToString_NameIsNotEmpty_ReturnsName()
         {
-            ToStringHelper.ToString_NameIsNotEmpty_ReturnsName(this.<#= Decapitalize(testObjectName) #>);
+            ToStringHelper.ToString_NameIsNotEmpty_ReturnsName(this.<#=Decapitalize(testObjectName)#>);
         }
 
         [TestMethod]
         public void ToString_NameIsEmpty_ReturnsClassName()
         {
-            ToStringHelper.ToString_NameIsEmpty_ReturnsClassName(this.<#= Decapitalize(testObjectName) #>);
+            ToStringHelper.ToString_NameIsEmpty_ReturnsClassName(this.<#=Decapitalize(testObjectName)#>);
         }
         #endregion
 
