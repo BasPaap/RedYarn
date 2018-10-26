@@ -57,7 +57,7 @@ else
 <# if (EntityHasNode(modelName))
 {#>
 
-			var node = this.dbContext.<#=modelName#>Nodes.Single(n => EF.Property<Guid>(n, "<#=modelName#>Id") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model); //Single(n => EF.Property<Guid>(n, "<#=modelName#>Id") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
 			if (node == null)
 			{
 				return false;

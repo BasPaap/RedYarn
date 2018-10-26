@@ -83,7 +83,7 @@ namespace Bas.RedYarn.WebApp.Services
 				return false;
 			}
 
-			var node = this.dbContext.CharacterNodes.Single(n => EF.Property<Guid>(n, "CharacterId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			var node = this.dbContext.CharacterNodes.FindByOwner(model); //Single(n => EF.Property<Guid>(n, "CharacterId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
 			if (node == null)
 			{
 				return false;
@@ -122,7 +122,7 @@ namespace Bas.RedYarn.WebApp.Services
 				return false;
 			}
 
-			var node = this.dbContext.StorylineNodes.Single(n => EF.Property<Guid>(n, "StorylineId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			var node = this.dbContext.StorylineNodes.FindByOwner(model); //Single(n => EF.Property<Guid>(n, "StorylineId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
 			if (node == null)
 			{
 				return false;
