@@ -28,6 +28,11 @@ namespace Bas.RedYarn.WebApp.Services
 		public async Task<DiagramViewModel> GetDiagramViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Diagrams.FindAsync(id);
+			if (model == null)
+			{
+				return null;
+			}
+
 			var viewModel = new DiagramViewModel(model);
 
 			return viewModel;
@@ -59,7 +64,17 @@ namespace Bas.RedYarn.WebApp.Services
 		public async Task<CharacterViewModel> GetCharacterViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Characters.FindAsync(id);
-			var node = await this.dbContext.CharacterNodes.FindAsync(id);
+			if (model == null)
+			{
+				return null;
+			}
+
+			var node = this.dbContext.CharacterNodes.FindByOwner(model);
+			if (node == null)
+			{
+				return null;
+			}
+
 			var viewModel = new CharacterViewModel(model, node.XPosition, node.YPosition);
 
 			return viewModel;
@@ -83,7 +98,7 @@ namespace Bas.RedYarn.WebApp.Services
 				return false;
 			}
 
-			var node = this.dbContext.CharacterNodes.FindByOwner(model); //Single(n => EF.Property<Guid>(n, "CharacterId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			var node = this.dbContext.CharacterNodes.FindByOwner(model);
 			if (node == null)
 			{
 				return false;
@@ -98,7 +113,17 @@ namespace Bas.RedYarn.WebApp.Services
 		public async Task<StorylineViewModel> GetStorylineViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Storylines.FindAsync(id);
-			var node = await this.dbContext.StorylineNodes.FindAsync(id);
+			if (model == null)
+			{
+				return null;
+			}
+
+			var node = this.dbContext.StorylineNodes.FindByOwner(model);
+			if (node == null)
+			{
+				return null;
+			}
+
 			var viewModel = new StorylineViewModel(model, node.XPosition, node.YPosition);
 
 			return viewModel;
@@ -122,7 +147,7 @@ namespace Bas.RedYarn.WebApp.Services
 				return false;
 			}
 
-			var node = this.dbContext.StorylineNodes.FindByOwner(model); //Single(n => EF.Property<Guid>(n, "StorylineId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			var node = this.dbContext.StorylineNodes.FindByOwner(model);
 			if (node == null)
 			{
 				return false;
@@ -137,6 +162,11 @@ namespace Bas.RedYarn.WebApp.Services
 		public async Task<AuthorViewModel> GetAuthorViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Authors.FindAsync(id);
+			if (model == null)
+			{
+				return null;
+			}
+
 			var viewModel = new AuthorViewModel(model);
 
 			return viewModel;

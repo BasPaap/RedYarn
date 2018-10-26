@@ -24,9 +24,19 @@ foreach (var viewModelName in viewModelNames)
 		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
             var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
+			if (model == null)
+			{
+				return null;
+			}
+
 <# if (EntityHasNode(modelName))
 {#>
-			var node = await this.dbContext.<#=modelName#>Nodes.FindAsync(id);
+			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model);
+			if (node == null)
+			{
+				return null;
+			}
+
 			var viewModel = new <#=viewModelName#>(model, node.XPosition, node.YPosition);
 <#}
 else
@@ -57,7 +67,7 @@ else
 <# if (EntityHasNode(modelName))
 {#>
 
-			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model); //Single(n => EF.Property<Guid>(n, "<#=modelName#>Id") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model);
 			if (node == null)
 			{
 				return false;
