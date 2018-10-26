@@ -8,9 +8,11 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Bas.RedYarn.WebApp.Database;
 using Bas.RedYarn.WebApp.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bas.RedYarn.WebApp.Services
 {
@@ -76,7 +78,7 @@ namespace Bas.RedYarn.WebApp.Services
         public async Task<bool> DeleteCharacterViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Characters.FindAsync(id);
-			var node = await this.dbContext.CharacterNodes.FindAsync(id);
+			var node = this.dbContext.CharacterNodes.Single(n => EF.Property<Guid>(n, "CharacterId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
 			if (model == null || node == null)
 			{
 				return false;
@@ -110,7 +112,7 @@ namespace Bas.RedYarn.WebApp.Services
         public async Task<bool> DeleteStorylineViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Storylines.FindAsync(id);
-			var node = await this.dbContext.StorylineNodes.FindAsync(id);
+			var node = this.dbContext.StorylineNodes.Single(n => EF.Property<Guid>(n, "StorylineId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
 			if (model == null || node == null)
 			{
 				return false;
