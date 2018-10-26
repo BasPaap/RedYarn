@@ -50,18 +50,20 @@ else
         public async Task<bool> Delete<#=viewModelName#>Async(Guid id)
         {
             var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
-<# if (EntityHasNode(modelName))
-{#>
-			var node = this.dbContext.<#=modelName#>Nodes.Single(n => EF.Property<Guid>(n, "<#=modelName#>Id") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
-			if (model == null || node == null)
-<#}
-else
-{#>
 			if (model == null)
-<#}#>			{
+			{
 				return false;
 			}
+<# if (EntityHasNode(modelName))
+{#>
 
+			var node = this.dbContext.<#=modelName#>Nodes.Single(n => EF.Property<Guid>(n, "<#=modelName#>Id") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			if (node == null)
+			{
+				return false;
+			}
+<#}#>
+			
 			this.dbContext.<#=modelName#>s.Remove(model);
 <# if (EntityHasNode(modelName))
 {#>

@@ -50,7 +50,7 @@ namespace Bas.RedYarn.WebApp.Services
 			{
 				return false;
 			}
-
+			
 			this.dbContext.Diagrams.Remove(model);
 			await this.dbContext.SaveChangesAsync();
 			return true;			
@@ -78,12 +78,17 @@ namespace Bas.RedYarn.WebApp.Services
         public async Task<bool> DeleteCharacterViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Characters.FindAsync(id);
-			var node = this.dbContext.CharacterNodes.Single(n => EF.Property<Guid>(n, "CharacterId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
-			if (model == null || node == null)
+			if (model == null)
 			{
 				return false;
 			}
 
+			var node = this.dbContext.CharacterNodes.Single(n => EF.Property<Guid>(n, "CharacterId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			if (node == null)
+			{
+				return false;
+			}
+			
 			this.dbContext.Characters.Remove(model);
 			this.dbContext.CharacterNodes.Remove(node);
 			await this.dbContext.SaveChangesAsync();
@@ -112,12 +117,17 @@ namespace Bas.RedYarn.WebApp.Services
         public async Task<bool> DeleteStorylineViewModelAsync(Guid id)
         {
             var model = await this.dbContext.Storylines.FindAsync(id);
-			var node = this.dbContext.StorylineNodes.Single(n => EF.Property<Guid>(n, "StorylineId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
-			if (model == null || node == null)
+			if (model == null)
 			{
 				return false;
 			}
 
+			var node = this.dbContext.StorylineNodes.Single(n => EF.Property<Guid>(n, "StorylineId") == (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue);
+			if (node == null)
+			{
+				return false;
+			}
+			
 			this.dbContext.Storylines.Remove(model);
 			this.dbContext.StorylineNodes.Remove(node);
 			await this.dbContext.SaveChangesAsync();
@@ -149,7 +159,7 @@ namespace Bas.RedYarn.WebApp.Services
 			{
 				return false;
 			}
-
+			
 			this.dbContext.Authors.Remove(model);
 			await this.dbContext.SaveChangesAsync();
 			return true;			
