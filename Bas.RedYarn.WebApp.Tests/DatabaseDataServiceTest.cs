@@ -83,8 +83,7 @@ namespace Bas.RedYarn.WebApp.Tests
             AssertPropertiesAreEqual(testCharacter, model, nameof(model.Name), 
                                                            nameof(model.Description));
             AssertPropertiesAreEqual(testNode, node, nameof(node.XPosition), 
-                                                     nameof(node.YPosition), 
-                                                     nameof(node.Character));                        
+                                                     nameof(node.YPosition));                                    
         }
         
         protected override void AssertCharacterViewModel(CharacterViewModel viewModel)
@@ -182,8 +181,7 @@ namespace Bas.RedYarn.WebApp.Tests
             var (testStoryline, testNode) = GetTestStoryline();
             AssertPropertiesAreEqual(testStoryline, model, nameof(model.Name),
                                                            nameof(model.Description));
-            AssertPropertiesAreEqual(testNode, node, nameof(node.Storyline),
-                                                     nameof(node.XPosition),
+            AssertPropertiesAreEqual(testNode, node, nameof(node.XPosition),
                                                      nameof(node.YPosition));
         }
 

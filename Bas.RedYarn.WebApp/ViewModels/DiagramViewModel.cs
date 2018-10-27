@@ -65,6 +65,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Name = Name
             };
         }
+
+        public void UpdateModel(RedYarn.Diagram model)
+        {
+            model.Name = Name;
+        }
                 
         private void AddPlotElements(Dictionary<RedYarn.PlotElement, PlotElementViewModel> plotElementDictionary)
         {

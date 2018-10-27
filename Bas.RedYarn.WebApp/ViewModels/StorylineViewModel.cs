@@ -49,5 +49,28 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Description = Description
             };
         }
+
+        public void UpdateModel(Storyline model)
+        {
+            model.Name = Name;
+            model.Description = Description;
+        }
+
+        public Database.StorylineNode ToNode()
+        {
+            return new Database.StorylineNode()
+            {
+                Storyline = ToModel(),
+                Id = Id,
+                XPosition = XPosition,
+                YPosition = YPosition
+            };
+        }
+
+        public void UpdateNode(Database.StorylineNode node)
+        {
+            node.XPosition = XPosition;
+            node.YPosition = YPosition;
+        }
     }
 }

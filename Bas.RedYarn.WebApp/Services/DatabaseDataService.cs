@@ -42,7 +42,7 @@ namespace Bas.RedYarn.WebApp.Services
         {
 			if (diagramViewModel == null)
 			{
-				throw new ArgumentNullException();
+				throw new ArgumentNullException(nameof(diagramViewModel));
 			}
 
 			var model = diagramViewModel.ToModel();
@@ -56,7 +56,24 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<(DiagramViewModel result, bool isFound)> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
         {
-            throw new NotImplementedException();
+            if (diagramViewModel == null)
+			{
+				throw new ArgumentNullException(nameof(diagramViewModel));
+			}
+
+			var model = await this.dbContext.Diagrams.FindAsync(id);
+			if (model == null)
+			{
+				return (null, false);
+			}
+
+			diagramViewModel.UpdateModel(model);			
+			await this.dbContext.SaveChangesAsync();
+
+			var resultingViewModel = new DiagramViewModel(diagramViewModel);
+			resultingViewModel.Id = id;
+
+			return (resultingViewModel, true);
         }
 
         public async Task<bool> DeleteDiagramViewModelAsync(Guid id)
@@ -95,11 +112,14 @@ namespace Bas.RedYarn.WebApp.Services
         {
 			if (characterViewModel == null)
 			{
-				throw new ArgumentNullException();
+				throw new ArgumentNullException(nameof(characterViewModel));
 			}
 
 			var model = characterViewModel.ToModel();
 			this.dbContext.Characters.Add(model);
+			var node = characterViewModel.ToNode();
+			node.Character = model;
+			this.dbContext.CharacterNodes.Add(node);
 			await this.dbContext.SaveChangesAsync();
 
 			var newViewModel = new CharacterViewModel(characterViewModel);
@@ -109,7 +129,30 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<(CharacterViewModel result, bool isFound)> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel)
         {
-            throw new NotImplementedException();
+            if (characterViewModel == null)
+			{
+				throw new ArgumentNullException(nameof(characterViewModel));
+			}
+
+			var model = await this.dbContext.Characters.FindAsync(id);
+			if (model == null)
+			{
+				return (null, false);
+			}
+			var node = this.dbContext.CharacterNodes.FindByOwner(model);
+			if (node == null)
+			{
+				return (null, false);
+			}
+
+			characterViewModel.UpdateModel(model);			
+			characterViewModel.UpdateNode(node);
+			await this.dbContext.SaveChangesAsync();
+
+			var resultingViewModel = new CharacterViewModel(characterViewModel);
+			resultingViewModel.Id = id;
+
+			return (resultingViewModel, true);
         }
 
         public async Task<bool> DeleteCharacterViewModelAsync(Guid id)
@@ -155,11 +198,14 @@ namespace Bas.RedYarn.WebApp.Services
         {
 			if (storylineViewModel == null)
 			{
-				throw new ArgumentNullException();
+				throw new ArgumentNullException(nameof(storylineViewModel));
 			}
 
 			var model = storylineViewModel.ToModel();
 			this.dbContext.Storylines.Add(model);
+			var node = storylineViewModel.ToNode();
+			node.Storyline = model;
+			this.dbContext.StorylineNodes.Add(node);
 			await this.dbContext.SaveChangesAsync();
 
 			var newViewModel = new StorylineViewModel(storylineViewModel);
@@ -169,7 +215,30 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<(StorylineViewModel result, bool isFound)> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel)
         {
-            throw new NotImplementedException();
+            if (storylineViewModel == null)
+			{
+				throw new ArgumentNullException(nameof(storylineViewModel));
+			}
+
+			var model = await this.dbContext.Storylines.FindAsync(id);
+			if (model == null)
+			{
+				return (null, false);
+			}
+			var node = this.dbContext.StorylineNodes.FindByOwner(model);
+			if (node == null)
+			{
+				return (null, false);
+			}
+
+			storylineViewModel.UpdateModel(model);			
+			storylineViewModel.UpdateNode(node);
+			await this.dbContext.SaveChangesAsync();
+
+			var resultingViewModel = new StorylineViewModel(storylineViewModel);
+			resultingViewModel.Id = id;
+
+			return (resultingViewModel, true);
         }
 
         public async Task<bool> DeleteStorylineViewModelAsync(Guid id)
@@ -209,7 +278,7 @@ namespace Bas.RedYarn.WebApp.Services
         {
 			if (authorViewModel == null)
 			{
-				throw new ArgumentNullException();
+				throw new ArgumentNullException(nameof(authorViewModel));
 			}
 
 			var model = authorViewModel.ToModel();
@@ -223,7 +292,24 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<(AuthorViewModel result, bool isFound)> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel)
         {
-            throw new NotImplementedException();
+            if (authorViewModel == null)
+			{
+				throw new ArgumentNullException(nameof(authorViewModel));
+			}
+
+			var model = await this.dbContext.Authors.FindAsync(id);
+			if (model == null)
+			{
+				return (null, false);
+			}
+
+			authorViewModel.UpdateModel(model);			
+			await this.dbContext.SaveChangesAsync();
+
+			var resultingViewModel = new AuthorViewModel(authorViewModel);
+			resultingViewModel.Id = id;
+
+			return (resultingViewModel, true);
         }
 
         public async Task<bool> DeleteAuthorViewModelAsync(Guid id)

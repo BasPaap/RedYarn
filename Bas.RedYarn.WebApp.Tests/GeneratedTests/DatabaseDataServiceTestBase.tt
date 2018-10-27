@@ -5,6 +5,7 @@ using Bas.RedYarn.WebApp.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.Tests
 {	
@@ -189,29 +190,15 @@ foreach (var viewModelName in viewModelNames)
 
 		// Create
 		[TestMethod]
-		public void Create<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullException()
+		public async Task Create<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullExceptionAsync()
 		{
 			// Arrange
 			// Act
 			// Assert
-			var exception = Assert.ThrowsException<ArgumentNullException>(() => this.dataService.Create<#=viewModelName#>Async(null) );
+			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Create<#=viewModelName#>Async(null) );
 			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
 		}
 
-		[TestMethod]
-		public void Create<#=viewModelName#>Async_ModelIsInvalid_ReturnsNull()
-		{
-			// Arrange
-			var viewModel = GetTest<#=viewModelName#>();
-			viewModel.Name = null;
-
-			// Act
-			var result = this.dataService.Create<#=viewModelName#>Async(viewModel).Result;
-			
-			// Assert
-			Assert.IsNull(result);
-		}
-			   		
 		[TestMethod]
 		public void Create<#=viewModelName#>Async_ViewModelIsValid_AddsModelAndReturnsViewModel()
 		{
@@ -270,7 +257,7 @@ foreach (var viewModelName in viewModelNames)
 		}
 
 		[TestMethod]
-		public void Update<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullException()
+		public async Task Update<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullExceptionAsync()
 		{
 			// Arrange			
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
@@ -291,7 +278,7 @@ foreach (var viewModelName in viewModelNames)
 
 			// Act
 			// Assert
-			var exception = Assert.ThrowsException<ArgumentNullException>(() => this.dataService.Update<#=viewModelName#>Async(Guid.Empty, null));
+			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Update<#=viewModelName#>Async(Guid.Empty, null));
 			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
 <#			if (EntityHasNode(modelName))

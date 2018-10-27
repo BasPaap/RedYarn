@@ -36,6 +36,12 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Name = Name,
                 Description = Description
             };
+        }       
+
+        public void UpdateModel(RedYarn.PlotElement model)
+        {
+            model.Name = Name;
+            model.Description = Description;
         }
     }
 }

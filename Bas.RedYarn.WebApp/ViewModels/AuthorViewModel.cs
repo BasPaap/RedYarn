@@ -35,6 +35,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Name = Name
             };
         }
+
+        public void UpdateModel(RedYarn.Author model)
+        {
+            model.Name = Name;
+        }
     }
 
 }

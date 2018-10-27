@@ -51,11 +51,17 @@ else
         {
 			if (<#=Decapitalize(viewModelName)#> == null)
 			{
-				throw new ArgumentNullException();
+				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
 
 			var model = <#=Decapitalize(viewModelName)#>.ToModel();
 			this.dbContext.<#=modelName#>s.Add(model);
+<# if (EntityHasNode(modelName))
+{#>
+			var node = <#=Decapitalize(viewModelName)#>.ToNode();
+			node.<#=modelName#> = model;
+			this.dbContext.<#=modelName#>Nodes.Add(node);
+<#}#>
 			await this.dbContext.SaveChangesAsync();
 
 			var newViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
@@ -65,7 +71,36 @@ else
 
         public async Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
-            throw new NotImplementedException();
+            if (<#=Decapitalize(viewModelName)#> == null)
+			{
+				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
+			}
+
+			var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
+			if (model == null)
+			{
+				return (null, false);
+			}
+<# if (EntityHasNode(modelName))
+{#>
+			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model);
+			if (node == null)
+			{
+				return (null, false);
+			}
+<#}#>
+
+			<#=Decapitalize(viewModelName)#>.UpdateModel(model);			
+<# if (EntityHasNode(modelName))
+{#>
+			<#=Decapitalize(viewModelName)#>.UpdateNode(node);
+<#}#>
+			await this.dbContext.SaveChangesAsync();
+
+			var resultingViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
+			resultingViewModel.Id = id;
+
+			return (resultingViewModel, true);
         }
 
         public async Task<bool> Delete<#=viewModelName#>Async(Guid id)
