@@ -40,7 +40,18 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<DiagramViewModel> CreateDiagramViewModelAsync(DiagramViewModel diagramViewModel)
         {
-			throw new NotImplementedException();
+			if (diagramViewModel == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			var model = diagramViewModel.ToModel();
+			this.dbContext.Diagrams.Add(model);
+			await this.dbContext.SaveChangesAsync();
+
+			var newViewModel = new DiagramViewModel(diagramViewModel);
+			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue;
+			return newViewModel;
         }
 
         public async Task<(DiagramViewModel result, bool isFound)> UpdateDiagramViewModelAsync(Guid id, DiagramViewModel diagramViewModel)
@@ -82,7 +93,18 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<CharacterViewModel> CreateCharacterViewModelAsync(CharacterViewModel characterViewModel)
         {
-			throw new NotImplementedException();
+			if (characterViewModel == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			var model = characterViewModel.ToModel();
+			this.dbContext.Characters.Add(model);
+			await this.dbContext.SaveChangesAsync();
+
+			var newViewModel = new CharacterViewModel(characterViewModel);
+			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue;
+			return newViewModel;
         }
 
         public async Task<(CharacterViewModel result, bool isFound)> UpdateCharacterViewModelAsync(Guid id, CharacterViewModel characterViewModel)
@@ -131,7 +153,18 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<StorylineViewModel> CreateStorylineViewModelAsync(StorylineViewModel storylineViewModel)
         {
-			throw new NotImplementedException();
+			if (storylineViewModel == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			var model = storylineViewModel.ToModel();
+			this.dbContext.Storylines.Add(model);
+			await this.dbContext.SaveChangesAsync();
+
+			var newViewModel = new StorylineViewModel(storylineViewModel);
+			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue;
+			return newViewModel;
         }
 
         public async Task<(StorylineViewModel result, bool isFound)> UpdateStorylineViewModelAsync(Guid id, StorylineViewModel storylineViewModel)
@@ -174,7 +207,18 @@ namespace Bas.RedYarn.WebApp.Services
 
         public async Task<AuthorViewModel> CreateAuthorViewModelAsync(AuthorViewModel authorViewModel)
         {
-			throw new NotImplementedException();
+			if (authorViewModel == null)
+			{
+				throw new ArgumentNullException();
+			}
+
+			var model = authorViewModel.ToModel();
+			this.dbContext.Authors.Add(model);
+			await this.dbContext.SaveChangesAsync();
+
+			var newViewModel = new AuthorViewModel(authorViewModel);
+			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue;
+			return newViewModel;
         }
 
         public async Task<(AuthorViewModel result, bool isFound)> UpdateAuthorViewModelAsync(Guid id, AuthorViewModel authorViewModel)

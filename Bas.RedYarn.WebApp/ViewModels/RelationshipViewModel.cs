@@ -11,5 +11,17 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Guid ToCharacterId { get; set; }
         public string Name { get; set; }
         public bool IsDirectional { get; set; }
+
+        public RelationshipViewModel()
+        {
+        }
+
+        public RelationshipViewModel(RelationshipViewModel viewModel)
+        {
+            FromCharacterId = viewModel.FromCharacterId;
+            ToCharacterId = viewModel.ToCharacterId;
+            Name = viewModel.Name;
+            IsDirectional = viewModel.IsDirectional;
+        }
     }
 }

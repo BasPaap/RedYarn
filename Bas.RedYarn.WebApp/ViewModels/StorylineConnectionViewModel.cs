@@ -9,5 +9,16 @@ namespace Bas.RedYarn.WebApp.ViewModels
     {
         public Guid ConnectionId { get; set; }
         public Guid StorylineId { get; set; }
+
+        public StorylineConnectionViewModel()
+        {
+        }
+
+        public StorylineConnectionViewModel(StorylineConnectionViewModel viewModel)
+        {
+            ConnectionId = viewModel.ConnectionId;
+            StorylineId = viewModel.StorylineId;
+        }
     }
+
 }

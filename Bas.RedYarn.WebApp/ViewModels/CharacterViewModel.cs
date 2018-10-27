@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using Bas.RedYarn.WebApp.Extensions;
 
 namespace Bas.RedYarn.WebApp.ViewModels
 {
@@ -24,11 +25,17 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Id = Guid.NewGuid();
             Name = character.Name;
             Description = character.Description;
+            Aliases.AddRange(character.Aliases);            
+        }
 
-            foreach (var alias in character.Aliases)
-            {
-                Aliases.Add(alias);
-            }
+        public CharacterViewModel(CharacterViewModel viewModel)
+        {
+            Id = viewModel.Id;
+            Name = viewModel.Name;
+            Description = viewModel.Description;
+            Aliases.AddRange(character.Aliases);
+            XPosition = viewModel.XPosition;
+            YPosition = viewModel.YPosition;            
         }
 
         public CharacterViewModel(RedYarn.Character character, float xPosition, float yPosition)
@@ -36,6 +43,19 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {            
             XPosition = xPosition;
             YPosition = yPosition;
+        }
+
+        public RedYarn.Character ToModel()
+        {
+            var character = new Character()
+            {
+                Name = Name,
+                Description = Description
+            };
+
+            character.Aliases.AddRange(Aliases);
+
+            return character;
         }
     }
 }

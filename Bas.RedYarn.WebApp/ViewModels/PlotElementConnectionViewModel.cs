@@ -10,5 +10,16 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Guid CharacterId { get; set; }
         public Guid PlotElementId { get; set; }
         public bool CharacterOwnsPlotElement { get; set; }
+
+        public PlotElementConnectionViewModel()
+        {
+        }
+
+        public PlotElementConnectionViewModel(PlotElementConnectionViewModel viewModel)
+        {
+            CharacterId = viewModel.CharacterId;
+            PlotElementId = viewModel.PlotElementId;
+            CharacterOwnsPlotElement = viewModel.CharacterOwnsPlotElement;
+        }
     }
 }

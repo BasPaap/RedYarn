@@ -18,11 +18,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Collection<CharacterViewModel> Characters { get; } = new Collection<CharacterViewModel>();
         public Collection<StorylineViewModel> Storylines { get; } = new Collection<StorylineViewModel>();
         public Collection<PlotElementViewModel> PlotElements { get; } = new Collection<PlotElementViewModel>();
-
         public Collection<RelationshipViewModel> Relationships { get; } = new Collection<RelationshipViewModel>();
         public Collection<StorylineConnectionViewModel> StorylineCharacterConnections { get; } = new Collection<StorylineConnectionViewModel>();
         public Collection<StorylineConnectionViewModel> StorylinePlotElementConnections { get; } = new Collection<StorylineConnectionViewModel>();
         public Collection<PlotElementConnectionViewModel> CharacterPlotElementConnections { get; set; } = new Collection<PlotElementConnectionViewModel>();
+
         public DiagramViewModel()
         {
         }
@@ -43,6 +43,27 @@ namespace Bas.RedYarn.WebApp.ViewModels
             GenerateRelationships(characterDictionary);
             GenerateStorylinePlotElementConnections(plotElementDictionary, storylineDictionary);
             GeneratePlotElementConnections(plotElementDictionary, characterDictionary);
+        }
+
+        public DiagramViewModel(DiagramViewModel viewModel)
+        {
+            Id = viewModel.Id;
+            Name = viewModel.Name;
+            Characters.AddRange(viewModel.Characters);
+            Storylines.AddRange(viewModel.Storylines);
+            PlotElements.AddRange(viewModel.PlotElements);
+            Relationships.AddRange(viewModel.Relationships);
+            StorylineCharacterConnections.AddRange(viewModel.StorylineCharacterConnections);
+            StorylinePlotElementConnections.AddRange(viewModel.StorylinePlotElementConnections);
+            CharacterPlotElementConnections.AddRange(viewModel.CharacterPlotElementConnections);
+        }
+
+        public Diagram ToModel()
+        {
+            return new Diagram()
+            {
+                Name = Name
+            };
         }
                 
         private void AddPlotElements(Dictionary<RedYarn.PlotElement, PlotElementViewModel> plotElementDictionary)
