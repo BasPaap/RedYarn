@@ -11,6 +11,7 @@ import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
 import { GraphVisDirective } from './graph-vis.directive';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { GraphVisDirective } from './graph-vis.directive';
     MatDialogModule,
     MatSidenavModule,
     MatListModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   entryComponents : [ LoginDialogComponent ],
   providers: [],

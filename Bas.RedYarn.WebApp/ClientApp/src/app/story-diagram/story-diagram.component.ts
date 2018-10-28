@@ -1,9 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DataSet } from 'vis';
-import { HttpClient } from '@angular/common/http';
-import { Diagram } from '../diagram-types';
 import { DiagramService } from '../diagram.service';
 import { DiagramGeneratorService } from '../diagram-generator.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-story-diagram',
@@ -14,17 +13,20 @@ export class StoryDiagramComponent implements OnInit {
 
   graphData = {};
 
-  constructor(private diagramService: DiagramService, private diagramGeneratorService: DiagramGeneratorService) {    
+  constructor(private route: ActivatedRoute,
+              private diagramService: DiagramService,
+              private diagramGeneratorService: DiagramGeneratorService) {    
   }
 
   ngOnInit() {
   }
-
+    
   ngAfterContentInit() {
     this.graphData["nodes"] = new DataSet();
     this.graphData["edges"] = new DataSet();
 
-    this.diagramService.getDiagram('CA275778-7781-46CE-A9AB-323BF0BF7B55').subscribe(diagram => {
+    const id = this.route.snapshot.paramMap.get('id');
+    this.diagramService.getDiagram(id).subscribe(diagram => {
       this.diagramGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);      
     }, error => console.error(error));
   }
