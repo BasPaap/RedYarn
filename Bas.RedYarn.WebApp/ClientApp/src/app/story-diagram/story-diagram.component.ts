@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { DataSet } from 'vis';
 import { DiagramService } from '../diagram.service';
-import { DiagramGeneratorService } from '../diagram-generator.service';
+import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -15,7 +15,7 @@ export class StoryDiagramComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private diagramService: DiagramService,
-              private diagramGeneratorService: DiagramGeneratorService) {    
+              private visNetworkGeneratorService: VisNetworkGeneratorService) {    
   }
 
   ngOnInit() {
@@ -27,7 +27,7 @@ export class StoryDiagramComponent implements OnInit {
 
     const id = this.route.snapshot.paramMap.get('id');
     this.diagramService.getDiagram(id).subscribe(diagram => {
-      this.diagramGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);      
+      this.visNetworkGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);      
     }, error => console.error(error));
   }
 }

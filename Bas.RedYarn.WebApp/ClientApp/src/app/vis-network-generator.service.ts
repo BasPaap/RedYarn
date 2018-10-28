@@ -5,7 +5,7 @@ import { DataSet } from 'vis';
 @Injectable({
   providedIn: 'root'
 })
-export class DiagramGeneratorService {
+export class VisNetworkGeneratorService {
 
   constructor() { }
 
