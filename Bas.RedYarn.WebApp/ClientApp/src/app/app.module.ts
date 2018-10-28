@@ -1,9 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatToolbarModule, MatButtonModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatDialogModule, MatSidenavModule, MatListModule } from '@angular/material';
 import { LoginDialogComponent } from './login-dialog/login-dialog.component';
@@ -12,6 +10,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
 import { GraphVisDirective } from './graph-vis.directive';
 import { AppRoutingModule } from './app-routing.module';
+import { NewDiagramDialogComponent } from './new-diagram-dialog/new-diagram-dialog.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,8 @@ import { AppRoutingModule } from './app-routing.module';
     MainToolbarComponent,
     SidebarComponent,
     StoryDiagramComponent,
-    GraphVisDirective
+    GraphVisDirective,
+    NewDiagramDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,9 +35,10 @@ import { AppRoutingModule } from './app-routing.module';
     MatSidenavModule,
     MatListModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
-  entryComponents : [ LoginDialogComponent ],
+  entryComponents: [LoginDialogComponent, NewDiagramDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

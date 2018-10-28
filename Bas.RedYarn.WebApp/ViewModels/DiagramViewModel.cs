@@ -21,7 +21,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Collection<RelationshipViewModel> Relationships { get; } = new Collection<RelationshipViewModel>();
         public Collection<StorylineConnectionViewModel> StorylineCharacterConnections { get; } = new Collection<StorylineConnectionViewModel>();
         public Collection<StorylineConnectionViewModel> StorylinePlotElementConnections { get; } = new Collection<StorylineConnectionViewModel>();
-        public Collection<PlotElementConnectionViewModel> CharacterPlotElementConnections { get; set; } = new Collection<PlotElementConnectionViewModel>();
+        public Collection<PlotElementConnectionViewModel> CharacterPlotElementConnections { get; } = new Collection<PlotElementConnectionViewModel>();
 
         public DiagramViewModel()
         {

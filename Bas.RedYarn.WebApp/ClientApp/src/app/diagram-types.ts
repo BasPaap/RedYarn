@@ -35,6 +35,7 @@ export interface StorylinePlotElementConnection {
 }
 
 export interface Diagram {
+  id: string;
   name: string;
   characters: Character[];
   storylines: Storyline[];
