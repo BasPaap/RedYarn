@@ -1,14 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-
-/** Error when invalid control is dirty, touched, or submitted. */
-//export class MyErrorStateMatcher implements ErrorStateMatcher {
-//  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-//    const isSubmitted = form && form.submitted;
-//    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-//  }
-//}
+import { DiagramService } from '../diagram.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-diagram-dialog',
@@ -25,8 +19,17 @@ export class NewDiagramDialogComponent implements OnInit {
       this.dialogRef.close(this.newDiagramForm.controls["name"].value);
     }
   }
-  
-  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>) { }
+
+  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {
+    dialogRef.afterClosed().subscribe(diagramName => {
+      if (diagramName) {
+        this.diagramService.createDiagram(diagramName)
+          .subscribe(newDiagram => {
+            this.router.navigate(['diagrams', newDiagram.id]);
+          });
+      }
+    });
+  }
 
   ngOnInit() {
   }
