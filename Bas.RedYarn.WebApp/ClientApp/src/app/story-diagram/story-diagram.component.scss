@@ -1,3 +1,11 @@
+@import '../../redyarn-theme.scss';
+
+h1 {
+  color: mat-color($redyarn-app-primary, 200);
+  margin: 10px;
+}
+
+
 .graph-container {
   height: 100%;
 }
