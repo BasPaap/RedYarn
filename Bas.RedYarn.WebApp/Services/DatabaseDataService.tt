@@ -43,6 +43,7 @@ else
 {#>
 			var viewModel = new <#=viewModelName#>(model);
 <#}#>
+			viewModel.Id = id;
 
 			return viewModel;
         }

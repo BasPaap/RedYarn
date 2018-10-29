@@ -136,6 +136,7 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override void AssertDiagramViewModel(DiagramViewModel viewModel)
         {
             Assert.AreEqual(GetTestDiagramViewModel().Name, viewModel.Name);
+            Assert.AreNotEqual(Guid.Empty, viewModel.Id);
         }
 
         protected override DiagramViewModel GetUpdatedDiagramViewModel()
