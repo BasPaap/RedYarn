@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormControl, Validators, FormGroupDirective, NgForm, FormGroup } from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 
 /** Error when invalid control is dirty, touched, or submitted. */
 //export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -27,7 +26,7 @@ export class NewDiagramDialogComponent implements OnInit {
     }
   }
   
-  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: string) { }
+  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>) { }
 
   ngOnInit() {
   }

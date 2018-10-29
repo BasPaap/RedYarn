@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { DiagramService } from '../diagram.service';
 import { NewDiagramDialogComponent } from '../new-diagram-dialog/new-diagram-dialog.component';
 
@@ -21,7 +21,7 @@ export class MainToolbarComponent implements OnInit {
   }
 
   public createNewDiagram() {
-    const dialogRef = this.dialog.open(NewDiagramDialogComponent, { data: "" });
+    const dialogRef = this.dialog.open(NewDiagramDialogComponent);
     dialogRef.afterClosed().subscribe(diagramName => {
       if (diagramName) {
         this.diagramService.createDiagram(diagramName);
