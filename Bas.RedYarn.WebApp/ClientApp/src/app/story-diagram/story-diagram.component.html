@@ -1,2 +1,2 @@
-<h1>{{diagram.name}}</h1>
+<h1>{{diagram?.name || ""}}</h1>
 <div [appGraphVis]="graphData" class="graph-container"></div>

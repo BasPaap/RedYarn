@@ -28,7 +28,7 @@ export class StoryDiagramComponent implements OnInit {
     this.graphData["edges"] = new DataSet();
 
     const id = this.route.snapshot.paramMap.get('id');
-    this.diagramService.getDiagram(id).subscribe(diagram => {
+    this.diagramService.getDiagram(id).subscribe((diagram: Diagram) => {
       this.diagram = diagram;
       this.visNetworkGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);      
     }, error => console.error(error));
