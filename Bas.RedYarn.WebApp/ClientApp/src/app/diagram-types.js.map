@@ -1,1 +1,1 @@
-{"version":3,"file":"diagram-types.js","sourceRoot":"","sources":["diagram-types.ts"],"names":[],"mappings":""}
+{"version":3,"file":"diagram-types.js","sourceRoot":"","sources":["diagram-types.ts"],"names":[],"mappings":";;AAoCA;IAAA;QACE,OAAE,GAAW,sCAAsC,CAAC;QACpD,SAAI,GAAW,EAAE,CAAC;QAClB,eAAU,GAAgB,IAAI,CAAC;QAC/B,eAAU,GAAgB,IAAI,CAAC;QAC/B,iBAAY,GAAkB,IAAI,CAAC;QACnC,kBAAa,GAAmB,IAAI,CAAC;QACrC,kCAA6B,GAAmC,IAAI,CAAC;QACrE,oCAA+B,GAAqC,IAAI,CAAC;QACzE,oCAA+B,GAA4B,IAAI,CAAC;IAClE,CAAC;IAAD,cAAC;AAAD,CAAC,AAVD,IAUC;AAVY,0BAAO"}

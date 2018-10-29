@@ -34,16 +34,16 @@ export interface StorylinePlotElementConnection {
   storylineId: string;
 }
 
-export interface Diagram {
-  id: string;
-  name: string;
-  characters: Character[];
-  storylines: Storyline[];
-  plotElements: PlotElement[];
-  relationships: Relationship[];
-  storylineCharacterConnections: StorylineCharacterConnection[];
-  storylinePlotElementConnections: StorylinePlotElementConnection[];
-  characterPlotElementConnections: PlotElementConnection[];
+export class Diagram {
+  id: string = "00000000-0000-0000-0000-000000000000";
+  name: string = "";
+  characters: Character[] = null;
+  storylines: Storyline[] = null;
+  plotElements: PlotElement[] = null;
+  relationships: Relationship[] = null;
+  storylineCharacterConnections: StorylineCharacterConnection[] = null;
+  storylinePlotElementConnections: StorylinePlotElementConnection[] = null;
+  characterPlotElementConnections: PlotElementConnection[] = null;
 }
 
 

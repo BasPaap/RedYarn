@@ -18,17 +18,8 @@ export class DiagramService {
 
   public createDiagram(name: string) {
     
-    let diagramViewModel: Diagram = {
-      id: "",
-      name: name,
-      characters: null,
-      storylines: null,
-      plotElements: null,
-      relationships: null,
-      storylineCharacterConnections: null,
-      storylinePlotElementConnections: null,
-      characterPlotElementConnections: null
-    };
+    let diagramViewModel = new Diagram();
+    diagramViewModel.name = name;
 
     let returnValue = this.httpClient.post(this.baseUrl + 'api/diagram', diagramViewModel);
     returnValue.subscribe(result => {
