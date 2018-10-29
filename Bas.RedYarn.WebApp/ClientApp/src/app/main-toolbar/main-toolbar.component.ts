@@ -16,11 +16,11 @@ export class MainToolbarComponent implements OnInit {
   ngOnInit() {
   }
 
-  public openLoginDialog() {
+  public onLoginClick() {
     this.dialog.open(LoginDialogComponent, { data: "" });
   }
 
-  public createNewDiagram() {
+  public onNewDiagramClick() {
     this.dialog.open(NewDiagramDialogComponent);    
   }
 }

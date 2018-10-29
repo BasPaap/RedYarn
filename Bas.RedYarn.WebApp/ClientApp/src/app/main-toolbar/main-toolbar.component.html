@@ -4,13 +4,13 @@
       <span>RedYarn</span>
       <span class="fill-remaining-space"></span>
       <button mat-button>Help</button>
-      <button mat-flat-button (click)="openLoginDialog()" color="accent">Login</button>
+      <button mat-flat-button (click)="onLoginClick()" color="accent">Login</button>
     </header>
   </mat-toolbar-row>
    
   <mat-toolbar-row class="rowTwo">
     <nav>
-      <button mat-button (click)="createNewDiagram()" >New diagram</button>
+      <button mat-button (click)="onNewDiagramClick()" >New diagram</button>
       <button mat-button>My diagrams</button>
     </nav>
   </mat-toolbar-row>
