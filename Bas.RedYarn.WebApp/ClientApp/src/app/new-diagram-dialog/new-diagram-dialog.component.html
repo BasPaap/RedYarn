@@ -1,10 +1,14 @@
-<h2 mat-dialog-title>New diagram</h2>
-<mat-dialog-content class="content">
-  <mat-form-field class="fullWidth">
-    <input matInput placeholder="Name" [(ngModel)]="data">
-  </mat-form-field>  
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-flat-button [mat-dialog-close]="data">OK</button>
-  <button mat-flat-button mat-dialog-close>Cancel</button>
-</mat-dialog-actions>
+<form [formGroup]="newDiagramForm">
+  <h2 mat-dialog-title>New diagram</h2>
+  <mat-dialog-content class="content">
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" (keyup.enter)="onEnter()">
+      <mat-error *ngIf="newDiagramForm.controls['name'].hasError('required')">You must enter a name.</mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button [mat-dialog-close]="newDiagramForm.controls['name'].value" [disabled]="!newDiagramForm.valid" cdkFocusInitial>OK</button>
+    <button mat-flat-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>
