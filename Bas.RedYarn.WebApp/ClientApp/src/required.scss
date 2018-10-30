@@ -4,3 +4,19 @@
 @include mat-core();
 $redyarn-app-theme: mat-light-theme($redyarn-app-primary, $redyarn-app-accent, $redyarn-app-warn);
 @include angular-material-theme($redyarn-app-theme);
+
+mat-dialog-content {
+    padding-bottom: 15px;
+}
+
+mat-dialog-content mat-form-field {
+  min-width: 350px;
+}
+
+mat-dialog-actions .mat-flat-button {
+  margin: 2px;
+}
+
+.fullWidth {
+  width: 100%;
+}

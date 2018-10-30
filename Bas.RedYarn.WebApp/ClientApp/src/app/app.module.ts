@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NewDiagramDialogComponent } from './new-diagram-dialog/new-diagram-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewCharacterDialogComponent } from './new-character-dialog/new-character-dialog.component';
+import { ChipsInputComponent } from './chips-input/chips-input.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { NewCharacterDialogComponent } from './new-character-dialog/new-characte
     StoryDiagramComponent,
     GraphVisDirective,
     NewDiagramDialogComponent,
-    NewCharacterDialogComponent
+    NewCharacterDialogComponent,
+    ChipsInputComponent
   ],
   imports: [
     BrowserModule,

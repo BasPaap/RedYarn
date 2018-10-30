@@ -6,24 +6,18 @@
       <input matInput formControlName="name">
       <mat-error *ngIf="newCharacterForm.controls['name'].hasError('required')">You must enter a name.</mat-error>
     </mat-form-field>
-    <mat-form-field class="fullWidth" appearance="outline">
-      <mat-label>Aliases</mat-label>
-      <mat-chip-list #aliasList>
-        <mat-chip *ngFor="let alias of aliases" [removable]="removable" (removed)="remove(alias)" color="primary" selected>
-          {{alias}}
-          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-        </mat-chip>
-        <input [matChipInputFor]="aliasList"
-               [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
-               [matChipInputAddOnBlur]="true"
-               (matChipInputTokenEnd)="add($event)">
-      </mat-chip-list>
-    </mat-form-field>
+
+    <app-chips-input label="Aliases"
+                     [(values)]="aliases"
+                     firstHint="If your character is known by any other names, you can add them here."
+                     secondHint="Type enter after each alias to add it to the list."></app-chips-input>
+
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
       <mat-hint>Add a description, bio, and other information about your character.</mat-hint>
     </mat-form-field>
+
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-flat-button [mat-dialog-close]="newCharacterForm.controls['name'].value" [disabled]="!newCharacterForm.valid" cdkFocusInitial>OK</button>
