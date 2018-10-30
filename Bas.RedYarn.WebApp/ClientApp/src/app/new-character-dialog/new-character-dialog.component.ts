@@ -16,6 +16,7 @@ export class NewCharacterDialogComponent implements OnInit {
   });
 
   aliases: string[] = [];
+  authors: string[] = [];
 
   constructor(public dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramService: DiagramService, private router: Router) { }
 

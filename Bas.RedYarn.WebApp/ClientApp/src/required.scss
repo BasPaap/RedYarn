@@ -9,8 +9,15 @@ mat-dialog-content {
     padding-bottom: 15px;
 }
 
+mat-form-field {
+  padding-bottom: 8px;
+}
 mat-dialog-content mat-form-field {
   min-width: 350px;
+}
+
+mat-dialog-content textarea {
+  min-height: 80px;
 }
 
 mat-dialog-actions .mat-flat-button {

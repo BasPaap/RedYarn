@@ -18,6 +18,12 @@
       <mat-hint>Add a description, bio, and other information about your character.</mat-hint>
     </mat-form-field>
 
+    <app-chips-input label="Authors"
+                     [(values)]="authors"
+                     firstHint=""
+                     secondHint="Type enter after each author to add it to the list."></app-chips-input>
+
+
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-flat-button [mat-dialog-close]="newCharacterForm.controls['name'].value" [disabled]="!newCharacterForm.valid" cdkFocusInitial>OK</button>
