@@ -33,7 +33,7 @@ export class VisNetworkGeneratorService {
     };
   }
 
-  private getPlotElementNode(plotElement: PlotElement) {
+  public getPlotElementNode(plotElement: PlotElement) {
     return {
       id: plotElement.id,
       label: plotElement.name,
@@ -72,7 +72,7 @@ export class VisNetworkGeneratorService {
     };
   }
 
-  private getStorylineNode(storyline: Storyline) {
+  public getStorylineNode(storyline: Storyline) {
     return {
       id: storyline.id,
       label: storyline.name,

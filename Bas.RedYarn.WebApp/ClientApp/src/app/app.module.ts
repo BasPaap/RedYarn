@@ -14,6 +14,7 @@ import { NewDiagramDialogComponent } from './new-diagram-dialog/new-diagram-dial
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewCharacterDialogComponent } from './new-character-dialog/new-character-dialog.component';
 import { ChipsInputComponent } from './chips-input/chips-input.component';
+import { NewStorylineDialogComponent } from './new-storyline-dialog/new-storyline-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ChipsInputComponent } from './chips-input/chips-input.component';
     GraphVisDirective,
     NewDiagramDialogComponent,
     NewCharacterDialogComponent,
-    ChipsInputComponent
+    ChipsInputComponent,
+    NewStorylineDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +48,12 @@ import { ChipsInputComponent } from './chips-input/chips-input.component';
     MatIconModule,
     MatProgressSpinnerModule
   ],
-  entryComponents: [LoginDialogComponent, NewDiagramDialogComponent, NewCharacterDialogComponent],
+  entryComponents: [
+    LoginDialogComponent,
+    NewDiagramDialogComponent,
+    NewCharacterDialogComponent,
+    NewStorylineDialogComponent
+  ],
   providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
   bootstrap: [AppComponent]
 })

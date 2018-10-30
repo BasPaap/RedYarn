@@ -1,7 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { Diagram, Character } from './diagram-types';
+import { Diagram, Character, Storyline } from './diagram-types';
+import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,14 @@ import { Diagram, Character } from './diagram-types';
 export class DiagramService {
 
   private characterSubject = new Subject<Character>();
-  
+  private storylineSubject = new Subject<Storyline>();
+
   charactersService(): Observable<Character> {
     return this.characterSubject.asObservable();
+  }
+
+  storylinesService(): Observable<Storyline> {
+    return this.storylineSubject.asObservable();
   }
 
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string) {
@@ -43,6 +49,12 @@ export class DiagramService {
   public createCharacter(characterViewModel: Character): Observable<Character> {
     var observable = this.httpClient.post<Character>(this.apiUrl + 'character', characterViewModel);
     observable.subscribe(character => this.characterSubject.next(character));
+    return observable;
+  }
+
+  public createStoryline(storylineViewModel: Storyline): Observable<Storyline> {
+    var observable = this.httpClient.post<Storyline>(this.apiUrl + 'storyline', storylineViewModel);
+    observable.subscribe(storyline => this.storylineSubject.next(storyline));
     return observable;
   }
 }

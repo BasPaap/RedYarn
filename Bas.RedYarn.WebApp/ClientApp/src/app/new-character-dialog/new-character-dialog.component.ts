@@ -9,6 +9,7 @@ import { DiagramService } from '../diagram.service';
   styleUrls: ['./new-character-dialog.component.scss']
 })
 export class NewCharacterDialogComponent implements OnInit {
+
   newCharacterForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     description: new FormControl('')

@@ -1,0 +1,22 @@
+<form [formGroup]="newStorylineForm">
+  <h2 mat-dialog-title>New storyline</h2>
+  <mat-dialog-content class="content">
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" cdkFocusInitial>
+      <mat-error *ngIf="newStorylineForm.controls['name'].hasError('required')">You must enter a name.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+      <mat-hint>Add a description, outline and other information about your storyline.</mat-hint>
+    </mat-form-field>
+
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <mat-spinner *ngIf="isSubmitting" diameter="25"></mat-spinner>
+    <button mat-flat-button (click)="createStoryline()" [disabled]="!newStorylineForm.valid || isSubmitting">OK</button>
+    <button mat-flat-button mat-dialog-close [disabled]="isSubmitting">Cancel</button>
+  </mat-dialog-actions>
+</form>

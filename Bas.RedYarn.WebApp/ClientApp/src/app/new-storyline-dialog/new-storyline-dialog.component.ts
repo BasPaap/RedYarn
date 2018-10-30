@@ -1,0 +1,38 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material';
+import { DiagramService } from '../diagram.service';
+
+@Component({
+  selector: 'app-new-storyline-dialog',
+  templateUrl: './new-storyline-dialog.component.html',
+  styleUrls: ['./new-storyline-dialog.component.scss']
+})
+export class NewStorylineDialogComponent implements OnInit {
+
+  newStorylineForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('')
+  });
+
+  isSubmitting: boolean = false;
+
+  createStoryline(): void {
+    this.isSubmitting = true;
+
+    let storylineViewModel = {
+      id: "00000000-0000-0000-0000-000000000000",
+      name: this.newStorylineForm.controls['name'].value,
+      description: this.newStorylineForm.controls['description'].value
+    };
+
+    this.diagramService.createStoryline(storylineViewModel)
+      .subscribe(() => this.dialogRef.close());
+  }
+
+  constructor(public dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramService: DiagramService) { }
+
+  ngOnInit() {
+  }
+
+}

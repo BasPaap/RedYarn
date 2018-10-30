@@ -17,6 +17,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   diagram: Diagram;
   graphData = {};
   characterSubscription: Subscription;
+  storylineSubscription: Subscription;
   _graphVis: GraphVisDirective;
 
   @ViewChild(GraphVisDirective)
@@ -52,9 +53,16 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       let nodeId = this.graphData["nodes"].add(newNode);
       this.graphVis.focusOnNode(nodeId);      
     });
+
+    this.storylineSubscription = this.diagramService.storylinesService().subscribe(storyline => {
+      let newNode = this.visNetworkGeneratorService.getStorylineNode(storyline);
+      let nodeId = this.graphData["nodes"].add(newNode);
+      this.graphVis.focusOnNode(nodeId);
+    })
   }
 
   ngOnDestroy(): void {
     this.characterSubscription.unsubscribe();
+    this.storylineSubscription.unsubscribe();
   }
 }

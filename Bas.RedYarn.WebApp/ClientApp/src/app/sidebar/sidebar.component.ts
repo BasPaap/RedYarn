@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { NewCharacterDialogComponent } from '../new-character-dialog/new-character-dialog.component';
+import { NewStorylineDialogComponent } from '../new-storyline-dialog/new-storyline-dialog.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,4 +19,7 @@ export class SidebarComponent implements OnInit {
     this.dialog.open(NewCharacterDialogComponent);
   }
 
+  public onNewStorylineClick() {
+    this.dialog.open(NewStorylineDialogComponent);
+  }
 }
