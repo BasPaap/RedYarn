@@ -29,10 +29,7 @@ export class NewCharacterDialogComponent implements OnInit {
     };
 
     this.diagramService.createCharacter(characterViewModel)
-      .subscribe(newCharacter => {
-        // Somehow broadcast the new character so StoryDiagram will pick it up and add it.
-        this.dialogRef.close();
-      });
+      .subscribe(() => this.dialogRef.close());
   }
 
   constructor(public dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramService: DiagramService) {

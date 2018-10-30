@@ -46,7 +46,7 @@ export class VisNetworkGeneratorService {
     };
   }
 
-  private getCharacterNode(character: Character) {
+  public getCharacterNode(character: Character) {
     return {
       id: character.id,
       label: character.name,
