@@ -7,6 +7,19 @@
       <mat-error *ngIf="newCharacterForm.controls['name'].hasError('required')">You must enter a name.</mat-error>
     </mat-form-field>
     <mat-form-field class="fullWidth" appearance="outline">
+      <mat-label>Aliases</mat-label>
+      <mat-chip-list #aliasList>
+        <mat-chip *ngFor="let alias of aliases" [removable]="removable" (removed)="remove(alias)" color="primary" selected>
+          {{alias}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input [matChipInputFor]="aliasList"
+               [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+               [matChipInputAddOnBlur]="true"
+               (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+    </mat-form-field>
+    <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
       <mat-hint>Add a description, bio, and other information about your character.</mat-hint>
