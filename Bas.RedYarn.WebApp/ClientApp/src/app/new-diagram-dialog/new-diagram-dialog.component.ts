@@ -14,24 +14,27 @@ export class NewDiagramDialogComponent implements OnInit {
     name: new FormControl('', [Validators.required])
   });
 
+  isSubmitting: boolean = false;
+
   onEnter(): void {
+    this.createDiagram();
+  }
+
+  createDiagram(): void {
     if (this.newDiagramForm.valid) {
-      this.dialogRef.close(this.newDiagramForm.controls["name"].value);
+      this.isSubmitting = true;
+
+      this.diagramService.createDiagram(this.newDiagramForm.controls['name'].value)
+        .subscribe(newDiagram => {
+          this.dialogRef.close();
+          this.router.navigate(['diagrams', newDiagram.id]);
+        });
     }
   }
 
-  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {
-    dialogRef.afterClosed().subscribe(diagramName => {
-      if (diagramName) {
-        this.diagramService.createDiagram(diagramName)
-          .subscribe(newDiagram => {
-            this.router.navigate(['diagrams', newDiagram.id]);
-          });
-      }
-    });
+  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {    
   }
 
   ngOnInit() {
   }
-
 }
