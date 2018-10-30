@@ -4,7 +4,7 @@ import { DiagramService } from '../diagram.service';
 import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Diagram } from '../diagram-types';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { GraphVisDirective } from '../graph-vis.directive';
 
 @Component({
@@ -16,8 +16,11 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     
   diagram: Diagram;
   graphData = {};
+
   characterSubscription: Subscription;
   storylineSubscription: Subscription;
+  plotElementSubscription: Subscription;
+
   _graphVis: GraphVisDirective;
 
   @ViewChild(GraphVisDirective)
@@ -25,7 +28,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this._graphVis = directive;
   }
   get graphVis(): GraphVisDirective {
-    return this._graphVis;
+    return this._graphVis;    
   }
 
   constructor(private route: ActivatedRoute,
@@ -48,21 +51,22 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.visNetworkGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);
     }, error => console.error(error));
 
-    this.characterSubscription = this.diagramService.charactersService().subscribe(character => {
-      let newNode = this.visNetworkGeneratorService.getCharacterNode(character);
-      let nodeId = this.graphData["nodes"].add(newNode);
-      this.graphVis.focusOnNode(nodeId);      
-    });
+    this.characterSubscription = this.getSubscription(this.diagramService.charactersService(), this.visNetworkGeneratorService.getCharacterNode);
+    this.storylineSubscription = this.getSubscription(this.diagramService.storylinesService(), this.visNetworkGeneratorService.getStorylineNode);
+    this.plotElementSubscription = this.getSubscription(this.diagramService.plotElementsService(), this.visNetworkGeneratorService.getPlotElementNode);
+  }
 
-    this.storylineSubscription = this.diagramService.storylinesService().subscribe(storyline => {
-      let newNode = this.visNetworkGeneratorService.getStorylineNode(storyline);
+  private getSubscription<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
+    return service.subscribe(item => {
+      let newNode = getNode(item);
       let nodeId = this.graphData["nodes"].add(newNode);
       this.graphVis.focusOnNode(nodeId);
-    })
+    });
   }
 
   ngOnDestroy(): void {
     this.characterSubscription.unsubscribe();
     this.storylineSubscription.unsubscribe();
+    this.plotElementSubscription.unsubscribe();
   }
 }

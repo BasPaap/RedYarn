@@ -1,8 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
-import { Diagram, Character, Storyline } from './diagram-types';
-import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
+import { Diagram, Character, Storyline, PlotElement } from './diagram-types';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +10,7 @@ export class DiagramService {
 
   private characterSubject = new Subject<Character>();
   private storylineSubject = new Subject<Storyline>();
+  private plotElementSubject = new Subject<PlotElement>();
 
   charactersService(): Observable<Character> {
     return this.characterSubject.asObservable();
@@ -18,6 +18,10 @@ export class DiagramService {
 
   storylinesService(): Observable<Storyline> {
     return this.storylineSubject.asObservable();
+  }
+
+  plotElementsService(): Observable<PlotElement> {
+    return this.plotElementSubject.asObservable();
   }
 
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string) {
@@ -28,9 +32,9 @@ export class DiagramService {
   }
 
   public createDiagram(name: string): Observable<Diagram> {
-    
+
     let diagramViewModel = {
-      id:"00000000-0000-0000-0000-000000000000",
+      id: "00000000-0000-0000-0000-000000000000",
       name: "",
       characters: null,
       storylines: null,
@@ -42,19 +46,25 @@ export class DiagramService {
     };
 
     diagramViewModel.name = name;
-    
-    return this.httpClient.post<Diagram>(this.apiUrl + 'diagram', diagramViewModel);      
+
+    return this.httpClient.post<Diagram>(this.apiUrl + 'diagram', diagramViewModel);
   }
 
   public createCharacter(characterViewModel: Character): Observable<Character> {
-    var observable = this.httpClient.post<Character>(this.apiUrl + 'character', characterViewModel);
-    observable.subscribe(character => this.characterSubject.next(character));
-    return observable;
+    return this.createNodeItem('character', characterViewModel, this.characterSubject);
   }
 
   public createStoryline(storylineViewModel: Storyline): Observable<Storyline> {
-    var observable = this.httpClient.post<Storyline>(this.apiUrl + 'storyline', storylineViewModel);
-    observable.subscribe(storyline => this.storylineSubject.next(storyline));
+    return this.createNodeItem('storyline', storylineViewModel, this.storylineSubject);
+  }
+
+  public createPlotElement(plotElementViewModel: PlotElement): Observable<PlotElement> {
+    return this.createNodeItem('plotelement', plotElementViewModel, this.plotElementSubject);
+  }
+  
+  private createNodeItem<T>(controllerName: string, model: T, subject: Subject<T>): Observable<T> {
+    var observable = this.httpClient.post<T>(this.apiUrl + controllerName, model);
+    observable.subscribe(model => subject.next(model));
     return observable;
   }
 }
