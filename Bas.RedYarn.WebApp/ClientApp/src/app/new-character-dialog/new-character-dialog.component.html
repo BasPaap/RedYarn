@@ -25,7 +25,7 @@
 
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <mat-spinner *ngIf="isSubmitting" diagram="25"></mat-spinner>
+    <mat-spinner *ngIf="isSubmitting" diagram="10"></mat-spinner>
     <button mat-flat-button (click)="createCharacter()" [disabled]="!newCharacterForm.valid || isSubmitting" >OK</button>
     <button mat-flat-button mat-dialog-close [disabled]="isSubmitting">Cancel</button>
   </mat-dialog-actions>
