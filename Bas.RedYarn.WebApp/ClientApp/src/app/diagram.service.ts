@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Diagram } from './diagram-types';
+import { Diagram, Character } from './diagram-types';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +32,9 @@ export class DiagramService {
     diagramViewModel.name = name;
     
     return this.httpClient.post<Diagram>(this.baseUrl + 'api/diagram', diagramViewModel);      
+  }
+
+  public createCharacter(characterViewModel: Character): Observable<Character> {
+    return this.httpClient.post<Character>(this.baseUrl + 'api/diagram', characterViewModel);
   }
 }
