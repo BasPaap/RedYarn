@@ -26,7 +26,9 @@ export class NewCharacterDialogComponent implements OnInit {
       id: "00000000-0000-0000-0000-000000000000",
       name: this.newCharacterForm.controls['name'].value,
       description: this.newCharacterForm.controls['description'].value,
-      aliases: this.aliases
+      aliases: this.aliases,
+      xPosition: 0,
+      yPosition: 0
     };
 
     this.diagramService.createCharacter(characterViewModel)

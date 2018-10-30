@@ -1,17 +1,22 @@
-export interface Character {
+export interface Node {
+  xPosition: number;
+  yPosition: number;
+}
+
+export interface Character extends Node {
   id: string;
   name: string;
   description?: any;
   aliases: string[];
 }
 
-export interface Storyline {
+export interface Storyline extends Node {
   id: string;
   name: string;
   description: string;
 }
 
-export interface PlotElement {
+export interface PlotElement extends Node {
   id: string;
   name: string;
   description: string;

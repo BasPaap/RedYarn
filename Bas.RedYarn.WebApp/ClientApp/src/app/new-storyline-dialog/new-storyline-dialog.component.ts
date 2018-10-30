@@ -23,7 +23,9 @@ export class NewStorylineDialogComponent implements OnInit {
     let storylineViewModel = {
       id: "00000000-0000-0000-0000-000000000000",
       name: this.newStorylineForm.controls['name'].value,
-      description: this.newStorylineForm.controls['description'].value
+      description: this.newStorylineForm.controls['description'].value,
+      xPosition: 0,
+      yPosition: 0
     };
 
     this.diagramService.createStoryline(storylineViewModel)
