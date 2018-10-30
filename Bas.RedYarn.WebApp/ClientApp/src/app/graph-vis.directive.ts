@@ -1,5 +1,5 @@
 import { Directive, TemplateRef, ViewContainerRef, Input, Renderer2, ElementRef } from '@angular/core';
-import { Network } from 'vis';
+import { Network, IdType } from 'vis';
 
 @Directive({
   selector: '[appGraphVis]'
@@ -7,7 +7,7 @@ import { Network } from 'vis';
 export class GraphVisDirective {
   private network: Network 
   
-  constructor(private el: ElementRef) { }
+  constructor(private element: ElementRef) { }
 
   @Input() set appGraphVis(graphData) {
     let options = {   
@@ -17,7 +17,17 @@ export class GraphVisDirective {
       };
 
     if (!this.network) {
-      this.network = new Network(this.el.nativeElement, graphData, options);
+      this.network = new Network(this.element.nativeElement, graphData, options);      
+    }
+  }
+
+  focusOnNode(nodeId: IdType): void {
+    if (this.network) {
+      this.network.focus(nodeId, {
+        locked: false,
+        animation: { duration: 1000, easingFunction: "easeInOutQuad" },
+        scale: this.network.getScale()
+      });
     }
   }
 }

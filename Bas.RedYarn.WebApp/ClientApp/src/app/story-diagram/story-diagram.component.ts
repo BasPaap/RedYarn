@@ -1,10 +1,11 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { DataSet } from 'vis';
 import { DiagramService } from '../diagram.service';
 import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Diagram } from '../diagram-types';
 import { Subscription } from 'rxjs';
+import { GraphVisDirective } from '../graph-vis.directive';
 
 @Component({
   selector: 'app-story-diagram',
@@ -16,6 +17,15 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   diagram: Diagram;
   graphData = {};
   characterSubscription: Subscription;
+  _graphVis: GraphVisDirective;
+
+  @ViewChild(GraphVisDirective)
+  set graphVis(directive: GraphVisDirective) {
+    this._graphVis = directive;
+  }
+  get graphVis(): GraphVisDirective {
+    return this._graphVis;
+  }
 
   constructor(private route: ActivatedRoute,
     private router: Router,
@@ -37,7 +47,11 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.visNetworkGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);
     }, error => console.error(error));
 
-    this.characterSubscription = this.diagramService.charactersService().subscribe(character => this.graphData["nodes"].add(this.visNetworkGeneratorService.getCharacterNode(character)));
+    this.characterSubscription = this.diagramService.charactersService().subscribe(character => {
+      let newNode = this.visNetworkGeneratorService.getCharacterNode(character);
+      let nodeId = this.graphData["nodes"].add(newNode);
+      this.graphVis.focusOnNode(nodeId);      
+    });
   }
 
   ngOnDestroy(): void {
