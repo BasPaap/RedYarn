@@ -3,7 +3,6 @@ import { LoginDialogComponent } from '../login-dialog/login-dialog.component';
 import { MatDialog } from '@angular/material';
 import { NewDiagramDialogComponent } from '../new-diagram-dialog/new-diagram-dialog.component';
 
-
 @Component({
   selector: 'app-main-toolbar',
   templateUrl: './main-toolbar.component.html',
@@ -22,5 +21,5 @@ export class MainToolbarComponent implements OnInit {
 
   public onNewDiagramClick() {
     this.dialog.open(NewDiagramDialogComponent);    
-  }
+  }  
 }

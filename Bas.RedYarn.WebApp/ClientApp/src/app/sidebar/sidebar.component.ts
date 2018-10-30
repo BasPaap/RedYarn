@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material';
+import { NewCharacterDialogComponent } from '../new-character-dialog/new-character-dialog.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+  public onNewCharacterClick() {
+    this.dialog.open(NewCharacterDialogComponent);
   }
 
 }

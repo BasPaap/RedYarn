@@ -12,6 +12,7 @@ import { GraphVisDirective } from './graph-vis.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { NewDiagramDialogComponent } from './new-diagram-dialog/new-diagram-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewCharacterDialogComponent } from './new-character-dialog/new-character-dialog.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SidebarComponent,
     StoryDiagramComponent,
     GraphVisDirective,
-    NewDiagramDialogComponent
+    NewDiagramDialogComponent,
+    NewCharacterDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule
   ],
-  entryComponents: [LoginDialogComponent, NewDiagramDialogComponent],
+  entryComponents: [LoginDialogComponent, NewDiagramDialogComponent, NewCharacterDialogComponent],
   providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
   bootstrap: [AppComponent]
 })
