@@ -8,11 +8,11 @@ import { Diagram, Character } from './diagram-types';
 })
 export class DiagramService {
 
-  constructor(private httpClient: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
+  constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string) {
   }
 
   public getDiagram(diagramId: string): Observable<Diagram> {
-    return this.httpClient.get<Diagram>(this.baseUrl + `api/diagram/${diagramId}`);
+    return this.httpClient.get<Diagram>(this.apiUrl + `diagram/${diagramId}`);
   }
 
   public createDiagram(name: string): Observable<Diagram> {
@@ -31,10 +31,10 @@ export class DiagramService {
 
     diagramViewModel.name = name;
     
-    return this.httpClient.post<Diagram>(this.baseUrl + 'api/diagram', diagramViewModel);      
+    return this.httpClient.post<Diagram>(this.apiUrl + 'diagram', diagramViewModel);      
   }
 
   public createCharacter(characterViewModel: Character): Observable<Character> {
-    return this.httpClient.post<Character>(this.baseUrl + 'api/diagram', characterViewModel);
+    return this.httpClient.post<Character>(this.apiUrl + 'character', characterViewModel);
   }
 }
