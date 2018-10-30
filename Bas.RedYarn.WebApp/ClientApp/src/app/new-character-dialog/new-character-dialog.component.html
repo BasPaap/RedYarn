@@ -3,7 +3,7 @@
   <mat-dialog-content class="content">
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Name</mat-label>
-      <input matInput formControlName="name">
+      <input matInput formControlName="name" cdkFocusInitial>
       <mat-error *ngIf="newCharacterForm.controls['name'].hasError('required')">You must enter a name.</mat-error>
     </mat-form-field>
 
@@ -25,7 +25,8 @@
 
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-flat-button [mat-dialog-close]="true" [disabled]="!newCharacterForm.valid" cdkFocusInitial>OK</button>
-    <button mat-flat-button mat-dialog-close>Cancel</button>
+    <mat-spinner *ngIf="isSubmitting" diagram="25"></mat-spinner>
+    <button mat-flat-button (click)="createCharacter()" [disabled]="!newCharacterForm.valid || isSubmitting" >OK</button>
+    <button mat-flat-button mat-dialog-close [disabled]="isSubmitting">Cancel</button>
   </mat-dialog-actions>
 </form>
