@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Diagram } from '../diagram-types';
 import { Subscription, Observable } from 'rxjs';
 import { GraphVisDirective } from '../graph-vis.directive';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-story-diagram',
@@ -17,9 +18,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   diagram: Diagram;
   graphData = {};
 
-  characterSubscription: Subscription;
-  storylineSubscription: Subscription;
-  plotElementSubscription: Subscription;
+  subscriptions: { [name: string]: Subscription; } = {};
 
   _graphVis: GraphVisDirective;
 
@@ -51,9 +50,9 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.visNetworkGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);
     }, error => console.error(error));
 
-    this.characterSubscription = this.getSubscription(this.diagramService.charactersService(), this.visNetworkGeneratorService.getCharacterNode);
-    this.storylineSubscription = this.getSubscription(this.diagramService.storylinesService(), this.visNetworkGeneratorService.getStorylineNode);
-    this.plotElementSubscription = this.getSubscription(this.diagramService.plotElementsService(), this.visNetworkGeneratorService.getPlotElementNode);
+    this.subscriptions['character'] = this.getSubscription(this.diagramService.charactersService(), this.visNetworkGeneratorService.getCharacterNode);
+    this.subscriptions['storyline']= this.getSubscription(this.diagramService.storylinesService(), this.visNetworkGeneratorService.getStorylineNode);
+    this.subscriptions['plotElement'] = this.getSubscription(this.diagramService.plotElementsService(), this.visNetworkGeneratorService.getPlotElementNode);
   }
 
   private getSubscription<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
@@ -65,8 +64,8 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.characterSubscription.unsubscribe();
-    this.storylineSubscription.unsubscribe();
-    this.plotElementSubscription.unsubscribe();
+    for (let key in this.subscriptions) {
+      this.subscriptions[key].unsubscribe();
+    }  
   }
 }
