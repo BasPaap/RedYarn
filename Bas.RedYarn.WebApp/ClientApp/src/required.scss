@@ -6,12 +6,13 @@ $redyarn-app-theme: mat-light-theme($redyarn-app-primary, $redyarn-app-accent, $
 @include angular-material-theme($redyarn-app-theme);
 
 mat-dialog-content {
-    padding-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 mat-form-field {
   padding-bottom: 8px;
 }
+
 mat-dialog-content mat-form-field {
   min-width: 350px;
 }
@@ -22,6 +23,11 @@ mat-dialog-content textarea {
 
 mat-dialog-actions .mat-flat-button {
   margin: 2px;
+}
+
+mat-dialog-actions mat-spinner {
+  margin-top: 10px;
+  marging-right: 5px;
 }
 
 .fullWidth {
