@@ -17,6 +17,7 @@ import { NewStorylineDialogComponent } from './new-storyline-dialog/new-storylin
 import { VisNetworkDirective } from './vis-network.directive';
 import { NewPlotElementDialogComponent } from './new-plot-element-dialog/new-plot-element-dialog.component';
 import { HotkeyModule } from 'angular2-hotkeys';
+import { DefaultDialogActionsComponent } from './default-dialog-actions/default-dialog-actions.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { HotkeyModule } from 'angular2-hotkeys';
     NewCharacterDialogComponent,
     ChipsInputComponent,
     NewStorylineDialogComponent,
-    NewPlotElementDialogComponent
+    NewPlotElementDialogComponent,
+    DefaultDialogActionsComponent
   ],
   imports: [
     BrowserModule,

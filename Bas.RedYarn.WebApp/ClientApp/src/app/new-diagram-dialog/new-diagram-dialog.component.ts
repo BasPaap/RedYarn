@@ -3,40 +3,24 @@ import { MatDialogRef } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { DiagramService } from '../diagram.service';
 import { Router } from '@angular/router';
+import { BaseDialogComponent } from '../base-dialog.component';
 
 @Component({
   selector: 'app-new-diagram-dialog',
   templateUrl: './new-diagram-dialog.component.html',
   styleUrls: ['./new-diagram-dialog.component.scss']
 })
-export class NewDiagramDialogComponent implements OnInit {
-  newDiagramForm = new FormGroup({
-    name: new FormControl('', [Validators.required])
-  });
-
-  isSubmitting: boolean = false;
+export class NewDiagramDialogComponent extends BaseDialogComponent implements OnInit {
 
   onEnter(): void {
     this.createDiagram();
   }
 
-  disableFormControls() {
-    for (let key in this.newDiagramForm.controls) {
-      if (this.newDiagramForm.controls[key].disabled) {
-        this.newDiagramForm.controls[key].enable();
-      }
-      else {
-        this.newDiagramForm.controls[key].disable();
-      }
-    }
-  }
-
   createDiagram(): void {
-    if (this.newDiagramForm.valid) {
-      this.isSubmitting = true;
-      this.disableFormControls();
-
-      this.diagramService.createDiagram(this.newDiagramForm.controls['name'].value)
+    if (this.formGroup.valid) {
+      this.toggleSubmitting();
+      
+      this.diagramService.createDiagram(this.formGroup.controls['name'].value)
         .subscribe(newDiagram => {
           this.dialogRef.close();
           this.router.navigate(['diagrams', newDiagram.id]);
@@ -44,7 +28,10 @@ export class NewDiagramDialogComponent implements OnInit {
     }
   }
 
-  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {    
+  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {
+    super();
+    
+    this.formGroup.addControl("name", new FormControl('', [Validators.required]));    
   }
 
   ngOnInit() {

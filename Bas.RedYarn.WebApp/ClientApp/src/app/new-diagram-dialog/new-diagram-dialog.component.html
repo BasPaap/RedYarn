@@ -1,15 +1,15 @@
-<form [formGroup]="newDiagramForm">
+<form [formGroup]="formGroup">
   <h2 mat-dialog-title>New diagram</h2>
   <mat-dialog-content class="content">
     <mat-form-field class="fullWidth" appearance="outline">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" (keyup.enter)="onEnter()" cdkFocusInitial>
-      <mat-error *ngIf="newDiagramForm.controls['name'].hasError('required')">You must enter a name.</mat-error>
+      <mat-error *ngIf="formGroup.controls['name'].hasError('required')">You must enter a name.</mat-error>
     </mat-form-field>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <mat-spinner *ngIf="isSubmitting" diameter="25"></mat-spinner>
-    <button mat-flat-button (click)="createDiagram()" [disabled]="!newDiagramForm.valid || isSubmitting">OK</button>
+    <button mat-flat-button (click)="createDiagram()" [disabled]="!formGroup.valid || isSubmitting">OK</button>
     <button mat-flat-button mat-dialog-close [disabled]="isSubmitting">Cancel</button>
   </mat-dialog-actions>
 </form>
