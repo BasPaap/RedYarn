@@ -98,6 +98,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiagramController.cs</LastGenOutput>
     </None>
+    <None Update="Controllers\GeneratedControllers\PlotElementController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>PlotElementController.cs</LastGenOutput>
+    </None>
     <None Update="Controllers\GeneratedControllers\StorylineController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineController.cs</LastGenOutput>
@@ -152,6 +156,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\GeneratedControllers\PlotElementController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotElementController.tt</DependentUpon>
     </Compile>
     <Compile Update="Services\DatabaseDataService.cs">
       <DesignTime>True</DesignTime>

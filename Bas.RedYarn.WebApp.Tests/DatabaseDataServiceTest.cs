@@ -213,6 +213,72 @@ namespace Bas.RedYarn.WebApp.Tests
             Assert.AreEqual(updatedXPosition, viewModel.XPosition);
             Assert.AreEqual(updatedYPosition, viewModel.YPosition);
         }
+
+        #endregion
+
+        #region PlotElement
+        protected override (PlotElement model, PlotElementNode node) GetTestPlotElement()
+        {
+            var plotElement = new PlotElement()
+            {
+                Name = "PlotElementName",
+                Description = "PlotElementDescription"
+            };
+
+            var node = new PlotElementNode()
+            {
+                PlotElement = plotElement,
+                XPosition = 10,
+                YPosition = 20
+            };
+
+            return (plotElement, node);
+        }
+
+        protected override PlotElementViewModel GetTestPlotElementViewModel()
+        {
+            var (plotElement, node) = GetTestPlotElement();
+            return new PlotElementViewModel(plotElement, node.XPosition, node.YPosition);
+        }
+
+        protected override void AssertPlotElement(PlotElement model, PlotElementNode node)
+        {
+            var (testPlotElement, testNode) = GetTestPlotElement();
+            AssertPropertiesAreEqual(testPlotElement, model, nameof(model.Name),
+                                                           nameof(model.Description));
+            AssertPropertiesAreEqual(testNode, node, nameof(node.XPosition),
+                                                     nameof(node.YPosition));
+        }
+
+        protected override void AssertPlotElementViewModel(PlotElementViewModel viewModel)
+        {
+            var testPlotElementViewModel = GetTestPlotElementViewModel();
+            AssertPropertiesAreEqual(testPlotElementViewModel, viewModel, nameof(viewModel.Name),
+                                                                        nameof(viewModel.Description),
+                                                                        nameof(viewModel.XPosition),
+                                                                        nameof(viewModel.YPosition));
+        }
+
+        
+        protected override PlotElementViewModel GetUpdatedPlotElementViewModel()
+        {
+            var viewModel = GetTestPlotElementViewModel();
+            viewModel.Name = updatedName;
+            viewModel.Description = updatedDescription;
+            viewModel.XPosition = updatedXPosition;
+            viewModel.YPosition = updatedYPosition;
+            return viewModel;
+        }
+
+
+        protected override void AssertUpdatedPlotElementViewModel(PlotElementViewModel viewModel)
+        {
+            var testPlotElementViewModel = GetTestPlotElementViewModel();
+            Assert.AreEqual(updatedName, viewModel.Name);
+            Assert.AreEqual(updatedDescription, viewModel.Description);
+            Assert.AreEqual(updatedXPosition, viewModel.XPosition);
+            Assert.AreEqual(updatedYPosition, viewModel.YPosition);
+        }
         #endregion
     }
 }

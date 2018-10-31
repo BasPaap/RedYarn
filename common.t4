@@ -19,6 +19,7 @@ static List<string> modelNames = new List<string> {
 	nameof(Diagram),
 	nameof(Character),
 	nameof(Storyline),
+	nameof(PlotElement),
 	nameof(Author)
 };
 
@@ -26,7 +27,8 @@ List<string> viewModelNames = new List<string>(modelNames.Select(m => $"{m}ViewM
 List<string> entitiesWithNodes = new List<string>
 {
 	nameof(Character),
-	nameof(Storyline)
+	nameof(Storyline),
+	nameof(PlotElement)
 };
 
 private string Decapitalize(string capitalizedString)

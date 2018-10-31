@@ -9,10 +9,12 @@ namespace Bas.RedYarn.WebApp.Database
     {
         public DbSet<Diagram> Diagrams { get; set; }
         public DbSet<Storyline> Storylines { get; set; }
+        public DbSet <PlotElement> PlotElements { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<StorylineNode> StorylineNodes { get; set; }
         public DbSet<CharacterNode> CharacterNodes { get; set; }
+        public DbSet<PlotElementNode> PlotElementNodes { get; set; }
         public DbSet<Node> Nodes { get; set; }
 
         public RedYarnDbContext(DbContextOptions<RedYarnDbContext> options)
@@ -27,6 +29,7 @@ namespace Bas.RedYarn.WebApp.Database
             AddIdShadowProperty<Diagram>(modelBuilder);
             AddIdShadowProperty<Storyline>(modelBuilder);
             AddIdShadowProperty<Character>(modelBuilder);
+            AddIdShadowProperty<PlotElement>(modelBuilder);
             AddIdShadowProperty<Author>(modelBuilder);
             AddIdShadowProperty<Author>(modelBuilder);
             AddIdShadowProperty<PlotElement>(modelBuilder);

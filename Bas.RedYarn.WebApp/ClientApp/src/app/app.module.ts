@@ -15,6 +15,7 @@ import { NewCharacterDialogComponent } from './new-character-dialog/new-characte
 import { ChipsInputComponent } from './chips-input/chips-input.component';
 import { NewStorylineDialogComponent } from './new-storyline-dialog/new-storyline-dialog.component';
 import { VisNetworkDirective } from './vis-network.directive';
+import { NewPlotElementDialogComponent } from './new-plot-element-dialog/new-plot-element-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { VisNetworkDirective } from './vis-network.directive';
     NewDiagramDialogComponent,
     NewCharacterDialogComponent,
     ChipsInputComponent,
-    NewStorylineDialogComponent
+    NewStorylineDialogComponent,
+    NewPlotElementDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +54,8 @@ import { VisNetworkDirective } from './vis-network.directive';
     LoginDialogComponent,
     NewDiagramDialogComponent,
     NewCharacterDialogComponent,
-    NewStorylineDialogComponent
+    NewStorylineDialogComponent,
+    NewPlotElementDialogComponent
   ],
   providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
   bootstrap: [AppComponent]

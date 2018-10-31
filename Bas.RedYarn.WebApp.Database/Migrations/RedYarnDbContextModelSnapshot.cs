@@ -83,7 +83,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
                     b.HasIndex("DiagramId");
 
-                    b.ToTable("PlotElement");
+                    b.ToTable("PlotElements");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.Storyline", b =>
@@ -156,6 +156,19 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     b.HasDiscriminator().HasValue("CharacterNode");
                 });
 
+            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.PlotElementNode", b =>
+                {
+                    b.HasBaseType("Bas.RedYarn.WebApp.Database.Node");
+
+                    b.Property<Guid?>("PlotElementId");
+
+                    b.HasIndex("PlotElementId");
+
+                    b.ToTable("PlotElementNode");
+
+                    b.HasDiscriminator().HasValue("PlotElementNode");
+                });
+
             modelBuilder.Entity("Bas.RedYarn.WebApp.Database.StorylineNode", b =>
                 {
                     b.HasBaseType("Bas.RedYarn.WebApp.Database.Node");
@@ -209,6 +222,13 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     b.HasOne("Bas.RedYarn.Character", "Character")
                         .WithMany()
                         .HasForeignKey("CharacterId");
+                });
+
+            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.PlotElementNode", b =>
+                {
+                    b.HasOne("Bas.RedYarn.PlotElement", "PlotElement")
+                        .WithMany()
+                        .HasForeignKey("PlotElementId");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.WebApp.Database.StorylineNode", b =>

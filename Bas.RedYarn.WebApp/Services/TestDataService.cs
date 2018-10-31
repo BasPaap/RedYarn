@@ -171,5 +171,25 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<PlotElementViewModel> GetPlotElementViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PlotElementViewModel> CreatePlotElementViewModelAsync(PlotElementViewModel plotElementViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(PlotElementViewModel result, bool isFound)> UpdatePlotElementViewModelAsync(Guid id, PlotElementViewModel plotElementViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeletePlotElementViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

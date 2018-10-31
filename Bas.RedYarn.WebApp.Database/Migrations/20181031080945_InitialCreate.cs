@@ -60,7 +60,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PlotElement",
+                name: "PlotElements",
                 columns: table => new
                 {
                     Name = table.Column<string>(nullable: true),
@@ -70,9 +70,9 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlotElement", x => x.Id);
+                    table.PrimaryKey("PK_PlotElements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlotElement_Diagrams_DiagramId",
+                        name: "FK_PlotElements_Diagrams_DiagramId",
                         column: x => x.DiagramId,
                         principalTable: "Diagrams",
                         principalColumn: "Id",
@@ -128,6 +128,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     YPosition = table.Column<float>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
                     CharacterId = table.Column<Guid>(nullable: true),
+                    PlotElementId = table.Column<Guid>(nullable: true),
                     StorylineId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -137,6 +138,12 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                         name: "FK_Nodes_Characters_CharacterId",
                         column: x => x.CharacterId,
                         principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Nodes_PlotElements_PlotElementId",
+                        column: x => x.PlotElementId,
+                        principalTable: "PlotElements",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -163,13 +170,18 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 column: "CharacterId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Nodes_PlotElementId",
+                table: "Nodes",
+                column: "PlotElementId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Nodes_StorylineId",
                 table: "Nodes",
                 column: "StorylineId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlotElement_DiagramId",
-                table: "PlotElement",
+                name: "IX_PlotElements_DiagramId",
+                table: "PlotElements",
                 column: "DiagramId");
 
             migrationBuilder.CreateIndex(
@@ -192,13 +204,13 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "Nodes");
 
             migrationBuilder.DropTable(
-                name: "PlotElement");
-
-            migrationBuilder.DropTable(
                 name: "Tag");
 
             migrationBuilder.DropTable(
                 name: "Characters");
+
+            migrationBuilder.DropTable(
+                name: "PlotElements");
 
             migrationBuilder.DropTable(
                 name: "Storylines");
