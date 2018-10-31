@@ -121,7 +121,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
                     b.HasIndex("DiagramId");
 
-                    b.ToTable("Tag");
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.WebApp.Database.Node", b =>

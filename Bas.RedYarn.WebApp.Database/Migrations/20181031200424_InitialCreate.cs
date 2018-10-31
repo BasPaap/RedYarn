@@ -100,7 +100,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tag",
+                name: "Tags",
                 columns: table => new
                 {
                     Name = table.Column<string>(nullable: true),
@@ -110,9 +110,9 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tag", x => x.Id);
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tag_Diagrams_DiagramId",
+                        name: "FK_Tags_Diagrams_DiagramId",
                         column: x => x.DiagramId,
                         principalTable: "Diagrams",
                         principalColumn: "Id",
@@ -190,8 +190,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 column: "DiagramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tag_DiagramId",
-                table: "Tag",
+                name: "IX_Tags_DiagramId",
+                table: "Tags",
                 column: "DiagramId");
         }
 
@@ -204,7 +204,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "Nodes");
 
             migrationBuilder.DropTable(
-                name: "Tag");
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Characters");
