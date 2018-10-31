@@ -5,8 +5,7 @@ import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Diagram } from '../diagram-types';
 import { Subscription, Observable } from 'rxjs';
-import { GraphVisDirective } from '../graph-vis.directive';
-import { forEach } from '@angular/router/src/utils/collection';
+import { VisNetworkDirective } from '../vis-network.directive';
 
 @Component({
   selector: 'app-story-diagram',
@@ -16,18 +15,18 @@ import { forEach } from '@angular/router/src/utils/collection';
 export class StoryDiagramComponent implements OnInit, OnDestroy {
     
   diagram: Diagram;
-  graphData = {};
+  networkData = {};
 
   subscriptions: { [name: string]: Subscription; } = {};
 
-  _graphVis: GraphVisDirective;
+  _visNetwork: VisNetworkDirective;
 
-  @ViewChild(GraphVisDirective)
-  set graphVis(directive: GraphVisDirective) {
-    this._graphVis = directive;
+  @ViewChild(VisNetworkDirective)
+  set visNetwork(directive: VisNetworkDirective) {
+    this._visNetwork = directive;
   }
-  get graphVis(): GraphVisDirective {
-    return this._graphVis;    
+  get visNetwork(): VisNetworkDirective {
+    return this._visNetwork;    
   }
 
   constructor(private route: ActivatedRoute,
@@ -41,13 +40,13 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   }
 
   ngAfterContentInit() {
-    this.graphData["nodes"] = new DataSet();
-    this.graphData["edges"] = new DataSet();
+    this.networkData["nodes"] = new DataSet();
+    this.networkData["edges"] = new DataSet();
 
     const id = this.route.snapshot.paramMap.get('id');
     this.diagramService.getDiagram(id).subscribe((diagram: Diagram) => {
       this.diagram = diagram;
-      this.visNetworkGeneratorService.generate(diagram, this.graphData["nodes"], this.graphData["edges"]);
+      this.visNetworkGeneratorService.generate(diagram, this.networkData["nodes"], this.networkData["edges"]);
     }, error => console.error(error));
 
     this.subscriptions['character'] = this.getSubscription(this.diagramService.charactersService(), this.visNetworkGeneratorService.getCharacterNode);
@@ -58,8 +57,8 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   private getSubscription<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
     return service.subscribe(item => {
       let newNode = getNode(item);
-      let nodeId = this.graphData["nodes"].add(newNode);
-      this.graphVis.focusOnNode(nodeId);
+      let nodeId = this.networkData["nodes"].add(newNode);
+      this.visNetwork.focusOnNode(nodeId);
     });
   }
 

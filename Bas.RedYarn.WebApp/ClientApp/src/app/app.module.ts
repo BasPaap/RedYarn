@@ -8,13 +8,13 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 import { MainToolbarComponent } from './main-toolbar/main-toolbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
-import { GraphVisDirective } from './graph-vis.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { NewDiagramDialogComponent } from './new-diagram-dialog/new-diagram-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewCharacterDialogComponent } from './new-character-dialog/new-character-dialog.component';
 import { ChipsInputComponent } from './chips-input/chips-input.component';
 import { NewStorylineDialogComponent } from './new-storyline-dialog/new-storyline-dialog.component';
+import { VisNetworkDirective } from './vis-network.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { NewStorylineDialogComponent } from './new-storyline-dialog/new-storylin
     MainToolbarComponent,
     SidebarComponent,
     StoryDiagramComponent,
-    GraphVisDirective,
+    VisNetworkDirective,
     NewDiagramDialogComponent,
     NewCharacterDialogComponent,
     ChipsInputComponent,

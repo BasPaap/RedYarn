@@ -2,14 +2,14 @@ import { Directive, TemplateRef, ViewContainerRef, Input, Renderer2, ElementRef 
 import { Network, IdType } from 'vis';
 
 @Directive({
-  selector: '[appGraphVis]'
+  selector: '[appVisNetwork]'
 })
-export class GraphVisDirective {
+export class VisNetworkDirective {
   private network: Network 
   
   constructor(private element: ElementRef) { }
 
-  @Input() set appGraphVis(graphData) {
+  @Input() set appVisNetwork(networkData) {
     let options = {   
       physics: {
           enabled: false          
@@ -17,7 +17,7 @@ export class GraphVisDirective {
       };
 
     if (!this.network) {
-      this.network = new Network(this.element.nativeElement, graphData, options);      
+      this.network = new Network(this.element.nativeElement, networkData, options);      
     }
   }
 
