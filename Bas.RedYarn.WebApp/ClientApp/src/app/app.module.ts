@@ -16,6 +16,7 @@ import { ChipsInputComponent } from './chips-input/chips-input.component';
 import { NewStorylineDialogComponent } from './new-storyline-dialog/new-storyline-dialog.component';
 import { VisNetworkDirective } from './vis-network.directive';
 import { NewPlotElementDialogComponent } from './new-plot-element-dialog/new-plot-element-dialog.component';
+import { HotkeyModule } from 'angular2-hotkeys';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { NewPlotElementDialogComponent } from './new-plot-element-dialog/new-plo
     ReactiveFormsModule,
     MatChipsModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    HotkeyModule.forRoot({ disableCheatSheet: true })
   ],
   entryComponents: [
     LoginDialogComponent,

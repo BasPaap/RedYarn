@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { LoginDialogComponent } from './login-dialog/login-dialog.component';
+import { HotkeysService, Hotkey } from 'angular2-hotkeys';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +9,6 @@ import { LoginDialogComponent } from './login-dialog/login-dialog.component';
 export class AppComponent {
   title = 'RedYarn';
 
-  constructor(private dialog: MatDialog) { }
+  constructor() {}
 
-  openLoginDialog() {
-    const loginDialog = this.dialog.open(LoginDialogComponent);    
-  }
 }
