@@ -17,8 +17,20 @@ export class NewPlotElementDialogComponent implements OnInit {
 
   isSubmitting: boolean = false;
 
+  disableFormControls() {
+    for (let key in this.newPlotElementForm.controls) {
+      if (this.newPlotElementForm.controls[key].disabled) {
+        this.newPlotElementForm.controls[key].enable();
+      }
+      else {
+        this.newPlotElementForm.controls[key].disable();
+      }
+    }
+  }
+
   createPlotElement(): void {
     this.isSubmitting = true;
+    this.disableFormControls();
 
     let plotElementViewModel = {
       id: "00000000-0000-0000-0000-000000000000",

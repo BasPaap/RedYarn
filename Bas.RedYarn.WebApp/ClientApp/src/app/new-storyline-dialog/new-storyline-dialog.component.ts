@@ -17,8 +17,20 @@ export class NewStorylineDialogComponent implements OnInit {
 
   isSubmitting: boolean = false;
 
+  disableFormControls() {
+    for (let key in this.newStorylineForm.controls) {
+      if (this.newStorylineForm.controls[key].disabled) {
+        this.newStorylineForm.controls[key].enable();
+      }
+      else {
+        this.newStorylineForm.controls[key].disable();
+      }
+    }
+  }
+
   createStoryline(): void {
     this.isSubmitting = true;
+    this.disableFormControls();
 
     let storylineViewModel = {
       id: "00000000-0000-0000-0000-000000000000",

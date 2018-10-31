@@ -20,9 +20,21 @@ export class NewDiagramDialogComponent implements OnInit {
     this.createDiagram();
   }
 
+  disableFormControls() {
+    for (let key in this.newDiagramForm.controls) {
+      if (this.newDiagramForm.controls[key].disabled) {
+        this.newDiagramForm.controls[key].enable();
+      }
+      else {
+        this.newDiagramForm.controls[key].disable();
+      }
+    }
+  }
+
   createDiagram(): void {
     if (this.newDiagramForm.valid) {
       this.isSubmitting = true;
+      this.disableFormControls();
 
       this.diagramService.createDiagram(this.newDiagramForm.controls['name'].value)
         .subscribe(newDiagram => {

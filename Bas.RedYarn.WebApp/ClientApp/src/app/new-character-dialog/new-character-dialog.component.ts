@@ -19,8 +19,20 @@ export class NewCharacterDialogComponent implements OnInit {
   authors: string[] = [];
   isSubmitting: boolean = false;
 
+  disableFormControls() {
+    for (let key in this.newCharacterForm.controls) {
+      if (this.newCharacterForm.controls[key].disabled) {
+        this.newCharacterForm.controls[key].enable();
+      }
+      else {
+        this.newCharacterForm.controls[key].disable();
+      }
+    }
+  }
+
   createCharacter(): void {
     this.isSubmitting = true;
+    this.disableFormControls();
 
     let characterViewModel = {
       id: "00000000-0000-0000-0000-000000000000",
