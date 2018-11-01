@@ -3,14 +3,14 @@ import { MatDialogRef } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { DiagramService } from '../diagram.service';
 import { Router } from '@angular/router';
-import { BaseDialogComponent } from '../base-dialog.component';
+import { DialogComponent } from '../dialog.component';
 
 @Component({
   selector: 'app-new-diagram-dialog',
   templateUrl: './new-diagram-dialog.component.html',
   styleUrls: ['./new-diagram-dialog.component.scss']
 })
-export class NewDiagramDialogComponent extends BaseDialogComponent implements OnInit {
+export class NewDiagramDialogComponent extends DialogComponent implements OnInit {
 
   onEnter(): void {
     this.createDiagram();

@@ -4,7 +4,7 @@ import { FormGroup } from "@angular/forms";
 @Component({
   template: ''
 })
-export class BaseDialogComponent {
+export class DialogComponent {
   private toggleFormControlsEnabled() {
     for (let key in this.formGroup.controls) {
       if (this.formGroup.controls[key].disabled) {
