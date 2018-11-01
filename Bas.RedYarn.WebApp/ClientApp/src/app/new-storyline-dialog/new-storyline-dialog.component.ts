@@ -2,49 +2,38 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { DiagramService } from '../diagram.service';
+import { DialogComponent } from '../dialog.component';
 
 @Component({
   selector: 'app-new-storyline-dialog',
   templateUrl: './new-storyline-dialog.component.html',
   styleUrls: ['./new-storyline-dialog.component.scss']
 })
-export class NewStorylineDialogComponent implements OnInit {
+export class NewStorylineDialogComponent extends DialogComponent implements OnInit {
 
-  newStorylineForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl('')
-  });
+  createStoryline(): void {
+    if (this.formGroup.valid) {
+      this.toggleSubmitting();
 
-  isSubmitting: boolean = false;
+      let storylineViewModel = {
+        id: "00000000-0000-0000-0000-000000000000",
+        name: this.formGroup.controls['name'].value,
+        description: this.formGroup.controls['description'].value,
+        xPosition: 0,
+        yPosition: 0
+      };
 
-  disableFormControls() {
-    for (let key in this.newStorylineForm.controls) {
-      if (this.newStorylineForm.controls[key].disabled) {
-        this.newStorylineForm.controls[key].enable();
-      }
-      else {
-        this.newStorylineForm.controls[key].disable();
-      }
+      this.diagramService.createStoryline(storylineViewModel)
+        .subscribe(() => this.dialogRef.close());
     }
   }
 
-  createStoryline(): void {
-    this.isSubmitting = true;
-    this.disableFormControls();
+  constructor(public dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramService: DiagramService) {
+    super();
 
-    let storylineViewModel = {
-      id: "00000000-0000-0000-0000-000000000000",
-      name: this.newStorylineForm.controls['name'].value,
-      description: this.newStorylineForm.controls['description'].value,
-      xPosition: 0,
-      yPosition: 0
-    };
-
-    this.diagramService.createStoryline(storylineViewModel)
-      .subscribe(() => this.dialogRef.close());
+    this.formGroup.addControl('name', new FormControl('', [Validators.required]));
+    this.formGroup.addControl('description', new FormControl());
   }
-
-  constructor(public dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramService: DiagramService) { }
 
   ngOnInit() {
   }

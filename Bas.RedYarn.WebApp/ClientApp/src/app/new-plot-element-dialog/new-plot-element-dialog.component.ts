@@ -12,17 +12,20 @@ import { DialogComponent } from '../dialog.component';
 export class NewPlotElementDialogComponent extends DialogComponent implements OnInit {
 
   createPlotElement(): void {
-    
-    let plotElementViewModel = {
-      id: "00000000-0000-0000-0000-000000000000",
-      name: this.formGroup.controls['name'].value,
-      description: this.formGroup.controls['description'].value,
-      xPosition: 0,
-      yPosition: 0
-    };
+    if (this.formGroup.valid) {
+      this.toggleSubmitting();
 
-    this.diagramService.createPlotElement(plotElementViewModel)
-      .subscribe(() => this.dialogRef.close());
+      let plotElementViewModel = {
+        id: "00000000-0000-0000-0000-000000000000",
+        name: this.formGroup.controls['name'].value,
+        description: this.formGroup.controls['description'].value,
+        xPosition: 0,
+        yPosition: 0
+      };
+
+      this.diagramService.createPlotElement(plotElementViewModel)
+        .subscribe(() => this.dialogRef.close());
+    }
   }
 
   constructor(public dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramService: DiagramService) {
