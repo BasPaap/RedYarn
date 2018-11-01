@@ -13,7 +13,7 @@ export class NewPlotElementDialogComponent extends DialogComponent implements On
 
   createPlotElement(): void {
     if (this.formGroup.valid) {
-      this.toggleSubmitting();
+      this.toggleIsSubmitting();
 
       let plotElementViewModel = {
         id: "00000000-0000-0000-0000-000000000000",

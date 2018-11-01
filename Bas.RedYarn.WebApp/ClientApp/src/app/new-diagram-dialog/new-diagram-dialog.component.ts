@@ -18,7 +18,7 @@ export class NewDiagramDialogComponent extends DialogComponent implements OnInit
 
   createDiagram(): void {
     if (this.formGroup.valid) {
-      this.toggleSubmitting();
+      this.toggleIsSubmitting();
       
       this.diagramService.createDiagram(this.formGroup.controls['name'].value)
         .subscribe(newDiagram => {

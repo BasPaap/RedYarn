@@ -23,7 +23,7 @@ export class DialogComponent {
 
   public formGroup: FormGroup = new FormGroup({});
 
-  protected toggleSubmitting() {
+  protected toggleIsSubmitting() {
     this._isSubmitting = !this._isSubmitting;
     this.toggleFormControlsEnabled();
   }

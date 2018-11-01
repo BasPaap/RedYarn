@@ -16,7 +16,7 @@ export class NewCharacterDialogComponent extends DialogComponent implements OnIn
 
   createCharacter(): void {
     if (this.formGroup.valid) {
-      this.toggleSubmitting();
+      this.toggleIsSubmitting();
 
       let characterViewModel = {
         id: "00000000-0000-0000-0000-000000000000",

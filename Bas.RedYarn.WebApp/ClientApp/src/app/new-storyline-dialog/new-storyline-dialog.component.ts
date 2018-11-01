@@ -13,7 +13,7 @@ export class NewStorylineDialogComponent extends DialogComponent implements OnIn
 
   createStoryline(): void {
     if (this.formGroup.valid) {
-      this.toggleSubmitting();
+      this.toggleIsSubmitting();
 
       let storylineViewModel = {
         id: "00000000-0000-0000-0000-000000000000",
