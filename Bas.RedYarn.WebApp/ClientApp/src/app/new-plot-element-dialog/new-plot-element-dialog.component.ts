@@ -29,7 +29,7 @@ export class NewPlotElementDialogComponent extends DialogComponent implements On
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
-    this.formGroup.addControl('description');
+    this.formGroup.addControl('description', new FormControl());
   }
 
   ngOnInit() {
