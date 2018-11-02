@@ -17,6 +17,7 @@ import { NewStorylineDialogComponent } from './new-storyline-dialog/new-storylin
 import { VisNetworkDirective } from './vis-network.directive';
 import { NewPlotElementDialogComponent } from './new-plot-element-dialog/new-plot-element-dialog.component';
 import { DefaultDialogActionsComponent } from './default-dialog-actions/default-dialog-actions.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { DefaultDialogActionsComponent } from './default-dialog-actions/default-
     ChipsInputComponent,
     NewStorylineDialogComponent,
     NewPlotElementDialogComponent,
-    DefaultDialogActionsComponent
+    DefaultDialogActionsComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,

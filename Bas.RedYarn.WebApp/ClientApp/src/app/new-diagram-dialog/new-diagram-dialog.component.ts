@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { DiagramService } from '../diagram.service';
 import { Router } from '@angular/router';
-import { DialogComponent } from '../dialog.component';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-new-diagram-dialog',

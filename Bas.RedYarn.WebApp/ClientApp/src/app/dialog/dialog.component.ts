@@ -1,10 +1,12 @@
-import { Component } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
-  template: ''
+  selector: 'app-dialog',
+  templateUrl: './dialog.component.html',
+  styleUrls: ['./dialog.component.scss']
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
   private toggleFormControlsEnabled() {
     for (let key in this.formGroup.controls) {
       if (this.formGroup.controls[key].disabled) {
@@ -15,7 +17,7 @@ export class DialogComponent {
       }
     }
   }
-  
+
   private _isSubmitting: boolean = false;
   protected get isSubmitting(): boolean {
     return this._isSubmitting;
@@ -28,6 +30,9 @@ export class DialogComponent {
     this.toggleFormControlsEnabled();
   }
 
-  constructor() {    
+  constructor() { }
+
+  ngOnInit() {
   }
+
 }
