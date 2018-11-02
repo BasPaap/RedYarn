@@ -191,5 +191,25 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<TagViewModel> GetTagViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TagViewModel> CreateTagViewModelAsync(TagViewModel tagViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(TagViewModel result, bool isFound)> UpdateTagViewModelAsync(Guid id, TagViewModel tagViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteTagViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -20,7 +20,8 @@ static List<string> modelNames = new List<string> {
 	nameof(Character),
 	nameof(Storyline),
 	nameof(PlotElement),
-	nameof(Author)
+	nameof(Author),
+	nameof(Tag)
 };
 
 List<string> viewModelNames = new List<string>(modelNames.Select(m => $"{m}ViewModel"));
