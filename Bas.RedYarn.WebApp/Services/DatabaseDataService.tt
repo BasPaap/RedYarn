@@ -48,7 +48,7 @@ else
 			return viewModel;
         }
 
-        public async Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        public async Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<# if (entitiesToAddToDiagram.Contains(modelName)) { #>Guid diagramId, <#}#><#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
 			if (<#=Decapitalize(viewModelName)#> == null)
 			{

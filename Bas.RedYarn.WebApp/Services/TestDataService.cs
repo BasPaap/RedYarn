@@ -117,7 +117,7 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<CharacterViewModel> CreateCharacterViewModelAsync(CharacterViewModel characterViewModel)
+        public Task<CharacterViewModel> CreateCharacterViewModelAsync(Guid diagramId, CharacterViewModel characterViewModel)
         {
             throw new NotImplementedException();
         }
@@ -137,7 +137,7 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<StorylineViewModel> CreateStorylineViewModelAsync(StorylineViewModel storylineViewModel)
+        public Task<StorylineViewModel> CreateStorylineViewModelAsync(Guid diagramId, StorylineViewModel storylineViewModel)
         {
             throw new NotImplementedException();
         }
@@ -157,7 +157,7 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<AuthorViewModel> CreateAuthorViewModelAsync(AuthorViewModel authorViewModel)
+        public Task<AuthorViewModel> CreateAuthorViewModelAsync(Guid diagramId, AuthorViewModel authorViewModel)
         {
             throw new NotImplementedException();
         }
@@ -177,7 +177,7 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<PlotElementViewModel> CreatePlotElementViewModelAsync(PlotElementViewModel plotElementViewModel)
+        public Task<PlotElementViewModel> CreatePlotElementViewModelAsync(Guid diagramId, PlotElementViewModel plotElementViewModel)
         {
             throw new NotImplementedException();
         }
@@ -197,7 +197,7 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<TagViewModel> CreateTagViewModelAsync(TagViewModel tagViewModel)
+        public Task<TagViewModel> CreateTagViewModelAsync(Guid diagramId, TagViewModel tagViewModel)
         {
             throw new NotImplementedException();
         }

@@ -12,8 +12,16 @@ foreach (var viewModelName in viewModelNames)
 #>
 
 		Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id);
-        Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>);
-        Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
+<#      if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName)))
+		{
+#>		Task<<#=viewModelName#>> Create<#=viewModelName#>Async(Guid diagramId, <#=viewModelName#> <#=Decapitalize(viewModelName)#>); <#
+		}
+		else
+		{
+#>		Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>); <#
+		}
+#>		
+		Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
         Task<bool> Delete<#=viewModelName#>Async(Guid id);
 <#
 }

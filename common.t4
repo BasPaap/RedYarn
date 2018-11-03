@@ -32,6 +32,15 @@ List<string> entitiesWithNodes = new List<string>
 	nameof(PlotElement)
 };
 
+List<string> entitiesToAddToDiagram = new List<string>
+{
+	nameof(Character),
+	nameof(Storyline),
+	nameof(PlotElement),
+	nameof(Author),
+	nameof(Tag)
+};
+
 private string Decapitalize(string capitalizedString)
 {
 	return Char.ToLowerInvariant(capitalizedString[0]) + capitalizedString.Substring(1);
