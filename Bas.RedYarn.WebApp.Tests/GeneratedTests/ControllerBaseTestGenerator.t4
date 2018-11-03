@@ -74,8 +74,18 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 				Name = "New<#=viewModelTypeName#>"
 			};
 
+<#+			if (entitiesToAddToDiagram.Contains(subjectName))
+			{#>
+			var diagramViewModel = new DiagramViewModel()
+            {
+                Name = "Diagram",
+                Id = Guid.NewGuid()
+            };
+            this.dataService.DiagramViewModels.Add(diagramViewModel);
+<#+			}#>
+
 			// Act
-			var result = (httpClient.PostAsync("api/<#= subjectName #>", <#=viewModelInstanceName#>.ToJsonStringContent())).Result;
+			var result = (httpClient.PostAsync($"api/<#= subjectName #><#+ if (entitiesToAddToDiagram.Contains(subjectName)) { #>/{diagramViewModel.Id}<#+}#>", <#=viewModelInstanceName#>.ToJsonStringContent())).Result;
 
 			// Assert
             var content = result.Content.FromJsonString<<#=viewModelTypeName#>>();
@@ -91,9 +101,18 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
         public void Create<#=subjectName#>_WithInvalidModel_Returns400BadRequest()
         {
             // Arrange
+<#+			if (entitiesToAddToDiagram.Contains(subjectName))
+			{#>
+			var diagramViewModel = new DiagramViewModel()
+            {
+                Name = "Diagram",
+                Id = Guid.NewGuid()
+            };
+            this.dataService.DiagramViewModels.Add(diagramViewModel);
+<#+			}#>
             
             // Act
-            var result = (httpClient.PostAsync("api/<#=subjectName#>", (new <#=viewModelTypeName#>()).ToJsonStringContent())).Result;
+            var result = (httpClient.PostAsync($"api/<#=subjectName#><#+ if (entitiesToAddToDiagram.Contains(subjectName)) { #>/{diagramViewModel.Id}<#+}#>", (new <#=viewModelTypeName#>()).ToJsonStringContent())).Result;
 
             // Assert          
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
@@ -104,9 +123,18 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
         {
             // Arrange
             var httpClient = TestServerHelper.GetTestClient(this.dataService);
+<#+			if (entitiesToAddToDiagram.Contains(subjectName))
+			{#>
+			var diagramViewModel = new DiagramViewModel()
+            {
+                Name = "Diagram",
+                Id = Guid.NewGuid()
+            };
+            this.dataService.DiagramViewModels.Add(diagramViewModel);
+<#+			}#>
 
             // Act
-            var result = (httpClient.PostAsync("api/<#=subjectName#>", null)).Result;
+            var result = (httpClient.PostAsync($"api/<#=subjectName#><#+ if (entitiesToAddToDiagram.Contains(subjectName)) { #>/{diagramViewModel.Id}<#+}#>", null)).Result;
 
             // Assert          
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);

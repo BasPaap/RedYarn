@@ -195,7 +195,7 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			// Act
 			// Assert
-			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Create<#=viewModelName#>Async(null) );
+			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Create<#=viewModelName#>Async(<#if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) { #>Guid.Empty, <#}#>null) );
 			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
 		}
 
@@ -204,13 +204,27 @@ foreach (var viewModelName in viewModelNames)
 		{
 			// Arrange
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
+<#			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
+			{#>
+			var diagram = new Diagram()
+			{
+				Name = "Diagram"
+			};
+			this.dbContextToAddTo.Diagrams.Add(diagram);
+			this.dbContextToAddTo.SaveChanges();
+			var diagramId = (Guid)this.dbContextToAddTo.Entry(diagram).Property("Id").CurrentValue;
+<#			}#>
 
 			// Act
-			var returnedViewModel = this.dataService.Create<#=viewModelName#>Async(test<#=viewModelName#>).Result;
+			var returnedViewModel = this.dataService.Create<#=viewModelName#>Async(<#if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) { #>diagramId, <#}#>test<#=viewModelName#>).Result;
 
 			// Assert
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
 			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result).Property("Id").CurrentValue, returnedViewModel.Id);
+			<#			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
+			{#>
+Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result).Property("DiagramId").CurrentValue);
+<#			}#>
 			Assert<#=viewModelName#>(returnedViewModel);
 <#			if (EntityHasNode(modelName))
 			{#>

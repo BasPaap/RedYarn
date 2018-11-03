@@ -36,14 +36,21 @@ namespace Bas.RedYarn.WebApp.Controllers
             return <#=instanceName#>ViewModel;            
         }
 
-        [HttpPost("{diagramId}")]
+<#+		if (entitiesToAddToDiagram.Contains(className))
+		{#>
+		[HttpPost("{diagramId}")]
+<#+		}
+		else
+		{#>
+        [HttpPost]
+<#+		}#>
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
         public async Task<ActionResult<<#=className#>ViewModel>> Create<#=className#>Async(<#+ if (entitiesToAddToDiagram.Contains(className)) { #>Guid diagramId, <#+}#><#=className#>ViewModel <#=instanceName#>ViewModel)
         {
 			try
 			{
-				var created<#=className#>ViewModel = await this.dataService.Create<#=className#>ViewModelAsync(diagramId, <#=instanceName#>ViewModel);
+				var created<#=className#>ViewModel = await this.dataService.Create<#=className#>ViewModelAsync(<#+ if (entitiesToAddToDiagram.Contains(className)) { #>diagramId, <#+}#><#=instanceName#>ViewModel);
 				return CreatedAtAction(nameof(Get<#=className#>ViewModelAsync), new { id = created<#=className#>ViewModel.Id }, created<#=className#>ViewModel);            
 			}
 			catch

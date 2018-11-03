@@ -56,7 +56,15 @@ else
 			}
 
 			var model = <#=Decapitalize(viewModelName)#>.ToModel();
+<# if (entitiesToAddToDiagram.Contains(modelName))
+{#>
+			var diagram = this.dbContext.Diagrams.Find(diagramId);
+            diagram.<#=modelName#>s.Add(model);
+<#}
+else
+{#>
 			this.dbContext.<#=modelName#>s.Add(model);
+<#}#>
 <# if (EntityHasNode(modelName))
 {#>
 			var node = <#=Decapitalize(viewModelName)#>.ToNode();

@@ -279,6 +279,50 @@ namespace Bas.RedYarn.WebApp.Tests
             Assert.AreEqual(updatedXPosition, viewModel.XPosition);
             Assert.AreEqual(updatedYPosition, viewModel.YPosition);
         }
+
+        #endregion
+
+        #region Tag
+        protected override Tag GetTestTag()
+        {
+            return new Tag()
+            {
+                Name = "TagName",
+                Category = "TagCategory"
+            };
+        }
+
+        protected override TagViewModel GetTestTagViewModel()
+        {
+            return new TagViewModel(GetTestTag());
+        }
+
+        protected override void AssertTag(Tag model)
+        {
+            var testTag = GetTestTag();
+            Assert.AreEqual(testTag.Name, model.Name);
+            Assert.AreEqual(testTag.Category, model.Category);
+        }
+
+        protected override void AssertTagViewModel(TagViewModel viewModel)
+        {
+            var testTagViewModel = GetTestTagViewModel();
+            Assert.AreEqual(testTagViewModel.Name, viewModel.Name);
+            Assert.AreEqual(testTagViewModel.Category, viewModel.Category);
+        }
+
+        protected override TagViewModel GetUpdatedTagViewModel()
+        {
+            var viewModel = GetTestTagViewModel();
+            viewModel.Name = updatedName;
+            return viewModel;
+        }        
+
+        protected override void AssertUpdatedTagViewModel(TagViewModel viewModel)
+        {
+            Assert.AreEqual(updatedName, viewModel.Name);
+        }
+
         #endregion
     }
 }
