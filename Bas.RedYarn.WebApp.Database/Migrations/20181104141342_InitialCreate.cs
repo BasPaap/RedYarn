@@ -12,7 +12,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 columns: table => new
                 {
                     Name = table.Column<string>(nullable: true),
-                    Id = table.Column<Guid>(nullable: false)
+                    Id = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -24,8 +24,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 columns: table => new
                 {
                     Name = table.Column<string>(nullable: true),
-                    Id = table.Column<Guid>(nullable: false),
-                    DiagramId = table.Column<Guid>(nullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    DiagramId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,8 +45,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     ImagePath = table.Column<string>(nullable: true),
-                    Id = table.Column<Guid>(nullable: false),
-                    DiagramId = table.Column<Guid>(nullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    DiagramId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,8 +65,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 {
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Id = table.Column<Guid>(nullable: false),
-                    DiagramId = table.Column<Guid>(nullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    DiagramId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -85,8 +85,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 {
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Id = table.Column<Guid>(nullable: false),
-                    DiagramId = table.Column<Guid>(nullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    DiagramId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -105,8 +105,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 {
                     Name = table.Column<string>(nullable: true),
                     Category = table.Column<string>(nullable: true),
-                    Id = table.Column<Guid>(nullable: false),
-                    DiagramId = table.Column<Guid>(nullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    DiagramId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,9 +127,9 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     XPosition = table.Column<float>(nullable: false),
                     YPosition = table.Column<float>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    CharacterId = table.Column<Guid>(nullable: true),
-                    PlotElementId = table.Column<Guid>(nullable: true),
-                    StorylineId = table.Column<Guid>(nullable: true)
+                    CharacterId = table.Column<string>(nullable: true),
+                    PlotElementId = table.Column<string>(nullable: true),
+                    StorylineId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

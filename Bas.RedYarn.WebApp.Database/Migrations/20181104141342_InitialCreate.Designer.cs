@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bas.RedYarn.WebApp.Database.Migrations
 {
     [DbContext(typeof(RedYarnDbContext))]
-    [Migration("20181031200424_InitialCreate")]
+    [Migration("20181104141342_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,11 +20,13 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Author", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)))
                         .HasAnnotation("Key", 0);
 
-                    b.Property<Guid?>("DiagramId");
+                    b.Property<string>("DiagramId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.Property<string>("Name");
 
@@ -37,13 +39,15 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Character", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)))
                         .HasAnnotation("Key", 0);
 
                     b.Property<string>("Description");
 
-                    b.Property<Guid?>("DiagramId");
+                    b.Property<string>("DiagramId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.Property<string>("ImagePath");
 
@@ -58,8 +62,9 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Diagram", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)))
                         .HasAnnotation("Key", 0);
 
                     b.Property<string>("Name");
@@ -71,13 +76,15 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.PlotElement", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)))
                         .HasAnnotation("Key", 0);
 
                     b.Property<string>("Description");
 
-                    b.Property<Guid?>("DiagramId");
+                    b.Property<string>("DiagramId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.Property<string>("Name");
 
@@ -90,13 +97,15 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Storyline", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)))
                         .HasAnnotation("Key", 0);
 
                     b.Property<string>("Description");
 
-                    b.Property<Guid?>("DiagramId");
+                    b.Property<string>("DiagramId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.Property<string>("Name");
 
@@ -109,13 +118,15 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Tag", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)))
                         .HasAnnotation("Key", 0);
 
                     b.Property<string>("Category");
 
-                    b.Property<Guid?>("DiagramId");
+                    b.Property<string>("DiagramId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.Property<string>("Name");
 
@@ -149,7 +160,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 {
                     b.HasBaseType("Bas.RedYarn.WebApp.Database.Node");
 
-                    b.Property<Guid?>("CharacterId");
+                    b.Property<string>("CharacterId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.HasIndex("CharacterId");
 
@@ -162,7 +174,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 {
                     b.HasBaseType("Bas.RedYarn.WebApp.Database.Node");
 
-                    b.Property<Guid?>("PlotElementId");
+                    b.Property<string>("PlotElementId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.HasIndex("PlotElementId");
 
@@ -175,7 +188,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 {
                     b.HasBaseType("Bas.RedYarn.WebApp.Database.Node");
 
-                    b.Property<Guid?>("StorylineId");
+                    b.Property<string>("StorylineId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.HasIndex("StorylineId");
 

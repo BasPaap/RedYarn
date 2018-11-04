@@ -33,12 +33,14 @@ namespace Bas.RedYarn.WebApp.Database
             AddIdShadowProperty<Character>(modelBuilder);
             AddIdShadowProperty<Author>(modelBuilder);
             AddIdShadowProperty<Tag>(modelBuilder);            
+            
         }
 
         private static void AddIdShadowProperty<T>(ModelBuilder modelBuilder) where T : class
         {
             modelBuilder.Entity<T>().Property<Guid>(ShadowPropertyNames.Id)
                                     .ValueGeneratedOnAdd()
+                                    .HasConversion<string>()
                                     .HasAnnotation("Key", 0);
         }
     }
