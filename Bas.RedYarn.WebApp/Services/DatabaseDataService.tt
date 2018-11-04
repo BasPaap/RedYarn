@@ -158,9 +158,12 @@ else
 Dictionary<string, string> modelIncludes = new Dictionary<string, string>
 {
 	[nameof(Diagram)] = @"
+				.Include(diagram => diagram.Authors)
 				.Include(diagram => diagram.Characters)
 					.ThenInclude(character => character.Aliases)
-				.Include(diagram => diagram.Authors)"
+				.Include(diagram => diagram.PlotElements)
+				.Include(diagram => diagram.Storylines)
+				.Include(diagram => diagram.Tags)"
 };
 
 #>
