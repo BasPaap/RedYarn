@@ -30,7 +30,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public CharacterViewModel(RedYarn.Character character, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = getIdForModelFunc(character);
+            if (getIdForModelFunc != null)
+            {
+                Id = getIdForModelFunc(character);
+            }
             Name = character.Name;
             Description = character.Description;
             Aliases.AddRange(character.Aliases.Select(alias => new AliasViewModel(alias, getIdForModelFunc)).ToList());

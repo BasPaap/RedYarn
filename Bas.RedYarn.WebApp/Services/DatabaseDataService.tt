@@ -12,10 +12,11 @@ namespace Bas.RedYarn.WebApp.Services
     public sealed class DatabaseDataService : IDataService
     {
 		private RedYarnDbContext dbContext;
-		
+		private Func<object, Guid> getIdForModelFunc;
         public DatabaseDataService(RedYarnDbContext redYarnDbContext)
         {
             this.dbContext = redYarnDbContext;
+			this.getIdForModelFunc = m => (Guid)this.dbContext.Entry(m).Property(ShadowPropertyNames.Id).CurrentValue;
         }
 
 <#
@@ -48,11 +49,11 @@ else
 				return null;
 			}
 
-			var viewModel = new <#=viewModelName#>(model, node.XPosition, node.YPosition);
+			var viewModel = new <#=viewModelName#>(model, node.XPosition, node.YPosition, this.getIdForModelFunc);
 <#}
 else
 {#>
-			var viewModel = new <#=viewModelName#>(model);
+			var viewModel = new <#=viewModelName#>(model, this.getIdForModelFunc);
 <#}#>
 			viewModel.Id = id;
 

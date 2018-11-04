@@ -19,7 +19,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public TagViewModel(Tag tag, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = getIdForModelFunc(tag);
+            if (getIdForModelFunc != null)
+            {
+                Id = getIdForModelFunc(tag);
+            }
             Name = tag.Name;
             Category = tag.Category;
         }

@@ -25,7 +25,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public PlotElementViewModel(RedYarn.PlotElement plotElement, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = getIdForModelFunc(plotElement);
+            if (getIdForModelFunc != null)
+            {
+                Id = getIdForModelFunc(plotElement);
+            }
             Name = plotElement.Name;
             Description = plotElement.Description;
         }

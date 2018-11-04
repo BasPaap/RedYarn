@@ -25,7 +25,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public StorylineViewModel(RedYarn.Storyline storyline, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = getIdForModelFunc(storyline);
+            if (getIdForModelFunc != null)
+            {
+                Id = getIdForModelFunc(storyline);
+            }
             Name = storyline.Name;
             Description = storyline.Description;
         }

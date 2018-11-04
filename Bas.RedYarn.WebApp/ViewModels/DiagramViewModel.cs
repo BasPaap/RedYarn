@@ -35,7 +35,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public DiagramViewModel(RedYarn.Diagram diagram, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = getIdForModelFunc(diagram);
+            if (getIdForModelFunc != null)
+            {
+                Id = getIdForModelFunc(diagram);
+            }
             Name = diagram.Name;
 
             var characterDictionary = new Dictionary<RedYarn.Character, ViewModels.CharacterViewModel>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, ViewModels.CharacterViewModel>(c, new ViewModels.CharacterViewModel(c, getIdForModelFunc))));

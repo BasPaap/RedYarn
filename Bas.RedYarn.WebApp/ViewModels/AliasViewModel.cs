@@ -19,7 +19,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public AliasViewModel(Alias alias, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = getIdForModelFunc(alias);
+            if (getIdForModelFunc != null)
+            {
+                Id = getIdForModelFunc(alias);
+            }            
             Name = alias.Name;
         }
 
