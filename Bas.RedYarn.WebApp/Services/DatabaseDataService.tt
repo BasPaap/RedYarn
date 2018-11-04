@@ -1,4 +1,5 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
+<#@ import namespace="System.Collections.Generic" #>
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,7 +24,17 @@ foreach (var viewModelName in viewModelNames)
 	var modelName = GetModelName(viewModelName);#>
 		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
-            var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
+			var model = await this.dbContext.<#=modelName#>s<# if (modelIncludes.Keys.Contains(modelName))
+{
+	WriteLine(modelIncludes[modelName]);
+#>				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, "Id") == id);
+<#
+}
+else
+{#>
+
+				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, "Id") == id);
+<#}#>			
 			if (model == null)
 			{
 				return null;
@@ -142,3 +153,14 @@ else
 }#>
 	}
 }
+<#+
+
+Dictionary<string, string> modelIncludes = new Dictionary<string, string>
+{
+	[nameof(Diagram)] = @"
+				.Include(diagram => diagram.Characters)
+					.ThenInclude(character => character.Aliases)
+				.Include(diagram => diagram.Authors)"
+};
+
+#>
