@@ -14,6 +14,7 @@ namespace Bas.RedYarn
         public Collection<PlotElement> PlotElements { get; } = new Collection<PlotElement>();
         public Collection<Storyline> Storylines { get; } = new Collection<Storyline>();
         public Collection<Tag> Tags { get; } = new Collection<Tag>();
+        public Collection<Alias> Aliases { get; } = new Collection<Alias>();
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Diagram) : Name;
     }

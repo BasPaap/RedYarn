@@ -52,6 +52,44 @@ namespace Bas.RedYarn.WebApp.Tests
         }
         #endregion
 
+        #region Alias
+        protected override Alias GetTestAlias()
+        {
+            return new Alias()
+            {
+                Name = "AliasName"
+            };
+        }
+
+        protected override void AssertAlias(Alias model)
+        {
+            Assert.AreEqual(GetTestAlias().Name, model.Name);
+        }
+
+        protected override AliasViewModel GetTestAliasViewModel()
+        {
+            return new AliasViewModel(GetTestAlias());
+        }
+
+        protected override AliasViewModel GetUpdatedAliasViewModel()
+        {
+            var viewModel = GetTestAliasViewModel();
+            viewModel.Name = updatedName;
+            return viewModel;
+        }
+
+        protected override void AssertAliasViewModel(AliasViewModel viewModel)
+        {
+            Assert.AreEqual(GetTestAliasViewModel().Name, viewModel.Name);
+        }
+
+        protected override void AssertUpdatedAliasViewModel(AliasViewModel viewModel)
+        {
+            Assert.AreEqual(updatedName, viewModel.Name);
+        }
+
+        #endregion
+
         #region Character
         protected override (Character model, CharacterNode node) GetTestCharacter()
         {

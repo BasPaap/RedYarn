@@ -13,6 +13,7 @@ namespace Bas.RedYarn.WebApp.Database
         public DbSet<Character> Characters { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Alias> Aliases { get; set; }
         public DbSet<StorylineNode> StorylineNodes { get; set; }
         public DbSet<CharacterNode> CharacterNodes { get; set; }
         public DbSet<PlotElementNode> PlotElementNodes { get; set; }
@@ -25,15 +26,13 @@ namespace Bas.RedYarn.WebApp.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //base.OnModelCreating(modelBuilder);
-
             AddIdShadowProperty<Diagram>(modelBuilder);
             AddIdShadowProperty<Storyline>(modelBuilder);
             AddIdShadowProperty<PlotElement>(modelBuilder);
             AddIdShadowProperty<Character>(modelBuilder);
             AddIdShadowProperty<Author>(modelBuilder);
-            AddIdShadowProperty<Tag>(modelBuilder);            
-            
+            AddIdShadowProperty<Tag>(modelBuilder);
+            AddIdShadowProperty<Alias>(modelBuilder);
         }
 
         private static void AddIdShadowProperty<T>(ModelBuilder modelBuilder) where T : class

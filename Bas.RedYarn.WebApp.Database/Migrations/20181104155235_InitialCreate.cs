@@ -120,6 +120,32 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Aliases",
+                columns: table => new
+                {
+                    Name = table.Column<string>(nullable: true),
+                    Id = table.Column<string>(nullable: false),
+                    CharacterId = table.Column<string>(nullable: true),
+                    DiagramId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Aliases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Aliases_Characters_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Aliases_Diagrams_DiagramId",
+                        column: x => x.DiagramId,
+                        principalTable: "Diagrams",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Nodes",
                 columns: table => new
                 {
@@ -153,6 +179,16 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Aliases_CharacterId",
+                table: "Aliases",
+                column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Aliases_DiagramId",
+                table: "Aliases",
+                column: "DiagramId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Authors_DiagramId",
@@ -197,6 +233,9 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Aliases");
+
             migrationBuilder.DropTable(
                 name: "Authors");
 

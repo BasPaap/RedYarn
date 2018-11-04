@@ -16,6 +16,30 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024");
 
+            modelBuilder.Entity("Bas.RedYarn.Alias", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)))
+                        .HasAnnotation("Key", 0);
+
+                    b.Property<string>("CharacterId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
+
+                    b.Property<string>("DiagramId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.HasIndex("DiagramId");
+
+                    b.ToTable("Aliases");
+                });
+
             modelBuilder.Entity("Bas.RedYarn.Author", b =>
                 {
                     b.Property<string>("Id")
@@ -194,6 +218,17 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     b.ToTable("StorylineNode");
 
                     b.HasDiscriminator().HasValue("StorylineNode");
+                });
+
+            modelBuilder.Entity("Bas.RedYarn.Alias", b =>
+                {
+                    b.HasOne("Bas.RedYarn.Character")
+                        .WithMany("Aliases")
+                        .HasForeignKey("CharacterId");
+
+                    b.HasOne("Bas.RedYarn.Diagram")
+                        .WithMany("Aliases")
+                        .HasForeignKey("DiagramId");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.Author", b =>

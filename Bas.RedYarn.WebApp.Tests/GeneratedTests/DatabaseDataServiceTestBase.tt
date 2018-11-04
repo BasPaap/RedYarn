@@ -68,12 +68,12 @@ foreach (var viewModelName in viewModelNames)
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 <#			}
 			else
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 
@@ -94,12 +94,12 @@ foreach (var viewModelName in viewModelNames)
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 <#			}
 			else
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 <#
@@ -128,12 +128,12 @@ foreach (var viewModelName in viewModelNames)
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 <#			}
 			else
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 
@@ -142,7 +142,7 @@ foreach (var viewModelName in viewModelNames)
 
 			// Assert	
 			Assert.IsFalse(result);
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
@@ -158,13 +158,13 @@ foreach (var viewModelName in viewModelNames)
 			if (EntityHasNode(modelName))
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 <#			}
 			else
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 <#
@@ -181,7 +181,7 @@ foreach (var viewModelName in viewModelNames)
 
 			// Assert
 			Assert.IsTrue(result);
-			Assert.AreEqual(0, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+			Assert.AreEqual(0, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(0, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
@@ -219,21 +219,21 @@ foreach (var viewModelName in viewModelNames)
 			var returnedViewModel = this.dataService.Create<#=viewModelName#>Async(<#if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) { #>diagramId, <#}#>test<#=viewModelName#>).Result;
 
 			// Assert
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
-			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result).Property("Id").CurrentValue, returnedViewModel.Id);
+			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
+			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("Id").CurrentValue, returnedViewModel.Id);
 			<#			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
 			{#>
-Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result).Property("DiagramId").CurrentValue);
+Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("DiagramId").CurrentValue);
 <#			}#>
 			Assert<#=viewModelName#>(returnedViewModel);
 <#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
-			Assert<#=modelName#>(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result, this.dbContextToTest.<#=modelName#>Nodes.SingleAsync().Result);
+			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result, this.dbContextToTest.<#=modelName#>Nodes.SingleAsync().Result);
 <#			}
 			else
 			{#>
-			Assert<#=modelName#>(this.dbContextToTest.<#=modelName#>s.SingleAsync().Result);
+			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result);
 <#			}#>
 		}
 
@@ -248,12 +248,12 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=mo
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 <#			}
 			else
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 
@@ -263,7 +263,7 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=mo
 			// Assert
 			Assert.IsNull(result.result);
 			Assert.IsFalse(result.isFound);
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
@@ -281,12 +281,12 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=mo
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 <#			}
 			else
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 
@@ -294,7 +294,7 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=mo
 			// Assert
 			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Update<#=viewModelName#>Async(Guid.Empty, null));
 			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
@@ -312,12 +312,12 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=mo
 			{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>.model);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 <#			}
 			else
 			{
 #>
-			this.dbContextToAddTo.<#=modelName#>s.Add(test<#=modelName#>);
+			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 <#			if (EntityHasNode(modelName))
@@ -337,7 +337,7 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=mo
 			Assert.IsNotNull(result.result);
 			Assert.IsTrue(result.isFound);
 			Assert.AreEqual(newId, result.result.Id);
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>s.CountAsync().Result);
+			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);

@@ -18,6 +18,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Collection<CharacterViewModel> Characters { get; } = new Collection<CharacterViewModel>();
         public Collection<StorylineViewModel> Storylines { get; } = new Collection<StorylineViewModel>();
         public Collection<PlotElementViewModel> PlotElements { get; } = new Collection<PlotElementViewModel>();
+        public Collection<AliasViewModel> Aliases { get; } = new Collection<AliasViewModel>();
         public Collection<RelationshipViewModel> Relationships { get; } = new Collection<RelationshipViewModel>();
         public Collection<StorylineConnectionViewModel> StorylineCharacterConnections { get; } = new Collection<StorylineConnectionViewModel>();
         public Collection<StorylineConnectionViewModel> StorylinePlotElementConnections { get; } = new Collection<StorylineConnectionViewModel>();

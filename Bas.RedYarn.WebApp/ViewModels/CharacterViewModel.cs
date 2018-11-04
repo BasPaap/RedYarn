@@ -13,7 +13,6 @@ namespace Bas.RedYarn.WebApp.ViewModels
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
-        public Collection<string> Aliases { get; } = new Collection<string>();
         public float XPosition { get; set; }
         public float YPosition { get; set; }
 
@@ -25,8 +24,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
             Id = Guid.NewGuid();
             Name = character.Name;
-            Description = character.Description;
-            Aliases.AddRange(character.Aliases);            
+            Description = character.Description;    
         }
 
         public CharacterViewModel(CharacterViewModel viewModel)
@@ -34,7 +32,6 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Id = viewModel.Id;
             Name = viewModel.Name;
             Description = viewModel.Description;
-            Aliases.AddRange(viewModel.Aliases);
             XPosition = viewModel.XPosition;
             YPosition = viewModel.YPosition;            
         }
@@ -54,8 +51,6 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Description = Description
             };
 
-            character.Aliases.AddRange(Aliases);
-
             return character;
         }
 
@@ -63,8 +58,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
             model.Name = Name;
             model.Description = Description;
-            model.Aliases.Clear();
-            model.Aliases.AddRange(Aliases);
+            model.Aliases.Clear();            
         }
 
         public Database.CharacterNode ToNode()

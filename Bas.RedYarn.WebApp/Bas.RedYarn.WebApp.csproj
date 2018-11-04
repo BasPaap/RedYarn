@@ -95,6 +95,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorController.tt</DependentUpon>
     </Compile>
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\AliasController.cs')" Include="Controllers\GeneratedControllers\AliasController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AliasController.tt</DependentUpon>
+    </Compile>
     <Compile Condition="!Exists('Controllers\GeneratedControllers\CharacterController.cs')" Include="Controllers\GeneratedControllers\CharacterController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -120,8 +125,18 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataService.tt</DependentUpon>
     </Compile>
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\TagController.cs')" Include="Controllers\GeneratedControllers\TagController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TagController.tt</DependentUpon>
+    </Compile>    
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Controllers\GeneratedControllers\AliasController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AliasController.tt</DependentUpon>
+    </Compile>
     <Compile Update="Controllers\GeneratedControllers\AuthorController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -164,6 +179,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Controllers\GeneratedControllers\AliasController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AliasController.cs</LastGenOutput>
+    </None>
     <None Update="Controllers\GeneratedControllers\AuthorController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AuthorController.cs</LastGenOutput>
@@ -197,6 +216,7 @@
       <LastGenOutput>IDataService.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  
 
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

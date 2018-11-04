@@ -28,22 +28,22 @@ namespace Bas.RedYarn.WebApp.Services
             var dumas = new Author() { Name = "Alexandre Dumas" };
 
             var edmond = new Character() { Name = "Edmond Dantés" };
-            edmond.Aliases.Add("Count of Monte Christo");
-            edmond.Aliases.Add("Sinbad the Sailor");
-            edmond.Aliases.Add("Abbé Busoni");
-            edmond.Aliases.Add("Lord Wilmore");
+            edmond.Aliases.Add(new Alias() { Name = "Count of Monte Christo" });
+            edmond.Aliases.Add(new Alias() { Name = "Sinbad the Sailor" });
+            edmond.Aliases.Add(new Alias() { Name = "Abbé Busoni" });
+            edmond.Aliases.Add(new Alias() { Name = "Lord Wilmore" });
             edmond.Authors.Add(dumas);
 
             var louis = new Character() { Name = "Louis Dantés" };
             louis.Authors.Add(dumas);
 
             var mercedes = new Character() { Name = "Mercédès" };
-            mercedes.Aliases.Add("Countess Mercédès Mondego");
-            mercedes.Aliases.Add("Mlle de Morcerf");
+            mercedes.Aliases.Add(new Alias() { Name = "Countess Mercédès Mondego" });
+            mercedes.Aliases.Add(new Alias() { Name = "Mlle de Morcerf" });
             mercedes.Authors.Add(dumas);
 
             var fernand = new Character { Name = "Fernand Mondego" };
-            fernand.Aliases.Add("Count de Morcerf");
+            fernand.Aliases.Add(new Alias() { Name = "Count de Morcerf" });
             fernand.Authors.Add(dumas);
 
             var albert = new Character { Name = "Albert de Morcerf" };
@@ -53,11 +53,11 @@ namespace Bas.RedYarn.WebApp.Services
             haydee.Authors.Add(dumas);
 
             edmond.RelateTo(louis, "son of", true);
-            edmond.RelateTo(mercedes, "engaged");
+            edmond.RelateTo(mercedes, "engaged" );
             edmond.RelateTo(haydee, "owns", true);
-            edmond.RelateTo(haydee, "loves");
+            edmond.RelateTo(haydee, "loves" );
 
-            mercedes.RelateTo(fernand, "married");
+            mercedes.RelateTo(fernand, "married" );
 
             mercedes.RelateTo(albert, "mother of", true);
             fernand.RelateTo(albert, "father of", true);
@@ -208,6 +208,26 @@ namespace Bas.RedYarn.WebApp.Services
         }
 
         public Task<bool> DeleteTagViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AliasViewModel> GetAliasViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AliasViewModel> CreateAliasViewModelAsync(Guid diagramId, AliasViewModel aliasViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(AliasViewModel result, bool isFound)> UpdateAliasViewModelAsync(Guid id, AliasViewModel aliasViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteAliasViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }

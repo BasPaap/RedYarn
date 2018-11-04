@@ -75,6 +75,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="GeneratedTests\AliasControllerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AliasControllerTest.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\DatabaseDataServiceTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DatabaseDataServiceTest.cs</LastGenOutput>
@@ -144,19 +148,22 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="GeneratedTests\AuthorControllerTest.cs">
+    <Compile Condition="!Exists('GeneratedTests\AliasControllerTest.cs')" Include="GeneratedTests\AliasControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AliasControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('GeneratedTests\AuthorControllerTest.cs')" Include="GeneratedTests\AuthorControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AuthorControllerTest.tt</DependentUpon>
     </Compile>
-    <Compile Update="GeneratedTests\DatabaseDataServiceTestBase.cs">
+    <Compile Condition="!Exists('GeneratedTests\DatabaseDataServiceTestBase.cs')" Include="GeneratedTests\DatabaseDataServiceTestBase.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
     </Compile>
-    <Compile Update="Services\TestDataService.cs">
+    <Compile Condition="!Exists('Services\TestDataService.cs')" Include="Services\TestDataService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TestDataService.tt</DependentUpon>

@@ -54,6 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="GeneratedTests\AliasTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AliasTest.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\CharacterTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>CharacterTest.cs</LastGenOutput>
@@ -117,6 +121,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TagTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('GeneratedTests\AliasTest.cs')" Update="GeneratedTests\AliasTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AliasTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

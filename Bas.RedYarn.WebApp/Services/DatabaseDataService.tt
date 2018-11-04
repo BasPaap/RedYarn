@@ -24,7 +24,7 @@ foreach (var viewModelName in viewModelNames)
 	var modelName = GetModelName(viewModelName);#>
 		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
-			var model = await this.dbContext.<#=modelName#>s<# if (modelIncludes.Keys.Contains(modelName))
+			var model = await this.dbContext.<#=Pluralize(modelName)#><# if (modelIncludes.Keys.Contains(modelName))
 {
 	WriteLine(modelIncludes[modelName]);
 #>				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, "Id") == id);
@@ -70,11 +70,11 @@ else
 <# if (entitiesToAddToDiagram.Contains(modelName))
 {#>
 			var diagram = this.dbContext.Diagrams.Find(diagramId);
-            diagram.<#=modelName#>s.Add(model);
+            diagram.<#=Pluralize(modelName)#>.Add(model);
 <#}
 else
 {#>
-			this.dbContext.<#=modelName#>s.Add(model);
+			this.dbContext.<#=Pluralize(modelName)#>.Add(model);
 <#}#>
 <# if (EntityHasNode(modelName))
 {#>
@@ -96,7 +96,7 @@ else
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
 
-			var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
+			var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(id);
 			if (model == null)
 			{
 				return (null, false);
@@ -125,7 +125,7 @@ else
 
         public async Task<bool> Delete<#=viewModelName#>Async(Guid id)
         {
-            var model = await this.dbContext.<#=modelName#>s.FindAsync(id);
+            var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(id);
 			if (model == null)
 			{
 				return false;
@@ -140,7 +140,7 @@ else
 			}
 <#}#>
 			
-			this.dbContext.<#=modelName#>s.Remove(model);
+			this.dbContext.<#=Pluralize(modelName)#>.Remove(model);
 <# if (EntityHasNode(modelName))
 {#>
 			this.dbContext.<#=modelName#>Nodes.Remove(node);

@@ -72,12 +72,6 @@ namespace Bas.RedYarn.WebApp
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<RedYarnDbContext>();
-                context.Database.Migrate();
-            }
         }
     }
 }

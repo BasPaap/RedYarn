@@ -21,7 +21,8 @@ static List<string> modelNames = new List<string> {
 	nameof(Storyline),
 	nameof(PlotElement),
 	nameof(Author),
-	nameof(Tag)
+	nameof(Tag),
+	nameof(Alias)
 };
 
 List<string> viewModelNames = new List<string>(modelNames.Select(m => $"{m}ViewModel"));
@@ -38,7 +39,8 @@ List<string> entitiesToAddToDiagram = new List<string>
 	nameof(Storyline),
 	nameof(PlotElement),
 	nameof(Author),
-	nameof(Tag)
+	nameof(Tag),
+	nameof(Alias)
 };
 
 private string Decapitalize(string capitalizedString)
@@ -54,5 +56,10 @@ private string GetModelName(string viewModelName)
 private bool EntityHasNode(string entityName)
 {
 	return entitiesWithNodes.Contains(entityName);
+}
+
+private string Pluralize(string noun)
+{
+	return noun.EndsWith("s") ? $"{noun}es" : $"{noun}s";
 }
 #>

@@ -17,7 +17,7 @@ namespace Bas.RedYarn
         private List<IRelationship> relationships = new List<IRelationship>();
 
         public string Name { get; set; }
-        public Collection<string> Aliases { get; } = new Collection<string>();
+        public Collection<Alias> Aliases { get; } = new Collection<Alias>();
         public string Description { get; set; }
         public Collection<Author> Authors { get; }
         public Collection<Storyline> Storylines { get; }

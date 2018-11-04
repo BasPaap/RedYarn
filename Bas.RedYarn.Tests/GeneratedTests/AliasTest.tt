@@ -1,0 +1,7 @@
+﻿<#@ include file="BaseTestGenerator.t4" #>
+<# 
+var unitUnderTestName = nameof(Alias);
+WriteBeginning(unitUnderTestName);
+WriteToStringTests(unitUnderTestName);
+WriteEnd();
+#>
