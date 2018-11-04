@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Bas.RedYarn.WebApp.Database
 {
-    static class ShadowPropertyNames
+    public static class ShadowPropertyNames
     {
         public const string Id = "Id";
     }

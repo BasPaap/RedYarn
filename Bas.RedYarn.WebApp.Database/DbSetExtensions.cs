@@ -14,7 +14,7 @@ namespace Bas.RedYarn.WebApp.Database
                                                                                                                      where OwnerType : class
         { 
             var dbContext = dbSet.GetService<ICurrentDbContext>().Context;
-            return dbSet.SingleOrDefault(e => EF.Property<Guid>(e, $"{typeof(OwnerType).Name}Id") == (Guid)dbContext.Entry(owner).Property("Id").CurrentValue);
+            return dbSet.SingleOrDefault(e => EF.Property<Guid>(e, $"{typeof(OwnerType).Name}Id") == (Guid)dbContext.Entry(owner).Property(ShadowPropertyNames.Id).CurrentValue);
         }
     }
 }

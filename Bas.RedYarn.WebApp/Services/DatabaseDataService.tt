@@ -27,13 +27,13 @@ foreach (var viewModelName in viewModelNames)
 			var model = await this.dbContext.<#=Pluralize(modelName)#><# if (modelIncludes.Keys.Contains(modelName))
 {
 	WriteLine(modelIncludes[modelName]);
-#>				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, "Id") == id);
+#>				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, ShadowPropertyNames.Id) == id);
 <#
 }
 else
 {#>
 
-				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, "Id") == id);
+				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, ShadowPropertyNames.Id) == id);
 <#}#>			
 			if (model == null)
 			{
@@ -85,7 +85,7 @@ else
 			await this.dbContext.SaveChangesAsync();
 
 			var newViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
-			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property("Id").CurrentValue;
+			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property(ShadowPropertyNames.Id).CurrentValue;
 			return newViewModel;
         }
 

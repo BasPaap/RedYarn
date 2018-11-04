@@ -105,11 +105,11 @@ foreach (var viewModelName in viewModelNames)
 <#
 			if (EntityHasNode(modelName))
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			}
 			else
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			}#>			
 			// Act
 			var viewModel = this.dataService.Get<#=viewModelName#>Async(newId).Result;
@@ -170,11 +170,11 @@ foreach (var viewModelName in viewModelNames)
 <#
 			if (EntityHasNode(modelName))
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			}
 			else
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			}#>		
 			// Act
 			var result = this.dataService.Delete<#=viewModelName#>Async(newId).Result;
@@ -212,7 +212,7 @@ foreach (var viewModelName in viewModelNames)
 			};
 			this.dbContextToAddTo.Diagrams.Add(diagram);
 			this.dbContextToAddTo.SaveChanges();
-			var diagramId = (Guid)this.dbContextToAddTo.Entry(diagram).Property("Id").CurrentValue;
+			var diagramId = (Guid)this.dbContextToAddTo.Entry(diagram).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			}#>
 
 			// Act
@@ -220,7 +220,7 @@ foreach (var viewModelName in viewModelNames)
 
 			// Assert
 			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
-			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("Id").CurrentValue, returnedViewModel.Id);
+			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property(ShadowPropertyNames.Id).CurrentValue, returnedViewModel.Id);
 			<#			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
 			{#>
 Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("DiagramId").CurrentValue);
@@ -322,11 +322,11 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pl
 			this.dbContextToAddTo.SaveChanges();
 <#			if (EntityHasNode(modelName))
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property("Id").CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			}
 			else
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property("Id").CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			}#>			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
 			updated<#=viewModelName#>.Id = newId;
 
