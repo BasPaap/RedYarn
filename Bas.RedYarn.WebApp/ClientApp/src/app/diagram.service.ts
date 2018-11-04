@@ -1,7 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Diagram, Character, Storyline, PlotElement } from './diagram-types';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,7 @@ export class DiagramService {
     return this.plotElementSubject.asObservable();
   }
 
-  constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string) {
+  constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string, private route: ActivatedRoute) {
   }
 
   public getDiagram(diagramId: string): Observable<Diagram> {
@@ -63,8 +65,13 @@ export class DiagramService {
   }
   
   private createNodeItem<T>(controllerName: string, model: T, subject: Subject<T>): Observable<T> {
-    var observable = this.httpClient.post<T>(this.apiUrl + controllerName, model);
-    observable.subscribe(model => subject.next(model));
+
+    let diagramId = this.route.snapshot.children[0].params.id;
+
+    var observable = this.httpClient.post<T>(`${this.apiUrl}${controllerName}/${diagramId}`, model).pipe(
+      tap(model => subject.next(model))
+    );
+    //observable.subscribe(model => subject.next(model));
     return observable;
   }
 }
