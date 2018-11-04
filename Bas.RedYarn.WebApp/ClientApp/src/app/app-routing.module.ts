@@ -3,8 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { StoryDiagramComponent } from './story-diagram/story-diagram.component';
 
 const routes: Routes = [
-  { path: 'diagrams', component: StoryDiagramComponent },
-  { path: 'diagrams/:id', component: StoryDiagramComponent }
+  { path: 'diagram', component: StoryDiagramComponent },
+  { path: 'diagram/:id', component: StoryDiagramComponent }
 ];
 
 @NgModule({

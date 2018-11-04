@@ -23,7 +23,7 @@ export class NewDiagramDialogComponent extends DialogComponent implements OnInit
       this.diagramService.createDiagram(this.formGroup.controls['name'].value)
         .subscribe(newDiagram => {
           this.dialogRef.close();
-          this.router.navigate(['diagrams', newDiagram.id]);
+          this.router.navigate(['diagram', newDiagram.id]);
         });
     }
   }
