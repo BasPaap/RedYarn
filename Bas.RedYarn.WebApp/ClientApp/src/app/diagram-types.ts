@@ -3,11 +3,16 @@ export interface Node {
   yPosition: number;
 }
 
+export interface Alias {
+  id: string;
+  name: string;
+}
+
 export interface Character extends Node {
   id: string;
   name: string;
   description?: any;
-  aliases: string[];
+  aliases: Alias[];
 }
 
 export interface Storyline extends Node {
@@ -46,9 +51,16 @@ export interface Diagram {
   storylines: Storyline[];
   plotElements: PlotElement[];
   relationships: Relationship[];
+  aliases: Alias[];
   storylineCharacterConnections: StorylineCharacterConnection[];
   storylinePlotElementConnections: StorylinePlotElementConnection[];
   characterPlotElementConnections: PlotElementConnection[];
+  characterAliasConnections: AliasConnection[];
+}
+
+export interface AliasConnection {
+  aliasId: string;
+  characterId: string;
 }
 
 export interface PlotElementConnection {

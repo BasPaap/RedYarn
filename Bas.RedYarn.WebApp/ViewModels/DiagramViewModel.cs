@@ -28,13 +28,14 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
-        public DiagramViewModel(RedYarn.Diagram diagram)
+        public DiagramViewModel(RedYarn.Diagram diagram, Func<object, Guid> getIdForModelFunc = null)
         {
+            Id = getIdForModelFunc(diagram);
             Name = diagram.Name;
 
-            var characterDictionary = new Dictionary<RedYarn.Character, ViewModels.CharacterViewModel>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, ViewModels.CharacterViewModel>(c, new ViewModels.CharacterViewModel(c))));
-            var storylineDictionary = new Dictionary<RedYarn.Storyline, ViewModels.StorylineViewModel>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, ViewModels.StorylineViewModel>(s, new ViewModels.StorylineViewModel(s))));
-            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, ViewModels.PlotElementViewModel>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElementViewModel>(e, new ViewModels.PlotElementViewModel(e))));
+            var characterDictionary = new Dictionary<RedYarn.Character, ViewModels.CharacterViewModel>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, ViewModels.CharacterViewModel>(c, new ViewModels.CharacterViewModel(c, getIdForModelFunc))));
+            var storylineDictionary = new Dictionary<RedYarn.Storyline, ViewModels.StorylineViewModel>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, ViewModels.StorylineViewModel>(s, new ViewModels.StorylineViewModel(s, getIdForModelFunc))));
+            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, ViewModels.PlotElementViewModel>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElementViewModel>(e, new ViewModels.PlotElementViewModel(e, getIdForModelFunc))));
 
             AddStorylines(storylineDictionary);
             AddCharacters(characterDictionary);
@@ -58,7 +59,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
             StorylinePlotElementConnections.AddRange(viewModel.StorylinePlotElementConnections);
             CharacterPlotElementConnections.AddRange(viewModel.CharacterPlotElementConnections);
         }
-
+        
         public Diagram ToModel()
         {
             return new Diagram()

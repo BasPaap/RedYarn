@@ -18,15 +18,15 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
-        public PlotElementViewModel(RedYarn.PlotElement plotElement)
+        public PlotElementViewModel(RedYarn.PlotElement plotElement, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = Guid.NewGuid();
+            Id = getIdForModelFunc(plotElement);
             Name = plotElement.Name;
             Description = plotElement.Description;
         }
 
-        public PlotElementViewModel(PlotElement plotElement, float xPosition, float yPosition)
-            : this(plotElement)
+        public PlotElementViewModel(PlotElement plotElement, float xPosition, float yPosition, Func<object, Guid> getIdForModelFunc = null)
+            : this(plotElement, getIdForModelFunc)
         {
             XPosition = xPosition;
             YPosition = yPosition;

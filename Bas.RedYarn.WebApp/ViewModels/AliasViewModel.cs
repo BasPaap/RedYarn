@@ -12,8 +12,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
-        public AliasViewModel(Alias alias)
+        public AliasViewModel(Alias alias, Func<object, Guid> getIdForModelFunc = null)
         {
+            Id = getIdForModelFunc(alias);
             Name = alias.Name;
         }
 

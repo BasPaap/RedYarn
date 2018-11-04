@@ -18,15 +18,15 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
-        public StorylineViewModel(RedYarn.Storyline storyline)
+        public StorylineViewModel(RedYarn.Storyline storyline, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = Guid.NewGuid();
+            Id = getIdForModelFunc(storyline);
             Name = storyline.Name;
             Description = storyline.Description;
         }
 
-        public StorylineViewModel(Storyline storyline, float xPosition, float yPosition)
-            : this(storyline)
+        public StorylineViewModel(Storyline storyline, float xPosition, float yPosition, Func<object, Guid> getIdForModelFunc = null)
+            : this(storyline, getIdForModelFunc)
         {
             XPosition = xPosition;
             YPosition = yPosition;

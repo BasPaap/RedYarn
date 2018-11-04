@@ -22,7 +22,7 @@ export class NewCharacterDialogComponent extends DialogComponent implements OnIn
         id: "00000000-0000-0000-0000-000000000000",
         name: this.formGroup.controls['name'].value,
         description: this.formGroup.controls['description'].value,
-        aliases: this.aliases,
+        aliases: this.aliases.map(alias => { return { id: "00000000-0000-0000-0000-000000000000", name: alias }}),
         xPosition: 0,
         yPosition: 0
       };

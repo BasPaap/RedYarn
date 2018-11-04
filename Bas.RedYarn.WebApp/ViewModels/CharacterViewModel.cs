@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Bas.RedYarn.WebApp.Database;
 using Bas.RedYarn.WebApp.Extensions;
+
 
 namespace Bas.RedYarn.WebApp.ViewModels
 {
@@ -15,16 +17,18 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public string Description { get; set; }
         public float XPosition { get; set; }
         public float YPosition { get; set; }
+        public Collection<AliasViewModel> Aliases { get; } = new Collection<AliasViewModel>();
 
         public CharacterViewModel()
         {
         }
 
-        public CharacterViewModel(RedYarn.Character character)
+        public CharacterViewModel(RedYarn.Character character, Func<object, Guid> getIdForModelFunc = null)
         {
-            Id = Guid.NewGuid();
+            Id = getIdForModelFunc(character);
             Name = character.Name;
-            Description = character.Description;    
+            Description = character.Description;
+            Aliases.AddRange(character.Aliases.Select(alias => new AliasViewModel(alias, getIdForModelFunc)).ToList());
         }
 
         public CharacterViewModel(CharacterViewModel viewModel)
@@ -33,11 +37,12 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Name = viewModel.Name;
             Description = viewModel.Description;
             XPosition = viewModel.XPosition;
-            YPosition = viewModel.YPosition;            
+            YPosition = viewModel.YPosition;
+            Aliases.AddRange(viewModel.Aliases);
         }
 
-        public CharacterViewModel(RedYarn.Character character, float xPosition, float yPosition)
-            : this(character)
+        public CharacterViewModel(RedYarn.Character character, float xPosition, float yPosition, Func<object, Guid> getIdForModelFunc = null)
+            : this(character, getIdForModelFunc)
         {            
             XPosition = xPosition;
             YPosition = yPosition;
@@ -51,6 +56,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Description = Description
             };
 
+            character.Aliases.AddRange(this.Aliases.Select(alias => new Alias()
+            {
+                Name = alias.Name
+            }));
+
             return character;
         }
 
@@ -58,7 +68,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
             model.Name = Name;
             model.Description = Description;
-            model.Aliases.Clear();            
+            model.Aliases.Clear();
+            model.Aliases.AddRange(Aliases.Select(aliasViewModel => new Alias() { Name = aliasViewModel.Name }));
         }
 
         public Database.CharacterNode ToNode()

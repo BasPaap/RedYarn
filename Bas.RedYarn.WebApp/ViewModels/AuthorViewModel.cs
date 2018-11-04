@@ -12,8 +12,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
-        public AuthorViewModel(Author author)
+        public AuthorViewModel(Author author, Func<object, Guid> getIdForModelFunc = null)
         {
+            Id = getIdForModelFunc(author);
             Name = author.Name;
         }
 

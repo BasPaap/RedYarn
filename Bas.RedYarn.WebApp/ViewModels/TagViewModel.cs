@@ -12,8 +12,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
-        public TagViewModel(Tag tag)
+        public TagViewModel(Tag tag, Func<object, Guid> getIdForModelFunc = null)
         {
+            Id = getIdForModelFunc(tag);
             Name = tag.Name;
             Category = tag.Category;
         }
