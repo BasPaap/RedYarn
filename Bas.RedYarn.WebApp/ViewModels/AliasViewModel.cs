@@ -12,6 +12,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AliasViewModel"/> class.
+        /// </summary>
+        /// <param name="alias">The <see cref="Alias"/> for which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public AliasViewModel(Alias alias, Func<object, Guid> getIdForModelFunc = null)
         {
             Id = getIdForModelFunc(alias);

@@ -12,6 +12,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TagViewModel"/> class.
+        /// </summary>
+        /// <param name="tag">The <see cref="TagViewModel"/> for which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public TagViewModel(Tag tag, Func<object, Guid> getIdForModelFunc = null)
         {
             Id = getIdForModelFunc(tag);

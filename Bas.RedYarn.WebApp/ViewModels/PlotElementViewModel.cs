@@ -18,6 +18,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotElementViewModel"/> class.
+        /// </summary>
+        /// <param name="plotElement">The <see cref="PlotElement"/> for which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public PlotElementViewModel(RedYarn.PlotElement plotElement, Func<object, Guid> getIdForModelFunc = null)
         {
             Id = getIdForModelFunc(plotElement);
@@ -25,6 +30,13 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Description = plotElement.Description;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PlotElementViewModel"/> class.
+        /// </summary>
+        /// <param name="plotElement">The <see cref="PlotElement"/> for which to create this viewmodel.</param>
+        /// <param name="xPosition">The X position of the viewmodel in the diagram.</param>
+        /// <param name="yPosition">The Y position of the viewmodel in the diagram.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public PlotElementViewModel(PlotElement plotElement, float xPosition, float yPosition, Func<object, Guid> getIdForModelFunc = null)
             : this(plotElement, getIdForModelFunc)
         {

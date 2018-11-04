@@ -23,6 +23,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterViewModel"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> for which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public CharacterViewModel(RedYarn.Character character, Func<object, Guid> getIdForModelFunc = null)
         {
             Id = getIdForModelFunc(character);
@@ -41,6 +46,13 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Aliases.AddRange(viewModel.Aliases);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterViewModel"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> for which to create this viewmodel.</param>
+        /// <param name="xPosition">The X position of the viewmodel in the diagram.</param>
+        /// <param name="yPosition">The Y position of the viewmodel in the diagram.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public CharacterViewModel(RedYarn.Character character, float xPosition, float yPosition, Func<object, Guid> getIdForModelFunc = null)
             : this(character, getIdForModelFunc)
         {            

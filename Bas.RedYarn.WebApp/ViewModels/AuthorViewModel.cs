@@ -12,6 +12,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthorViewModel"/> class.
+        /// </summary>
+        /// <param name="author">The <see cref="Author"/> for which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public AuthorViewModel(Author author, Func<object, Guid> getIdForModelFunc = null)
         {
             Id = getIdForModelFunc(author);

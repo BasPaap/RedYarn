@@ -28,6 +28,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DiagramViewModel"/> class.
+        /// </summary>
+        /// <param name="diagram">The <see cref="Diagram"/> for which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public DiagramViewModel(RedYarn.Diagram diagram, Func<object, Guid> getIdForModelFunc = null)
         {
             Id = getIdForModelFunc(diagram);
