@@ -33,4 +33,8 @@ export class VisNetworkDirective {
       });
     }
   }
+
+  getPosition(nodeId: string): vis.Position {
+    return this.network.getPositions(nodeId);
+  }
 }

@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Diagram, Character, Storyline, PlotElement } from './diagram-types';
 import { ActivatedRoute } from '@angular/router';
+import { M } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root'
@@ -73,5 +74,21 @@ export class DiagramService {
     );
     //observable.subscribe(model => subject.next(model));
     return observable;
+  }
+
+  public updateCharacter(characterViewModel: Character): Observable<Character> {
+    return this.updateNodeItem("character", characterViewModel.id, characterViewModel);
+  }
+
+  public updateStoryline(storylineViewModel: Storyline): Observable<Storyline> {
+    return this.updateNodeItem("storyline", storylineViewModel.id, storylineViewModel);
+  }
+
+  public updatePlotElement(plotElementViewModel: PlotElement): Observable<PlotElement> {
+    return this.updateNodeItem("PlotElement", plotElementViewModel.id, plotElementViewModel);
+  }
+
+  private updateNodeItem<T>(controllerName: string, id: string, model: T): Observable<T> {
+    return this.httpClient.post<T>(`${this.apiUrl}${controllerName}/${id}`, model);
   }
 }

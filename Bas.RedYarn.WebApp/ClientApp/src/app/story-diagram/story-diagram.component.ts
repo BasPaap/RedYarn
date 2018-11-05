@@ -14,7 +14,7 @@ import { forEach } from '@angular/router/src/utils/collection';
   styleUrls: ['./story-diagram.component.scss']
 })
 export class StoryDiagramComponent implements OnInit, OnDestroy {
-    
+
   diagram: Diagram;
   networkData = {};
 
@@ -27,12 +27,33 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this._visNetwork = directive;
   }
   get visNetwork(): VisNetworkDirective {
-    return this._visNetwork;    
+    return this._visNetwork;
   }
 
   onDragEnd(event: any): void {
-    console.log("test");
-    
+    let draggedNodes = this.networkData["nodes"].get({
+      filter: function (item) {
+        return (event.nodes.includes(item.id));
+      }
+    });
+
+    for (let key in draggedNodes) {
+      let draggedNode = draggedNodes[key];
+      let position = this.visNetwork.getPosition(draggedNode.id);
+      if (draggedNode.storyline) {
+        draggedNode.storyline.xPosition = position.x;
+        draggedNode.storyline.yPosition = position.y;
+        this.diagramService.updateStoryline(draggedNode.storyline);        
+      } else if (draggedNode.plotElement) {
+        draggedNode.plotElement.xPosition = position.x;
+        draggedNode.plotElement.yPosition = position.y;
+        this.diagramService.updatePlotElement(draggedNode.plotElement);
+      } else if (draggedNode.character) {
+        draggedNode.character.xPosition = position.x;
+        draggedNode.character.yPosition = position.y;
+        this.diagramService.updateCharacter(draggedNode.character);
+      }
+    }
   }
 
   constructor(private route: ActivatedRoute,
@@ -56,7 +77,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     }, error => console.error(error));
 
     this.subscriptions['character'] = this.getSubscription(this.diagramService.charactersService(), this.visNetworkGeneratorService.getCharacterNode);
-    this.subscriptions['storyline']= this.getSubscription(this.diagramService.storylinesService(), this.visNetworkGeneratorService.getStorylineNode);
+    this.subscriptions['storyline'] = this.getSubscription(this.diagramService.storylinesService(), this.visNetworkGeneratorService.getStorylineNode);
     this.subscriptions['plotElement'] = this.getSubscription(this.diagramService.plotElementsService(), this.visNetworkGeneratorService.getPlotElementNode);
   }
 
@@ -71,6 +92,6 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     for (let key in this.subscriptions) {
       this.subscriptions[key].unsubscribe();
-    }  
+    }
   }
 }
