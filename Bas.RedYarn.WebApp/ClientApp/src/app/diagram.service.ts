@@ -4,7 +4,6 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Diagram, Character, Storyline, PlotElement } from './diagram-types';
 import { ActivatedRoute } from '@angular/router';
-import { M } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root'
