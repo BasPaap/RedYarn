@@ -11,10 +11,10 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class NewCharacterDialogComponent extends DialogComponent implements OnInit {
   
-  aliases: string[] = [];
-  authors: string[] = [];
+  public aliases: string[] = [];
+  public authors: string[] = [];
 
-  createCharacter(): void {
+  public createCharacter(): void {
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
 
@@ -32,7 +32,7 @@ export class NewCharacterDialogComponent extends DialogComponent implements OnIn
     }
   }
 
-  constructor(public dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramService: DiagramService) {
+  constructor(private dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramService: DiagramService) {
     super();
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
     this.formGroup.addControl('description', new FormControl(''));

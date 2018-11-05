@@ -9,7 +9,7 @@ export class VisNetworkDirective {
   
   constructor(private element: ElementRef) { }
 
-  @Input() set appVisNetwork(networkData) {
+  @Input() public set appVisNetwork(networkData) {
     let options = {   
       physics: {
           enabled: false          
@@ -22,9 +22,9 @@ export class VisNetworkDirective {
     }
   }
 
-  @Output() dragEnd: EventEmitter<any> = new EventEmitter();
+  @Output() public dragEnd: EventEmitter<any> = new EventEmitter();
 
-  focusOnNode(nodeId: IdType): void {
+  public focusOnNode(nodeId: IdType): void {
     if (this.network) {
       this.network.focus(nodeId, {
         locked: false,
@@ -34,7 +34,7 @@ export class VisNetworkDirective {
     }
   }
 
-  getPosition(nodeId: string): vis.Position {
+  public getPosition(nodeId: string): vis.Position {
     return this.network.getPositions(nodeId);
   }
 }

@@ -9,7 +9,7 @@ export class VisNetworkGeneratorService {
 
   constructor() { }
 
-  generate(diagram: Diagram, nodes: DataSet<{}>, edges: DataSet<{}>) {
+  public generate(diagram: Diagram, nodes: DataSet<{}>, edges: DataSet<{}>) {
     nodes.add(diagram.characters.map(c => this.getCharacterNode(c)));
     nodes.add(diagram.storylines.map(s => this.getStorylineNode(s)));
     nodes.add(diagram.plotElements.map(e => this.getPlotElementNode(e)));

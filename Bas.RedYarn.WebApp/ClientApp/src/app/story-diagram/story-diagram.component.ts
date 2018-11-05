@@ -15,22 +15,29 @@ import { forEach } from '@angular/router/src/utils/collection';
 })
 export class StoryDiagramComponent implements OnInit, OnDestroy {
 
-  diagram: Diagram;
-  networkData = {};
+  private diagram: Diagram;
+  private subscriptions: { [name: string]: Subscription; } = {};
+  private _visNetwork: VisNetworkDirective;
 
-  subscriptions: { [name: string]: Subscription; } = {};
-
-  _visNetwork: VisNetworkDirective;
+  public networkData = {};
 
   @ViewChild(VisNetworkDirective)
-  set visNetwork(directive: VisNetworkDirective) {
+  public set visNetwork(directive: VisNetworkDirective) {
     this._visNetwork = directive;
   }
-  get visNetwork(): VisNetworkDirective {
+  public get visNetwork(): VisNetworkDirective {
     return this._visNetwork;
   }
 
-  onDragEnd(event: any): void {
+  private getSubscription<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
+    return service.subscribe(item => {
+      let newNode = getNode(item);
+      let nodeId = this.networkData["nodes"].add(newNode);
+      this.visNetwork.focusOnNode(nodeId);
+    });
+  }
+
+  public onDragEnd(event: any): void {
     let draggedNodes = this.networkData["nodes"].get({
       filter: function (item) {
         return (event.nodes.includes(item.id));
@@ -79,14 +86,6 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this.subscriptions['character'] = this.getSubscription(this.diagramService.charactersService(), this.visNetworkGeneratorService.getCharacterNode);
     this.subscriptions['storyline'] = this.getSubscription(this.diagramService.storylinesService(), this.visNetworkGeneratorService.getStorylineNode);
     this.subscriptions['plotElement'] = this.getSubscription(this.diagramService.plotElementsService(), this.visNetworkGeneratorService.getPlotElementNode);
-  }
-
-  private getSubscription<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
-    return service.subscribe(item => {
-      let newNode = getNode(item);
-      let nodeId = this.networkData["nodes"].add(newNode);
-      this.visNetwork.focusOnNode(nodeId);
-    });
   }
 
   ngOnDestroy(): void {

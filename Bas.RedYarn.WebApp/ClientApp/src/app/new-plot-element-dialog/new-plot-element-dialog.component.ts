@@ -11,7 +11,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class NewPlotElementDialogComponent extends DialogComponent implements OnInit {
 
-  createPlotElement(): void {
+  public createPlotElement(): void {
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
 
@@ -28,7 +28,7 @@ export class NewPlotElementDialogComponent extends DialogComponent implements On
     }
   }
 
-  constructor(public dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramService: DiagramService) {
+  constructor(private dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramService: DiagramService) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

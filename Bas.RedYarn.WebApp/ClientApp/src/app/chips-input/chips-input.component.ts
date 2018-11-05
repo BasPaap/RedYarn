@@ -18,13 +18,13 @@ export class ChipsInputComponent implements OnInit {
   @Input() public firstHint: string;
   @Input() public secondHint: string;
 
-  @Input() values: string[] = [];
-  @Output() valuesChange = new EventEmitter<string[]>();
+  @Input() public values: string[] = [];
+  @Output() public valuesChange = new EventEmitter<string[]>();
   
-  readonly separatorKeyCodes: number[] = [ENTER, SEMICOLON];
-  removable = true;
+  public readonly separatorKeyCodes: number[] = [ENTER, SEMICOLON];
+  public removable = true;
 
-  add(event: MatChipInputEvent): void {
+  public add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
@@ -40,7 +40,7 @@ export class ChipsInputComponent implements OnInit {
     this.valuesChange.emit(this.values);
   }
 
-  remove(value: string): void {
+  public remove(value: string): void {
     const index = this.values.indexOf(value);
 
     if (index >= 0) {

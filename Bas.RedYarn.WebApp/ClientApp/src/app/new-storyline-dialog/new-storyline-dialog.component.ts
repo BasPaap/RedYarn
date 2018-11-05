@@ -11,7 +11,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class NewStorylineDialogComponent extends DialogComponent implements OnInit {
 
-  createStoryline(): void {
+  public createStoryline(): void {
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
 
@@ -28,7 +28,7 @@ export class NewStorylineDialogComponent extends DialogComponent implements OnIn
     }
   }
 
-  constructor(public dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramService: DiagramService) {
+  constructor(private dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramService: DiagramService) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

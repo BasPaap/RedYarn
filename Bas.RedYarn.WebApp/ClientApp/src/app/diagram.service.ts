@@ -15,15 +15,15 @@ export class DiagramService {
   private storylineSubject = new Subject<Storyline>();
   private plotElementSubject = new Subject<PlotElement>();
 
-  charactersService(): Observable<Character> {
+  public charactersService(): Observable<Character> {
     return this.characterSubject.asObservable();
   }
 
-  storylinesService(): Observable<Storyline> {
+  public storylinesService(): Observable<Storyline> {
     return this.storylineSubject.asObservable();
   }
 
-  plotElementsService(): Observable<PlotElement> {
+  public plotElementsService(): Observable<PlotElement> {
     return this.plotElementSubject.asObservable();
   }
 
@@ -35,7 +35,6 @@ export class DiagramService {
   }
 
   public createDiagram(name: string): Observable<Diagram> {
-
     let diagramViewModel = {
       id: "00000000-0000-0000-0000-000000000000",
       name: "",
@@ -66,13 +65,12 @@ export class DiagramService {
   }
   
   private createNodeItem<T>(controllerName: string, model: T, subject: Subject<T>): Observable<T> {
-
     let diagramId = this.route.snapshot.children[0].params.id;
 
     var observable = this.httpClient.post<T>(`${this.apiUrl}${controllerName}/${diagramId}`, model).pipe(
       tap(model => subject.next(model))
     );
-    //observable.subscribe(model => subject.next(model));
+
     return observable;
   }
 

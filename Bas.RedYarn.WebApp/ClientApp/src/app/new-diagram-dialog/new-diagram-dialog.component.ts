@@ -12,11 +12,11 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class NewDiagramDialogComponent extends DialogComponent implements OnInit {
 
-  onEnter(): void {
+  public onEnter(): void {
     this.createDiagram();
   }
 
-  createDiagram(): void {
+  public createDiagram(): void {
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
       
@@ -28,7 +28,7 @@ export class NewDiagramDialogComponent extends DialogComponent implements OnInit
     }
   }
 
-  constructor(public dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {
+  constructor(private dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {
     super();
     
     this.formGroup.addControl("name", new FormControl('', [Validators.required]));    

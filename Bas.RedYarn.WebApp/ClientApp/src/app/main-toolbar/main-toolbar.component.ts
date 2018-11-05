@@ -10,7 +10,7 @@ import { NewDiagramDialogComponent } from '../new-diagram-dialog/new-diagram-dia
 })
 export class MainToolbarComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit() {
   }
