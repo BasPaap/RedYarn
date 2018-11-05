@@ -43,7 +43,7 @@ else
 
 <# if (EntityHasNode(modelName))
 {#>
-			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model);
+			var node = this.dbContext.<#=modelName#>Nodes.FindByParent(model);
 			if (node == null)
 			{
 				return null;
@@ -104,7 +104,7 @@ else
 			}
 <# if (EntityHasNode(modelName))
 {#>
-			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model);
+			var node = this.dbContext.<#=modelName#>Nodes.FindByParent(model);
 			if (node == null)
 			{
 				return (null, false);
@@ -134,7 +134,7 @@ else
 <# if (EntityHasNode(modelName))
 {#>
 
-			var node = this.dbContext.<#=modelName#>Nodes.FindByOwner(model);
+			var node = this.dbContext.<#=modelName#>Nodes.FindByParent(model);
 			if (node == null)
 			{
 				return false;

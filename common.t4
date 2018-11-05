@@ -64,9 +64,9 @@ private string Pluralize(string noun)
 	{
 		return $"{noun}es";
 	}
-	else if (noun.Endswith("y"))
+	else if (noun.EndsWith("y"))
 	{
-		return $"{noun.Substring(noun, noun.Length -1)ies}
+		return $"{noun.Substring(0, noun.Length -1)}ies";
 	}
 	else 
 	{
