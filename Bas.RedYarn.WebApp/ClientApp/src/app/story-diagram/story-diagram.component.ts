@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Diagram } from '../diagram-types';
 import { Subscription, Observable } from 'rxjs';
 import { VisNetworkDirective } from '../vis-network.directive';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-story-diagram',
@@ -27,6 +28,11 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   }
   get visNetwork(): VisNetworkDirective {
     return this._visNetwork;    
+  }
+
+  onDragEnd(event: any): void {
+    console.log("test");
+    
   }
 
   constructor(private route: ActivatedRoute,

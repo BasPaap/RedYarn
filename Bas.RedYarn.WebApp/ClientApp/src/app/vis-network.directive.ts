@@ -1,4 +1,4 @@
-import { Directive, TemplateRef, ViewContainerRef, Input, Renderer2, ElementRef } from '@angular/core';
+import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Network, IdType } from 'vis';
 
 @Directive({
@@ -17,9 +17,12 @@ export class VisNetworkDirective {
       };
 
     if (!this.network) {
-      this.network = new Network(this.element.nativeElement, networkData, options);      
+      this.network = new Network(this.element.nativeElement, networkData, options);
+      this.network.on("dragEnd", params => this.dragEnd.emit(params));
     }
   }
+
+  @Output() dragEnd: EventEmitter<any> = new EventEmitter();
 
   focusOnNode(nodeId: IdType): void {
     if (this.network) {

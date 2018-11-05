@@ -1,2 +1,2 @@
 <h1>{{diagram?.name || ""}}</h1>
-<div [appVisNetwork]="networkData" class="vis-network-container"></div>
+<div [appVisNetwork]="networkData" class="vis-network-container" (dragEnd)="onDragEnd($event)"></div>
