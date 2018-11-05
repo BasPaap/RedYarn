@@ -21,7 +21,7 @@ namespace Bas.RedYarn.WebApp.Database
 
         public RedYarnDbContext(DbContextOptions<RedYarnDbContext> options)
             : base(options)
-        {
+        {            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,12 +35,17 @@ namespace Bas.RedYarn.WebApp.Database
             AddIdShadowProperty<Alias>(modelBuilder);
         }
 
+        /// <summary>
+        /// Adds a primary key "Id" shadow property of type <see cref="Guid"/> to the given type <typeparamref name="T"/>. 
+        /// </summary>
+        /// <typeparam name="T">The type to which the primary key shadow property should be added.</typeparam>
+        /// <param name="modelBuilder">The <see cref="ModelBuilder"/> for this <see cref="DbContext"/>.</param>
         private static void AddIdShadowProperty<T>(ModelBuilder modelBuilder) where T : class
         {
-            modelBuilder.Entity<T>().Property<Guid>(ShadowPropertyNames.Id)
-                                    .ValueGeneratedOnAdd()
-                                    .HasConversion<string>()
-                                    .HasAnnotation("Key", 0);
+            modelBuilder.Entity<T>().Property<Guid>(ShadowPropertyNames.Id) // The shadow property is a Guid named "Id"...
+                                    .ValueGeneratedOnAdd()                  // ...will get a value when added to the database...
+                                    .HasConversion<string>()                // ...will be saved to the database as a string (for readability)...
+                                    .HasAnnotation("Key", 0);               // ...and is a primary key.
         }
     }
 }
