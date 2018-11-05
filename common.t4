@@ -60,6 +60,18 @@ private bool EntityHasNode(string entityName)
 
 private string Pluralize(string noun)
 {
-	return noun.EndsWith("s") ? $"{noun}es" : $"{noun}s";
+	if (noun.EndsWith("s") || noun.EndsWith("h"))
+	{
+		return $"{noun}es";
+	}
+	else if (noun.Endswith("y"))
+	{
+		return $"{noun.Substring(noun, noun.Length -1)ies}
+	}
+	else 
+	{
+		return $"{noun}s";
+	}
+	
 }
 #>
