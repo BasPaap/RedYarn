@@ -1,2 +1,3 @@
 <h1>{{diagram?.name || ""}}</h1>
-<div [appVisNetwork]="networkData" class="vis-network-container" (dragEnd)="onDragEnd($event)"></div>
+<div (mousemove)="onMouseMove($event)" [appVisNetwork]="networkData" class="vis-network-container" (dragEnd)="onDragEnd($event)" ng-mouseup="onMouseMove($event)"></div>
+

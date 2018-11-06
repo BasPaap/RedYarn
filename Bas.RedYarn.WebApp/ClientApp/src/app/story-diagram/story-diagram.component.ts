@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Diagram } from '../diagram-types';
 import { Subscription, Observable } from 'rxjs';
 import { VisNetworkDirective } from '../vis-network.directive';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-story-diagram',
@@ -14,12 +13,16 @@ import { forEach } from '@angular/router/src/utils/collection';
   styleUrls: ['./story-diagram.component.scss']
 })
 export class StoryDiagramComponent implements OnInit, OnDestroy {
-
   private diagram: Diagram;
   private subscriptions: { [name: string]: Subscription; } = {};
   private _visNetwork: VisNetworkDirective;
+  private cursorPosition: vis.Position;
 
   public networkData = {};
+  
+  public onMouseMove(event: any): void {
+    this.cursorPosition = this.visNetwork.getCanvasPosition({ x: event.offsetX, y: event.offsetY });
+  }
 
   @ViewChild(VisNetworkDirective)
   public set visNetwork(directive: VisNetworkDirective) {
