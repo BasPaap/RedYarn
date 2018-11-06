@@ -20,6 +20,7 @@ using System.Net.Http;
 
 namespace Bas.RedYarn.WebApp.Tests
 {
+	[TestClass]
     public partial class <#= unitUnderTestName #>Test
     {
 		private TestDataService dataService;
