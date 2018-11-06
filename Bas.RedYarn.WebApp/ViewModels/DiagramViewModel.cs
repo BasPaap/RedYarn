@@ -4,7 +4,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Bas.RedYarn.WebApp.Database;
 using Bas.RedYarn.WebApp.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bas.RedYarn.WebApp.ViewModels
 {
@@ -33,7 +35,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// </summary>
         /// <param name="diagram">The <see cref="Diagram"/> for which to create this viewmodel.</param>
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
-        public DiagramViewModel(RedYarn.Diagram diagram, Func<object, Guid> getIdForModelFunc = null)
+        public DiagramViewModel(RedYarn.Diagram diagram, 
+                                Func<object, Guid> getIdForModelFunc = null, 
+                                Dictionary<RedYarn.Character, CharacterViewModel> characterDictionary = null, 
+                                Dictionary<RedYarn.Storyline, StorylineViewModel> storylineDictionary = null, 
+                                Dictionary<RedYarn.PlotElement, PlotElementViewModel> plotElementDictionary = null)
         {
             if (getIdForModelFunc != null)
             {
@@ -41,9 +47,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
             }
             Name = diagram.Name;
 
-            var characterDictionary = new Dictionary<RedYarn.Character, ViewModels.CharacterViewModel>(diagram.Characters.Select(c => new KeyValuePair<RedYarn.Character, ViewModels.CharacterViewModel>(c, new ViewModels.CharacterViewModel(c, getIdForModelFunc))));
-            var storylineDictionary = new Dictionary<RedYarn.Storyline, ViewModels.StorylineViewModel>(diagram.Storylines.Select(s => new KeyValuePair<RedYarn.Storyline, ViewModels.StorylineViewModel>(s, new ViewModels.StorylineViewModel(s, getIdForModelFunc))));
-            var plotElementDictionary = new Dictionary<RedYarn.PlotElement, ViewModels.PlotElementViewModel>(diagram.PlotElements.Select(e => new KeyValuePair<RedYarn.PlotElement, PlotElementViewModel>(e, new ViewModels.PlotElementViewModel(e, getIdForModelFunc))));
+            characterDictionary = characterDictionary ?? diagram.Characters.ToDictionary(c => c, c => new CharacterViewModel(c, getIdForModelFunc));
+            storylineDictionary = storylineDictionary ?? diagram.Storylines.ToDictionary(s => s, s => new StorylineViewModel(s, getIdForModelFunc));
+            plotElementDictionary = plotElementDictionary ?? diagram.PlotElements.ToDictionary(p => p, p => new PlotElementViewModel(p, getIdForModelFunc));
 
             AddStorylines(storylineDictionary);
             AddCharacters(characterDictionary);
@@ -83,17 +89,17 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 
         private void AddPlotElements(Dictionary<RedYarn.PlotElement, PlotElementViewModel> plotElementDictionary)
         {
-            this.PlotElements.AddRange(plotElementDictionary.Values);
+            this.PlotElements.AddRange(plotElementDictionary?.Values);
         }
 
         private void AddStorylines(Dictionary<RedYarn.Storyline, StorylineViewModel> storylineDictionary)
         {
-            this.Storylines.AddRange(storylineDictionary.Values);            
+            this.Storylines.AddRange(storylineDictionary?.Values);            
         }
 
         private void AddCharacters(Dictionary<RedYarn.Character, CharacterViewModel> characterDictionary)
         {
-            this.Characters.AddRange(characterDictionary.Values);            
+            this.Characters.AddRange(characterDictionary?.Values);            
         }
 
         private void GenerateStorylinePlotElementConnections(Dictionary<RedYarn.PlotElement, PlotElementViewModel> plotElementDictionary, Dictionary<RedYarn.Storyline, StorylineViewModel> storylineDictionary)

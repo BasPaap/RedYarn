@@ -46,19 +46,19 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
     for (let key in draggedNodes) {
       let draggedNode = draggedNodes[key];
-      let position = this.visNetwork.getPosition(draggedNode.id);
+      let position = this.visNetwork.getPosition(draggedNode.id)[draggedNode.id];
       if (draggedNode.storyline) {
         draggedNode.storyline.xPosition = position.x;
         draggedNode.storyline.yPosition = position.y;
-        this.diagramService.updateStoryline(draggedNode.storyline);        
+        this.diagramService.updateStoryline(draggedNode.storyline).subscribe();        
       } else if (draggedNode.plotElement) {
         draggedNode.plotElement.xPosition = position.x;
         draggedNode.plotElement.yPosition = position.y;
-        this.diagramService.updatePlotElement(draggedNode.plotElement);
+        this.diagramService.updatePlotElement(draggedNode.plotElement).subscribe();
       } else if (draggedNode.character) {
         draggedNode.character.xPosition = position.x;
         draggedNode.character.yPosition = position.y;
-        this.diagramService.updateCharacter(draggedNode.character);
+        this.diagramService.updateCharacter(draggedNode.character).subscribe();
       }
     }
   }

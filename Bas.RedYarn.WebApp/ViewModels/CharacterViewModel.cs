@@ -63,6 +63,17 @@ namespace Bas.RedYarn.WebApp.ViewModels
             YPosition = yPosition;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterViewModel"/> class.
+        /// </summary>
+        /// <param name="character">The <see cref="Character"/> for which to create this viewmodel.</param>
+        /// <param name="characterNode">The <see cref="CharacterNode"/> with which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
+        public CharacterViewModel(RedYarn.Character character, Database.CharacterNode characterNode, Func<object, Guid> getIdForModelFunc = null)
+            : this(character, characterNode.XPosition, characterNode.YPosition, getIdForModelFunc)
+        {
+        }
+
         public RedYarn.Character ToModel()
         {
             var character = new Character()

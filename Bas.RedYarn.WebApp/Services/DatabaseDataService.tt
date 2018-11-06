@@ -25,21 +25,34 @@ foreach (var viewModelName in viewModelNames)
 	var modelName = GetModelName(viewModelName);#>
 		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
-			var model = await this.dbContext.<#=Pluralize(modelName)#><# if (modelIncludes.Keys.Contains(modelName))
+			var model = await (from m in this.dbContext.<#=Pluralize(modelName)#><# if (modelIncludes.Keys.Contains(modelName))
 {
 	WriteLine(modelIncludes[modelName]);
-#>				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, ShadowPropertyNames.Id) == id);
+#>				where EF.Property<Guid>(m, ShadowPropertyNames.Id) == id
+				select m).SingleOrDefaultAsync();
 <#
 }
 else
 {#>
 
-				.SingleOrDefaultAsync(entity => EF.Property<Guid>(entity, ShadowPropertyNames.Id) == id);
+				where EF.Property<Guid>(m, ShadowPropertyNames.Id) == id
+				select m).SingleOrDefaultAsync();
 <#}#>			
 			if (model == null)
 			{
 				return null;
 			}
+
+<# if (modelName == "Diagram")
+{
+	foreach (var entityWithNode in entitiesWithNodes)
+	{#>
+			var <#=Decapitalize(entityWithNode) + "Ids"#> = model.<#=Pluralize(entityWithNode)#>.Select(e => this.getIdForModelFunc(e));
+			var <#=Decapitalize(Pluralize(entityWithNode + "Node"))#> = this.dbContext.<#=entityWithNode + "Nodes"#>.Include(n => n.<#=entityWithNode#>).Where(n => <#=Decapitalize(entityWithNode) + "Ids"#>.Contains(this.getIdForModelFunc(n.<#=entityWithNode#>)));
+			var <#=Decapitalize(GetViewModelName(entityWithNode))#>Dictionary = model.<#=Pluralize(entityWithNode)#>.ToDictionary(e => e, e => new <#=GetViewModelName(entityWithNode)#>(e, <#=Decapitalize(Pluralize(entityWithNode + "Node"))#>.Single(n => this.getIdForModelFunc(n.<#=entityWithNode#>) == this.getIdForModelFunc(e)), this.getIdForModelFunc));
+			
+<#	}
+}#>
 
 <# if (EntityHasNode(modelName))
 {#>
@@ -53,7 +66,14 @@ else
 <#}
 else
 {#>
-			var viewModel = new <#=viewModelName#>(model, this.getIdForModelFunc);
+			var viewModel = new <#=viewModelName#>(model, this.getIdForModelFunc<#
+	if (modelName == "Diagram") 
+	{
+		foreach(var entityWithNode in entitiesWithNodes)
+		{
+			Write($", {Decapitalize(GetViewModelName(entityWithNode))}Dictionary");
+		}
+	}#>);
 <#}#>
 			viewModel.Id = id;
 

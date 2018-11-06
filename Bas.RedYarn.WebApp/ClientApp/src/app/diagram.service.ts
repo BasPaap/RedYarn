@@ -86,6 +86,6 @@ export class DiagramService {
   }
 
   private updateNodeItem<T>(controllerName: string, id: string, model: T): Observable<T> {
-    return this.httpClient.post<T>(`${this.apiUrl}${controllerName}/${id}`, model);
+    return this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, model);
   }
 }

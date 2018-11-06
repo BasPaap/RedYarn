@@ -10,9 +10,12 @@ namespace Bas.RedYarn.WebApp.Extensions
     {
         public static void AddRange<T>(this Collection<T> collection, IEnumerable<T> itemsToAdd)
         {
-            foreach (var item in itemsToAdd)
+            if (itemsToAdd != null)
             {
-                collection.Add(item);
+                foreach (var item in itemsToAdd)
+                {
+                    collection.Add(item);
+                }
             }
         }
     }

@@ -47,6 +47,18 @@ namespace Bas.RedYarn.WebApp.ViewModels
             YPosition = yPosition;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StorylineViewModel"/> class.
+        /// </summary>
+        /// <param name="storyline">The <see cref="Storyline"/> for which to create this viewmodel.</param>
+        /// <param name="storylineNode">The <see cref="StorylineNode"/> with which to create this viewmodel.</param>
+        /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
+        public StorylineViewModel(RedYarn.Storyline storyline, Database.StorylineNode storylineNode, Func<object, Guid> getIdForModelFunc = null)
+            : this(storyline, storylineNode.XPosition, storylineNode.YPosition, getIdForModelFunc)
+        {
+        }
+
+
         public StorylineViewModel(StorylineViewModel viewModel)
         {
             Id = viewModel.Id;

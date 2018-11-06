@@ -53,6 +53,11 @@ private string GetModelName(string viewModelName)
 	return viewModelName.Substring(0, viewModelName.IndexOf("ViewModel"));
 }
 
+private string GetViewModelName(string modelName)
+{
+	return $"{modelName}ViewModel";
+}
+
 private bool EntityHasNode(string entityName)
 {
 	return entitiesWithNodes.Contains(entityName);

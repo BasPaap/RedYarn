@@ -43,6 +43,8 @@ export class VisNetworkGeneratorService {
         background: 'rgba(200,200,200,1)',
         highlight: { border: 'rgba(50,50,50,1)', background: 'rgba(200,200,200,1)' }
       },
+      x: plotElement.xPosition,
+      y: plotElement.yPosition,
       plotElement: plotElement
     };
   }
@@ -56,6 +58,8 @@ export class VisNetworkGeneratorService {
       brokenImage: '../../../assets/default-character.png',
       borderWidth: 2,
       color: { border: 'rgba(0,0,0,0.8)', highlight: { border: 'rgba(0,0,0,1)' } },
+      x: character.xPosition,
+      y: character.yPosition,
       character: character
     };
   }
@@ -84,6 +88,8 @@ export class VisNetworkGeneratorService {
         background: 'rgba(255,255,255,1)',
         highlight: { border: 'rgba(0,0,0,1)', background: 'rgba(255,255,255,1)' }
       },
+      x: storyline.xPosition,
+      y: storyline.yPosition,
       storyline: storyline
     };
   }
