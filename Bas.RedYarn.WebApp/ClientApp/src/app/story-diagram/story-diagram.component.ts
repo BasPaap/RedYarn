@@ -4,8 +4,9 @@ import { DiagramService } from '../diagram.service';
 import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Diagram } from '../diagram-types';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, forkJoin } from 'rxjs';
 import { VisNetworkDirective } from '../vis-network.directive';
+import { Settings, SettingsService } from '../settings.service';
 
 @Component({
   selector: 'app-story-diagram',
@@ -13,13 +14,14 @@ import { VisNetworkDirective } from '../vis-network.directive';
   styleUrls: ['./story-diagram.component.scss']
 })
 export class StoryDiagramComponent implements OnInit, OnDestroy {
-  private diagram: Diagram;
   private subscriptions: { [name: string]: Subscription; } = {};
   private _visNetwork: VisNetworkDirective;
   private cursorPosition: vis.Position;
+  private settings: Settings;
+  private isLoaded: boolean;
 
   public networkData = {};
-  
+
   public onMouseMove(event: any): void {
     this.cursorPosition = this.visNetwork.getCanvasPosition({ x: event.offsetX, y: event.offsetY });
   }
@@ -53,7 +55,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       if (draggedNode.storyline) {
         draggedNode.storyline.xPosition = position.x;
         draggedNode.storyline.yPosition = position.y;
-        this.diagramService.updateStoryline(draggedNode.storyline).subscribe();        
+        this.diagramService.updateStoryline(draggedNode.storyline).subscribe();
       } else if (draggedNode.plotElement) {
         draggedNode.plotElement.xPosition = position.x;
         draggedNode.plotElement.yPosition = position.y;
@@ -69,6 +71,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private diagramService: DiagramService,
+    private settingsService: SettingsService,
     private visNetworkGeneratorService: VisNetworkGeneratorService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // Force Angular to reload even if only the parameters change.    
   }
@@ -81,9 +84,13 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this.networkData["edges"] = new DataSet();
 
     const id = this.route.snapshot.paramMap.get('id');
-    this.diagramService.getDiagram(id).subscribe((diagram: Diagram) => {
-      this.diagram = diagram;
-      this.visNetworkGeneratorService.generate(diagram, this.networkData["nodes"], this.networkData["edges"]);
+    forkJoin([
+      this.settingsService.load(),
+      this.diagramService.getDiagram(id)
+    ]).subscribe(values => {
+      this.settings = values[0];
+      this.visNetworkGeneratorService.generate(values[1], this.networkData["nodes"], this.networkData["edges"]);
+      this.isLoaded = true;
     }, error => console.error(error));
 
     this.subscriptions['character'] = this.getSubscription(this.diagramService.charactersService(), this.visNetworkGeneratorService.getCharacterNode);
