@@ -1,3 +1,0 @@
-{
-  "NewNodePlacementRadius": 200 // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
-}
