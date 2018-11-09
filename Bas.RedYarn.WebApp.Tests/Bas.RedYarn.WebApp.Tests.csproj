@@ -42,13 +42,6 @@
     <TransformOnBuild>true</TransformOnBuild>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="GeneratedTests\DiagramControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DiagramControllerTest.tt</DependentUpon>
-    </None>
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.1.1" />
@@ -152,28 +145,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AliasControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('GeneratedTests\AuthorControllerTest.cs')" Include="GeneratedTests\AuthorControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AuthorControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('GeneratedTests\DatabaseDataServiceTestBase.cs')" Include="GeneratedTests\DatabaseDataServiceTestBase.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('Services\TestDataService.cs')" Include="Services\TestDataService.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TestDataService.tt</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="GeneratedTests\DatabaseDataServiceTestBase.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   
