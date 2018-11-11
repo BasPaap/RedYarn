@@ -21,6 +21,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   private isLoaded: boolean;
 
   public networkData = {};
+  public diagram: Diagram; // Used to display Diagram.name in the template.
 
   public onMouseMove(event: any): void {
     this.cursorPosition = this.visNetwork.getCanvasPosition({ x: event.offsetX, y: event.offsetY });
@@ -89,7 +90,8 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.diagramService.getDiagram(id)
     ]).subscribe(values => {
       this.settings = values[0];
-      this.visNetworkGeneratorService.generate(values[1], this.networkData["nodes"], this.networkData["edges"]);
+      this.diagram = values[1];
+      this.visNetworkGeneratorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
       this.isLoaded = true;
     }, error => console.error(error));
 
