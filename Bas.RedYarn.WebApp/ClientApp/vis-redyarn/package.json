@@ -1,0 +1,14 @@
+{
+  "name": "vis-redyarn",
+  "version": "1.0.0",
+  "description": "vis.js tweaked for RedYarn",
+  "main": "vis.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "2.22.2"
+  }
+}

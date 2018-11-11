@@ -26,7 +26,7 @@
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "rxjs": "~6.2.0",
-    "vis": "^4.21.0",
+    "vis-redyarn": "file:vis-redyarn",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
@@ -37,7 +37,6 @@
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
-    "@types/vis": "^4.21.8",
     "codelyzer": "~4.3.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",

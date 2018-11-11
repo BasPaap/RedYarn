@@ -1,5 +1,5 @@
 import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Network, IdType } from 'vis';
+import { Network, IdType } from 'vis-redyarn';
 
 @Directive({
   selector: '[appVisNetwork]'

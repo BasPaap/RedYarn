@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Diagram, Character, Relationship, Storyline, StorylineCharacterConnection, StorylinePlotElementConnection, PlotElement, PlotElementConnection } from './diagram-types';
-import { DataSet } from 'vis';
+import { DataSet } from 'vis-redyarn';
 
 @Injectable({
   providedIn: 'root'

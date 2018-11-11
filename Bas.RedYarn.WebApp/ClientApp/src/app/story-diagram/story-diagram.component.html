@@ -1,4 +1,4 @@
 <h1>{{diagram?.name || ""}}</h1>
 <mat-spinner *ngIf="!isLoaded" diameter="100" ></mat-spinner>
-<div (mousemove)="onMouseMove($event)" [appVisNetwork]="networkData" class="vis-network-container" (dragEnd)="onDragEnd($event)" ng-mouseup="onMouseMove($event)"></div>
+<div onmouseup="console.log('up')" onmousedown="console.log('down')" (mousemove)="onMouseMove($event)" [appVisNetwork]="networkData" class="vis-network-container" (dragEnd)="onDragEnd($event)" ng-mouseup="onMouseMove($event)"></div>
 

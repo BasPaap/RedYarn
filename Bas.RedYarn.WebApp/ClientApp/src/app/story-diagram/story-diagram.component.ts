@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
-import { DataSet } from 'vis';
+import { DataSet } from 'vis-redyarn';
 import { DiagramService } from '../diagram.service';
 import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 import { ActivatedRoute, Router } from '@angular/router';
