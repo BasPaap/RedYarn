@@ -54,7 +54,7 @@ export class VisNetworkGeneratorService {
       id: character.id,
       label: character.name,
       shape: 'circularImage',
-      image: '404.jpg',
+      image: '../../../assets/default-character.png',
       brokenImage: '../../../assets/default-character.png',
       borderWidth: 2,
       color: { border: 'rgba(0,0,0,0.8)', highlight: { border: 'rgba(0,0,0,1)' } },
