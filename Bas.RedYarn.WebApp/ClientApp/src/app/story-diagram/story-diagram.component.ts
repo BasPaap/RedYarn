@@ -16,16 +16,11 @@ import { Settings, SettingsService } from '../settings.service';
 export class StoryDiagramComponent implements OnInit, OnDestroy {
   private subscriptions: { [name: string]: Subscription; } = {};
   private _visNetwork: VisNetworkDirective;
-  private cursorPosition: vis.Position;
   private settings: Settings;
   private isLoaded: boolean;
 
   public networkData = {};
   public diagram: Diagram; // Used to display Diagram.name in the template.
-
-  public onMouseMove(event: any): void {
-    this.cursorPosition = this.visNetwork.getCanvasPosition({ x: event.offsetX, y: event.offsetY });
-  }
 
   @ViewChild(VisNetworkDirective)
   public set visNetwork(directive: VisNetworkDirective) {

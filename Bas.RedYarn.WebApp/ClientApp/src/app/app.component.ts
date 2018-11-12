@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
+import { UserInputService } from './user-input.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,18 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'RedYarn';
 
-  constructor() {}
+  constructor(private userInputService: UserInputService) { }
+  
+  @HostListener('mousedown') onMouseDown() {
+    this.userInputService.onMouseDown();
+  }
 
+  @HostListener('mouseup') onMouseUp() {
+    this.userInputService.onMouseUp;
+  }
+  
+  @HostListener('mousemove', ['$event.screenX', '$event.screenY'])
+  onMouseMove(x: number, y: number) {
+    this.userInputService.onMouseMove(x, y);
+  }
 }
