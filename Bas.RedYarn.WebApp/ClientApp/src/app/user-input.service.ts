@@ -18,7 +18,7 @@ export class UserInputService {
     yCoordinate: 0
   };
 
-  private mouseStateSubject: Subject<MouseState>;
+  private mouseStateSubject: Subject<MouseState> = new Subject<MouseState>();
 
   public get mouseStateStream(): Observable<MouseState> {
     return this.mouseStateSubject.asObservable();
