@@ -80,25 +80,27 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     ]).subscribe(values => {
       this.settings = values[0];
       this.diagram = values[1];
-      this.visNetworkGeneratorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
-      this.newRelationshipUI.loadNodePositions(this.visNetwork.getNodePositions());
+      //this.visNetworkGeneratorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
+      //this.newRelationshipUI.loadNodePositions(this.visNetwork.getNodePositions());
       this.isLoaded = true;
     }, error => console.error(error));
 
-    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramService.newCharactersStream, this.visNetworkGeneratorService.getCharacterNode);
-    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramService.newStorylinesStream, this.visNetworkGeneratorService.getStorylineNode);
-    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramService.newPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode);
-    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramService.newCharactersStream, this.visNetworkGeneratorService.getCharacterNode);
-    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramService.newStorylinesStream, this.visNetworkGeneratorService.getStorylineNode);
-    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramService.newPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode);
+    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramService.addedCharactersStream, this.visNetworkGeneratorService.getCharacterNode);
+    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramService.addedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode);
+    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramService.addedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode);
+    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramService.addedCharactersStream, this.visNetworkGeneratorService.getCharacterNode);
+    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramService.addedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode);
+    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramService.addedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode);
   }
 
   private subscribeToNewNodeStream<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
     return service.subscribe(item => {
       let newNode = getNode(item);
       let nodeId = this.networkData["nodes"].add(newNode);
-      this.visNetwork.focusOnNode(nodeId);
-    });
+      if (this.isLoaded) {
+        this.visNetwork.focusOnNode(nodeId);
+      }
+    });    
   }
 
   private subscribeToUpdatedNodeStream<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {

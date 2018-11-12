@@ -17,15 +17,15 @@ export class DiagramService {
   private updatedStorylineSubject = new Subject<Storyline>();
   private updatedPlotElementSubject = new Subject<PlotElement>();
 
-  public get newCharactersStream(): Observable<Character> {
+  public get addedCharactersStream(): Observable<Character> {
     return this.newCharacterSubject.asObservable();
   }
 
-  public get newStorylinesStream(): Observable<Storyline> {
+  public get addedStorylinesStream(): Observable<Storyline> {
     return this.newStorylineSubject.asObservable();
   }
 
-  public get newPlotElementsStream(): Observable<PlotElement> {
+  public get addedPlotElementsStream(): Observable<PlotElement> {
     return this.newPlotElementSubject.asObservable();
   }
 
@@ -46,7 +46,23 @@ export class DiagramService {
   }
 
   public getDiagram(diagramId: string): Observable<Diagram> {
-    return this.httpClient.get<Diagram>(this.apiUrl + `diagram/${diagramId}`);
+    let observable = this.httpClient.get<Diagram>(this.apiUrl + `diagram/${diagramId}`).pipe(
+      tap(diagram => {
+        for (let character of diagram.characters) {
+          this.newCharacterSubject.next(character);
+        }
+
+        for (let storyline of diagram.storylines) {
+          this.newStorylineSubject.next(storyline);
+        }
+
+        for (let plotElement of diagram.plotElements) {
+          this.newPlotElementSubject.next(plotElement);
+        }
+      })
+    );
+
+    return observable;
   }
 
   public createDiagram(name: string): Observable<Diagram> {
@@ -82,7 +98,7 @@ export class DiagramService {
   private createNodeItem<T>(controllerName: string, model: T, subject: Subject<T>): Observable<T> {
     let diagramId = this.route.snapshot.children[0].params.id;
 
-    var observable = this.httpClient.post<T>(`${this.apiUrl}${controllerName}/${diagramId}`, model).pipe(
+    let observable = this.httpClient.post<T>(`${this.apiUrl}${controllerName}/${diagramId}`, model).pipe(
       tap(model => subject.next(model))
     );
 
@@ -102,7 +118,7 @@ export class DiagramService {
   }
 
   private updateNodeItem<T>(controllerName: string, id: string, model: T, subject: Subject<T>): Observable<T> {
-    var observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, model).pipe(
+    let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, model).pipe(
       tap(model => subject.next(model))
     );
 

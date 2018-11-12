@@ -12,9 +12,9 @@ export class NewRelationshipUIService {
     this.userInputService.mouseStateStream.subscribe(mouseState => {
     });
 
-    this.diagramService.newCharactersStream.subscribe(character => this.addNode(character));
-    this.diagramService.newStorylinesStream.subscribe(storyline => this.addNode(storyline));
-    this.diagramService.newPlotElementsStream.subscribe(plotElement => this.addNode(plotElement));
+    this.diagramService.addedCharactersStream.subscribe(character => this.addNode(character));
+    this.diagramService.addedStorylinesStream.subscribe(storyline => this.addNode(storyline));
+    this.diagramService.addedPlotElementsStream.subscribe(plotElement => this.addNode(plotElement));
 
     this.diagramService.updatedCharactersStream.subscribe(character => this.updateNode(character));
     this.diagramService.updatedStorylinesStream.subscribe(storyline => this.updateNode(storyline));
