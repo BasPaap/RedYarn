@@ -68,7 +68,7 @@ export class DiagramService {
   public createDiagram(name: string): Observable<Diagram> {
     let diagramViewModel = {
       id: "00000000-0000-0000-0000-000000000000",
-      name: "",
+      name: name,
       characters: null,
       storylines: null,
       plotElements: null,
@@ -77,9 +77,7 @@ export class DiagramService {
       storylinePlotElementConnections: null,
       characterPlotElementConnections: null,
     };
-
-    diagramViewModel.name = name;
-
+        
     return this.httpClient.post<Diagram>(this.apiUrl + 'diagram', diagramViewModel);
   }
 
