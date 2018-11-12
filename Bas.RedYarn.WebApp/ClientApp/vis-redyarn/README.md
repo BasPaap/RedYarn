@@ -1,4 +1,4 @@
-# BasRedyarnWebapp
+# About vis-redyarn
 This is a custom build of [VisJS](http://github.com/almende/visjs) (cloned at commit [5563fc6](https://github.com/almende/vis/commit/5563fc616885578ad51b2dfa6ccf70ccebf06126)). Currently, the normal build has a version of Network that does not propagate mouse events upwards to the containing element. This makes it impossible to capture mouseup and mousedown events. 
 
 A solution is to comment out the line `preventDefault: 'mouse'` (see the discussion in the relevant [issue](https://github.com/almende/vis/issues/2525)) in hammer.js. This does not appear to have noticeable side effects.
