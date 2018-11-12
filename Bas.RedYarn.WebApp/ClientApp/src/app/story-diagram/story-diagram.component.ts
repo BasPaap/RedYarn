@@ -7,6 +7,7 @@ import { Diagram } from '../diagram-types';
 import { Subscription, Observable, forkJoin } from 'rxjs';
 import { VisNetworkDirective } from '../vis-network.directive';
 import { Settings, SettingsService } from '../settings.service';
+import { NewRelationshipUIService } from '../new-relationship-ui.service';
 
 @Component({
   selector: 'app-story-diagram',
@@ -21,6 +22,15 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
   public networkData = {};
   public diagram: Diagram; // Used to display Diagram.name in the template.
+
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private diagramService: DiagramService,
+    private settingsService: SettingsService,
+    private visNetworkGeneratorService: VisNetworkGeneratorService,
+    private newRelationshipUI: NewRelationshipUIService) {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false; // Force Angular to reload even if only the parameters change.    
+  }
 
   @ViewChild(VisNetworkDirective)
   public set visNetwork(directive: VisNetworkDirective) {
@@ -47,7 +57,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
     for (let key in draggedNodes) {
       let draggedNode = draggedNodes[key];
-      let position = this.visNetwork.getPosition(draggedNode.id)[draggedNode.id];
+      let position = this.visNetwork.getNodePosition(draggedNode.id)[draggedNode.id];
       if (draggedNode.storyline) {
         draggedNode.storyline.xPosition = position.x;
         draggedNode.storyline.yPosition = position.y;
@@ -62,15 +72,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
         this.diagramService.updateCharacter(draggedNode.character).subscribe();
       }
     }
-  }
-
-  constructor(private route: ActivatedRoute,
-    private router: Router,
-    private diagramService: DiagramService,
-    private settingsService: SettingsService,
-    private visNetworkGeneratorService: VisNetworkGeneratorService) {
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false; // Force Angular to reload even if only the parameters change.    
-  }
+  }  
 
   ngOnInit() {
   }
@@ -87,6 +89,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.settings = values[0];
       this.diagram = values[1];
       this.visNetworkGeneratorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
+      this.newRelationshipUI.loadNodePositions(this.visNetwork.getNodePositions());
       this.isLoaded = true;
     }, error => console.error(error));
 

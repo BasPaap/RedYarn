@@ -38,7 +38,11 @@ export class VisNetworkDirective {
     return this.network.DOMtoCanvas(domPosition);
   }
 
-  public getPosition(nodeId: string): vis.Position {
+  public getNodePosition(nodeId: string): vis.Position {
     return this.network.getPositions(nodeId);
+  }
+
+  public getNodePositions(): { [nodeId: string]: vis.Position } {
+    return this.network.getPositions();
   }
 }
