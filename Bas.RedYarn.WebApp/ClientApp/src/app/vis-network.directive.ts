@@ -1,13 +1,14 @@
 import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Network, IdType } from 'vis-redyarn';
+import { DiagramDrawingService } from './diagram-drawing.service';
 
 @Directive({
   selector: '[appVisNetwork]'
 })
 export class VisNetworkDirective {
   private network: Network 
-  
-  constructor(private element: ElementRef) { }
+
+  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService) { }
 
   @Input() public set appVisNetwork(networkData) {
     let options = {   
@@ -19,6 +20,8 @@ export class VisNetworkDirective {
     if (!this.network) {
       this.network = new Network(this.element.nativeElement, networkData, options);
       this.network.on("dragEnd", params => this.dragEnd.emit(params));
+      this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
+      this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
     }
   }
 
