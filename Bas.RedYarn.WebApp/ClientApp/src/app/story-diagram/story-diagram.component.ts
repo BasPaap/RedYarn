@@ -17,7 +17,6 @@ import { NewRelationshipUIService } from '../new-relationship-ui.service';
 export class StoryDiagramComponent implements OnInit, OnDestroy {
   private subscriptions: { [name: string]: Subscription; } = {};
   private _visNetwork: VisNetworkDirective;
-  private settings: Settings;
   private isLoaded: boolean;
 
   public networkData = {};
@@ -75,11 +74,9 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
     const id = this.route.snapshot.paramMap.get('id');
     forkJoin([
-      this.settingsService.load(),
       this.diagramService.getDiagram(id)
     ]).subscribe(values => {
-      this.settings = values[0];
-      this.diagram = values[1];
+      this.diagram = values[0];
       //this.visNetworkGeneratorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
       //this.newRelationshipUI.loadNodePositions(this.visNetwork.getNodePositions());
       this.isLoaded = true;

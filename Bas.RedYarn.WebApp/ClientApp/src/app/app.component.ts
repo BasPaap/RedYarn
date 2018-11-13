@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { UserInputService } from './user-input.service';
+import { SettingsService } from './settings.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,9 @@ import { UserInputService } from './user-input.service';
 export class AppComponent {
   title = 'RedYarn';
 
-  constructor(private userInputService: UserInputService) { }
+  constructor(private userInputService: UserInputService, private settingsService: SettingsService) {
+    this.settingsService.load();
+  }
   
   @HostListener('mousedown') onMouseDown() {
     this.userInputService.onMouseDown();
