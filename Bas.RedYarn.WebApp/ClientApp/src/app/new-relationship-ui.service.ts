@@ -4,43 +4,50 @@ import { Node } from './diagram-types';
 import { NetworkItemsService, NodeLayout } from './network-items.service';
 import { SettingsService } from './settings.service';
 import { DiagramDrawingService } from './diagram-drawing.service';
+import { VisNetworkDirective } from './vis-network.directive';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewRelationshipUIService {
+  
+  private nodeLayouts: { [id: string]: NodeLayout } = {};
 
-  private nodeLayouts: NodeLayout[] = [];
+  public visNetwork: VisNetworkDirective;
 
   constructor(private userInputService: UserInputService, private networkItemsService: NetworkItemsService, private settingsService: SettingsService, private diagramDrawingService: DiagramDrawingService) {
     this.userInputService.mouseStateStream.subscribe(mouseState => {
-      let [closestNodeLayout, distance] = this.getClosestNodeLayout(mouseState.xCoordinate, mouseState.yCoordinate);
-
-      if (this.isInActivationZone(mouseState.xCoordinate, mouseState.yCoordinate, closestNodeLayout)) {
-        this.diagramDrawingService.drawNewRelationshipArrow(closestNodeLayout.positionX, closestNodeLayout.positionY, mouseState.xCoordinate, mouseState.yCoordinate);
-      }
+      if (this.visNetwork) {
+        let [canvasX, canvasY] = this.visNetwork.getCanvasCoordinates(mouseState.xCoordinate, mouseState.yCoordinate);
+        let [closestNodeLayout, distance] = this.getClosestNodeLayout(canvasX, canvasY);
+        if (closestNodeLayout && this.isInActivationZone(canvasX, canvasY, closestNodeLayout)) {
+          console.log("HotSPOT!!");
+          this.diagramDrawingService.drawNewRelationshipArrow(closestNodeLayout.positionX, closestNodeLayout.positionY, canvasX, canvasY);
+        }
+        this.visNetwork.redraw();
+      }      
     });
-
-    this.networkItemsService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts.push(nodeLayout));
+    
+    this.networkItemsService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts[nodeLayout.id] = nodeLayout);
   }
 
   private getClosestNodeLayout(x: number, y: number): [NodeLayout, number] {
     let minDistance: number = null;
     let closestNodeLayout: NodeLayout = null;
 
-    for (let nodeLayout of this.nodeLayouts) {
-      let distance = this.getDistance(x, y, nodeLayout.positionX, nodeLayout.positionY);
+    for (let key in this.nodeLayouts) {
+      let distance = this.getDistance(x, y, this.nodeLayouts[key].positionX, this.nodeLayouts[key].positionY);
       if (minDistance === null) {
         minDistance = distance;
-        closestNodeLayout = nodeLayout;
+        closestNodeLayout = this.nodeLayouts[key];
       }
       else if (distance < minDistance) {
         minDistance = distance;
-        closestNodeLayout = nodeLayout;
+        closestNodeLayout = this.nodeLayouts[key];
       }
-
-      return [closestNodeLayout, minDistance];
     }
+
+    return [closestNodeLayout, minDistance];
   }
 
   private getDistance(x1: number, y1: number, x2: number, y2: number): number {
@@ -50,10 +57,10 @@ export class NewRelationshipUIService {
   }
 
   private isInActivationZone(x: number, y: number, nodeLayout: NodeLayout): boolean {
-    let top = nodeLayout.positionY - nodeLayout.height / 2.0 - this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    let bottom = nodeLayout.positionY + nodeLayout.height / 2.0 + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    let left = nodeLayout.positionX - nodeLayout.width / 2.0 - this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    let right = nodeLayout.positionX + nodeLayout.width / 2.0 + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
+    let top = nodeLayout.positionY - (nodeLayout.height / 2.0) - this.settingsService.settings.ui.newRelationship.activationZoneWidth;
+    let bottom = nodeLayout.positionY + (nodeLayout.height / 2.0) + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
+    let left = nodeLayout.positionX - (nodeLayout.width / 2.0)- this.settingsService.settings.ui.newRelationship.activationZoneWidth;
+    let right = nodeLayout.positionX + (nodeLayout.width / 2.0) + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
 
     return x >= left && x <= right && y >= top && y <= bottom;
   }

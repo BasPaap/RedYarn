@@ -22,7 +22,7 @@ export class AppComponent {
     this.userInputService.onMouseUp;
   }
   
-  @HostListener('mousemove', ['$event.screenX', '$event.screenY'])
+  @HostListener('mousemove', ['$event.clientX', '$event.clientY'])
   onMouseMove(x: number, y: number) {
     this.userInputService.onMouseMove(x, y);
   }

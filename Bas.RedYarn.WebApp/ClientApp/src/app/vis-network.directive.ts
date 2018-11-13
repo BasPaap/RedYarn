@@ -1,4 +1,4 @@
-import { Directive, Input, ElementRef, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Network, IdType } from 'vis-redyarn';
 import { DiagramDrawingService } from './diagram-drawing.service';
 import { NetworkItemsService } from './network-items.service';
@@ -6,26 +6,24 @@ import { NetworkItemsService } from './network-items.service';
 @Directive({
   selector: '[appVisNetwork]'
 })
-export class VisNetworkDirective implements OnDestroy {
-    
-  private network: Network 
+export class VisNetworkDirective {
+
+  private network: Network
 
   constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private networkItemsService: NetworkItemsService) { }
 
   @Input() public set appVisNetwork(networkData) {
-    let options = {   
+    let options = {
       physics: {
-          enabled: false          
-        }
-      };
+        enabled: false
+      }
+    };
 
     if (!this.network) {
       this.network = new Network(this.element.nativeElement, networkData, options);
       this.network.on("dragEnd", params => this.dragEnd.emit(params));
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
       this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
-
-      this.networkItemsService.network = this.network;
     }
   }
 
@@ -53,7 +51,21 @@ export class VisNetworkDirective implements OnDestroy {
     return this.network.getPositions();
   }
 
-  ngOnDestroy(): void {
-    this.networkItemsService.network = null;
+  public getBoundingBox(node: vis.Node): vis.BoundingBox {
+    return this.network.getBoundingBox(node.id);
+  }
+
+  public getCanvasCoordinates(x: number, y: number): [number, number] {
+    
+    let offsetTop = this.element.nativeElement.getBoundingClientRect().top;
+    let offsetLeft = this.element.nativeElement.getBoundingClientRect().left;
+
+    let position = this.network.DOMtoCanvas({ x: x - offsetLeft, y: y - offsetTop});
+
+    return [position.x, position.y];
+  }
+
+  public redraw() {
+    this.network.redraw();
   }
 }

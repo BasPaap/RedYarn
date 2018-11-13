@@ -36,6 +36,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   @ViewChild(VisNetworkDirective)
   public set visNetwork(directive: VisNetworkDirective) {
     this._visNetwork = directive;
+    this.newRelationshipUI.visNetwork = directive;
   }
   public get visNetwork(): VisNetworkDirective {
     return this._visNetwork;
@@ -71,11 +72,8 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   }
 
   ngAfterContentInit() {
-    this.networkData["nodes"] = new DataSet();
-    this.networkItemsService.nodes = this.networkData["nodes"];
-    
-    this.networkData["edges"] = new DataSet();
-    this.networkItemsService.edges = this.networkData["edges"];
+    this.networkData["nodes"] = new DataSet<vis.Node>();
+    this.networkData["edges"] = new DataSet<vis.Edge>();
     
     const id = this.route.snapshot.paramMap.get('id');
     forkJoin([
@@ -87,18 +85,20 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.isLoaded = true;
     }, error => console.error(error));
 
-    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramService.addedCharactersStream, this.visNetworkGeneratorService.getCharacterNode);
-    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramService.addedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode);
-    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramService.addedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode);
-    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramService.addedCharactersStream, this.visNetworkGeneratorService.getCharacterNode);
-    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramService.addedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode);
-    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramService.addedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode);
+    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramService.addedCharactersStream, this.visNetworkGeneratorService.getCharacterNode.bind(this.visNetworkGeneratorService));
+    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramService.addedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode.bind(this.visNetworkGeneratorService));
+    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramService.addedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode.bind(this.visNetworkGeneratorService));
+    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedCharactersStream, this.visNetworkGeneratorService.getCharacterNode.bind(this.visNetworkGeneratorService));
+    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode.bind(this.visNetworkGeneratorService));
+    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode.bind(this.visNetworkGeneratorService));
   }
 
   private subscribeToNewNodeStream<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
     return service.subscribe(item => {
       let newNode = getNode(item);
       let nodeId = this.networkData["nodes"].add(newNode);
+      this.networkItemsService.onUpdatedNode(newNode, this.visNetwork.getBoundingBox(newNode));
+
       if (this.isLoaded) {
         this.visNetwork.focusOnNode(nodeId);
       }
@@ -108,7 +108,9 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   private subscribeToUpdatedNodeStream<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
     return service.subscribe(item => {
       let updatedNode = getNode(item);
-      let nodeId = this.networkData["nodes"][updatedNode.id] = updatedNode;      
+      this.networkData["nodes"][updatedNode.id] = updatedNode;
+
+      this.networkItemsService.onUpdatedNode(updatedNode, this.visNetwork.getBoundingBox(updatedNode));
     });
   }
 
@@ -116,8 +118,5 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     for (let key in this.subscriptions) {
       this.subscriptions[key].unsubscribe();
     }
-
-    this.networkItemsService.nodes = null;
-    this.networkItemsService.edges = null;
   }
 }
