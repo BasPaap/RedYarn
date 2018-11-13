@@ -8,6 +8,7 @@ import { Subscription, Observable, forkJoin } from 'rxjs';
 import { VisNetworkDirective } from '../vis-network.directive';
 import { Settings, SettingsService } from '../settings.service';
 import { NewRelationshipUIService } from '../new-relationship-ui.service';
+import { NetworkItemsService } from '../network-items.service';
 
 @Component({
   selector: 'app-story-diagram',
@@ -27,6 +28,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     private diagramService: DiagramService,
     private settingsService: SettingsService,
     private visNetworkGeneratorService: VisNetworkGeneratorService,
+    private networkItemsService: NetworkItemsService,
     private newRelationshipUI: NewRelationshipUIService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // Force Angular to reload even if only the parameters change.    
   }
@@ -70,8 +72,11 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
   ngAfterContentInit() {
     this.networkData["nodes"] = new DataSet();
+    this.networkItemsService.nodes = this.networkData["nodes"];
+    
     this.networkData["edges"] = new DataSet();
-
+    this.networkItemsService.edges = this.networkData["edges"];
+    
     const id = this.route.snapshot.paramMap.get('id');
     forkJoin([
       this.diagramService.getDiagram(id)
@@ -111,5 +116,8 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     for (let key in this.subscriptions) {
       this.subscriptions[key].unsubscribe();
     }
+
+    this.networkItemsService.nodes = null;
+    this.networkItemsService.edges = null;
   }
 }

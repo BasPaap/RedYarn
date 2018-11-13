@@ -1,14 +1,16 @@
-import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Directive, Input, ElementRef, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Network, IdType } from 'vis-redyarn';
 import { DiagramDrawingService } from './diagram-drawing.service';
+import { NetworkItemsService } from './network-items.service';
 
 @Directive({
   selector: '[appVisNetwork]'
 })
-export class VisNetworkDirective {
+export class VisNetworkDirective implements OnDestroy {
+    
   private network: Network 
 
-  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService) { }
+  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private networkItemsService: NetworkItemsService) { }
 
   @Input() public set appVisNetwork(networkData) {
     let options = {   
@@ -22,6 +24,8 @@ export class VisNetworkDirective {
       this.network.on("dragEnd", params => this.dragEnd.emit(params));
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
       this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
+
+      this.networkItemsService.network = this.network;
     }
   }
 
@@ -47,5 +51,9 @@ export class VisNetworkDirective {
 
   public getNodePositions(): { [nodeId: string]: vis.Position } {
     return this.network.getPositions();
+  }
+
+  ngOnDestroy(): void {
+    this.networkItemsService.network = null;
   }
 }

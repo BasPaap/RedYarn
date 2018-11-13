@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Diagram, Character, Relationship, Storyline, StorylineCharacterConnection, StorylinePlotElementConnection, PlotElement, PlotElementConnection } from './diagram-types';
-import { DataSet } from 'vis-redyarn';
+import { Character, Storyline, StorylineCharacterConnection, StorylinePlotElementConnection, PlotElement, PlotElementConnection } from './diagram-types';
+import { SettingsService } from './settings.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VisNetworkGeneratorService {
 
-  constructor() { }
+  constructor(private settingsService: SettingsService) { }
     
   public getStorylineNode(storyline: Storyline) {
     return {
@@ -46,6 +46,7 @@ export class VisNetworkGeneratorService {
       id: character.id,
       label: character.name,
       shape: 'circularImage',
+      size: this.settingsService.settings.ui.circularImageSize,
       image: '../../../assets/default-character.png',
       brokenImage: '../../../assets/default-character.png',
       borderWidth: 2,

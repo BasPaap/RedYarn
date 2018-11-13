@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 export interface Settings {
   isInDebugMode: boolean,
   ui: {
+    circularImageSize: number,
     newNodePlacementRadius: number, // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
     newRelationship: {
       activationZoneWidth: number, // Defines the width of the area around the node in which the cursor activates the new relationship arrow.
@@ -24,6 +25,7 @@ export class SettingsService {
   public settings: Settings = {
     isInDebugMode: false,
     ui: {
+      circularImageSize: 25,
       newNodePlacementRadius: 5,
       newRelationship: {
         activationZoneWidth: 5,
