@@ -117,7 +117,7 @@ export class DiagramService {
 
   private updateNodeItem<T>(controllerName: string, id: string, model: T, subject: Subject<T>): Observable<T> {
     let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, model).pipe(
-      tap(model => subject.next(model))
+      tap(_ => subject.next(model)) // Put operations return no value so we don't need any arguments here, just send the node we sent to the server to the stream.
     );
 
     return observable;
