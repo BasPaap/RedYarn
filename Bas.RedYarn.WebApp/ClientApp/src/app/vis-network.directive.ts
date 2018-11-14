@@ -32,6 +32,8 @@ export class VisNetworkDirective {
         this._isDragging = false;
         this.dragEnd.emit(params);
       });
+
+      this.element.nativeElement.childNodes[0].style.outline = "none"; // Visjs appears to overwrite any style you set on the div in the container, so we'll need to manually set it after creation.
     }
   }
 
