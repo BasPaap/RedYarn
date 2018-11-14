@@ -21,10 +21,19 @@ export class VisNetworkDirective {
 
     if (!this.network) {
       this.network = new Network(this.element.nativeElement, networkData, options);
-      this.network.on("dragEnd", params => this.dragEnd.emit(params));
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
       this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
+      this.network.on("dragStart", _ => this._isDragging = true);
+      this.network.on("dragEnd", params => {
+        this._isDragging = false;
+        this.dragEnd.emit(params);
+      });
     }
+  }
+
+  private _isDragging = false;
+  public get isDragging(): boolean {
+    return this._isDragging
   }
 
   @Output() public dragEnd: EventEmitter<any> = new EventEmitter();

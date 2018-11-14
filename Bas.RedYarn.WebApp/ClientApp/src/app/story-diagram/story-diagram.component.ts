@@ -36,7 +36,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   @ViewChild(VisNetworkDirective)
   public set visNetwork(directive: VisNetworkDirective) {
     this._visNetwork = directive;
-    this.newRelationshipUI.visNetwork = directive;
+    this.newRelationshipUI.network = directive;
   }
   public get visNetwork(): VisNetworkDirective {
     return this._visNetwork;

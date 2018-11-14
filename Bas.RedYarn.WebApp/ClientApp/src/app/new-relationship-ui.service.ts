@@ -13,11 +13,15 @@ export class NewRelationshipUIService {
   
   private nodeLayouts: { [id: string]: NodeLayout } = {};
 
-  public visNetwork: VisNetworkDirective;
+  private visNetwork: VisNetworkDirective;
+
+  public set network(value: VisNetworkDirective) {
+    this.visNetwork = value;
+  }
 
   constructor(private userInputService: UserInputService, private networkItemsService: NetworkItemsService, private settingsService: SettingsService, private diagramDrawingService: DiagramDrawingService) {
     this.userInputService.mouseStateStream.subscribe(mouseState => {
-      if (this.visNetwork) {
+      if (this.visNetwork && !this.visNetwork.isDragging) {
         let [canvasX, canvasY] = this.visNetwork.getCanvasCoordinates(mouseState.xCoordinate, mouseState.yCoordinate);
         let [closestNodeLayout, distance] = this.getClosestNodeLayout(canvasX, canvasY);
         if (closestNodeLayout && this.isInActivationZone(canvasX, canvasY, closestNodeLayout)) {
