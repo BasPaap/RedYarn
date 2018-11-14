@@ -36,9 +36,10 @@ export class UserInputService {
     this.mouseStateSubject.next(this.mouseState);
   }
 
-  public onMouseMove(x: number, y: number) {
+  public onMouseMove(x: number, y: number, buttons: number) {
     this.mouseState.xCoordinate = x;
     this.mouseState.yCoordinate = y;
+    this.mouseState.isButtonDown = buttons == 1;
     this.mouseStateSubject.next(this.mouseState);
   }
 }

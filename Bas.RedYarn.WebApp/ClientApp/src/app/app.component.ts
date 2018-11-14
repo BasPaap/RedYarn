@@ -22,8 +22,8 @@ export class AppComponent {
     this.userInputService.onMouseUp;
   }
   
-  @HostListener('mousemove', ['$event.clientX', '$event.clientY'])
-  onMouseMove(x: number, y: number) {
-    this.userInputService.onMouseMove(x, y);
+  @HostListener('mousemove', ['$event.clientX', '$event.clientY', '$event.buttons'])
+  onMouseMove(x: number, y: number, buttons: number) {
+    this.userInputService.onMouseMove(x, y, buttons);
   }
 }

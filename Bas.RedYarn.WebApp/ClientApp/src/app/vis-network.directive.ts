@@ -14,7 +14,8 @@ export class VisNetworkDirective {
       enabled: false
     },
     interaction: {
-      dragView: true
+      dragView: true,
+      hover: true
     }
   };
 
@@ -27,6 +28,8 @@ export class VisNetworkDirective {
       this.network = new Network(this.element.nativeElement, networkData, this.options);
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
       this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
+      this.network.on("hoverNode", _ => this._isHoveringOverNode = true);
+      this.network.on("blurNode", _ => this._isHoveringOverNode = false);
       this.network.on("dragStart", _ => this._isDragging = true);
       this.network.on("dragEnd", params => {
         this._isDragging = false;
@@ -39,11 +42,16 @@ export class VisNetworkDirective {
 
   private _isDragging = false;
   public get isDragging(): boolean {
-    return this._isDragging
+    return this.isViewDraggingEnabled ? this._isDragging : false;
   }
 
   public get isViewDraggingEnabled(): boolean {
     return this.options.interaction.dragView;
+  }
+
+  private _isHoveringOverNode = false;
+  public get isHoveringOverNode(): boolean {
+    return this._isHoveringOverNode;
   }
 
   public set isViewDraggingEnabled(value: boolean) {
