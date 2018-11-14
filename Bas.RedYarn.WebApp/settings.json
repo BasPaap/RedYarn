@@ -7,7 +7,8 @@
       "activationZoneWidth": 25, // Defines the width of the area around the node in which the cursor activates the new relationship arrow.
       "arrow": {
         "style": "#ff0000",
-        "lineWidth": 1
+        "lineWidth": 1,
+        "headLength": 10
       }
     }
   }

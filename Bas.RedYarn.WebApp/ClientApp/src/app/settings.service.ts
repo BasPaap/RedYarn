@@ -11,7 +11,8 @@ export interface Settings {
       activationZoneWidth: number, // Defines the width of the area around the node in which the cursor activates the new relationship arrow.
       arrow: {
         style: string,
-        lineWidth: number
+        lineWidth: number,
+        headLength: number
       }
     }
   }
@@ -31,7 +32,8 @@ export class SettingsService {
         activationZoneWidth: 5,
         arrow: {
           style: "#000000",
-          lineWidth: 1
+          lineWidth: 1,
+          headLength: 10
         }
       }
     }

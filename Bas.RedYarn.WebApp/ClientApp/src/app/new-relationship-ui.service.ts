@@ -21,7 +21,6 @@ export class NewRelationshipUIService {
         let [canvasX, canvasY] = this.visNetwork.getCanvasCoordinates(mouseState.xCoordinate, mouseState.yCoordinate);
         let [closestNodeLayout, distance] = this.getClosestNodeLayout(canvasX, canvasY);
         if (closestNodeLayout && this.isInActivationZone(canvasX, canvasY, closestNodeLayout)) {
-          console.log("HotSPOT!!");
           this.diagramDrawingService.drawNewRelationshipArrow(closestNodeLayout.positionX, closestNodeLayout.positionY, canvasX, canvasY);
         }
         this.visNetwork.redraw();

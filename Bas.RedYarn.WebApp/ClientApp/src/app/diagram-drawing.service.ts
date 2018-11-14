@@ -13,13 +13,37 @@ class Arrow extends Drawable {
   toY: number;
   lineWidth: number;
   style: string;
+  headLength: number;
 
   public draw(context: any) {
-    context.strokeStyle = this.style;
+    var angle = Math.atan2(this.toY - this.fromY, this.toX - this.fromX);
+
+    //starting path of the arrow from the start square to the end square and drawing the stroke
     context.beginPath();
     context.moveTo(this.fromX, this.fromY);
     context.lineTo(this.toX, this.toY);
+    context.strokeStyle = this.style;
+    context.lineWidth = this.lineWidth;
     context.stroke();
+
+    //starting a new path from the head of the arrow to one of the sides of the point
+    context.beginPath();
+    context.moveTo(this.toX, this.toY);
+    context.lineTo(this.toX - this.headLength * Math.cos(angle - Math.PI / 7), this.toY - this.headLength * Math.sin(angle - Math.PI / 7));
+
+    //path from the side point of the arrow, to the other side point
+    context.lineTo(this.toX - this.headLength * Math.cos(angle + Math.PI / 7), this.toY - this.headLength * Math.sin(angle + Math.PI / 7));
+
+    //path from the side point back to the tip of the arrow, and then again to the opposite side point
+    context.lineTo(this.toX, this.toY);
+    context.lineTo(this.toX - this.headLength * Math.cos(angle - Math.PI / 7), this.toY - this.headLength * Math.sin(angle - Math.PI / 7));
+
+    //draws the paths created above
+    context.strokeStyle = this.style;
+    context.lineWidth = this.lineWidth;
+    context.stroke();
+    context.fillStyle = this.style;
+    context.fill();
   }
 }
 
@@ -41,14 +65,13 @@ export class DiagramDrawingService {
     arrow.toY = toY;
     arrow.lineWidth = this.settingsService.settings.ui.newRelationship.arrow.lineWidth;
     arrow.style = this.settingsService.settings.ui.newRelationship.arrow.style;
+    arrow.headLength = this.settingsService.settings.ui.newRelationship.arrow.headLength;
     this.backgroundDrawables.push(arrow);
-    console.log("HOTSPOT!");
   }
 
   public onDrawBackgroundUI(context: any) {
     for (var i = 0; i < this.backgroundDrawables.length; i++) {
       this.backgroundDrawables.pop().draw(context);
-      console.log("drawing");
     }
  
   }
@@ -57,16 +80,5 @@ export class DiagramDrawingService {
     for (var i = 0; i < this.foregroundDrawables.length; i++) {
       this.foregroundDrawables.pop().draw(context);
     }
-
-
-    //let top = 0 - (50 / 2.0) - this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    //let bottom = 0 + (50 / 2.0) + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    //let left = 0 - (50 / 2.0)- this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    //let right = 0 + (50 / 2.0) + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    
-    //console.log(left, top);
-    //context.strokeStyle = "#ff0000";
-    //context.rect(left, top, right-left, bottom-top);
-    //context.stroke();
   }
 }
