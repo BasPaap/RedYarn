@@ -33,24 +33,39 @@ export class NewRelationshipUIService {
       let [closestNodeLayout, distance] = this.getClosestNodeLayout(canvasX, canvasY);
 
       if (closestNodeLayout && !this.visNetwork.isHoveringOverNode && this.isInActivationZone(canvasX, canvasY, closestNodeLayout)) {
+        // If we're in the zone with the mouse button up, disable canvas dragging and set the from node in preparation for dragging the arrow.
         if (mouseState.isButtonDown == false) {
           this.visNetwork.isViewDraggingEnabled = false;
           this.fromNodeLayoutId = closestNodeLayout.id;
         }
       }
       else {
+        // if we're not in the zone and the mouse button is up, stop dragging the arrow and enable canvas dragging.
         if (mouseState.isButtonDown == false) {
           this.fromNodeLayoutId = undefined;
           this.visNetwork.isViewDraggingEnabled = true;
-        }        
+        }
+      }
+      
+      // If there is a "from" node, draw an arrow from that node to the destination point
+      if (this.fromNodeLayoutId) {
+        let [toX, toY] = this.getArrowDestination(closestNodeLayout, canvasX, canvasY);
+        this.diagramDrawingService.drawNewRelationshipArrow(this.nodeLayouts[this.fromNodeLayoutId].positionX, this.nodeLayouts[this.fromNodeLayoutId].positionY, toX, toY);
       }
 
-      if (this.fromNodeLayoutId) {
-        this.diagramDrawingService.drawNewRelationshipArrow(this.nodeLayouts[this.fromNodeLayoutId].positionX, this.nodeLayouts[this.fromNodeLayoutId].positionY, canvasX, canvasY);
-      }
-      
       this.visNetwork.redraw();
-      
+
+    }
+  }
+
+  private getArrowDestination(closestNodeLayout: NodeLayout, canvasX: number, canvasY: number): [number, number] {
+    // If hovering over a node, the arrow should be drawn to the center of that node so that it "snaps" to whatever node you are hovering over.
+    // if not hovering over a node, the arrow should be drawn to the cursor position.
+    if (this.visNetwork.isHoveringOverNode) {
+      return [closestNodeLayout.positionX, closestNodeLayout.positionY];
+    }
+    else {
+      return [canvasX, canvasY];
     }
   }
 

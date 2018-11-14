@@ -28,8 +28,8 @@ export class VisNetworkDirective {
       this.network = new Network(this.element.nativeElement, networkData, this.options);
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
       this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
-      this.network.on("hoverNode", _ => this._isHoveringOverNode = true);
-      this.network.on("blurNode", _ => this._isHoveringOverNode = false);
+      this.network.on("hoverNode", node => this._hoveredOverNode = node);
+      this.network.on("blurNode", node => this._hoveredOverNode = undefined);
       this.network.on("dragStart", _ => this._isDragging = true);
       this.network.on("dragEnd", params => {
         this._isDragging = false;
@@ -49,9 +49,18 @@ export class VisNetworkDirective {
     return this.options.interaction.dragView;
   }
 
-  private _isHoveringOverNode = false;
+  private _hoveredOverNode: vis.Node = undefined;
   public get isHoveringOverNode(): boolean {
-    return this._isHoveringOverNode;
+    if (this._hoveredOverNode) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  public get hoveredOverNode(): vis.Node {
+    return this._hoveredOverNode;
   }
 
   public set isViewDraggingEnabled(value: boolean) {
