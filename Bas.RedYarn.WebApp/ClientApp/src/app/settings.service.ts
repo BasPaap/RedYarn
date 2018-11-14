@@ -2,17 +2,17 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface Settings {
-  isInDebugMode: boolean,
+export class Settings {
+  isInDebugMode: boolean = false;
   ui: {
-    circularImageSize: number,
-    newNodePlacementRadius: number, // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
+    circularImageSize: 25;
+    newNodePlacementRadius: 5; // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
     newRelationship: {
-      activationZoneWidth: number, // Defines the width of the area around the node in which the cursor activates the new relationship arrow.
+      activationZoneWidth: 5; // Defines the width of the area around the node in which the cursor activates the new relationship arrow.
       arrow: {
-        style: string,
-        lineWidth: number,
-        headLength: number
+        style: "#000000",
+        lineWidth: 1,
+        headLength: 10
       }
     }
   }
@@ -23,21 +23,7 @@ export interface Settings {
 })
 export class SettingsService {
 
-  public settings: Settings = {
-    isInDebugMode: false,
-    ui: {
-      circularImageSize: 25,
-      newNodePlacementRadius: 5,
-      newRelationship: {
-        activationZoneWidth: 5,
-        arrow: {
-          style: "#000000",
-          lineWidth: 1,
-          headLength: 10
-        }
-      }
-    }
-  };
+  public settings: Settings = new Settings();
 
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string) { }
 
