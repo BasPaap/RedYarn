@@ -1,5 +1,5 @@
 import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Network, IdType } from 'vis-redyarn';
+import { Network, IdType, Options } from 'vis-redyarn';
 import { DiagramDrawingService } from './diagram-drawing.service';
 import { NetworkItemsService } from './network-items.service';
 
@@ -9,18 +9,22 @@ import { NetworkItemsService } from './network-items.service';
 export class VisNetworkDirective {
 
   private network: Network
+  private options: Options  = {
+    physics: {
+      enabled: false
+    },
+    interaction: {
+      dragView: true
+    }
+  };
+
 
   constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private networkItemsService: NetworkItemsService) { }
 
   @Input() public set appVisNetwork(networkData) {
-    let options = {
-      physics: {
-        enabled: false
-      }
-    };
 
     if (!this.network) {
-      this.network = new Network(this.element.nativeElement, networkData, options);
+      this.network = new Network(this.element.nativeElement, networkData, this.options);
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
       this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
       this.network.on("dragStart", _ => this._isDragging = true);
@@ -34,6 +38,15 @@ export class VisNetworkDirective {
   private _isDragging = false;
   public get isDragging(): boolean {
     return this._isDragging
+  }
+
+  public get isViewDraggingEnabled(): boolean {
+    return this.options.interaction.dragView;
+  }
+
+  public set isViewDraggingEnabled(value: boolean) {
+    this.options.interaction.dragView = value;
+    this.network.setOptions(this.options);
   }
 
   @Output() public dragEnd: EventEmitter<any> = new EventEmitter();
@@ -65,11 +78,11 @@ export class VisNetworkDirective {
   }
 
   public getCanvasCoordinates(x: number, y: number): [number, number] {
-    
+
     let offsetTop = this.element.nativeElement.getBoundingClientRect().top;
     let offsetLeft = this.element.nativeElement.getBoundingClientRect().left;
 
-    let position = this.network.DOMtoCanvas({ x: x - offsetLeft, y: y - offsetTop});
+    let position = this.network.DOMtoCanvas({ x: x - offsetLeft, y: y - offsetTop });
 
     return [position.x, position.y];
   }
