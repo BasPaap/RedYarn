@@ -35,7 +35,7 @@ class Rectangle extends Drawable {
 
     context.beginPath();
     context.strokeStyle = this.style;
-    context.lineWidth = this.lineWidth;
+    context.lineWidth = this.lineWidth * 2;
     context.moveTo(this.x + cornerRadius, this.y);
     context.lineTo(this.x + this.width - cornerRadius, this.y);
     context.quadraticCurveTo(this.x + this.width, this.y, this.x + this.width, this.y + cornerRadius);

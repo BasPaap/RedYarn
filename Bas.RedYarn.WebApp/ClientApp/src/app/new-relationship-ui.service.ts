@@ -54,17 +54,29 @@ export class NewRelationshipUIService {
 
         // if the mouse is down, that means we're dragging the arrow, so highlight the "from" node.
         if (mouseState.isButtonDown) {
-          if (this.isCircularNodeLayout(fromNode)) {
-            this.diagramDrawingService.drawCircularNodeHighlight(fromNode.positionX, fromNode.positionY);
-          }
-          else {
-            this.diagramDrawingService.drawRectangularNodeHighlight(fromNode.positionX - fromNode.width / 2, fromNode.positionY - fromNode.height / 2, fromNode.width, fromNode.height);
+          this.highlightNode(fromNode);
+
+          // If we're also over the closest node, then that's the "to" node, so highlight it as well.
+          if (closestNodeLayout.isOverNode(canvasX, canvasY)) {
+            this.highlightNode(closestNodeLayout);
           }
         }
       }
 
       this.visNetwork.redraw();
 
+    }
+  }
+
+  private highlightNode(nodeLayout: NodeLayout) {
+    if (this.isCircularNodeLayout(nodeLayout)) {
+      this.diagramDrawingService.drawCircularNodeHighlight(nodeLayout.positionX, nodeLayout.positionY);
+    }
+    else {
+      this.diagramDrawingService.drawRectangularNodeHighlight(nodeLayout.positionX - nodeLayout.width / 2,
+        nodeLayout.positionY - nodeLayout.height / 2,
+        nodeLayout.width,
+        nodeLayout.height);
     }
   }
 
