@@ -13,13 +13,14 @@ export class VisNetworkGeneratorService {
     return {
       id: storyline.id,
       label: storyline.name,
-      shape: 'box',
+      shape: this.settingsService.settings.ui.storylineNode.shape,
       color: {
-        border: 'rgba(0,0,0,0.8)',
-        background: 'rgba(255,255,255,1)',
-        highlight: { border: 'rgba(0,0,0,1)', background: 'rgba(255,255,255,1)' },
-        hover: { border: 'rgba(0,0,0,0.8)', background: 'rgba(255,255,255,1)' }
+        border: this.settingsService.settings.ui.storylineNode.borderColor,
+        background: this.settingsService.settings.ui.storylineNode.background,
+        highlight: { border: this.settingsService.settings.ui.storylineNode.highlightBorderColor, background: this.settingsService.settings.ui.storylineNode.background },
+        hover: { border: this.settingsService.settings.ui.storylineNode.borderColor, background: this.settingsService.settings.ui.storylineNode.background }
       },
+      borderWidth: this.settingsService.settings.ui.storylineNode.borderWidth,
       labelHighlightBold: false,
       x: storyline.xPosition,
       y: storyline.yPosition,
@@ -31,13 +32,14 @@ export class VisNetworkGeneratorService {
     return {
       id: plotElement.id,
       label: plotElement.name,
-      shape: 'box',
+      shape: this.settingsService.settings.ui.plotElementNode.shape,
       color: {
-        border: 'rgba(50,50,50,0.8)',
-        background: 'rgba(200,200,200,1)',
-        highlight: { border: 'rgba(50,50,50,1)', background: 'rgba(200,200,200,1)' },
-        hover: { border: 'rgba(50,50,50,0.8)', background: 'rgba(200,200,200,1)'}
+        border: this.settingsService.settings.ui.plotElementNode.borderColor,
+        background: this.settingsService.settings.ui.plotElementNode.background,
+        highlight: { border: this.settingsService.settings.ui.plotElementNode.highlightBorderColor, background: this.settingsService.settings.ui.plotElementNode.background },
+        hover: { border: this.settingsService.settings.ui.plotElementNode.borderColor, background: this.settingsService.settings.ui.plotElementNode.background }
       },
+      borderWidth: this.settingsService.settings.ui.plotElementNode.borderWidth,
       labelHighlightBold: false,
       x: plotElement.xPosition,
       y: plotElement.yPosition,
@@ -49,15 +51,15 @@ export class VisNetworkGeneratorService {
     return {
       id: character.id,
       label: character.name,
-      shape: 'circularImage',
-      size: this.settingsService.settings.ui.circularImageSize,
+      shape: this.settingsService.settings.ui.characterNode.shape,
+      size: this.settingsService.settings.ui.characterNode.radius,
       image: '../../../assets/default-character.png',
-      brokenImage: '../../../assets/default-character.png',
-      borderWidth: 2,
+      brokenImage: this.settingsService.settings.ui.characterNode.brokenImageUri,
+      borderWidth: this.settingsService.settings.ui.characterNode.borderWidth,
       color: {
-        border: 'rgba(0,0,0,0.8)',
-        highlight: { border: 'rgba(0,0,0,1)' },
-        hover: { border: 'rgba(0,0,0,0.8)'}
+        border: this.settingsService.settings.ui.characterNode.borderColor,
+        highlight: { border: this.settingsService.settings.ui.characterNode.highlightBorderColor },
+        hover: { border: this.settingsService.settings.ui.characterNode.borderColor }
       },
       labelHighlightBold: false,
       x: character.xPosition,

@@ -26,12 +26,12 @@ export class NodeLayout {
 export class RoundNodeLayout extends NodeLayout {
   public isInActivationZone(mouseX: number, mouseY: number): boolean {
     let distance = this.distanceTo(mouseX, mouseY);
-    return distance > this.settingsService.settings.ui.circularImageSize &&
-           distance <= this.settingsService.settings.ui.circularImageSize + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
+    return distance > this.settingsService.settings.ui.characterNode.radius &&
+      distance <= this.settingsService.settings.ui.characterNode.radius + this.settingsService.settings.ui.newRelationship.activationZoneWidth;    
   }
 
   public isOverNode(mouseX: number, mouseY: number): boolean {
-    return this.distanceTo(mouseX, mouseY) <= this.settingsService.settings.ui.circularImageSize;
+    return this.distanceTo(mouseX, mouseY) <= this.settingsService.settings.ui.characterNode.radius;
   }
 }
 
@@ -77,8 +77,8 @@ export class NetworkItemsService {
 
     if (node.shape == "circularImage") {
       nodeLayout = new RoundNodeLayout(this.settingsService);
-      width = this.settingsService.settings.ui.circularImageSize * 2;
-      height = this.settingsService.settings.ui.circularImageSize * 2;
+      width = this.settingsService.settings.ui.characterNode.radius * 2;
+      height = this.settingsService.settings.ui.characterNode.radius * 2;
     } else {
       nodeLayout = new RectangularNodeLayout(this.settingsService);
       width = Math.abs(boundingBox.right - boundingBox.left);
