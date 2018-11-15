@@ -23,7 +23,9 @@ export class NodeLayout {
 
 }
 
-export class RoundNodeLayout extends NodeLayout {
+export class CircularNodeLayout extends NodeLayout {
+  public isCircular: boolean = true;
+
   public isInActivationZone(mouseX: number, mouseY: number): boolean {
     let distance = this.distanceTo(mouseX, mouseY);
     return distance > this.settingsService.settings.ui.characterNode.radius &&
@@ -36,6 +38,8 @@ export class RoundNodeLayout extends NodeLayout {
 }
 
 export class RectangularNodeLayout extends NodeLayout {
+  public isRectangular: boolean = true;
+
   public isInActivationZone(mouseX: number, mouseY: number): boolean {
     if (!this.isOverNode(mouseX, mouseY)) {
       let top = this.positionY - (this.height / 2.0) - this.settingsService.settings.ui.newRelationship.activationZoneWidth;
@@ -76,13 +80,13 @@ export class NetworkItemsService {
     let nodeLayout: NodeLayout;
 
     if (node.shape == "circularImage") {
-      nodeLayout = new RoundNodeLayout(this.settingsService);
+      nodeLayout = new CircularNodeLayout(this.settingsService);
       width = this.settingsService.settings.ui.characterNode.radius * 2;
       height = this.settingsService.settings.ui.characterNode.radius * 2;
     } else {
       nodeLayout = new RectangularNodeLayout(this.settingsService);
-      width = Math.abs(boundingBox.right - boundingBox.left);
-      height = Math.abs(boundingBox.bottom - boundingBox.top);
+      width = Math.abs(boundingBox.right - boundingBox.left - 12);  // Strangely, Network returns a bounding box that's 12 pixels too large for rectangular nodes.
+      height = Math.abs(boundingBox.bottom - boundingBox.top - 12); // Strangely, Network returns a bounding box that's 12 pixels too large for rectangular nodes.
     }
 
     nodeLayout.id = node.id.toString();

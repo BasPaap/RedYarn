@@ -6,6 +6,51 @@ class Drawable {
   public draw(context: any) { }
 }
 
+class Circle extends Drawable {
+  x: number;
+  y: number;
+  radius: number;
+  lineWidth: number;
+  style: string;
+
+  public draw(context: any) {
+    context.beginPath();
+    context.strokeStyle = this.style;
+    context.lineWidth = this.lineWidth;
+    context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    context.stroke();
+  }
+}
+
+class Rectangle extends Drawable {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  lineWidth: number;
+  style: string;
+
+  public draw(context: any) {
+    let cornerRadius = 7.5;
+
+    context.beginPath();
+    context.strokeStyle = this.style;
+    context.lineWidth = this.lineWidth;
+    context.moveTo(this.x + cornerRadius, this.y);
+    context.lineTo(this.x + this.width - cornerRadius, this.y);
+    context.quadraticCurveTo(this.x + this.width, this.y, this.x + this.width, this.y + cornerRadius);
+    context.lineTo(this.x + this.width, this.y + this.height - cornerRadius);
+    context.quadraticCurveTo(this.x + this.width, this.y + this.height, this.x + this.width - cornerRadius, this.y + this.height);
+    context.lineTo(this.x + cornerRadius, this.y + this.height);
+    context.quadraticCurveTo(this.x, this.y + this.height, this.x, this.y + this.height - cornerRadius);
+    context.lineTo(this.x, this.y + cornerRadius);
+    context.quadraticCurveTo(this.x, this.y, this.x + cornerRadius, this.y);
+    context.closePath();
+    context.stroke();    
+  }
+}
+
+
 class Arrow extends Drawable {
   fromX: number;
   fromY: number;
@@ -51,7 +96,7 @@ class Arrow extends Drawable {
   providedIn: 'root'
 })
 export class DiagramDrawingService {
-
+    
   private foregroundDrawables: Drawable[] = [];
   private backgroundDrawables: Drawable[] = [];
 
@@ -67,6 +112,27 @@ export class DiagramDrawingService {
     arrow.style = this.settingsService.settings.ui.newRelationship.arrow.style;
     arrow.headLength = this.settingsService.settings.ui.newRelationship.arrow.headLength;
     this.backgroundDrawables.push(arrow);
+  }
+
+  drawCircularNodeHighlight(x: number, y: number) {
+    let circle = new Circle();
+    circle.x = x;
+    circle.y = y;
+    circle.radius = this.settingsService.settings.ui.characterNode.radius;
+    circle.style = this.settingsService.settings.ui.newRelationship.arrow.style;
+    circle.lineWidth = this.settingsService.settings.ui.characterNode.borderWidth;
+    this.foregroundDrawables.push(circle);
+  }
+
+  drawRectangularNodeHighlight(x: number, y: number, width: number, height: number) {
+    let rectangle = new Rectangle();
+    rectangle.x = x;
+    rectangle.y = y;
+    rectangle.width = width;
+    rectangle.height = height;
+    rectangle.style = this.settingsService.settings.ui.newRelationship.arrow.style;
+    rectangle.lineWidth = this.settingsService.settings.ui.storylineNode.borderWidth;
+    this.foregroundDrawables.push(rectangle);
   }
 
   public onDrawBackgroundUI(context: any) {

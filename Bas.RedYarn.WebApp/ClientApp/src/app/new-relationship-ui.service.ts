@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserInputService, MouseState } from './user-input.service';
 import { Node } from './diagram-types';
-import { NetworkItemsService, NodeLayout } from './network-items.service';
+import { NetworkItemsService, NodeLayout, CircularNodeLayout, RectangularNodeLayout } from './network-items.service';
 import { SettingsService } from './settings.service';
 import { DiagramDrawingService } from './diagram-drawing.service';
 import { VisNetworkDirective } from './vis-network.directive';
@@ -45,16 +45,31 @@ export class NewRelationshipUIService {
           this.visNetwork.isViewDraggingEnabled = true;
         }
       }
-      
+
       // If there is a "from" node, draw an arrow from that node to the destination point
       if (this.fromNodeLayoutId) {
         let [toX, toY] = this.getArrowDestination(closestNodeLayout, canvasX, canvasY);
-        this.diagramDrawingService.drawNewRelationshipArrow(this.nodeLayouts[this.fromNodeLayoutId].positionX, this.nodeLayouts[this.fromNodeLayoutId].positionY, toX, toY);
+        let fromNode = this.nodeLayouts[this.fromNodeLayoutId];
+        this.diagramDrawingService.drawNewRelationshipArrow(fromNode.positionX, fromNode.positionY, toX, toY);
+
+        // if the mouse is down, that means we're dragging the arrow, so highlight the "from" node.
+        if (mouseState.isButtonDown) {
+          if (this.isCircularNodeLayout(fromNode)) {
+            this.diagramDrawingService.drawCircularNodeHighlight(fromNode.positionX, fromNode.positionY);
+          }
+          else {
+            this.diagramDrawingService.drawRectangularNodeHighlight(fromNode.positionX - fromNode.width / 2, fromNode.positionY - fromNode.height / 2, fromNode.width, fromNode.height);
+          }
+        }
       }
 
       this.visNetwork.redraw();
 
     }
+  }
+
+  private isCircularNodeLayout(nodeLayout: NodeLayout): nodeLayout is CircularNodeLayout {
+    return (<CircularNodeLayout>nodeLayout).isCircular !== undefined;
   }
 
   private getArrowDestination(closestNodeLayout: NodeLayout, canvasX: number, canvasY: number): [number, number] {
@@ -86,5 +101,5 @@ export class NewRelationshipUIService {
     }
 
     return [closestNodeLayout, minDistance];
-  }  
+  }
 }
