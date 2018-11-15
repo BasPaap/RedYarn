@@ -5,6 +5,8 @@ import { NetworkItemsService, NodeLayout, CircularNodeLayout, RectangularNodeLay
 import { SettingsService } from './settings.service';
 import { DiagramDrawingService } from './diagram-drawing.service';
 import { VisNetworkDirective } from './vis-network.directive';
+import { NewRelationshipDialogComponent } from './new-relationship-dialog/new-relationship-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +21,11 @@ export class NewRelationshipUIService {
     this.visNetwork = value;
   }
 
-  constructor(private userInputService: UserInputService, private networkItemsService: NetworkItemsService, private diagramDrawingService: DiagramDrawingService) {
+  constructor(private userInputService: UserInputService, private networkItemsService: NetworkItemsService, private diagramDrawingService: DiagramDrawingService, private dialog: MatDialog) {
     this.userInputService.mouseStateStream.subscribe(this.onMouseState.bind(this));
     this.networkItemsService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts[nodeLayout.id] = nodeLayout);
   }
-
-
+  
   private onMouseState(mouseState: MouseState) {
 
     if (this.visNetwork && !this.visNetwork.isDragging) {
@@ -41,6 +42,12 @@ export class NewRelationshipUIService {
       else {
         // if we're not in the zone and the mouse button is up, stop dragging the arrow and enable canvas dragging.
         if (mouseState.isButtonDown == false) {
+          // If there happens to be a "from" node and the mouse is over a different node, that means we've dragged the arrow from one node to another,
+          // and need to create a relationship.
+          if (this.fromNodeLayoutId && closestNodeLayout.isOverNode(canvasX, canvasY) && this.fromNodeLayoutId != closestNodeLayout.id) {
+            this.dialog.open(NewRelationshipDialogComponent);
+          }
+
           this.fromNodeLayoutId = undefined;
           this.visNetwork.isViewDraggingEnabled = true;
         }
@@ -64,7 +71,6 @@ export class NewRelationshipUIService {
       }
 
       this.visNetwork.redraw();
-
     }
   }
 

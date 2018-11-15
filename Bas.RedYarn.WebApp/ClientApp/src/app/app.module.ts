@@ -18,6 +18,7 @@ import { VisNetworkDirective } from './vis-network.directive';
 import { NewPlotElementDialogComponent } from './new-plot-element-dialog/new-plot-element-dialog.component';
 import { DefaultDialogActionsComponent } from './default-dialog-actions/default-dialog-actions.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { NewRelationshipDialogComponent } from './new-relationship-dialog/new-relationship-dialog.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DialogComponent } from './dialog/dialog.component';
     NewStorylineDialogComponent,
     NewPlotElementDialogComponent,
     DefaultDialogActionsComponent,
-    DialogComponent
+    DialogComponent,
+    NewRelationshipDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +61,8 @@ import { DialogComponent } from './dialog/dialog.component';
     NewDiagramDialogComponent,
     NewCharacterDialogComponent,
     NewStorylineDialogComponent,
-    NewPlotElementDialogComponent
+    NewPlotElementDialogComponent,
+    NewRelationshipDialogComponent
   ],
   providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
   bootstrap: [AppComponent]
