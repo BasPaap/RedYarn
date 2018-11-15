@@ -3,8 +3,8 @@ import { Subject, Observable } from 'rxjs';
 
 export interface MouseState {
   isButtonDown: boolean,
-  xCoordinate: number,
-  yCoordinate: number
+  x: number,
+  y: number
 }
 
 @Injectable({
@@ -14,8 +14,8 @@ export class UserInputService {
 
   private mouseState: MouseState = {
     isButtonDown: false,
-    xCoordinate: 0,
-    yCoordinate: 0
+    x: 0,
+    y: 0
   };
 
   private mouseStateSubject: Subject<MouseState> = new Subject<MouseState>();
@@ -37,8 +37,8 @@ export class UserInputService {
   }
 
   public onMouseMove(x: number, y: number, buttons: number) {
-    this.mouseState.xCoordinate = x;
-    this.mouseState.yCoordinate = y;
+    this.mouseState.x = x;
+    this.mouseState.y = y;
     this.mouseState.isButtonDown = buttons == 1;
     this.mouseStateSubject.next(this.mouseState);
   }

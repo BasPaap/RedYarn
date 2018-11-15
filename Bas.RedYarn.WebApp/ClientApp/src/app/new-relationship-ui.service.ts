@@ -12,7 +12,6 @@ import { VisNetworkDirective } from './vis-network.directive';
 export class NewRelationshipUIService {
 
   private nodeLayouts: { [id: string]: NodeLayout } = {};
-  private isDraggingArrow: boolean = false;
   private fromNodeLayoutId: string = undefined;
   private visNetwork: VisNetworkDirective;
 
@@ -20,7 +19,7 @@ export class NewRelationshipUIService {
     this.visNetwork = value;
   }
 
-  constructor(private userInputService: UserInputService, private networkItemsService: NetworkItemsService, private settingsService: SettingsService, private diagramDrawingService: DiagramDrawingService) {
+  constructor(private userInputService: UserInputService, private networkItemsService: NetworkItemsService, private diagramDrawingService: DiagramDrawingService) {
     this.userInputService.mouseStateStream.subscribe(this.onMouseState.bind(this));
     this.networkItemsService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts[nodeLayout.id] = nodeLayout);
   }
@@ -29,10 +28,10 @@ export class NewRelationshipUIService {
   private onMouseState(mouseState: MouseState) {
 
     if (this.visNetwork && !this.visNetwork.isDragging) {
-      let [canvasX, canvasY] = this.visNetwork.getCanvasCoordinates(mouseState.xCoordinate, mouseState.yCoordinate);
+      let [canvasX, canvasY] = this.visNetwork.getCanvasCoordinates(mouseState.x, mouseState.y);
       let [closestNodeLayout, distance] = this.getClosestNodeLayout(canvasX, canvasY);
 
-      if (closestNodeLayout && !this.visNetwork.isHoveringOverNode && this.isInActivationZone(canvasX, canvasY, closestNodeLayout)) {
+      if (closestNodeLayout && closestNodeLayout.isInActivationZone(canvasX, canvasY)) {
         // If we're in the zone with the mouse button up, disable canvas dragging and set the from node in preparation for dragging the arrow.
         if (mouseState.isButtonDown == false) {
           this.visNetwork.isViewDraggingEnabled = false;
@@ -61,7 +60,7 @@ export class NewRelationshipUIService {
   private getArrowDestination(closestNodeLayout: NodeLayout, canvasX: number, canvasY: number): [number, number] {
     // If hovering over a node, the arrow should be drawn to the center of that node so that it "snaps" to whatever node you are hovering over.
     // if not hovering over a node, the arrow should be drawn to the cursor position.
-    if (this.visNetwork.isHoveringOverNode) {
+    if (closestNodeLayout.isOverNode(canvasX, canvasY)) {
       return [closestNodeLayout.positionX, closestNodeLayout.positionY];
     }
     else {
@@ -75,7 +74,7 @@ export class NewRelationshipUIService {
     let closestNodeLayout: NodeLayout = undefined;
 
     for (let key in this.nodeLayouts) {
-      let distance = this.getDistance(x, y, this.nodeLayouts[key].positionX, this.nodeLayouts[key].positionY);
+      let distance = this.nodeLayouts[key].distanceTo(x, y);
       if (minDistance === undefined) {
         minDistance = distance;
         closestNodeLayout = this.nodeLayouts[key];
@@ -87,20 +86,5 @@ export class NewRelationshipUIService {
     }
 
     return [closestNodeLayout, minDistance];
-  }
-
-  private getDistance(x1: number, y1: number, x2: number, y2: number): number {
-    var a = x1 - x2;
-    var b = y1 - y2;
-    return Math.hypot(a, b);
-  }
-
-  private isInActivationZone(x: number, y: number, nodeLayout: NodeLayout): boolean {
-    let top = nodeLayout.positionY - (nodeLayout.height / 2.0) - this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    let bottom = nodeLayout.positionY + (nodeLayout.height / 2.0) + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    let left = nodeLayout.positionX - (nodeLayout.width / 2.0) - this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-    let right = nodeLayout.positionX + (nodeLayout.width / 2.0) + this.settingsService.settings.ui.newRelationship.activationZoneWidth;
-
-    return x >= left && x <= right && y >= top && y <= bottom;
-  }
+  }  
 }
