@@ -116,16 +116,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>StorylineController.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('Services\IDataService.cs')" Include="Services\IDataService.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>IDataService.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('Services\DatabaseDataService.cs')" Include="Services\DatabaseDataService.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DatabaseDataService.tt</DependentUpon>
-    </Compile>
     <Compile Condition="!Exists('Controllers\GeneratedControllers\TagController.cs')" Include="Controllers\GeneratedControllers\TagController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

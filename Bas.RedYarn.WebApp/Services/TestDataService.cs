@@ -231,5 +231,10 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task RelateCharactersAsync(Guid fromCharacterId, Guid toCharacterId, string name, bool isDirectional)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

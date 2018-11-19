@@ -26,5 +26,6 @@ foreach (var viewModelName in viewModelNames)
 <#
 }
 #>
+		Task RelateCharactersAsync(Guid fromCharacterId, Guid toCharacterId, string name, bool isDirectional);
 	}
 }

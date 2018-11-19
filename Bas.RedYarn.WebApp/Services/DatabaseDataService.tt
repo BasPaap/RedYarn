@@ -172,6 +172,10 @@ else
 
 <#
 }#>
+		public async Task RelateCharactersAsync(Guid fromCharacterId, Guid toCharacterId, string name, bool isDirectional)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
 <#+
