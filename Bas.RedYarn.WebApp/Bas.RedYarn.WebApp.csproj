@@ -161,7 +161,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>TagController.tt</DependentUpon>
     </Compile>
-    <Compile Update="Services\DatabaseDataService.cs">
+    <Compile Update="Services\GeneratedServices\DatabaseDataService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataService.tt</DependentUpon>
@@ -202,6 +202,10 @@
       <LastGenOutput>TagController.cs</LastGenOutput>
     </None>
     <None Update="Services\DatabaseDataService.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>DatabaseDataService.cs</LastGenOutput>
+    </None>
+    <None Update="Services\GeneratedServices\DatabaseDataService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DatabaseDataService.cs</LastGenOutput>
     </None>
