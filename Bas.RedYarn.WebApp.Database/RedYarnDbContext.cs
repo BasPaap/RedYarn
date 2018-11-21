@@ -33,6 +33,14 @@ namespace Bas.RedYarn.WebApp.Database
             AddIdShadowProperty<Author>(modelBuilder);
             AddIdShadowProperty<Tag>(modelBuilder);
             AddIdShadowProperty<Alias>(modelBuilder);
+
+            //modelBuilder.Entity<IRelationship>()
+            //    .HasOne(r => r.FirstCharacter)
+            //    .WithMany(c => c.Relationships);
+
+            //modelBuilder.Entity<IRelationship>()
+            //    .HasOne(r => r.SecondCharacter)
+            //    .WithMany(c => c.Relationships);
         }
 
         /// <summary>

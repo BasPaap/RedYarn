@@ -14,7 +14,7 @@ namespace Bas.RedYarn
     /// </summary>
     public sealed class Character : INameable
     {
-        private List<IRelationship> relationships = new List<IRelationship>();
+        private List<Relationship> relationships = new List<Relationship>();
 
         public string Name { get; set; }
         public Collection<Alias> Aliases { get; } = new Collection<Alias>();
@@ -25,7 +25,7 @@ namespace Bas.RedYarn
         public string ImagePath { get; set; }
         public Collection<PlotElement> OwnedPlotElements { get; }
         public Collection<PlotElement> NeededPlotElements { get; }
-        public ReadOnlyCollection<IRelationship> Relationships { get; } 
+        public ReadOnlyCollection<Relationship> Relationships { get; } 
 
         public Character()
         {
@@ -34,7 +34,7 @@ namespace Bas.RedYarn
             Tags = new CoupledCollection<Tag, Character>(this, nameof(Tag.Characters));
             OwnedPlotElements = new CoupledCollection<PlotElement, Character>(this, nameof(PlotElement.OwningCharacters));
             NeededPlotElements = new CoupledCollection<PlotElement, Character>(this, nameof(PlotElement.NeedingCharacters));
-            Relationships = new ReadOnlyCollection<IRelationship>(this.relationships);
+            Relationships = new ReadOnlyCollection<Relationship>(this.relationships);
         }
 
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Character) : Name;
@@ -132,16 +132,15 @@ namespace Bas.RedYarn
                 return;
             }
 
-            IRelationship newRelationship;
+            Relationship newRelationship;
 
             if (!isDirectional)
             {
-                newRelationship = new NonDirectionalRelationship(this, character, sanitizedRelationshipName);                
+                newRelationship = new Relationship(this, character, sanitizedRelationshipName, false);                
             }
-
             else
             {
-                newRelationship = (pairedRelationshipName == null) ? new DirectionalRelationship(this, character, sanitizedRelationshipName) : 
+                newRelationship = (pairedRelationshipName == null) ? new Relationship(this, character, sanitizedRelationshipName) : 
                                                                      new PairedRelationship(this, character, sanitizedRelationshipName);
             }
                         
@@ -220,7 +219,7 @@ namespace Bas.RedYarn
                     
                     if (!deletePaired)
                     {
-                        var directionalRelationship = new DirectionalRelationship(otherRelationship.FirstCharacter, otherRelationship.SecondCharacter, otherRelationship.Name);
+                        var directionalRelationship = new Relationship(otherRelationship.FirstCharacter, otherRelationship.SecondCharacter, otherRelationship.Name);
                         this.relationships.Add(directionalRelationship);
                         character.relationships.Add(directionalRelationship);                        
                     }
@@ -271,7 +270,7 @@ namespace Bas.RedYarn
         /// </summary>
         /// <param name="character">The character between which and <c>this</c> the relationships are to be returned.</param>
         /// <returns>A ReadOnlyCollection containing IRelationship instances describing the relationships between <c>this</c> and <paramref name="character"/></returns>
-        public ReadOnlyCollection<IRelationship> GetRelationshipsTo(Character character)
+        public ReadOnlyCollection<Relationship> GetRelationshipsTo(Character character)
         {
             #region Preconditions
             if (character == null)
@@ -290,7 +289,7 @@ namespace Bas.RedYarn
                                          (r.FirstCharacter == this && r.SecondCharacter == character)
                                    select r;
                                
-            return new ReadOnlyCollection<IRelationship>(allRelationships.ToList());
+            return new ReadOnlyCollection<Relationship>(allRelationships.ToList());
         }
     }
 }

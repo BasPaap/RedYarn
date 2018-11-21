@@ -160,7 +160,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
 
         private void GenerateRelationships(Dictionary<RedYarn.Character, CharacterViewModel> characterDictionary)
         {
-            var uniqueRelationships = new HashSet<IRelationship>();
+            var uniqueRelationships = new HashSet<Relationship>();
             
             foreach (var character in characterDictionary.Keys)
             {
