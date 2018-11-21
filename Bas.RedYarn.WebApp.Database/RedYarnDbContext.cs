@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 
 namespace Bas.RedYarn.WebApp.Database
 {
@@ -9,7 +11,7 @@ namespace Bas.RedYarn.WebApp.Database
     {
         public DbSet<Diagram> Diagrams { get; set; }
         public DbSet<Storyline> Storylines { get; set; }
-        public DbSet <PlotElement> PlotElements { get; set; }
+        public DbSet<PlotElement> PlotElements { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Tag> Tags { get; set; }
@@ -18,10 +20,15 @@ namespace Bas.RedYarn.WebApp.Database
         public DbSet<CharacterNode> CharacterNodes { get; set; }
         public DbSet<PlotElementNode> PlotElementNodes { get; set; }
         public DbSet<Node> Nodes { get; set; }
+        public DbSet<JoinTable<Character, Author>> CharacterAuthors { get; set; }
+        public DbSet<JoinTable<Character, Storyline>> CharacterStorylines { get; set; }
+        public DbSet<JoinTable<Character, Tag>> CharacterTags { get; set; }
+        public DbSet<JoinTable<Storyline, Author>> StorylineAuthors { get; set; }
+        public DbSet<JoinTable<Storyline, PlotElement>> StorylinePlotElements { get; set; }
 
         public RedYarnDbContext(DbContextOptions<RedYarnDbContext> options)
             : base(options)
-        {            
+        {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,14 +40,31 @@ namespace Bas.RedYarn.WebApp.Database
             AddIdShadowProperty<Author>(modelBuilder);
             AddIdShadowProperty<Tag>(modelBuilder);
             AddIdShadowProperty<Alias>(modelBuilder);
+            
+            CreateModelForJoinTableEntities(modelBuilder);
+        }
 
-            //modelBuilder.Entity<IRelationship>()
-            //    .HasOne(r => r.FirstCharacter)
-            //    .WithMany(c => c.Relationships);
+        private void CreateModelForJoinTableEntities(ModelBuilder modelBuilder)
+        {
+            var joinTableTypes = GetJoinTableTypes();
 
-            //modelBuilder.Entity<IRelationship>()
-            //    .HasOne(r => r.SecondCharacter)
-            //    .WithMany(c => c.Relationships);
+            foreach (var joinTableType in joinTableTypes)
+            {
+                var onModelCreatingMethod = joinTableType.GetMethod("OnModelCreating", BindingFlags.NonPublic | BindingFlags.Static);
+                onModelCreatingMethod.Invoke(null, new [] { modelBuilder });                
+            }
+        }
+
+        private IEnumerable<Type> GetJoinTableTypes()
+        {
+            return from p in this.GetType().GetProperties()
+                                      where p.PropertyType.IsGenericType &&
+                                            p.PropertyType.Name.StartsWith("DbSet") &&
+                                            p.PropertyType.GenericTypeArguments.Length == 1 &&
+                                            p.PropertyType.GenericTypeArguments.Single().IsGenericType &&
+                                            p.PropertyType.GenericTypeArguments.Single().GenericTypeArguments.Length == 2 &&
+                                            p.PropertyType.GenericTypeArguments.Single().Name.StartsWith("JoinTable")
+                                      select p.PropertyType.GenericTypeArguments.Single();
         }
 
         /// <summary>
