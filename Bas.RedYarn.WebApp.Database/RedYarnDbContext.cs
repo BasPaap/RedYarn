@@ -25,6 +25,7 @@ namespace Bas.RedYarn.WebApp.Database
         public DbSet<JoinTable<Character, Tag>> CharacterTags { get; set; }
         public DbSet<JoinTable<Storyline, Author>> StorylineAuthors { get; set; }
         public DbSet<JoinTable<Storyline, PlotElement>> StorylinePlotElements { get; set; }
+        public DbSet<Relationship> Relationships { get; set; }
 
         public RedYarnDbContext(DbContextOptions<RedYarnDbContext> options)
             : base(options)
@@ -40,8 +41,28 @@ namespace Bas.RedYarn.WebApp.Database
             AddIdShadowProperty<Author>(modelBuilder);
             AddIdShadowProperty<Tag>(modelBuilder);
             AddIdShadowProperty<Alias>(modelBuilder);
-            
+
             CreateModelForJoinTableEntities(modelBuilder);
+            CreateRelationshipModel(modelBuilder);
+        }
+
+        private static void CreateRelationshipModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Relationship>().Property<Guid>("FromCharacterId");
+            modelBuilder.Entity<Relationship>().Property<Guid>("ToCharacterId");
+
+            modelBuilder.Entity<Relationship>()
+                .HasOne(r => r.FirstCharacter)
+                .WithMany()
+                .HasForeignKey("FirstCharacterId");
+
+            modelBuilder.Entity<Relationship>()
+                .HasOne(r => r.SecondCharacter)
+                .WithMany()
+                .HasForeignKey("SecondCharacterId");
+
+            modelBuilder.Entity<Relationship>()
+                .HasKey("FromCharacterId", "ToCharacterId");
         }
 
         private void CreateModelForJoinTableEntities(ModelBuilder modelBuilder)
