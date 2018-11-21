@@ -13,6 +13,10 @@ namespace Bas.RedYarn
         
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Relationship) : Name;
 
+        public Relationship()
+        {
+        }
+
         public Relationship(Character firstCharacter, Character secondCharacter, string name, bool isDirectional = true)
         {
             this.FirstCharacter = firstCharacter;

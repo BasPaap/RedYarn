@@ -74,6 +74,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlotElementTest.cs</LastGenOutput>
     </None>
+    <None Update="GeneratedTests\RelationshipTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RelationshipTest.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\StorylineTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineTest.cs</LastGenOutput>
@@ -126,6 +130,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>AliasTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('GeneratedTests\RelationshipTest.cs')" Update="GeneratedTests\RelationshipTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RelationshipTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

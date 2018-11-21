@@ -12,6 +12,7 @@
     <Compile Remove="Migrations\20181031200424_InitialCreate.cs" />
     <Compile Remove="Migrations\20181104141342_InitialCreate.cs" />
     <Compile Remove="Migrations\20181104150042_InitialCreate.cs" />
+    <Compile Remove="Migrations\20181104155235_InitialCreate.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bas.RedYarn\Bas.RedYarn.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>
