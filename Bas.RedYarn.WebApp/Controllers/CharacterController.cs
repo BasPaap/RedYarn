@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public partial class CharacterController : ControllerBase
     {
         // CRUD actions and IDataService instance are declared in GeneratedController\CharacterController.cs

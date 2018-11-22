@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.Controllers
 {
+	[Route("api/[controller]")]
+    [ApiController]
     public partial class <#=className#>Controller : ControllerBase
     {
         private readonly IDataService dataService;
