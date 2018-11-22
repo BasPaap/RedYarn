@@ -44,25 +44,29 @@ namespace Bas.RedYarn.WebApp.Database
 
             CreateModelForJoinTableEntities(modelBuilder);
             CreateRelationshipModel(modelBuilder);
+
+            modelBuilder.Entity<Character>().Ignore(c => c.Relationships);
         }
 
         private static void CreateRelationshipModel(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Relationship>().Property<Guid>("FromCharacterId");
-            modelBuilder.Entity<Relationship>().Property<Guid>("ToCharacterId");
-
             modelBuilder.Entity<Relationship>()
                 .HasOne(r => r.FirstCharacter)
-                .WithMany()
-                .HasForeignKey("FirstCharacterId");
+                .WithMany();
 
             modelBuilder.Entity<Relationship>()
                 .HasOne(r => r.SecondCharacter)
-                .WithMany()
-                .HasForeignKey("SecondCharacterId");
+                .WithMany();
 
             modelBuilder.Entity<Relationship>()
-                .HasKey("FromCharacterId", "ToCharacterId");
+                .Property<Guid>("FirstCharacterId")
+                .HasConversion<string>();
+            modelBuilder.Entity<Relationship>()
+                .Property<Guid>("SecondCharacterId")
+                .HasConversion<string>();
+
+            modelBuilder.Entity<Relationship>()
+                .HasKey("FirstCharacterId", "SecondCharacterId");
         }
 
         private void CreateModelForJoinTableEntities(ModelBuilder modelBuilder)

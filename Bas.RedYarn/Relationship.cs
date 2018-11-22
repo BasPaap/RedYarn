@@ -9,7 +9,7 @@ namespace Bas.RedYarn
         public Character FirstCharacter { get; set; }
         public Character SecondCharacter { get; set; }
         public string Name { get; set; }
-        public bool IsDirectional { get; } = false;
+        public bool IsDirectional { get; set; }
         
         public override string ToString() => string.IsNullOrWhiteSpace(Name) ? nameof(Relationship) : Name;
 

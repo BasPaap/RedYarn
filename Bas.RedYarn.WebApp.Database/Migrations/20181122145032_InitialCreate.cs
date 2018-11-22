@@ -170,37 +170,29 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Relationship",
+                name: "Relationships",
                 columns: table => new
                 {
-                    FirstCharacterId = table.Column<string>(nullable: true),
-                    SecondCharacterId = table.Column<string>(nullable: true),
+                    FirstCharacterId = table.Column<string>(nullable: false),
+                    SecondCharacterId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    FromCharacterId = table.Column<Guid>(nullable: false),
-                    ToCharacterId = table.Column<Guid>(nullable: false),
-                    CharacterId = table.Column<string>(nullable: true)
+                    IsDirectional = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Relationship", x => new { x.FromCharacterId, x.ToCharacterId });
+                    table.PrimaryKey("PK_Relationships", x => new { x.FirstCharacterId, x.SecondCharacterId });
                     table.ForeignKey(
-                        name: "FK_Relationship_Characters_CharacterId",
-                        column: x => x.CharacterId,
-                        principalTable: "Characters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Relationship_Characters_FirstCharacterId",
+                        name: "FK_Relationships_Characters_FirstCharacterId",
                         column: x => x.FirstCharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Relationship_Characters_SecondCharacterId",
+                        name: "FK_Relationships_Characters_SecondCharacterId",
                         column: x => x.SecondCharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -390,18 +382,8 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 column: "DiagramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Relationship_CharacterId",
-                table: "Relationship",
-                column: "CharacterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Relationship_FirstCharacterId",
-                table: "Relationship",
-                column: "FirstCharacterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Relationship_SecondCharacterId",
-                table: "Relationship",
+                name: "IX_Relationships_SecondCharacterId",
+                table: "Relationships",
                 column: "SecondCharacterId");
 
             migrationBuilder.CreateIndex(
@@ -443,7 +425,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "Nodes");
 
             migrationBuilder.DropTable(
-                name: "Relationship");
+                name: "Relationships");
 
             migrationBuilder.DropTable(
                 name: "StorylineAuthor");

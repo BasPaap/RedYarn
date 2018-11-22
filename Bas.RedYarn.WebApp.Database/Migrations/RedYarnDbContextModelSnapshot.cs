@@ -119,30 +119,21 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Relationship", b =>
                 {
-                    b.Property<Guid>("FromCharacterId");
-
-                    b.Property<Guid>("ToCharacterId");
-
-                    b.Property<string>("CharacterId")
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
-
                     b.Property<string>("FirstCharacterId")
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
-
-                    b.Property<string>("Name");
 
                     b.Property<string>("SecondCharacterId")
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
-                    b.HasKey("FromCharacterId", "ToCharacterId");
+                    b.Property<bool>("IsDirectional");
 
-                    b.HasIndex("CharacterId");
+                    b.Property<string>("Name");
 
-                    b.HasIndex("FirstCharacterId");
+                    b.HasKey("FirstCharacterId", "SecondCharacterId");
 
                     b.HasIndex("SecondCharacterId");
 
-                    b.ToTable("Relationship");
+                    b.ToTable("Relationships");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.Storyline", b =>
@@ -357,17 +348,15 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Relationship", b =>
                 {
-                    b.HasOne("Bas.RedYarn.Character")
-                        .WithMany("Relationships")
-                        .HasForeignKey("CharacterId");
-
                     b.HasOne("Bas.RedYarn.Character", "FirstCharacter")
                         .WithMany()
-                        .HasForeignKey("FirstCharacterId");
+                        .HasForeignKey("FirstCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Bas.RedYarn.Character", "SecondCharacter")
                         .WithMany()
-                        .HasForeignKey("SecondCharacterId");
+                        .HasForeignKey("SecondCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Bas.RedYarn.Storyline", b =>
