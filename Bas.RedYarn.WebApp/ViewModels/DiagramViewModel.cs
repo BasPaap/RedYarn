@@ -174,8 +174,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
             {
                 Relationships.Add(new RelationshipViewModel()
                 {
-                    FromCharacterId = characterDictionary[relationship.FirstCharacter].Id,
-                    ToCharacterId = characterDictionary[relationship.SecondCharacter].Id,
+                    FirstCharacterId = characterDictionary[relationship.FirstCharacter].Id,
+                    SecondCharacterId = characterDictionary[relationship.SecondCharacter].Id,
                     Name = relationship.Name,
                     IsDirectional = relationship.IsDirectional
                 });

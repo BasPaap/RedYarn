@@ -8,10 +8,9 @@ namespace Bas.RedYarn.WebApp.Services
     public interface IDataService
     {<#
 foreach (var viewModelName in viewModelNames)
-{
-#>
+{#>
 
-		Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id);
+		Task<<#=viewModelName#>> Get<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>);
 <#      if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName)))
 		{
 #>		Task<<#=viewModelName#>> Create<#=viewModelName#>Async(Guid diagramId, <#=viewModelName#> <#=Decapitalize(viewModelName)#>); <#
@@ -21,11 +20,10 @@ foreach (var viewModelName in viewModelNames)
 #>		Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>); <#
 		}
 #>		
-		Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
-        Task<bool> Delete<#=viewModelName#>Async(Guid id);
+		Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
+        Task<bool> Delete<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>);
 <#
 }
 #>
-		Task RelateCharactersAsync(Guid fromCharacterId, Guid toCharacterId, string name, bool isDirectional);
 	}
 }

@@ -148,6 +148,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="GeneratedTests\DatabaseDataServiceTestBase.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
+    </Compile>
     <Compile Update="Services\TestDataService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

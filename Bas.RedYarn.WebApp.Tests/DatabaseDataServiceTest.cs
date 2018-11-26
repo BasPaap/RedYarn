@@ -362,5 +362,63 @@ namespace Bas.RedYarn.WebApp.Tests
         }
 
         #endregion
+
+        #region Relationship
+        protected override Relationship GetTestRelationship()
+        {
+            var firstCharacter = new Character()
+            {
+                Name = "FirstCharacter"
+            };
+
+            var secondCharacter = new Character()
+            {
+                Name = "SecondCharacter"
+            };
+
+            return new Relationship()
+            {
+                FirstCharacter = firstCharacter,
+                SecondCharacter = secondCharacter,
+                Name = "RelationshipName",
+                IsDirectional = true
+            };
+        }
+
+        protected override RelationshipViewModel GetTestRelationshipViewModel()
+        {
+            return new RelationshipViewModel(GetTestRelationship());
+        }
+
+        protected override RelationshipViewModel GetUpdatedRelationshipViewModel()
+        {
+            var relationshipViewModel = GetTestRelationshipViewModel();
+            relationshipViewModel.Name = updatedName;
+            return relationshipViewModel;
+        }
+
+        protected override void AssertRelationship(Relationship model)
+        {
+            var testRelationship = GetTestRelationship();
+            Assert.AreEqual(testRelationship.FirstCharacter, model.FirstCharacter);
+            Assert.AreEqual(testRelationship.SecondCharacter, model.SecondCharacter);
+            Assert.AreEqual(testRelationship.Name, model.Name);
+            Assert.AreEqual(testRelationship.IsDirectional, model.IsDirectional);
+        }
+       
+        protected override void AssertRelationshipViewModel(RelationshipViewModel viewModel)
+        {
+            var testRelationshipViewModel = GetTestRelationshipViewModel();
+            Assert.AreEqual(testRelationshipViewModel.FirstCharacterId, viewModel.FirstCharacterId);
+            Assert.AreEqual(testRelationshipViewModel.SecondCharacterId, viewModel.SecondCharacterId);
+            Assert.AreEqual(testRelationshipViewModel.Name, viewModel.Name);
+            Assert.AreEqual(testRelationshipViewModel.IsDirectional, viewModel.IsDirectional);
+        }
+
+        protected override void AssertUpdatedRelationshipViewModel(RelationshipViewModel viewModel)
+        {
+            Assert.AreEqual(updatedName, viewModel.Name);
+        }
+        #endregion
     }
 }

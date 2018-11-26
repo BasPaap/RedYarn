@@ -39,9 +39,9 @@ namespace Bas.RedYarn.WebApp.Tests
             Assert.IsNotNull(result);
             Assert.IsNotNull(content);
             Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
-            Assert.AreEqual($"/api/Character/{content.FromCharacterId.ToString()}", result.Headers.Location.PathAndQuery);
-            Assert.AreEqual(characterViewModel.Id, content.FromCharacterId);
-            Assert.AreEqual(secondCharacterViewModel.Id, content.ToCharacterId);
+            Assert.AreEqual($"/api/Character/{content.FirstCharacterId.ToString()}", result.Headers.Location.PathAndQuery);
+            Assert.AreEqual(characterViewModel.Id, content.FirstCharacterId);
+            Assert.AreEqual(secondCharacterViewModel.Id, content.SecondCharacterId);
             Assert.AreEqual(relationshipName, content.Name);
             Assert.IsTrue(content.IsDirectional);
         }

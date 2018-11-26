@@ -78,7 +78,16 @@ foreach (var viewModelName in viewModelNames)
 			this.dbContextToAddTo.SaveChanges();
 
 			// Act
-			var result = this.dataService.Get<#=viewModelName#>Async(Guid.Empty).Result;
+			var result = this.dataService.Get<#=viewModelName#>Async(<#
+			if (GetNumIdParameters(modelName) > 1)
+			{
+				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
+			}
+			else
+			{
+				Write("Guid.NewGuid()");
+			}
+#>).Result;
 
 			// Assert			
 			Assert.IsNull(result);
@@ -102,17 +111,25 @@ foreach (var viewModelName in viewModelNames)
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
-<#
-			if (EntityHasNode(modelName))
-			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}
+<#		
+			string modelSuffix = EntityHasNode(modelName) ? ".model" : string.Empty;
+			
+			if (modelsWithCompositeKeys.Keys.Contains(modelName))
+			{
+				foreach	(var key in modelsWithCompositeKeys[modelName])
+				{
+					WriteLine($"\t\t\tvar new{key} = (Guid)this.dbContextToAddTo.Entry(test{modelName}{modelSuffix}).Property(\"{key}\").CurrentValue;");
+				}
+			}
 			else
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}#>			
+				var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
+<#			
+			}
+			
+			string newIdArguments = (modelsWithCompositeKeys.Keys.Contains(modelName)) ? string.Join(", ",  modelsWithCompositeKeys[modelName].Select(k => $"new{k}")): "newId"; #>			
 			// Act
-			var viewModel = this.dataService.Get<#=viewModelName#>Async(newId).Result;
+			var viewModel = this.dataService.Get<#=viewModelName#>Async(<#=newIdArguments#>).Result;
 
 			// Assert
 			Assert<#=viewModelName#>(viewModel);
@@ -138,7 +155,16 @@ foreach (var viewModelName in viewModelNames)
 			this.dbContextToAddTo.SaveChanges();
 
 			// Act
-			var result = this.dataService.Delete<#=viewModelName#>Async(Guid.Empty).Result;
+			var result = this.dataService.Delete<#=viewModelName#>Async(<#
+			if (GetNumIdParameters(modelName) > 1)
+			{
+				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
+			}
+			else
+			{
+				Write("Guid.NewGuid()");
+			}
+#>).Result;
 
 			// Assert	
 			Assert.IsFalse(result);
@@ -168,16 +194,23 @@ foreach (var viewModelName in viewModelNames)
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
 <#
-			if (EntityHasNode(modelName))
-			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}
+
+			if (modelsWithCompositeKeys.Keys.Contains(modelName))
+			{
+				foreach	(var key in modelsWithCompositeKeys[modelName])
+				{
+					WriteLine($"\t\t\tvar new{key} = (Guid)this.dbContextToAddTo.Entry(test{modelName}{modelSuffix}).Property(\"{key}\").CurrentValue;");
+				}
+			}
 			else
 			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}#>		
+				var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
+<#			
+			}
+
+			#>		
 			// Act
-			var result = this.dataService.Delete<#=viewModelName#>Async(newId).Result;
+			var result = this.dataService.Delete<#=viewModelName#>Async(<#=newIdArguments#>).Result;
 
 			// Assert
 			Assert.IsTrue(result);
@@ -219,11 +252,24 @@ foreach (var viewModelName in viewModelNames)
 			var returnedViewModel = this.dataService.Create<#=viewModelName#>Async(<#if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) { #>diagramId, <#}#>test<#=viewModelName#>).Result;
 
 			// Assert
-			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
-			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property(ShadowPropertyNames.Id).CurrentValue, returnedViewModel.Id);
-			<#			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
+			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);			
+<#	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{
+		foreach (var key in modelsWithCompositeKeys[modelName])
+		{
+			WriteLine($"\t\t\tAssert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.{Pluralize(modelName)}.SingleAsync().Result).Property(\"{key}\").CurrentValue, returnedViewModel.{key});");
+		}
+	}
+	else
+	{#>
+			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property(ShadowPropertyNames.Id).CurrentValue, returnedViewModel.Id);<#
+	}					
+			
+			
+	if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
 			{#>
-Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("DiagramId").CurrentValue);
+
+			Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("DiagramId").CurrentValue);
 <#			}#>
 			Assert<#=viewModelName#>(returnedViewModel);
 <#			if (EntityHasNode(modelName))
@@ -258,7 +304,16 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pl
 			this.dbContextToAddTo.SaveChanges();
 
 			// Act
-			var result = this.dataService.Update<#=viewModelName#>Async(Guid.Empty, test<#=viewModelName#>).Result;
+			var result = this.dataService.Update<#=viewModelName#>Async(<#
+			if (GetNumIdParameters(modelName) > 1)
+			{
+				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
+			}
+			else
+			{
+				Write("Guid.NewGuid()");
+			}
+#>, test<#=viewModelName#>).Result;
 
 			// Assert
 			Assert.IsNull(result.result);
@@ -292,7 +347,16 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pl
 
 			// Act
 			// Assert
-			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Update<#=viewModelName#>Async(Guid.Empty, null));
+			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Update<#=viewModelName#>Async(<#
+			if (GetNumIdParameters(modelName) > 1)
+			{
+				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
+			}
+			else
+			{
+				Write("Guid.NewGuid()");
+			}
+#>, null));
 			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
 			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#			if (EntityHasNode(modelName))
@@ -320,23 +384,52 @@ Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pl
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
 <#			}#>
 			this.dbContextToAddTo.SaveChanges();
-<#			if (EntityHasNode(modelName))
-			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.model).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}
-			else
-			{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}#>			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
+<#			
+
+	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{
+		foreach (var key in modelsWithCompositeKeys[modelName])
+		{
+			WriteLine($"\t\t\tvar new{key} = (Guid)this.dbContextToAddTo.Entry(test{modelName}{modelSuffix}).Property(\"{key}\").CurrentValue;");
+		}
+	}
+	else
+	{#>
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
+<#	}#>
+			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
+<#
+	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{
+		foreach (var key in modelsWithCompositeKeys[modelName])
+		{
+			WriteLine($"\t\t\tupdated{viewModelName}.{key} = new{key};");
+		}
+	}
+	else
+	{#>
 			updated<#=viewModelName#>.Id = newId;
+<#	}#>
 
 			// Act
-			var result = this.dataService.Update<#=viewModelName#>Async(newId, updated<#=viewModelName#>).Result;
+			var result = this.dataService.Update<#=viewModelName#>Async(<#=newIdArguments#>, updated<#=viewModelName#>).Result;
 
 			// Assert
 			Assert.IsNotNull(result.result);
 			Assert.IsTrue(result.isFound);
-			Assert.AreEqual(newId, result.result.Id);
+<#
+	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{
+		foreach (var key in modelsWithCompositeKeys[modelName])
+		{
+			WriteLine($"\t\t\tAssert.AreEqual(new{key}, result.result.{key});");
+		}
+	}
+	else
+	{
+			WriteLine("\t\t\tAssert.AreEqual(newId, result.result.Id);");
+	}
+#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#			if (EntityHasNode(modelName))
 			{#>

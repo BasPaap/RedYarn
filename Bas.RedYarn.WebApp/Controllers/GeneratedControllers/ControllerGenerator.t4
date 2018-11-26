@@ -1,10 +1,8 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
 <#+
-
 private void WriteController(string className)
 {
 	string instanceName = Decapitalize(className);#>
-
 using Bas.RedYarn.WebApp.Services;
 using Bas.RedYarn.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +25,9 @@ namespace Bas.RedYarn.WebApp.Controllers
 		[HttpGet("{id}")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<<#=className#>ViewModel>> Get<#=className#>ViewModelAsync(Guid id)
+        public async Task<ActionResult<<#=className#>ViewModel>> Get<#=className#>ViewModelAsync(<#=GetIdParameters(className)#>)
         {            
-            var <#=instanceName#>ViewModel = await this.dataService.Get<#=className#>ViewModelAsync(id);            
+            var <#=instanceName#>ViewModel = await this.dataService.Get<#=className#>ViewModelAsync(<#=GetIdArguments(className)#>);            
             if (<#=instanceName#>ViewModel == null)
             {
                 return NotFound();
@@ -53,7 +51,18 @@ namespace Bas.RedYarn.WebApp.Controllers
 			try
 			{
 				var created<#=className#>ViewModel = await this.dataService.Create<#=className#>ViewModelAsync(<#+ if (entitiesToAddToDiagram.Contains(className)) { #>diagramId, <#+}#><#=instanceName#>ViewModel);
-				return CreatedAtAction(nameof(Get<#=className#>ViewModelAsync), new { id = created<#=className#>ViewModel.Id }, created<#=className#>ViewModel);            
+				return CreatedAtAction(nameof(Get<#=className#>ViewModelAsync), new { <#+
+				
+				if (modelsWithCompositeKeys.Keys.Contains(className))
+				{
+					Write(string.Join(", ", modelsWithCompositeKeys[className].Select(key => $"{Decapitalize(key)} = created{className}ViewModel.{key}")));					
+				}
+				else
+				{
+					Write($"id = created{className}ViewModel.Id");
+				}
+				
+#> }, created<#=className#>ViewModel);            
 			}
 			catch
 			{
@@ -65,11 +74,11 @@ namespace Bas.RedYarn.WebApp.Controllers
 		[ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult> Update<#=className#>Async(Guid id, <#=className#>ViewModel <#=instanceName#>ViewModel)
+        public async Task<ActionResult> Update<#=className#>Async(<#=GetIdParameters(className)#>, <#=className#>ViewModel <#=instanceName#>ViewModel)
         {
 			try
 			{
-				var response = await this.dataService.Update<#=className#>ViewModelAsync(id, <#=instanceName#>ViewModel);
+				var response = await this.dataService.Update<#=className#>ViewModelAsync(<#=GetIdArguments(className)#>, <#=instanceName#>ViewModel);
 				if (response.isFound)
 				{
 					return NoContent();
@@ -88,9 +97,9 @@ namespace Bas.RedYarn.WebApp.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult> Delete<#=className#>Async(Guid id)
+        public async Task<ActionResult> Delete<#=className#>Async(<#=GetIdParameters(className)#>)
         {
-            var isFound = await this.dataService.Delete<#=className#>ViewModelAsync(id);
+            var isFound = await this.dataService.Delete<#=className#>ViewModelAsync(<#=GetIdArguments(className)#>);
             if (isFound)
 			{
 				return NoContent();

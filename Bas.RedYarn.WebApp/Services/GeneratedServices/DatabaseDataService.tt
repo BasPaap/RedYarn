@@ -23,19 +23,19 @@ namespace Bas.RedYarn.WebApp.Services
 foreach (var viewModelName in viewModelNames)
 {
 	var modelName = GetModelName(viewModelName);#>
-		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
+		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>)
         {
 			var model = await (from m in this.dbContext.<#=Pluralize(modelName)#><# if (modelIncludes.Keys.Contains(modelName))
 {
 	WriteLine(modelIncludes[modelName]);
-#>				where EF.Property<Guid>(m, ShadowPropertyNames.Id) == id
+#>				where <#=GetLinqWhereClauseForIds(modelName)#>
 				select m).SingleOrDefaultAsync();
 <#
 }
 else
 {#>
 
-				where EF.Property<Guid>(m, ShadowPropertyNames.Id) == id
+				where <#=GetLinqWhereClauseForIds(modelName)#>
 				select m).SingleOrDefaultAsync();
 <#}#>			
 			if (model == null)
@@ -66,7 +66,7 @@ else
 <#}
 else
 {#>
-			var viewModel = new <#=viewModelName#>(model, this.getIdForModelFunc<#
+			var viewModel = new <#=viewModelName#>(model, <#=GetIdForModelFunc(modelName)#><#
 	if (modelName == "Diagram") 
 	{
 		foreach(var entityWithNode in entitiesWithNodes)
@@ -74,8 +74,17 @@ else
 			Write($", {Decapitalize(GetViewModelName(entityWithNode))}Dictionary");
 		}
 	}#>);
+<#}
+if (modelsWithCompositeKeys.Keys.Contains(modelName))
+{
+	foreach(var keyName in modelsWithCompositeKeys[modelName])
+	{
+		WriteLine($"\t\t\tviewModel.{keyName} = {Decapitalize(keyName)};");
+	}
+}
+else
+{#>			viewModel.Id = id;
 <#}#>
-			viewModel.Id = id;
 
 			return viewModel;
         }
@@ -106,18 +115,30 @@ else
 			await this.dbContext.SaveChangesAsync();
 
 			var newViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
+<#if (modelsWithCompositeKeys.Keys.Contains(modelName))
+{
+	foreach(var keyName in modelsWithCompositeKeys[modelName])
+	{
+		WriteLine($"\t\t\tnewViewModel.{keyName} = (Guid)this.dbContext.Entry(model).Property(\"{keyName}\").CurrentValue;");
+	}
+}
+else
+{#>
 			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property(ShadowPropertyNames.Id).CurrentValue;
+<#}#>
+
+
 			return newViewModel;
         }
 
-        public async Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        public async Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(<#=GetIdParameters(modelName)#>, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
             if (<#=Decapitalize(viewModelName)#> == null)
 			{
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
 
-			var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(id);
+			var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(<#=GetIdArguments(modelName)#>);
 			if (model == null)
 			{
 				return (null, false);
@@ -139,14 +160,24 @@ else
 			await this.dbContext.SaveChangesAsync();
 
 			var resultingViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
+<#if (modelsWithCompositeKeys.Keys.Contains(modelName))
+{
+	foreach(var keyName in modelsWithCompositeKeys[modelName])
+	{
+		WriteLine($"\t\t\tresultingViewModel.{keyName} = {Decapitalize(keyName)};");
+	}
+}
+else
+{#>
 			resultingViewModel.Id = id;
+<#}#>
 
 			return (resultingViewModel, true);
         }
 
-        public async Task<bool> Delete<#=viewModelName#>Async(Guid id)
+        public async Task<bool> Delete<#=viewModelName#>Async(<#=GetIdParameters(modelName)#>)
         {
-            var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(id);
+            var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(<#=GetIdArguments(modelName)#>);
 			if (model == null)
 			{
 				return false;
@@ -172,10 +203,6 @@ else
 
 <#
 }#>
-		public async Task RelateCharactersAsync(Guid fromCharacterId, Guid toCharacterId, string name, bool isDirectional)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
 <#+

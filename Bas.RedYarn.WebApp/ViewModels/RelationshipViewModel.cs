@@ -7,8 +7,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
 {
     public sealed class RelationshipViewModel
     {
-        public Guid FromCharacterId { get; set; }
-        public Guid ToCharacterId { get; set; }
+        public Guid FirstCharacterId { get; set; }
+        public Guid SecondCharacterId { get; set; }
         public string Name { get; set; }
         public bool IsDirectional { get; set; }
 
@@ -16,12 +16,36 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        public RelationshipViewModel(Relationship model, Func<object, (Guid, Guid)> getIdsForModelFunc = null)
+        {
+            if (getIdsForModelFunc != null)
+            {
+                (Guid firstCharacterId, Guid secondCharacterId) = getIdsForModelFunc(model);
+
+                FirstCharacterId = firstCharacterId;
+                SecondCharacterId = secondCharacterId;
+            }
+
+            Name = model.Name;
+            IsDirectional = model.IsDirectional;
+        }
+
         public RelationshipViewModel(RelationshipViewModel viewModel)
         {
-            FromCharacterId = viewModel.FromCharacterId;
-            ToCharacterId = viewModel.ToCharacterId;
+            FirstCharacterId = viewModel.FirstCharacterId;
+            SecondCharacterId = viewModel.SecondCharacterId;
             Name = viewModel.Name;
             IsDirectional = viewModel.IsDirectional;
+        }
+
+        public void UpdateModel(RedYarn.Relationship model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Relationship ToModel()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -111,6 +111,16 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DiagramController.tt</DependentUpon>
     </Compile>
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\PlotElementController.cs')" Include="Controllers\GeneratedControllers\PlotElementController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotElementController.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Controllers\GeneratedControllers\RelationshipController.cs')" Include="Controllers\GeneratedControllers\RelationshipController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RelationshipController.tt</DependentUpon>
+    </Compile>
     <Compile Condition="!Exists('Controllers\GeneratedControllers\StorylineController.cs')" Include="Controllers\GeneratedControllers\StorylineController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -120,47 +130,24 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TagController.tt</DependentUpon>
-    </Compile>    
+    </Compile>
   </ItemGroup>
+  
   <ItemGroup>
     <None Include="settings.json" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Controllers\GeneratedControllers\AliasController.cs">
+  
+  <ItemGroup>    
+    <Compile Update="Controllers\GeneratedControllers\RelationshipController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AliasController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\AuthorController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AuthorController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\CharacterController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharacterController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\DiagramController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DiagramController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\PlotElementController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>PlotElementController.tt</DependentUpon>
-    </Compile>
+      <DependentUpon>RelationshipController.tt</DependentUpon>
+    </Compile>    
     <Compile Update="Controllers\GeneratedControllers\StorylineController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>StorylineController.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Controllers\GeneratedControllers\TagController.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TagController.tt</DependentUpon>
-    </Compile>
+    </Compile>    
     <Compile Update="Services\GeneratedServices\DatabaseDataService.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -192,6 +179,10 @@
     <None Update="Controllers\GeneratedControllers\PlotElementController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PlotElementController.cs</LastGenOutput>
+    </None>
+    <None Update="Controllers\GeneratedControllers\RelationshipController.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RelationshipController.cs</LastGenOutput>
     </None>
     <None Update="Controllers\GeneratedControllers\StorylineController.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
