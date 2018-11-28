@@ -1,5 +1,7 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
+<#@ assembly name="$(SolutionDir)\Bas.RedYarn.WebApp\bin\Debug\netcoreapp2.1\Bas.RedYarn.WebApp.dll" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="Bas.RedYarn.WebApp.ViewModels" #>
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,7 +55,6 @@ else
 			
 <#	}
 }#>
-
 <# if (EntityHasNode(modelName))
 {#>
 			var node = this.dbContext.<#=modelName#>Nodes.FindByParent(model);
@@ -96,7 +97,7 @@ else
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
 
-			var model = <#=Decapitalize(viewModelName)#>.ToModel();
+			var model = <#=Decapitalize(viewModelName)#>.ToModel(<#=GetToModelArguments(viewModelName)#>);
 <# if (entitiesToAddToDiagram.Contains(modelName))
 {#>
 			var diagram = this.dbContext.Diagrams.Find(diagramId);
@@ -127,7 +128,6 @@ else
 			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property(ShadowPropertyNames.Id).CurrentValue;
 <#}#>
 
-
 			return newViewModel;
         }
 
@@ -150,10 +150,18 @@ else
 			{
 				return (null, false);
 			}
-<#}#>
+<#}
 
+if (modelName == nameof(Relationship))
+{#>
+			<#=Decapitalize(viewModelName)#>.UpdateModel(model, (f,s) => (this.dbContext.Characters.Find(f), this.dbContext.Characters.Find(s)) );			
+<#}
+else
+{#>
 			<#=Decapitalize(viewModelName)#>.UpdateModel(model);			
-<# if (EntityHasNode(modelName))
+<#}
+
+if (EntityHasNode(modelName))
 {#>
 			<#=Decapitalize(viewModelName)#>.UpdateNode(node);
 <#}#>
@@ -218,4 +226,14 @@ Dictionary<string, string> modelIncludes = new Dictionary<string, string>
 				.Include(diagram => diagram.Tags)"
 };
 
+
+Dictionary<string, string> toModelArguments = new Dictionary<string, string>
+{
+	[nameof(RelationshipViewModel)] = "id => this.dbContext.Characters.SingleOrDefault(c => EF.Property<Guid>(c, ShadowPropertyNames.Id) == id)"
+};
+
+private string GetToModelArguments(string viewModelName)
+{
+	return (toModelArguments.Keys.Contains(viewModelName)) ? toModelArguments[viewModelName] : string.Empty;	
+}
 #>

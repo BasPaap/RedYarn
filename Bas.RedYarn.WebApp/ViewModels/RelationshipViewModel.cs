@@ -38,14 +38,34 @@ namespace Bas.RedYarn.WebApp.ViewModels
             IsDirectional = viewModel.IsDirectional;
         }
 
-        public void UpdateModel(RedYarn.Relationship model)
+        public void UpdateModel(RedYarn.Relationship model, Func<Guid, Guid, (Character, Character)> getCharactersFunc = null)
         {
-            throw new NotImplementedException();
+            model.Name = Name;
+            model.IsDirectional = IsDirectional;
+
+            if (getCharactersFunc != null)
+            {
+                (Character firstCharacter, Character secondCharacter) = getCharactersFunc(FirstCharacterId, SecondCharacterId);
+                model.FirstCharacter = firstCharacter;
+                model.SecondCharacter = secondCharacter;
+            }            
         }
 
-        public Relationship ToModel()
+        public Relationship ToModel(Func<Guid, Character> getCharacterFunc = null)
         {
-            throw new NotImplementedException();
+            var relationship = new Relationship()
+            {
+                Name = this.Name,
+                IsDirectional = this.IsDirectional
+            };
+
+            if (getCharacterFunc != null)
+            {
+                relationship.FirstCharacter = getCharacterFunc(this.FirstCharacterId);
+                relationship.SecondCharacter = getCharacterFunc(this.SecondCharacterId);
+            }
+
+            return relationship;
         }
     }
 }

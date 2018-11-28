@@ -1,4 +1,6 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
+<#@ assembly name="$(SolutionDir)\Bas.RedYarn.WebApp\bin\Debug\netcoreapp2.1\Bas.RedYarn.WebApp.dll" #>
+<#@ import namespace="Bas.RedYarn.WebApp.ViewModels" #>
 using Bas.RedYarn.WebApp.Database;
 using Bas.RedYarn.WebApp.Services;
 using Bas.RedYarn.WebApp.ViewModels;
@@ -53,11 +55,23 @@ foreach (var viewModelName in viewModelNames)
 #>
 		protected abstract <#=modelName#> GetTest<#=modelName#>();		
 		protected abstract void Assert<#=modelName#>(<#=modelName#> model);		
-<#	}#>		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>();
-		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>();
-		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);
-		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
+<#	}
 
+	if (viewModelName == nameof(RelationshipViewModel))
+	{#>
+		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel, Func<object, (Guid, Guid)> getIdsForModelFunc);
+		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>(Func<object, (Guid, Guid)> getIdsForModelFunc = null);
+		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>(Func<object, (Guid, Guid)> getIdsForModelFunc = null);
+<#	}
+	else	
+	{#>
+		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);		
+		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>();
+		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>();
+<#	}
+#>		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
+		
+		
 		[TestMethod]
 		public void Get<#=viewModelName#>Async_IdIsUnknown_ReturnsNull()
 		{
@@ -123,7 +137,7 @@ foreach (var viewModelName in viewModelNames)
 			}
 			else
 			{#>
-				var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			
 			}
 			
@@ -132,7 +146,14 @@ foreach (var viewModelName in viewModelNames)
 			var viewModel = this.dataService.Get<#=viewModelName#>Async(<#=newIdArguments#>).Result;
 
 			// Assert
+<#	if (viewModelName == nameof(RelationshipViewModel))
+	{#>
+			Assert<#=viewModelName#>(viewModel, r => (newFirstCharacterId, newSecondCharacterId));
+<#	}
+	else
+	{#>
 			Assert<#=viewModelName#>(viewModel);
+<#	}#>
 		}
 
 		[TestMethod]
@@ -204,7 +225,7 @@ foreach (var viewModelName in viewModelNames)
 			}
 			else
 			{#>
-				var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
 <#			
 			}
 
@@ -236,8 +257,22 @@ foreach (var viewModelName in viewModelNames)
 		public void Create<#=viewModelName#>Async_ViewModelIsValid_AddsModelAndReturnsViewModel()
 		{
 			// Arrange
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
-<#			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
+<#			if (viewModelName == nameof(RelationshipViewModel))
+			{
+#>			var relationship = GetTestRelationship();			
+			this.dbContextToAddTo.Characters.Add(relationship.FirstCharacter);
+			this.dbContextToAddTo.Characters.Add(relationship.SecondCharacter);
+			this.dbContextToAddTo.SaveChanges();
+			Func<object, (Guid, Guid)> getIdsForModelFunc = r => ((Guid)this.dbContextToAddTo.Entry(relationship.FirstCharacter).Property(ShadowPropertyNames.Id).CurrentValue, (Guid)this.dbContextToAddTo.Entry(relationship.SecondCharacter).Property(ShadowPropertyNames.Id).CurrentValue);
+
+			var testRelationshipViewModel = new RelationshipViewModel(relationship, getIdsForModelFunc);
+<#			}
+			else
+			{
+#>			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
+<#			}
+			
+			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
 			{#>
 			var diagram = new Diagram()
 			{
@@ -246,7 +281,8 @@ foreach (var viewModelName in viewModelNames)
 			this.dbContextToAddTo.Diagrams.Add(diagram);
 			this.dbContextToAddTo.SaveChanges();
 			var diagramId = (Guid)this.dbContextToAddTo.Entry(diagram).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}#>
+<#			}
+#>
 
 			// Act
 			var returnedViewModel = this.dataService.Create<#=viewModelName#>Async(<#if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) { #>diagramId, <#}#>test<#=viewModelName#>).Result;
@@ -270,17 +306,33 @@ foreach (var viewModelName in viewModelNames)
 			{#>
 
 			Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("DiagramId").CurrentValue);
-<#			}#>
+<#			}
+
+	if (viewModelName == nameof(RelationshipViewModel))
+	{#>
+			Assert<#=viewModelName#>(returnedViewModel, getIdsForModelFunc);
+<#	}
+	else
+	{#>
 			Assert<#=viewModelName#>(returnedViewModel);
-<#			if (EntityHasNode(modelName))
+<#	}
+
+			if (EntityHasNode(modelName))
 			{#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result, this.dbContextToTest.<#=modelName#>Nodes.SingleAsync().Result);
 <#			}
 			else
-			{#>
+			{
+				if (viewModelName == nameof(RelationshipViewModel))
+				{#>
+			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.Include(r => r.FirstCharacter).Include(r => r.SecondCharacter).SingleAsync().Result);
+<#				}
+				else
+				{#>
 			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result);
-<#			}#>
+<#				}			
+			}#>
 		}
 
 		[TestMethod]

@@ -385,14 +385,14 @@ namespace Bas.RedYarn.WebApp.Tests
             };
         }
 
-        protected override RelationshipViewModel GetTestRelationshipViewModel()
+        protected override RelationshipViewModel GetTestRelationshipViewModel(Func<object, (Guid, Guid)> getIdsForModelFunc)
         {
-            return new RelationshipViewModel(GetTestRelationship());
+            return new RelationshipViewModel(GetTestRelationship(), getIdsForModelFunc);
         }
 
-        protected override RelationshipViewModel GetUpdatedRelationshipViewModel()
+        protected override RelationshipViewModel GetUpdatedRelationshipViewModel(Func<object, (Guid, Guid)> getIdsForModelFunc)
         {
-            var relationshipViewModel = GetTestRelationshipViewModel();
+            var relationshipViewModel = GetTestRelationshipViewModel(getIdsForModelFunc);
             relationshipViewModel.Name = updatedName;
             return relationshipViewModel;
         }
@@ -400,15 +400,15 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override void AssertRelationship(Relationship model)
         {
             var testRelationship = GetTestRelationship();
-            Assert.AreEqual(testRelationship.FirstCharacter, model.FirstCharacter);
-            Assert.AreEqual(testRelationship.SecondCharacter, model.SecondCharacter);
+            Assert.AreEqual(testRelationship.FirstCharacter.Name, model.FirstCharacter.Name);
+            Assert.AreEqual(testRelationship.SecondCharacter.Name, model.SecondCharacter.Name);
             Assert.AreEqual(testRelationship.Name, model.Name);
             Assert.AreEqual(testRelationship.IsDirectional, model.IsDirectional);
         }
        
-        protected override void AssertRelationshipViewModel(RelationshipViewModel viewModel)
+        protected override void AssertRelationshipViewModel(RelationshipViewModel viewModel, Func<object, (Guid, Guid)> getIdsForModelFunc)
         {
-            var testRelationshipViewModel = GetTestRelationshipViewModel();
+            var testRelationshipViewModel = GetTestRelationshipViewModel(getIdsForModelFunc);
             Assert.AreEqual(testRelationshipViewModel.FirstCharacterId, viewModel.FirstCharacterId);
             Assert.AreEqual(testRelationshipViewModel.SecondCharacterId, viewModel.SecondCharacterId);
             Assert.AreEqual(testRelationshipViewModel.Name, viewModel.Name);
