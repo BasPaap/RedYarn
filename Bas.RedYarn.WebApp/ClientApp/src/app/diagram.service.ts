@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Diagram, Character, Storyline, PlotElement } from './diagram-types';
+import { Diagram, Character, Storyline, PlotElement, Relationship } from './diagram-types';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
@@ -13,9 +13,12 @@ export class DiagramService {
   private newCharacterSubject = new Subject<Character>();
   private newStorylineSubject = new Subject<Storyline>();
   private newPlotElementSubject = new Subject<PlotElement>();
+  private newRelationshipSubject = new Subject<Relationship>();
   private updatedCharacterSubject = new Subject<Character>();
   private updatedStorylineSubject = new Subject<Storyline>();
   private updatedPlotElementSubject = new Subject<PlotElement>();
+  private updatedRelationshipSubject = new Subject<Relationship>();
+
 
   public get addedCharactersStream(): Observable<Character> {
     return this.newCharacterSubject.asObservable();
@@ -29,6 +32,10 @@ export class DiagramService {
     return this.newPlotElementSubject.asObservable();
   }
 
+  public get addedRelationshipsStream(): Observable<Relationship> {
+    return this.newRelationshipSubject.asObservable();
+  }
+
   public get updatedCharactersStream(): Observable<Character> {
     return this.updatedCharacterSubject.asObservable();
   }
@@ -39,6 +46,10 @@ export class DiagramService {
 
   public get updatedPlotElementsStream(): Observable<PlotElement> {
     return this.updatedPlotElementSubject.asObservable();
+  }
+
+  public get updatedRelationshipsStream(): Observable<Relationship> {
+    return this.updatedRelationshipSubject.asObservable();
   }
 
 
@@ -58,6 +69,10 @@ export class DiagramService {
 
         for (let plotElement of diagram.plotElements) {
           this.newPlotElementSubject.next(plotElement);
+        }
+
+        for (let relationship of diagram.relationships) {
+          this.newRelationshipSubject.next(relationship);
         }
       })
     );
@@ -103,6 +118,15 @@ export class DiagramService {
     return observable;
   }
 
+
+  public createRelationship(relationshipViewModel: Relationship): Observable<Relationship> {
+    let observable = this.httpClient.post<Relationship>(`${this.apiUrl}relationship`, relationshipViewModel).pipe(
+      tap(model => this.newRelationshipSubject.next(relationshipViewModel))
+    );
+
+    return observable;
+  }
+  
   public updateCharacter(characterViewModel: Character): Observable<Character> {
     return this.updateNodeItem("character", characterViewModel.id, characterViewModel, this.updatedCharacterSubject);
   }
@@ -118,6 +142,14 @@ export class DiagramService {
   private updateNodeItem<T>(controllerName: string, id: string, model: T, subject: Subject<T>): Observable<T> {
     let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, model).pipe(
       tap(_ => subject.next(model)) // Put operations return no value so we don't need any arguments here, just send the node we sent to the server to the stream.
+    );
+
+    return observable;
+  }
+
+  public updateRelationship(relationshipViewModel: Relationship): Observable<Relationship> {
+    let observable = this.httpClient.put<Relationship>(`${this.apiUrl}relationship/${relationshipViewModel.fromCharacterId}/${relationshipViewModel.toCharacterId}`, relationshipViewModel).pipe(
+      tap(_ => this.updatedRelationshipSubject.next(relationshipViewModel))
     );
 
     return observable;

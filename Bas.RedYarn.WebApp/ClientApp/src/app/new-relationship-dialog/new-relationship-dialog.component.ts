@@ -15,16 +15,15 @@ export class NewRelationshipDialogComponent extends DialogComponent implements O
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
 
-      //let storylineViewModel = {
-      //  id: "00000000-0000-0000-0000-000000000000",
-      //  name: this.formGroup.controls['name'].value,
-      //  description: this.formGroup.controls['description'].value,
-      //  xPosition: 0,
-      //  yPosition: 0
-      //};
+      let relationshipViewModel = {
+        fromCharacterId: "???",
+        toCharacterId: "???",
+        isDirectional: true,
+        name: this.formGroup.controls['name'].value
+      };
 
-      //this.diagramService.createStoryline(storylineViewModel)
-      //  .subscribe(() => this.dialogRef.close());
+      this.diagramService.createRelationship(relationshipViewModel)
+        .subscribe(() => this.dialogRef.close());
     }
   }
 
