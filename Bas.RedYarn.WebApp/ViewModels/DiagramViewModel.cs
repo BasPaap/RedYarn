@@ -22,8 +22,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Collection<PlotElementViewModel> PlotElements { get; } = new Collection<PlotElementViewModel>();
         public Collection<AliasViewModel> Aliases { get; } = new Collection<AliasViewModel>();
         public Collection<RelationshipViewModel> Relationships { get; } = new Collection<RelationshipViewModel>();
-        public Collection<StorylineConnectionViewModel> StorylineCharacterConnections { get; } = new Collection<StorylineConnectionViewModel>();
-        public Collection<StorylineConnectionViewModel> StorylinePlotElementConnections { get; } = new Collection<StorylineConnectionViewModel>();
+        public Collection<ConnectionViewModel> StorylineCharacterConnections { get; } = new Collection<ConnectionViewModel>();
+        public Collection<ConnectionViewModel> StorylinePlotElementConnections { get; } = new Collection<ConnectionViewModel>();
         public Collection<PlotElementConnectionViewModel> CharacterPlotElementConnections { get; } = new Collection<PlotElementConnectionViewModel>();
 
         public DiagramViewModel()
@@ -108,10 +108,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
             {
                 foreach (var plotElement in storyline.PlotElements)
                 {
-                    StorylinePlotElementConnections.Add(new StorylineConnectionViewModel()
-                    {
-                        ConnectionId = plotElementDictionary[plotElement].Id,
-                        StorylineId = storylineDictionary[storyline].Id
+                    StorylinePlotElementConnections.Add(new ConnectionViewModel()
+                    {                        
+                        FromNodeId = plotElementDictionary[plotElement].Id,
+                        ToNodeId = storylineDictionary[storyline].Id
                     });
                 }
             }
@@ -149,10 +149,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
             {
                 foreach (var character in storyline.Characters)
                 {
-                    StorylineCharacterConnections.Add(new StorylineConnectionViewModel()
+                    StorylineCharacterConnections.Add(new ConnectionViewModel()
                     {
-                        ConnectionId = characterDictionary[character].Id,
-                        StorylineId = storylineDictionary[storyline].Id
+                        FromNodeId = characterDictionary[character].Id,
+                        ToNodeId = storylineDictionary[storyline].Id
                     });
                 }
             }
