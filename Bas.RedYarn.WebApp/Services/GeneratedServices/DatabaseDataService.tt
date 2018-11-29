@@ -1,7 +1,5 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
-<#@ assembly name="$(SolutionDir)\Bas.RedYarn.WebApp\bin\Debug\netcoreapp2.1\Bas.RedYarn.WebApp.dll" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ import namespace="Bas.RedYarn.WebApp.ViewModels" #>
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -229,7 +227,7 @@ Dictionary<string, string> modelIncludes = new Dictionary<string, string>
 
 Dictionary<string, string> toModelArguments = new Dictionary<string, string>
 {
-	[nameof(RelationshipViewModel)] = "id => this.dbContext.Characters.SingleOrDefault(c => EF.Property<Guid>(c, ShadowPropertyNames.Id) == id)"
+	["RelationshipViewModel"] = "id => this.dbContext.Characters.SingleOrDefault(c => EF.Property<Guid>(c, ShadowPropertyNames.Id) == id)"
 };
 
 private string GetToModelArguments(string viewModelName)
