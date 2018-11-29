@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NewRelationshipUiService } from './new-relationship-ui.service';
+import { NewRelationshipUIService } from './new-relationship-ui.service';
 
 describe('NewRelationshipUiService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
