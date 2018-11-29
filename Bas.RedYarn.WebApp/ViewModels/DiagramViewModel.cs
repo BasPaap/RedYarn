@@ -125,8 +125,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 {
                     CharacterPlotElementConnections.Add(new PlotElementConnectionViewModel()
                     {
-                        PlotElementId = plotElementDictionary[neededPlotElement].Id,
-                        CharacterId = characterDictionary[character].Id,
+                        FromNodeId = plotElementDictionary[neededPlotElement].Id,
+                        ToNodeId = characterDictionary[character].Id,
                         CharacterOwnsPlotElement = false
                     });
                 }
@@ -135,8 +135,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 {
                     CharacterPlotElementConnections.Add(new PlotElementConnectionViewModel()
                     {
-                        PlotElementId = plotElementDictionary[ownedPlotElement].Id,
-                        CharacterId = characterDictionary[character].Id,
+                        FromNodeId = plotElementDictionary[ownedPlotElement].Id,
+                        ToNodeId = characterDictionary[character].Id,
                         CharacterOwnsPlotElement = true
                     });
                 }

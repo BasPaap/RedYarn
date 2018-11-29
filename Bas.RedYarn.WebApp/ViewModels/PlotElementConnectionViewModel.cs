@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.ViewModels
 {
-    public sealed class PlotElementConnectionViewModel
+    public sealed class PlotElementConnectionViewModel : ConnectionViewModel
     {
-        public Guid CharacterId { get; set; }
-        public Guid PlotElementId { get; set; }
         public bool CharacterOwnsPlotElement { get; set; }
 
         public PlotElementConnectionViewModel()
@@ -16,9 +14,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
         }
 
         public PlotElementConnectionViewModel(PlotElementConnectionViewModel viewModel)
+            : base(viewModel)
         {
-            CharacterId = viewModel.CharacterId;
-            PlotElementId = viewModel.PlotElementId;
             CharacterOwnsPlotElement = viewModel.CharacterOwnsPlotElement;
         }
     }
