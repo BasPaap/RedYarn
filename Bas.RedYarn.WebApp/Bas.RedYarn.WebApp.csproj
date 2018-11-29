@@ -138,6 +138,16 @@
   </ItemGroup>
   
   <ItemGroup>    
+    <Compile Update="Controllers\GeneratedControllers\CharacterController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterController.tt</DependentUpon>
+    </Compile>    
+    <Compile Update="Controllers\GeneratedControllers\PlotElementController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>PlotElementController.tt</DependentUpon>
+    </Compile>    
     <Compile Update="Controllers\GeneratedControllers\RelationshipController.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

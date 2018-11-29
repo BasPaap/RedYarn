@@ -43,6 +43,51 @@ private void WriteEnd()
 <#+
 }
 
+private void WriteKeyAssert(string subjectName, string viewModelInstanceName)
+{
+	if (modelsWithCompositeKeys.Keys.Contains(subjectName))
+	{
+		foreach (var key in modelsWithCompositeKeys[subjectName])
+		{
+			WriteLine($"\t\t\tAssert.AreEqual({viewModelInstanceName}.{key}, this.dataService.{subjectName}ViewModels.Single().{key});");
+		}
+	}
+	else
+	{
+		WriteLine($"\t\t\tAssert.AreEqual({viewModelInstanceName}.Id, this.dataService.{subjectName}ViewModels.Single().Id);");
+	}
+}
+
+private void WriteKeyAssert(string subjectName, string viewModelInstanceName, string owningInstanceName)
+{
+	if (modelsWithCompositeKeys.Keys.Contains(subjectName))
+	{
+		foreach (var key in modelsWithCompositeKeys[subjectName])
+		{
+			WriteLine($"\t\t\tAssert.AreEqual({viewModelInstanceName}.{key}, {owningInstanceName}.{key});");
+		}
+	}
+	else
+	{
+		WriteLine($"\t\t\tAssert.AreEqual({viewModelInstanceName}.Id, this.dataService.{subjectName}ViewModels.Single().Id);");
+	}
+}
+
+private void WriteInvalidIdPath(string subjectName)
+{
+	if (modelsWithCompositeKeys.Keys.Contains(subjectName))
+	{
+		for (int i=0; i < modelsWithCompositeKeys[subjectName].Count; ++i)
+		{
+			Write(Guid.NewGuid().ToString() + "/");
+		}
+	}
+	else
+	{
+		Write(Guid.NewGuid().ToString());
+	}
+}
+
 private string GetSubjectName(string unitUnderTestName)
 {
 	return unitUnderTestName.Substring(0, unitUnderTestName.IndexOf("Controller"));
@@ -69,15 +114,38 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 		[TestMethod]
 		public void Create<#= subjectName #>_ArgumentIsOk_CreatesObjectAndReturns201Created()
 		{
-			// Arrange
+<#+
+	if (subjectName == nameof(Relationship))
+	{#>
+			var firstCharacter = new CharacterViewModel()
+			{
+				Id = Guid.NewGuid(),
+				Name = "FirstCharacter"
+			};
+			this.dataService.CharacterViewModels.Add(firstCharacter);
+
+			var secondCharacter = new CharacterViewModel()
+			{
+				Id = Guid.NewGuid(),
+				Name = "SecondCharacter"
+			};
+			this.dataService.CharacterViewModels.Add(secondCharacter);
+<#+	}
+
+#>			// Arrange
 			var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
 			{
-				Name = "New<#=viewModelTypeName#>"
+<#+
+	if (subjectName == nameof(Relationship))
+	{
+#>				FirstCharacterId = firstCharacter.Id,
+				SecondCharacterId = secondCharacter.Id,
+<#+	}
+#>				Name = "New<#=viewModelTypeName#>"
 			};
-
 <#+			if (entitiesToAddToDiagram.Contains(subjectName))
-			{#>
-			var diagramViewModel = new DiagramViewModel()
+			{
+#>			var diagramViewModel = new DiagramViewModel()
             {
                 Name = "Diagram",
                 Id = Guid.NewGuid()
@@ -93,10 +161,10 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 			Assert.IsNotNull(result);
             Assert.IsNotNull(content);
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
-            Assert.AreEqual($"/api/<#=subjectName#>/{content.Id.ToString()}", result.Headers.Location.PathAndQuery);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=subjectName#>ViewModels.Single().Name);
-            Assert.AreEqual(content.Id, this.dataService.<#=subjectName#>ViewModels.Single().Id);
-		}
+            Assert.AreEqual($"/api/<#=subjectName#>/<#=GetIdPath(subjectName, "content")#>", result.Headers.Location.PathAndQuery);
+			Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=subjectName#>ViewModels.Single().Name);<#+
+		WriteKeyAssert(subjectName, "content"); 
+#>		}
 
 		[TestMethod]
         public void Create<#=subjectName#>_WithInvalidModel_Returns400BadRequest()
@@ -113,8 +181,14 @@ private void WriteCreateTests(string unitUnderTestName, string subjectName, stri
 <#+			}#>
             
             // Act
-            var result = (httpClient.PostAsync($"api/<#=subjectName#><#+ if (entitiesToAddToDiagram.Contains(subjectName)) { #>/{diagramViewModel.Id}<#+}#>", (new <#=viewModelTypeName#>()).ToJsonStringContent())).Result;
-
+<#+ if (subjectName == nameof(Relationship))
+    {#>
+			var result = (httpClient.PostAsync($"api/<#=subjectName#><#+ if (entitiesToAddToDiagram.Contains(subjectName)) { #>/{diagramViewModel.Id}<#+}#>", (new System.Text.StringBuilder()).ToJsonStringContent())).Result;
+<#+	}
+	else
+	{#>
+	        var result = (httpClient.PostAsync($"api/<#=subjectName#><#+ if (entitiesToAddToDiagram.Contains(subjectName)) { #>/{diagramViewModel.Id}<#+}#>", (new <#=viewModelTypeName#>()).ToJsonStringContent())).Result;
+<#+	}#>
             // Assert          
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -157,24 +231,24 @@ private void WriteUpdateTests(string unitUnderTestName, string subjectName, stri
             // Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
             {
-                Id = Guid.NewGuid(),
+                <#=GetNewIdProperties(subjectName, "\t\t\t\t")#>,
                 Name = "New<#=subjectName#>"
             };
 
             var updated<#=viewModelTypeName#> = new <#=viewModelTypeName#>()
             {
-                Id = <#=viewModelInstanceName#>.Id,
+                <#=GetNewIdProperties(subjectName, "\t\t\t\t", viewModelInstanceName)#>,
                 Name = "UpdatedNew<#=subjectName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelTypeName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
+            var result = (httpClient.PutAsync($"api/<#=subjectName#>/<#=GetIdPath(subjectName, viewModelInstanceName)#>", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
-            Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Id);
+			<#+ WriteKeyAssert(subjectName, viewModelInstanceName); #>			
             Assert.AreEqual(updated<#=viewModelTypeName#>.Name, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Name);
         }
 
@@ -184,18 +258,18 @@ private void WriteUpdateTests(string unitUnderTestName, string subjectName, stri
             // Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
             {
-                Id = Guid.NewGuid(),
+                <#=GetNewIdProperties(subjectName, "\t\t\t\t")#>,
                 Name = "New<#=subjectName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelTypeName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}", string.Empty.ToJsonStringContent())).Result;
+            var result = (httpClient.PutAsync($"api/<#=subjectName#>/<#=GetIdPath(subjectName, viewModelInstanceName)#>", string.Empty.ToJsonStringContent())).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
-            Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Id);
+			<#+	WriteKeyAssert(subjectName, viewModelInstanceName); #>			
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Name);
         }
 
@@ -205,24 +279,24 @@ private void WriteUpdateTests(string unitUnderTestName, string subjectName, stri
             // Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
             {
-                Id = Guid.NewGuid(),
+                <#=GetNewIdProperties(subjectName, "\t\t\t\t")#>,
                 Name = "New<#=subjectName#>"
             };
 
             var updated<#=viewModelTypeName#> = new <#=viewModelTypeName#>()
             {
-                Id = <#=viewModelInstanceName#>.Id,
+                <#=GetNewIdProperties(subjectName, "\t\t\t\t", viewModelInstanceName)#>,
                 Name = "UpdatedNew<#=subjectName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelTypeName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=subjectName#>/4ECDD1BB-28D8-49FC-BF6D-CB4AA4716B1A", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
+            var result = (httpClient.PutAsync($"api/<#=subjectName#>/<#+ WriteInvalidIdPath(subjectName); #>", updated<#=viewModelTypeName#>.ToJsonStringContent())).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
-            Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Id);
+<#+			WriteKeyAssert(subjectName, viewModelInstanceName); #>			
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Name);
         }
 		#endregion
@@ -242,14 +316,14 @@ private void WriteDeleteTests(string unitUnderTestName, string subjectName, stri
             // Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
             {
-                Id = Guid.NewGuid(),
+                <#=GetNewIdProperties(subjectName, "\t\t\t\t")#>,
                 Name = "New<#=subjectName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelTypeName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}")).Result;
+            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>/<#=GetIdPath(subjectName, viewModelInstanceName)#>")).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
@@ -262,18 +336,18 @@ private void WriteDeleteTests(string unitUnderTestName, string subjectName, stri
             // Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
             {
-                Id = Guid.NewGuid(),
+                <#=GetNewIdProperties(subjectName, "\t\t\t\t")#>,
                 Name = "New<#=subjectName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelTypeName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>/4ECDD1BB-28D8-49FC-BF6D-CB4AA4716B1A")).Result;
+            var result = (httpClient.DeleteAsync($"api/<#=subjectName#>/<#+ WriteInvalidIdPath(subjectName); #>")).Result;
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
-            Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Id);
+			<#+ WriteKeyAssert(subjectName, viewModelInstanceName); #>			
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelTypeName)#>.Single().Name);
         }
 		#endregion
@@ -293,20 +367,20 @@ private void WriteGetTests(string unitUnderTestName, string subjectName, string 
 			// Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
 			{
-				Id = Guid.NewGuid(),
+				<#=GetNewIdProperties(subjectName, "\t\t\t\t")#>,
 				Name = "New<#=viewModelTypeName#>"
 			};
 			this.dataService.<#= subjectName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.GetAsync($"api/<#=subjectName#>/{<#=viewModelInstanceName#>.Id}")).Result;
+            var result = (httpClient.GetAsync($"api/<#=subjectName#>/<#=GetIdPath(subjectName, viewModelInstanceName)#>")).Result;
 
             // Assert
 			var content = result.Content.FromJsonString<<#=viewModelTypeName#>>();
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(content);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, content.Id);
+			<#+ WriteKeyAssert(subjectName, viewModelInstanceName, "content"); #>
 			Assert.AreEqual(<#=viewModelInstanceName#>.Name, content.Name);
 		}
 
@@ -316,13 +390,13 @@ private void WriteGetTests(string unitUnderTestName, string subjectName, string 
             // Arrange
             var <#=viewModelInstanceName#> = new <#=viewModelTypeName#>()
 			{
-				Id = Guid.NewGuid(),
+				<#=GetNewIdProperties(subjectName, "\t\t\t\t")#>,
 				Name = "New<#=viewModelTypeName#>"
 			};
 			this.dataService.<#= subjectName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.GetAsync("api/<#=subjectName#>/28BABB19-2A14-421D-9147-26F1D0903F5A")).Result;
+            var result = (httpClient.GetAsync("api/<#=subjectName#>/<#+ WriteInvalidIdPath(subjectName); #>")).Result;
 
             // Assert
 			Assert.IsNotNull(result);

@@ -95,6 +95,54 @@ private string GetIdParameters(string modelName)
 	}
 }
 
+private string GetIdRoute(string modelName)
+{
+	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{	
+		return string.Join("/", modelsWithCompositeKeys[modelName].Select(i => $"{{{Decapitalize(i)}}}"));
+	}
+	else
+	{
+		return "{id}";
+	}
+}
+
+private string GetIdPath(string modelName, string owningObjectName)
+{
+	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{	
+		return string.Join("/", modelsWithCompositeKeys[modelName].Select(i => $"{{{owningObjectName}.{i}.ToString()}}"));
+	}
+	else
+	{
+		return $"{{{owningObjectName}.Id}}";
+	}
+}
+
+private string GetNewIdProperties(string modelName, string indentation)
+{
+	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{	
+		return string.Join($",{Environment.NewLine}{indentation}", modelsWithCompositeKeys[modelName].Select(i => $"{i} = Guid.NewGuid()"));
+	}
+	else
+	{
+		return "Id = Guid.NewGuid()";
+	}
+}
+
+private string GetNewIdProperties(string modelName, string indentation, string owningObjectName)
+{
+	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	{	
+		return string.Join($",{Environment.NewLine}{indentation}", modelsWithCompositeKeys[modelName].Select(i => $"{i} = {owningObjectName}.{i}"));
+	}
+	else
+	{
+		return "Id = Guid.NewGuid()";
+	}
+}
+
 private string GetLinqWhereClauseForIds(string modelName)
 {
 	if (modelsWithCompositeKeys.Keys.Contains(modelName))

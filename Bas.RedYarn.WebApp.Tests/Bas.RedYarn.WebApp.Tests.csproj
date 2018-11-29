@@ -92,6 +92,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiagramControllerTest.cs</LastGenOutput>
     </None>
+    <None Update="GeneratedTests\RelationshipControllerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>RelationshipControllerTest.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\StorylineControllerTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>StorylineControllerTest.cs</LastGenOutput>
@@ -146,17 +150,27 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AliasControllerTest.tt</DependentUpon>
     </Compile>
+    <Compile Condition="!Exists('GeneratedTests\RelationshipControllerTest.cs')" Include="GeneratedTests\RelationshipControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RelationshipControllerTest.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="GeneratedTests\DatabaseDataServiceTestBase.cs">
+    <Compile Update="GeneratedTests\CharacterControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
+      <DependentUpon>CharacterControllerTest.tt</DependentUpon>
     </Compile>
-    <Compile Update="Services\TestDataService.cs">
+    <Compile Update="GeneratedTests\DiagramControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>TestDataService.tt</DependentUpon>
+      <DependentUpon>DiagramControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\RelationshipControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RelationshipControllerTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   
