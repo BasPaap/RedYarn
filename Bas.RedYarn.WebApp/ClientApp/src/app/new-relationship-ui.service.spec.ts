@@ -6,7 +6,7 @@ describe('NewRelationshipUiService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: NewRelationshipUiService = TestBed.get(NewRelationshipUiService);
+    const service: NewRelationshipUIService = TestBed.get(NewRelationshipUIService);
     expect(service).toBeTruthy();
   });
 });
