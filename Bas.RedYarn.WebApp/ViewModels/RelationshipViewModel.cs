@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.ViewModels
 {
-    public sealed class RelationshipViewModel
+    public sealed class RelationshipViewModel : ConnectionViewModel
     {
-        public Guid FirstCharacterId { get; set; }
-        public Guid SecondCharacterId { get; set; }
         public string Name { get; set; }
         public bool IsDirectional { get; set; }
 
@@ -20,10 +18,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
             if (getIdsForModelFunc != null)
             {
-                (Guid firstCharacterId, Guid secondCharacterId) = getIdsForModelFunc(model);
+                (Guid fromNodeId, Guid toNodeId) = getIdsForModelFunc(model);
 
-                FirstCharacterId = firstCharacterId;
-                SecondCharacterId = secondCharacterId;
+                FromNodeId = fromNodeId;
+                ToNodeId = toNodeId;
             }
 
             Name = model.Name;
@@ -31,9 +29,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
         }
 
         public RelationshipViewModel(RelationshipViewModel viewModel)
+            :base(viewModel)
         {
-            FirstCharacterId = viewModel.FirstCharacterId;
-            SecondCharacterId = viewModel.SecondCharacterId;
             Name = viewModel.Name;
             IsDirectional = viewModel.IsDirectional;
         }
@@ -45,7 +42,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
 
             if (getCharactersFunc != null)
             {
-                (Character firstCharacter, Character secondCharacter) = getCharactersFunc(FirstCharacterId, SecondCharacterId);
+                (Character firstCharacter, Character secondCharacter) = getCharactersFunc(FromNodeId, ToNodeId);
                 model.FirstCharacter = firstCharacter;
                 model.SecondCharacter = secondCharacter;
             }            
@@ -61,8 +58,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
 
             if (getCharacterFunc != null)
             {
-                relationship.FirstCharacter = getCharacterFunc(this.FirstCharacterId);
-                relationship.SecondCharacter = getCharacterFunc(this.SecondCharacterId);
+                relationship.FirstCharacter = getCharacterFunc(this.FromNodeId);
+                relationship.SecondCharacter = getCharacterFunc(this.ToNodeId);
             }
 
             return relationship;

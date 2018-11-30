@@ -28,12 +28,12 @@ static List<string> modelNames = new List<string>
 
 Dictionary<string, List<string>> modelsWithCompositeKeys = new Dictionary<string, List<string>>
 {
-	[nameof(Relationship)] = new System.Collections.Generic.List<string> { "FirstCharacterId", "SecondCharacterId" }
+	[nameof(Relationship)] = new System.Collections.Generic.List<string> { "FromNodeId", "ToNodeId" }
 };
 
 Dictionary<string, string> modelsWithNonStandardGetIdForModelFuncs = new Dictionary<string, string>()
 {
-	[nameof(Relationship)] = "(m) => ((Guid)this.dbContext.Entry(m).Property(\"FirstCharacterId\").CurrentValue, (Guid)this.dbContext.Entry(m).Property(\"SecondCharacterId\").CurrentValue)"
+	[nameof(Relationship)] = "(m) => ((Guid)this.dbContext.Entry(m).Property(ShadowPropertyNames.FromNodeId).CurrentValue, (Guid)this.dbContext.Entry(m).Property(ShadowPropertyNames.ToNodeId).CurrentValue)"
 };
 
 private int GetNumIdParameters(string modelName)

@@ -173,26 +173,28 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "Relationships",
                 columns: table => new
                 {
-                    FirstCharacterId = table.Column<string>(nullable: false),
-                    SecondCharacterId = table.Column<string>(nullable: false),
+                    FirstCharacterId = table.Column<string>(nullable: true),
+                    SecondCharacterId = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
-                    IsDirectional = table.Column<bool>(nullable: false)
+                    IsDirectional = table.Column<bool>(nullable: false),
+                    FromNodeId = table.Column<string>(nullable: false),
+                    ToNodeId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Relationships", x => new { x.FirstCharacterId, x.SecondCharacterId });
+                    table.PrimaryKey("PK_Relationships", x => new { x.FromNodeId, x.ToNodeId });
                     table.ForeignKey(
                         name: "FK_Relationships_Characters_FirstCharacterId",
                         column: x => x.FirstCharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Relationships_Characters_SecondCharacterId",
                         column: x => x.SecondCharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -380,6 +382,11 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "IX_PlotElements_DiagramId",
                 table: "PlotElements",
                 column: "DiagramId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Relationships_FirstCharacterId",
+                table: "Relationships",
+                column: "FirstCharacterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Relationships_SecondCharacterId",

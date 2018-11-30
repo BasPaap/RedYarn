@@ -119,17 +119,25 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
 
             modelBuilder.Entity("Bas.RedYarn.Relationship", b =>
                 {
-                    b.Property<string>("FirstCharacterId")
+                    b.Property<string>("FromNodeId")
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
-                    b.Property<string>("SecondCharacterId")
+                    b.Property<string>("ToNodeId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
+
+                    b.Property<string>("FirstCharacterId")
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
                     b.Property<bool>("IsDirectional");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("FirstCharacterId", "SecondCharacterId");
+                    b.Property<string>("SecondCharacterId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
+
+                    b.HasKey("FromNodeId", "ToNodeId");
+
+                    b.HasIndex("FirstCharacterId");
 
                     b.HasIndex("SecondCharacterId");
 
@@ -350,13 +358,11 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 {
                     b.HasOne("Bas.RedYarn.Character", "FirstCharacter")
                         .WithMany()
-                        .HasForeignKey("FirstCharacterId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("FirstCharacterId");
 
                     b.HasOne("Bas.RedYarn.Character", "SecondCharacter")
                         .WithMany()
-                        .HasForeignKey("SecondCharacterId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SecondCharacterId");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.Storyline", b =>

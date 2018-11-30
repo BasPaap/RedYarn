@@ -59,14 +59,14 @@ namespace Bas.RedYarn.WebApp.Database
                 .WithMany();
 
             modelBuilder.Entity<Relationship>()
-                .Property<Guid>("FirstCharacterId")
+                .Property<Guid>(ShadowPropertyNames.FromNodeId)
                 .HasConversion<string>();
             modelBuilder.Entity<Relationship>()
-                .Property<Guid>("SecondCharacterId")
+                .Property<Guid>(ShadowPropertyNames.ToNodeId)
                 .HasConversion<string>();
 
             modelBuilder.Entity<Relationship>()
-                .HasKey("FirstCharacterId", "SecondCharacterId");
+                .HasKey(ShadowPropertyNames.FromNodeId, ShadowPropertyNames.ToNodeId);
         }
 
         private void CreateModelForJoinTableEntities(ModelBuilder modelBuilder)

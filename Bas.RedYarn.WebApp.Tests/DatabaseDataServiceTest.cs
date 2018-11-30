@@ -409,8 +409,8 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override void AssertRelationshipViewModel(RelationshipViewModel viewModel, Func<object, (Guid, Guid)> getIdsForModelFunc)
         {
             var testRelationshipViewModel = GetTestRelationshipViewModel(getIdsForModelFunc);
-            Assert.AreEqual(testRelationshipViewModel.FirstCharacterId, viewModel.FirstCharacterId);
-            Assert.AreEqual(testRelationshipViewModel.SecondCharacterId, viewModel.SecondCharacterId);
+            Assert.AreEqual(testRelationshipViewModel.FromNodeId, viewModel.FromNodeId);
+            Assert.AreEqual(testRelationshipViewModel.ToNodeId, viewModel.ToNodeId);
             Assert.AreEqual(testRelationshipViewModel.Name, viewModel.Name);
             Assert.AreEqual(testRelationshipViewModel.IsDirectional, viewModel.IsDirectional);
         }

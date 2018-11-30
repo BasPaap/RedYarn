@@ -138,8 +138,8 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 <#+
 	if (modelName == nameof(Relationship))
 	{
-#>				FirstCharacterId = firstCharacter.Id,
-				SecondCharacterId = secondCharacter.Id,
+#>				FromNodeId = firstCharacter.Id,
+				ToNodeId = secondCharacter.Id,
 <#+	}
 #>				Name = "New<#=viewModelName#>"
 			};

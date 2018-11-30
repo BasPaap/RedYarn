@@ -148,7 +148,7 @@ foreach (var viewModelName in viewModelNames)
 			// Assert
 <#	if (viewModelName == nameof(RelationshipViewModel))
 	{#>
-			Assert<#=viewModelName#>(viewModel, r => (newFirstCharacterId, newSecondCharacterId));
+			Assert<#=viewModelName#>(viewModel, r => (newFromNodeId, newToNodeId));
 <#	}
 	else
 	{#>
