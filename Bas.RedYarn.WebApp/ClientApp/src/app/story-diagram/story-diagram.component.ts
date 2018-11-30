@@ -88,10 +88,27 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramService.addedCharactersStream, this.visNetworkGeneratorService.getCharacterNode.bind(this.visNetworkGeneratorService));
     this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramService.addedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode.bind(this.visNetworkGeneratorService));
     this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramService.addedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode.bind(this.visNetworkGeneratorService));
+    this.subscriptions['newRelationship'] = this.subscribeToNewConnectionStream(this.diagramService.addedRelationshipsStream, this.visNetworkGeneratorService.getRelationshipConnection.bind(this.visNetworkGeneratorService));
     this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedCharactersStream, this.visNetworkGeneratorService.getCharacterNode.bind(this.visNetworkGeneratorService));
     this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode.bind(this.visNetworkGeneratorService));
     this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode.bind(this.visNetworkGeneratorService));
+    this.subscriptions['updatedRelationship'] = this.subscribeToUpdatedConnectionStream(this.diagramService.updatedRelationshipsStream, this.visNetworkGeneratorService.getRelationshipConnection.bind(this.visNetworkGeneratorService));
   }
+
+  private subscribeToNewConnectionStream<T>(service: Observable<T>, getEdge: (item: T) => any): Subscription {
+    return service.subscribe(item => {
+      let newEdge = getEdge(item);
+      this.networkData["edges"].add(newEdge);
+    });
+  }
+
+  private subscribeToUpdatedConnectionStream<T>(service: Observable<T>, getEdge: (item: T) => any): Subscription {
+    return service.subscribe(item => {
+      let updatedEdge = getEdge(item);
+      this.networkData["edges"][updatedEdge.id] = updatedEdge;
+    });
+  }
+
 
   private subscribeToNewNodeStream<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
     return service.subscribe(item => {

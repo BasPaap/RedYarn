@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Character, Storyline, StorylineCharacterConnection, StorylinePlotElementConnection, PlotElement, PlotElementConnection } from './diagram-types';
+import { Character, Storyline, PlotElement, Connection, Relationship } from './diagram-types';
 import { SettingsService } from './settings.service';
 
 @Injectable({
@@ -8,7 +8,21 @@ import { SettingsService } from './settings.service';
 export class VisNetworkGeneratorService {
 
   constructor(private settingsService: SettingsService) { }
-    
+
+  public getRelationshipConnection(relationship: Relationship) {
+    return {
+      arrows: relationship.isDirectional ? 'to' : undefined,
+      from: relationship.fromNodeId,
+      to: relationship.toNodeId,
+      label: relationship.name,
+      smooth: {
+        type: "continuous",
+        forceDirection: "none"
+      },
+      color: { color: 'rgba(255,0,0,1)', highlight: 'rgba(255,0,0,1)' },
+    };
+  }
+
   public getStorylineNode(storyline: Storyline) {
     return {
       id: storyline.id,

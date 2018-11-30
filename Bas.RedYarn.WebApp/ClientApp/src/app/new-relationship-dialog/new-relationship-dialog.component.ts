@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Validators, FormControl } from '@angular/forms';
 import { DiagramService } from '../diagram.service';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-new-relationship-dialog',
@@ -10,14 +10,18 @@ import { MatDialogRef } from '@angular/material';
   styleUrls: ['./new-relationship-dialog.component.scss']
 })
 export class NewRelationshipDialogComponent extends DialogComponent implements OnInit {
-  
+
+  private fromNodeId: string;
+  private toNodeId: string;
+
   public createRelationship(): void {
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
 
       let relationshipViewModel = {
-        fromCharacterId: "???",
-        toCharacterId: "???",
+        id: `${this.fromNodeId}-${this.toNodeId}-${this.formGroup.controls['name'].value}`,
+        fromNodeId: this.fromNodeId,
+        toNodeId: this.toNodeId,
         isDirectional: true,
         name: this.formGroup.controls['name'].value
       };
@@ -27,10 +31,12 @@ export class NewRelationshipDialogComponent extends DialogComponent implements O
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewRelationshipDialogComponent>, private diagramService: DiagramService) {
+  constructor(private dialogRef: MatDialogRef<NewRelationshipDialogComponent>, private diagramService: DiagramService, @Inject(MAT_DIALOG_DATA) data) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
+    this.fromNodeId = data.fromNodeId;
+    this.toNodeId = data.toNodeId;
   }
 
   ngOnInit() {

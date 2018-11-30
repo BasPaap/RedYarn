@@ -148,7 +148,7 @@ export class DiagramService {
   }
 
   public updateRelationship(relationshipViewModel: Relationship): Observable<Relationship> {
-    let observable = this.httpClient.put<Relationship>(`${this.apiUrl}relationship/${relationshipViewModel.fromCharacterId}/${relationshipViewModel.toCharacterId}`, relationshipViewModel).pipe(
+    let observable = this.httpClient.put<Relationship>(`${this.apiUrl}relationship/${relationshipViewModel.fromNodeId}/${relationshipViewModel.toNodeId}`, relationshipViewModel).pipe(
       tap(_ => this.updatedRelationshipSubject.next(relationshipViewModel))
     );
 

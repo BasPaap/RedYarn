@@ -4,6 +4,12 @@ export interface Node {
   yPosition: number;
 }
 
+export interface Connection {
+  id: string;
+  fromNodeId: string;
+  toNodeId: string;
+}
+
 export interface Alias {
   name: string;
 }
@@ -24,9 +30,7 @@ export interface PlotElement extends Node {
   description: string;
 }
 
-export interface Relationship {
-  fromCharacterId: string;
-  toCharacterId: string;
+export interface Relationship extends Connection {
   name: string;
   isDirectional: boolean;
 }
@@ -52,12 +56,6 @@ export interface Diagram {
   storylineCharacterConnections: StorylineCharacterConnection[];
   storylinePlotElementConnections: StorylinePlotElementConnection[];
   characterPlotElementConnections: PlotElementConnection[];
-  characterAliasConnections: AliasConnection[];
-}
-
-export interface AliasConnection {
-  aliasId: string;
-  characterId: string;
 }
 
 export interface PlotElementConnection {

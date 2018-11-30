@@ -6,7 +6,7 @@ import { SettingsService } from './settings.service';
 import { DiagramDrawingService } from './diagram-drawing.service';
 import { VisNetworkDirective } from './vis-network.directive';
 import { NewRelationshipDialogComponent } from './new-relationship-dialog/new-relationship-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +45,13 @@ export class NewRelationshipUIService {
           // If there happens to be a "from" node and the mouse is over a different node, that means we've dragged the arrow from one node to another,
           // and need to create a relationship.
           if (this.fromNodeLayoutId && closestNodeLayout.isOverNode(canvasX, canvasY) && this.fromNodeLayoutId != closestNodeLayout.id) {
-            this.dialog.open(NewRelationshipDialogComponent);
+            let dialogConfig = new MatDialogConfig();
+            dialogConfig.data = {
+              fromNodeId: this.fromNodeLayoutId,
+              toNodeId: closestNodeLayout.id
+            };
+
+            this.dialog.open(NewRelationshipDialogComponent, dialogConfig);
           }
 
           this.fromNodeLayoutId = undefined;
