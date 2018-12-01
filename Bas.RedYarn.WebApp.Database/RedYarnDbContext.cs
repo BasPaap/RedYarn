@@ -41,6 +41,7 @@ namespace Bas.RedYarn.WebApp.Database
             AddIdShadowProperty<Author>(modelBuilder);
             AddIdShadowProperty<Tag>(modelBuilder);
             AddIdShadowProperty<Alias>(modelBuilder);
+            AddIdShadowProperty<Relationship>(modelBuilder);
 
             CreateModelForJoinTableEntities(modelBuilder);
             CreateRelationshipModel(modelBuilder);
@@ -59,14 +60,12 @@ namespace Bas.RedYarn.WebApp.Database
                 .WithMany();
 
             modelBuilder.Entity<Relationship>()
-                .Property<Guid>(ShadowPropertyNames.FromNodeId)
-                .HasConversion<string>();
-            modelBuilder.Entity<Relationship>()
-                .Property<Guid>(ShadowPropertyNames.ToNodeId)
+                .Property<Guid>(ShadowPropertyNames.FirstCharacterId)
                 .HasConversion<string>();
 
             modelBuilder.Entity<Relationship>()
-                .HasKey(ShadowPropertyNames.FromNodeId, ShadowPropertyNames.ToNodeId);
+                .Property<Guid>(ShadowPropertyNames.SecondCharacterId)
+                .HasConversion<string>();
         }
 
         private void CreateModelForJoinTableEntities(ModelBuilder modelBuilder)

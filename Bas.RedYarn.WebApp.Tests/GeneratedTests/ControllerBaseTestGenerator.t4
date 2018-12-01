@@ -370,7 +370,7 @@ private void WriteGetTests(string unitUnderTestName, string modelName, string vi
 			this.dataService.<#= modelName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.GetAsync("api/<#=modelName#>/{Guid.NewGuid().ToString()}")).Result;
+            var result = (httpClient.GetAsync($"api/<#=modelName#>/{Guid.NewGuid().ToString()}")).Result;
 
             // Assert
 			Assert.IsNotNull(result);

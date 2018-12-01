@@ -59,11 +59,11 @@ foreach (var viewModelName in viewModelNames)
 <#
 	}
 #>
-		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);		
 		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>();
 		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>();
+		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);		
 		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
-				
+
 		[TestMethod]
 		public void Get<#=viewModelName#>Async_IdIsUnknown_ReturnsNull()
 		{

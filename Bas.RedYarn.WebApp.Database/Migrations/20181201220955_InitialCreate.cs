@@ -173,28 +173,27 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "Relationships",
                 columns: table => new
                 {
-                    FirstCharacterId = table.Column<string>(nullable: true),
-                    SecondCharacterId = table.Column<string>(nullable: true),
+                    FirstCharacterId = table.Column<string>(nullable: false),
+                    SecondCharacterId = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     IsDirectional = table.Column<bool>(nullable: false),
-                    FromNodeId = table.Column<string>(nullable: false),
-                    ToNodeId = table.Column<string>(nullable: false)
+                    Id = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Relationships", x => new { x.FromNodeId, x.ToNodeId });
+                    table.PrimaryKey("PK_Relationships", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Relationships_Characters_FirstCharacterId",
                         column: x => x.FirstCharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Relationships_Characters_SecondCharacterId",
                         column: x => x.SecondCharacterId,
                         principalTable: "Characters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
