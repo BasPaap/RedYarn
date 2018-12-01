@@ -26,6 +26,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Name = author.Name;
         }
 
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="viewModel">The viewmodel to copy.</param>
         public AuthorViewModel(AuthorViewModel viewModel)
         {
             Id = viewModel.Id;
@@ -37,16 +41,26 @@ namespace Bas.RedYarn.WebApp.ViewModels
         [Required]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Returns the model this viewmodel represents.
+        /// </summary>
+        /// <returns>The model this viewmodel represents.</returns>
         public RedYarn.Author ToModel()
         {
+            // Only set the properties we can set, so don't set shadow properties like the Id.
             return new Author()
             {
                 Name = Name
             };
         }
 
+        /// <summary>
+        /// Update the provided model with the values in this viewmodel.
+        /// </summary>
+        /// <param name="model">The model to update.</param>
         public void UpdateModel(RedYarn.Author model)
         {
+            // Only set the properties we can set, so don't set shadow properties like the Id.
             model.Name = Name;
         }
     }

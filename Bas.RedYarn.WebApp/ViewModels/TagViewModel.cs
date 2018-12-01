@@ -8,6 +8,12 @@ namespace Bas.RedYarn.WebApp.ViewModels
 {
     public sealed class TagViewModel
     {
+        public Guid Id { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+        public string Category { get; set; }
+
         public TagViewModel()
         {
         }
@@ -27,6 +33,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Category = tag.Category;
         }
 
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="viewModel">The viewmodel to copy.</param>
         public TagViewModel(TagViewModel viewModel)
         {
             Id = viewModel.Id;
@@ -34,15 +44,13 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Category = viewModel.Category;
         }
 
-        public Guid Id { get; set; }
-
-        [Required]
-        public string Name { get; set; }
-
-        public string Category { get; set; }
-
+        /// <summary>
+        /// Returns the model this viewmodel represents.
+        /// </summary>
+        /// <returns>The model this viewmodel represents.</returns>
         public RedYarn.Tag ToModel()
         {
+            // Only set the properties we can set, so don't set shadow properties like the Id.
             return new Tag()
             {
                 Name = Name,
@@ -50,8 +58,13 @@ namespace Bas.RedYarn.WebApp.ViewModels
             };
         }
 
+        /// <summary>
+        /// Update the provided model with the values in this viewmodel.
+        /// </summary>
+        /// <param name="model">The model to update.</param>
         public void UpdateModel(RedYarn.Tag model)
         {
+            // Only set the properties we can set, so don't set shadow properties like the Id.
             model.Name = Name;
             model.Category = Category;
         }

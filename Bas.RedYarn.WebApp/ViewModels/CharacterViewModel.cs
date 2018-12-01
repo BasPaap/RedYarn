@@ -39,6 +39,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
             Aliases.AddRange(character.Aliases.Select(alias => new AliasViewModel(alias, getIdForModelFunc)).ToList());
         }
 
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="viewModel">The viewmodel to copy.</param>
         public CharacterViewModel(CharacterViewModel viewModel)
         {
             Id = viewModel.Id;
@@ -74,8 +78,13 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
         }
 
+        /// <summary>
+        /// Returns the model this viewmodel represents.
+        /// </summary>
+        /// <returns>The model this viewmodel represents.</returns>
         public RedYarn.Character ToModel()
         {
+            // Only set the properties we can set, so don't set shadow properties like the Id.
             var character = new Character()
             {
                 Name = Name,
@@ -90,14 +99,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
             return character;
         }
 
-        public void UpdateModel(RedYarn.Character model)
-        {
-            model.Name = Name;
-            model.Description = Description;
-            model.Aliases.Clear();
-            model.Aliases.AddRange(Aliases.Select(aliasViewModel => new Alias() { Name = aliasViewModel.Name }));
-        }
-
+        /// <summary>
+        /// Returns the Node entity this viewmodel represents (in other words, return StorylineNode, not Storyline).
+        /// </summary>
+        /// <returns>The node entity this viewmodel represents.</returns>
         public Database.CharacterNode ToNode()
         {
             return new CharacterNode()
@@ -106,15 +111,30 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 Id = Id,
                 XPosition = XPosition,
                 YPosition = YPosition
-            };            
+            };
         }
 
+        /// <summary>
+        /// Update the provided model with the values in this viewmodel.
+        /// </summary>
+        /// <param name="model">The model to update.</param>
+        public void UpdateModel(RedYarn.Character model)
+        {
+            // Only set the properties we can set, so don't set shadow properties like the Id.
+            model.Name = Name;
+            model.Description = Description;
+            model.Aliases.Clear();
+            model.Aliases.AddRange(Aliases.Select(aliasViewModel => new Alias() { Name = aliasViewModel.Name }));
+        }
+
+        /// <summary>
+        /// Update the provided model with the values in this viewmodel.
+        /// </summary>
+        /// <param name="model">The model to update.</param>
         public void UpdateNode(Database.CharacterNode node)
         {
             node.XPosition = XPosition;
             node.YPosition = YPosition;
         }
-
-
     }
 }
