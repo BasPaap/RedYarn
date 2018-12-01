@@ -12,64 +12,33 @@ namespace Bas.RedYarn.WebApp.Tests.Services
     {
 <#
 foreach (var viewModelName in viewModelNames)
-{#>
+{
+#>
 		public Collection<<#=viewModelName#>> <#=Pluralize(viewModelName)#> { get; set; } = new Collection<<#=viewModelName#>>();
-<#}
+<#
+}
 #>
 
 <#
 foreach (var viewModelName in viewModelNames)
-{#>
-        public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>)
+{
+#>
+        public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
-            return Task.FromResult(<#=Pluralize(viewModelName)#>.SingleOrDefault(d => <#
-				
-				if (modelsWithCompositeKeys.Keys.Contains(GetModelName(viewModelName)))
-				{
-					Write(string.Join(" && ", modelsWithCompositeKeys[GetModelName(viewModelName)].Select(key => $"d.{key} == {Decapitalize(key)}")));
-				}
-				else
-				{
-					Write("d.Id == id");
-				}
-
-			#>));
+            return Task.FromResult(<#=Pluralize(viewModelName)#>.SingleOrDefault(d => d.Id == id));
         }
 
         public Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<# if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) {#>Guid diagramId, <#}#><#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
-<#				
-				if (modelsWithCompositeKeys.Keys.Contains(GetModelName(viewModelName)))
-				{
-					foreach (var key in modelsWithCompositeKeys[GetModelName(viewModelName)])
-					{
-						WriteLine($"\t\t\t{Decapitalize(viewModelName)}.{key} = Guid.NewGuid();");
-					}
-				}
-				else
-				{
-					WriteLine($"\t\t\t{Decapitalize(viewModelName)}.Id = Guid.NewGuid();");
-				}
-#>
+			<#=Decapitalize(viewModelName)#>.Id = Guid.NewGuid();
             <#=Pluralize(viewModelName)#>.Add(<#=Decapitalize(viewModelName)#>);
 
             return Task.FromResult(<#=Decapitalize(viewModelName)#>);
         }
 
-        public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
-            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(d => <#
-				
-				if (modelsWithCompositeKeys.Keys.Contains(GetModelName(viewModelName)))
-				{
-					Write(string.Join(" && ", modelsWithCompositeKeys[GetModelName(viewModelName)].Select(key => $"d.{key} == {Decapitalize(key)}")));
-				}
-				else
-				{
-					Write("d.Id == id");
-				}
-
-			#>);
+            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(d => d.Id == id);
 
 			if (existingViewModel == null)
 			{
@@ -78,38 +47,15 @@ foreach (var viewModelName in viewModelNames)
 						
             var indexOfViewModel = <#=Pluralize(viewModelName)#>.IndexOf(existingViewModel);
             existingViewModel = <#=Decapitalize(viewModelName)#>;
-<#				
-				if (modelsWithCompositeKeys.Keys.Contains(GetModelName(viewModelName)))
-				{
-					foreach (var key in modelsWithCompositeKeys[GetModelName(viewModelName)])
-					{
-						WriteLine($"\t\t\texistingViewModel.{key} = {Decapitalize(key)};");
-					}
-				}
-				else
-				{
-					WriteLine($"\t\t\texistingViewModel.Id = id;");
-				}
-#>
+			existingViewModel.Id = id;");
 			<#=Pluralize(viewModelName)#>[indexOfViewModel] = existingViewModel;
 
             return Task.FromResult((existingViewModel, true));
         }
 
-        public Task<bool> Delete<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>)
+        public Task<bool> Delete<#=viewModelName#>Async(Guid id)
         {
-            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(d => <#
-				
-				if (modelsWithCompositeKeys.Keys.Contains(GetModelName(viewModelName)))
-				{
-					Write(string.Join(" && ", modelsWithCompositeKeys[GetModelName(viewModelName)].Select(key => $"d.{key} == {Decapitalize(key)}")));
-				}
-				else
-				{
-					Write("d.Id == id");
-				}
-
-			#>);
+            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(d => d.Id == id);
 
 			if (existingViewModel == null)
 			{
@@ -119,7 +65,8 @@ foreach (var viewModelName in viewModelNames)
 			<#=Pluralize(viewModelName)#>.Remove(existingViewModel);
             return Task.FromResult(true);
         }
-<#}
+<#
+}
 #>
     }
 }

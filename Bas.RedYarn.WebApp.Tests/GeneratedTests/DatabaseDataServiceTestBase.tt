@@ -49,59 +49,45 @@ foreach (var viewModelName in viewModelNames)
 #>
 		protected abstract (<#=modelName#> model, <#=modelName#>Node node) GetTest<#=modelName#>();		
 		protected abstract void Assert<#=modelName#>(<#=modelName#> model, <#=modelName#>Node node);		
-<#	}
+<#
+	}
 	else
 	{
 #>
 		protected abstract <#=modelName#> GetTest<#=modelName#>();		
 		protected abstract void Assert<#=modelName#>(<#=modelName#> model);		
-<#	}
-
-	if (viewModelName == nameof(RelationshipViewModel))
-	{#>
-		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel, Func<object, (Guid, Guid)> getIdsForModelFunc);
-		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>(Func<object, (Guid, Guid)> getIdsForModelFunc = null);
-		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>(Func<object, (Guid, Guid)> getIdsForModelFunc = null);
-<#	}
-	else	
-	{#>
+<#
+	}
+#>
 		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);		
 		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>();
 		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>();
-<#	}
-#>		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
-		
-		
+		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
+				
 		[TestMethod]
 		public void Get<#=viewModelName#>Async_IdIsUnknown_ReturnsNull()
 		{
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (EntityHasNode(modelName))
-			{
+	if (EntityHasNode(modelName))
+	{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
-<#			}
-			else
-			{
+<#
+	}
+	else
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
-<#			}#>
+<#
+	}
+#>
 			this.dbContextToAddTo.SaveChanges();
 
 			// Act
-			var result = this.dataService.Get<#=viewModelName#>Async(<#
-			if (GetNumIdParameters(modelName) > 1)
-			{
-				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
-			}
-			else
-			{
-				Write("Guid.NewGuid()");
-			}
-#>).Result;
+			var result = this.dataService.Get<#=viewModelName#>Async(Guid.NewGuid()).Result;
 
 			// Assert			
 			Assert.IsNull(result);
@@ -113,47 +99,32 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (EntityHasNode(modelName))
-			{
+	if (EntityHasNode(modelName))
+	{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
-<#			}
-			else
-			{
+<#
+	}
+	else
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
-<#			}#>
+<#
+	}
+#>
 			this.dbContextToAddTo.SaveChanges();
 <#		
 			string modelSuffix = EntityHasNode(modelName) ? ".model" : string.Empty;
-			
-			if (modelsWithCompositeKeys.Keys.Contains(modelName))
-			{
-				foreach	(var key in modelsWithCompositeKeys[modelName])
-				{
-					WriteLine($"\t\t\tvar new{key} = (Guid)this.dbContextToAddTo.Entry(test{modelName}{modelSuffix}).Property(\"{key}\").CurrentValue;");
-				}
-			}
-			else
-			{#>
+#>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			
-			}
-			
-			string newIdArguments = (modelsWithCompositeKeys.Keys.Contains(modelName)) ? string.Join(", ",  modelsWithCompositeKeys[modelName].Select(k => $"new{k}")): "newId"; #>			
+
 			// Act
-			var viewModel = this.dataService.Get<#=viewModelName#>Async(<#=newIdArguments#>).Result;
+			var viewModel = this.dataService.Get<#=viewModelName#>Async(newId).Result;
 
 			// Assert
-<#	if (viewModelName == nameof(RelationshipViewModel))
-	{#>
-			Assert<#=viewModelName#>(viewModel, r => (newFromNodeId, newToNodeId));
-<#	}
-	else
-	{#>
+
 			Assert<#=viewModelName#>(viewModel);
-<#	}#>
 		}
 
 		[TestMethod]
@@ -162,38 +133,35 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (EntityHasNode(modelName))
-			{
+	if (EntityHasNode(modelName))
+	{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
-<#			}
-			else
-			{
+<#
+	}
+	else
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
-<#			}#>
+<#
+	}
+#>
 			this.dbContextToAddTo.SaveChanges();
 
 			// Act
-			var result = this.dataService.Delete<#=viewModelName#>Async(<#
-			if (GetNumIdParameters(modelName) > 1)
-			{
-				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
-			}
-			else
-			{
-				Write("Guid.NewGuid()");
-			}
-#>).Result;
+			var result = this.dataService.Delete<#=viewModelName#>Async(Guid.NewGuid()).Result;
 
 			// Assert	
 			Assert.IsFalse(result);
 			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
-<#			if (EntityHasNode(modelName))
-			{#>
+<#	if (EntityHasNode(modelName))
+	{
+#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
-<#			}#>
+<#
+	}
+#>
 		}
 
 		[TestMethod]
@@ -202,44 +170,38 @@ foreach (var viewModelName in viewModelNames)
 			// Arrange
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (EntityHasNode(modelName))
-			{
+	if (EntityHasNode(modelName))
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
-<#			}
-			else
-			{
+<#
+	}
+	else
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
-<#			}#>
-			this.dbContextToAddTo.SaveChanges();
 <#
+	}
+#>
+			this.dbContextToAddTo.SaveChanges();
 
-			if (modelsWithCompositeKeys.Keys.Contains(modelName))
-			{
-				foreach	(var key in modelsWithCompositeKeys[modelName])
-				{
-					WriteLine($"\t\t\tvar new{key} = (Guid)this.dbContextToAddTo.Entry(test{modelName}{modelSuffix}).Property(\"{key}\").CurrentValue;");
-				}
-			}
-			else
-			{#>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			
-			}
-
-			#>		
+		
 			// Act
-			var result = this.dataService.Delete<#=viewModelName#>Async(<#=newIdArguments#>).Result;
+			var result = this.dataService.Delete<#=viewModelName#>Async(newId).Result;
 
 			// Assert
 			Assert.IsTrue(result);
 			Assert.AreEqual(0, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
-<#			if (EntityHasNode(modelName))
-			{#>
+<#
+	if (EntityHasNode(modelName))
+	{
+#>
 			Assert.AreEqual(0, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
-<#			}#>
+<#
+	}
+#>
 		}
 
 		// Create
@@ -257,23 +219,21 @@ foreach (var viewModelName in viewModelNames)
 		public void Create<#=viewModelName#>Async_ViewModelIsValid_AddsModelAndReturnsViewModel()
 		{
 			// Arrange
-<#			if (viewModelName == nameof(RelationshipViewModel))
-			{
+<#
+	if (viewModelName == nameof(RelationshipViewModel))
+	{
 #>			var relationship = GetTestRelationship();			
 			this.dbContextToAddTo.Characters.Add(relationship.FirstCharacter);
 			this.dbContextToAddTo.Characters.Add(relationship.SecondCharacter);
 			this.dbContextToAddTo.SaveChanges();
-			Func<object, (Guid, Guid)> getIdsForModelFunc = r => ((Guid)this.dbContextToAddTo.Entry(relationship.FirstCharacter).Property(ShadowPropertyNames.Id).CurrentValue, (Guid)this.dbContextToAddTo.Entry(relationship.SecondCharacter).Property(ShadowPropertyNames.Id).CurrentValue);
-
-			var testRelationshipViewModel = new RelationshipViewModel(relationship, getIdsForModelFunc);
-<#			}
-			else
-			{
-#>			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
-<#			}
-			
-			if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
-			{#>
+<#
+	}
+#>
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
+<#
+	if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
+	{
+#>
 			var diagram = new Diagram()
 			{
 				Name = "Diagram"
@@ -281,7 +241,8 @@ foreach (var viewModelName in viewModelNames)
 			this.dbContextToAddTo.Diagrams.Add(diagram);
 			this.dbContextToAddTo.SaveChanges();
 			var diagramId = (Guid)this.dbContextToAddTo.Entry(diagram).Property(ShadowPropertyNames.Id).CurrentValue;
-<#			}
+<#
+	}
 #>
 
 			// Act
@@ -289,50 +250,51 @@ foreach (var viewModelName in viewModelNames)
 
 			// Assert
 			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);			
-<#	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{
-		foreach (var key in modelsWithCompositeKeys[modelName])
-		{
-			WriteLine($"\t\t\tAssert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.{Pluralize(modelName)}.SingleAsync().Result).Property(\"{key}\").CurrentValue, returnedViewModel.{key});");
-		}
-	}
-	else
-	{#>
-			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property(ShadowPropertyNames.Id).CurrentValue, returnedViewModel.Id);<#
-	}					
-			
-			
+			Assert.AreEqual(this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property(ShadowPropertyNames.Id).CurrentValue, returnedViewModel.Id);
+<#
 	if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
-			{#>
-
+	{
+#>
 			Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("DiagramId").CurrentValue);
-<#			}
+<#
+	}
 
 	if (viewModelName == nameof(RelationshipViewModel))
-	{#>
-			Assert<#=viewModelName#>(returnedViewModel, getIdsForModelFunc);
-<#	}
-	else
-	{#>
+	{
+#>
 			Assert<#=viewModelName#>(returnedViewModel);
-<#	}
+<#
+	}
+	else
+	{
+#>
+			Assert<#=viewModelName#>(returnedViewModel);
+<#
+	}
 
-			if (EntityHasNode(modelName))
-			{#>
+	if (EntityHasNode(modelName))
+	{
+#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
 			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result, this.dbContextToTest.<#=modelName#>Nodes.SingleAsync().Result);
-<#			}
-			else
-			{
-				if (viewModelName == nameof(RelationshipViewModel))
-				{#>
+<#
+	}
+	else
+	{
+		if (viewModelName == nameof(RelationshipViewModel))
+		{
+#>
 			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.Include(r => r.FirstCharacter).Include(r => r.SecondCharacter).SingleAsync().Result);
-<#				}
-				else
-				{#>
+<#
+		}
+		else
+		{
+#>
 			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result);
-<#				}			
-			}#>
+<#
+		}			
+	}
+#>
 		}
 
 		[TestMethod]
@@ -342,39 +304,37 @@ foreach (var viewModelName in viewModelNames)
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (EntityHasNode(modelName))
-			{
+	if (EntityHasNode(modelName))
+	{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
-<#			}
-			else
-			{
+<#
+	}
+	else
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
-<#			}#>
+<#
+	}
+#>
 			this.dbContextToAddTo.SaveChanges();
 
 			// Act
-			var result = this.dataService.Update<#=viewModelName#>Async(<#
-			if (GetNumIdParameters(modelName) > 1)
-			{
-				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
-			}
-			else
-			{
-				Write("Guid.NewGuid()");
-			}
-#>, test<#=viewModelName#>).Result;
+			var result = this.dataService.Update<#=viewModelName#>Async(Guid.NewGuid(), test<#=viewModelName#>).Result;
 
 			// Assert
 			Assert.IsNull(result.result);
 			Assert.IsFalse(result.isFound);
 			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
-<#			if (EntityHasNode(modelName))
-			{#>
+<#
+	if (EntityHasNode(modelName))
+	{
+#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
-<#			}#>
+<#
+	}
+#>
 		}
 
 		[TestMethod]
@@ -384,37 +344,35 @@ foreach (var viewModelName in viewModelNames)
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (EntityHasNode(modelName))
-			{
+	if (EntityHasNode(modelName))
+	{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
-<#			}
-			else
-			{
+<#
+	}
+	else
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
-<#			}#>
+<#
+	}
+#>
 			this.dbContextToAddTo.SaveChanges();
 
 			// Act
 			// Assert
-			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Update<#=viewModelName#>Async(<#
-			if (GetNumIdParameters(modelName) > 1)
-			{
-				Write(string.Join(", ", modelsWithCompositeKeys[modelName].Select(k => $"Guid.NewGuid()")));
-			}
-			else
-			{
-				Write("Guid.NewGuid()");
-			}
-#>, null));
+			var exception = await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await this.dataService.Update<#=viewModelName#>Async(Guid.NewGuid(), null));
 			Assert.AreEqual("<#=Decapitalize(viewModelName)#>", exception.ParamName);
 			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
-<#			if (EntityHasNode(modelName))
-			{#>
+<#
+	if (EntityHasNode(modelName))
+	{
+#>
 			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
-<#			}#>
+<#
+	}
+#>
 		}
 
 		[TestMethod]
@@ -424,73 +382,48 @@ foreach (var viewModelName in viewModelNames)
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>();
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
-			if (EntityHasNode(modelName))
-			{
+	if (EntityHasNode(modelName))
+	{
 #>
 			this.dbContextToAddTo.<#=modelName#>Nodes.Add(test<#=modelName#>.node);
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>.model);
-<#			}
-			else
-			{
+<#
+	}
+	else
+	{
 #>
 			this.dbContextToAddTo.<#=Pluralize(modelName)#>.Add(test<#=modelName#>);
-<#			}#>
-			this.dbContextToAddTo.SaveChanges();
-<#			
-
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{
-		foreach (var key in modelsWithCompositeKeys[modelName])
-		{
-			WriteLine($"\t\t\tvar new{key} = (Guid)this.dbContextToAddTo.Entry(test{modelName}{modelSuffix}).Property(\"{key}\").CurrentValue;");
-		}
-	}
-	else
-	{#>
-			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
-<#	}#>
-			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
 <#
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{
-		foreach (var key in modelsWithCompositeKeys[modelName])
-		{
-			WriteLine($"\t\t\tupdated{viewModelName}.{key} = new{key};");
-		}
 	}
-	else
-	{#>
+#>
+			this.dbContextToAddTo.SaveChanges();
+			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
+
+			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
 			updated<#=viewModelName#>.Id = newId;
-<#	}#>
 
 			// Act
-			var result = this.dataService.Update<#=viewModelName#>Async(<#=newIdArguments#>, updated<#=viewModelName#>).Result;
+			var result = this.dataService.Update<#=viewModelName#>Async(newId, updated<#=viewModelName#>).Result;
 
 			// Assert
 			Assert.IsNotNull(result.result);
 			Assert.IsTrue(result.isFound);
+			Assert.AreEqual(newId, result.result.Id);
+			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
 <#
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
+	if (EntityHasNode(modelName))
 	{
-		foreach (var key in modelsWithCompositeKeys[modelName])
-		{
-			WriteLine($"\t\t\tAssert.AreEqual(new{key}, result.result.{key});");
-		}
-	}
-	else
-	{
-			WriteLine("\t\t\tAssert.AreEqual(newId, result.result.Id);");
+#>
+			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
+<#
 	}
 #>
-			Assert.AreEqual(1, this.dbContextToTest.<#=Pluralize(modelName)#>.CountAsync().Result);
-<#			if (EntityHasNode(modelName))
-			{#>
-			Assert.AreEqual(1, this.dbContextToTest.<#=modelName#>Nodes.CountAsync().Result);
-<#			}#>
 			
 			AssertUpdated<#=viewModelName#>(result.result);
 		}
 
-<#}#>
+<#
+} // End of foreach
+#>
 	}
 }
