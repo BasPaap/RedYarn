@@ -232,7 +232,7 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<RelationshipViewModel> GetRelationshipViewModelAsync(Guid firstcharacterid, Guid secondcharacterid)
+        public Task<RelationshipViewModel> GetRelationshipViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }
@@ -242,12 +242,12 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<(RelationshipViewModel result, bool isFound)> UpdateRelationshipViewModelAsync(Guid firstcharacterid, Guid secondcharacterid, RelationshipViewModel relationshipViewModel)
+        public Task<(RelationshipViewModel result, bool isFound)> UpdateRelationshipViewModelAsync(Guid id, RelationshipViewModel relationshipViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteRelationshipViewModelAsync(Guid firstcharacterid, Guid secondcharacterid)
+        public Task<bool> DeleteRelationshipViewModelAsync(Guid id)
         {
             throw new NotImplementedException();
         }

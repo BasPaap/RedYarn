@@ -166,7 +166,7 @@ foreach (var viewModelName in viewModelNames)
 	{
 #>
 
-			<#=Decapitalize(viewModelName)#>.UpdateModel(model, (f,s) => (this.dbContext.Characters.Find(f), this.dbContext.Characters.Find(s)) );			
+			<#=Decapitalize(viewModelName)#>.UpdateModel(model, characterId => this.dbContext.Characters.Find(characterId));			
 <#
 	}
 	else
