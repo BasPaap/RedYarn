@@ -47,7 +47,7 @@ foreach (var viewModelName in viewModelNames)
 						
             var indexOfViewModel = <#=Pluralize(viewModelName)#>.IndexOf(existingViewModel);
             existingViewModel = <#=Decapitalize(viewModelName)#>;
-			existingViewModel.Id = id;");
+			existingViewModel.Id = id;
 			<#=Pluralize(viewModelName)#>[indexOfViewModel] = existingViewModel;
 
             return Task.FromResult((existingViewModel, true));

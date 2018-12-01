@@ -42,10 +42,12 @@ private void WriteEnd()
 }
 <#+
 } // end of WriteEnd()
+#>
 
+<#+
 private void WriteTests(string unitUnderTestName)
 {
-	string modelName = GetModelName(unitUnderTestName);			// "Diagram"
+	string modelName = unitUnderTestName.Substring(0, unitUnderTestName.IndexOf("Controller"));			// "Diagram"
 	string viewModelName = modelName + "ViewModel";			// "DiagramViewModel"
 	string viewModelInstanceName = Decapitalize(viewModelName); // "diagramViewModel"
 	string controllerObjectName = Decapitalize(unitUnderTestName);	// "diagramController"
@@ -121,9 +123,7 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
             Assert.AreEqual($"/api/<#=modelName#>/{content.Id}", result.Headers.Location.PathAndQuery);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=modelName#>ViewModels.Single().Name);
-<#+	
-	WriteKeyAssert(modelName, "content"); 
-#>
+			Assert.AreEqual(content.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
 		}
 
 		[TestMethod]

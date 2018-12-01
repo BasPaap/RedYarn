@@ -157,6 +157,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="GeneratedTests\AliasControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AliasControllerTest.tt</DependentUpon>
+    </Compile>
     <Compile Update="GeneratedTests\CharacterControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -176,6 +181,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RelationshipControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Services\TestDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TestDataService.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   
