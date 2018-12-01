@@ -1,9 +1,9 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
 <#+
-private void WriteController(string className)
+private void WriteController(string modelName)
 {
-	string instanceName = Decapitalize(className);#>
-using Bas.RedYarn.WebApp.Services;
+	string instanceName = Decapitalize(modelName);
+#>using Bas.RedYarn.WebApp.Services;
 using Bas.RedYarn.WebApp.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,21 +13,21 @@ namespace Bas.RedYarn.WebApp.Controllers
 {
 	[Route("api/[controller]")]
     [ApiController]
-    public partial class <#=className#>Controller : ControllerBase
+    public partial class <#=modelName#>Controller : ControllerBase
     {
         private readonly IDataService dataService;
 
-        public <#=className#>Controller(IDataService dataService)
+        public <#=modelName#>Controller(IDataService dataService)
         {
             this.dataService = dataService;
         }
 
-		[HttpGet("<#=GetIdRoute(className)#>")]
+		[HttpGet("#")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<<#=className#>ViewModel>> Get<#=className#>ViewModelAsync(<#=GetIdParameters(className)#>)
+        public async Task<ActionResult<<#=modelName#>ViewModel>> Get<#=modelName#>ViewModelAsync(<Guid id)
         {            
-            var <#=instanceName#>ViewModel = await this.dataService.Get<#=className#>ViewModelAsync(<#=GetIdArguments(className)#>);            
+            var <#=instanceName#>ViewModel = await this.dataService.Get<#=modelName#>ViewModelAsync(id);            
             if (<#=instanceName#>ViewModel == null)
             {
                 return NotFound();
@@ -36,40 +36,23 @@ namespace Bas.RedYarn.WebApp.Controllers
             return <#=instanceName#>ViewModel;            
         }
 
-<#+		if (entitiesToAddToDiagram.Contains(className))
-		{#>
+<#+
+	if (entitiesToAddToDiagram.Contains(modelName))
+	{#>
 		[HttpPost("{diagramId}")]
-<#+		}
-		else
-		{#>
+<#+	}
+	else
+	{#>
         [HttpPost]
-<#+		}#>
+<#+	}#>
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<<#=className#>ViewModel>> Create<#=className#>Async(<#+ if (entitiesToAddToDiagram.Contains(className)) { #>Guid diagramId, <#+}#><#=className#>ViewModel <#=instanceName#>ViewModel)
+        public async Task<ActionResult<<#=modelName#>ViewModel>> Create<#=modelName#>Async(<#+ if (entitiesToAddToDiagram.Contains(modelName)) { #>Guid diagramId, <#+}#><#=modelName#>ViewModel <#=instanceName#>ViewModel)
         {
 			try
 			{
-<#+ if (modelsWithCompositeKeys.Keys.Contains(className))
-	{
-#>				if (<#= string.Join(" && ", modelsWithCompositeKeys[className].Select(key => $"{instanceName}ViewModel.{key} == Guid.Empty"))#>)
-				{
-					throw new ArgumentException();
-				}
-<#+	}#>
-				var created<#=className#>ViewModel = await this.dataService.Create<#=className#>ViewModelAsync(<#+ if (entitiesToAddToDiagram.Contains(className)) { #>diagramId, <#+}#><#=instanceName#>ViewModel);
-				return CreatedAtAction(nameof(Get<#=className#>ViewModelAsync), new { <#+
-				
-				if (modelsWithCompositeKeys.Keys.Contains(className))
-				{
-					Write(string.Join(", ", modelsWithCompositeKeys[className].Select(key => $"{Decapitalize(key)} = created{className}ViewModel.{key}")));					
-				}
-				else
-				{
-					Write($"id = created{className}ViewModel.Id");
-				}
-				
-#> }, created<#=className#>ViewModel);            
+				var created<#=modelName#>ViewModel = await this.dataService.Create<#=modelName#>ViewModelAsync(<#+ if (entitiesToAddToDiagram.Contains(modelName)) { #>diagramId, <#+}#><#=instanceName#>ViewModel);
+				return CreatedAtAction(nameof(Get<#=modelName#>ViewModelAsync), new { id = created<#=modelName#>ViewModel.Id }, created<#=modelName#>ViewModel);            
 			}
 			catch
 			{
@@ -77,15 +60,15 @@ namespace Bas.RedYarn.WebApp.Controllers
 			}
         }
 
-        [HttpPut("<#=GetIdRoute(className)#>")]        
+        [HttpPut("{id}")]        
 		[ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult> Update<#=className#>Async(<#=GetIdParameters(className)#>, <#=className#>ViewModel <#=instanceName#>ViewModel)
+        public async Task<ActionResult> Update<#=modelName#>Async(<Guid id, <#=modelName#>ViewModel <#=instanceName#>ViewModel)
         {
 			try
 			{
-				var response = await this.dataService.Update<#=className#>ViewModelAsync(<#=GetIdArguments(className)#>, <#=instanceName#>ViewModel);
+				var response = await this.dataService.Update<#=modelName#>ViewModelAsync(id, <#=instanceName#>ViewModel);
 				if (response.isFound)
 				{
 					return NoContent();
@@ -101,12 +84,12 @@ namespace Bas.RedYarn.WebApp.Controllers
 			}
         }
 
-        [HttpDelete("<#=GetIdRoute(className)#>")]
+        [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult> Delete<#=className#>Async(<#=GetIdParameters(className)#>)
+        public async Task<ActionResult> Delete<#=modelName#>Async(<Guid id)
         {
-            var isFound = await this.dataService.Delete<#=className#>ViewModelAsync(<#=GetIdArguments(className)#>);
+            var isFound = await this.dataService.Delete<#=modelName#>ViewModelAsync(id);
             if (isFound)
 			{
 				return NoContent();
@@ -119,5 +102,5 @@ namespace Bas.RedYarn.WebApp.Controllers
 	}
 }
 <#+
-}
+} // End of WriteController()
 #>

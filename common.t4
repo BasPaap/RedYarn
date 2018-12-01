@@ -13,7 +13,8 @@
 // Changes to this file may cause incorrect behavior and will be lost if 
 // the code is regenerated. 
 // </auto-generated> 
-//------------------------------------------------------------------------------<#+
+//------------------------------------------------------------------------------
+<#+
 static List<string> modelNames = new List<string> 
 {
 	nameof(Diagram),
@@ -26,34 +27,8 @@ static List<string> modelNames = new List<string>
 	nameof(Relationship)
 };
 
-Dictionary<string, List<string>> modelsWithCompositeKeys = new Dictionary<string, List<string>>
-{
-	[nameof(Relationship)] = new System.Collections.Generic.List<string> { "FromNodeId", "ToNodeId" }
-};
-
-Dictionary<string, string> modelsWithNonStandardGetIdForModelFuncs = new Dictionary<string, string>()
-{
-	[nameof(Relationship)] = "(m) => ((Guid)this.dbContext.Entry(m).Property(ShadowPropertyNames.FromNodeId).CurrentValue, (Guid)this.dbContext.Entry(m).Property(ShadowPropertyNames.ToNodeId).CurrentValue)"
-};
-
-private int GetNumIdParameters(string modelName)
-{
-	return modelsWithCompositeKeys.Keys.Contains(modelName) ? modelsWithCompositeKeys[modelName].Count : 1;
-}
-
-private string GetIdForModelFunc(string modelName)
-{
-	if (modelsWithNonStandardGetIdForModelFuncs.Keys.Contains(modelName))
-	{
-		return modelsWithNonStandardGetIdForModelFuncs[modelName];
-	}
-	else
-	{
-		return  "this.getIdForModelFunc";
-	}
-}
-
 List<string> viewModelNames = new List<string>(modelNames.Select(m => $"{m}ViewModel"));
+
 List<string> entitiesWithNodes = new List<string>
 {
 	nameof(Character),
@@ -70,90 +45,6 @@ List<string> entitiesToAddToDiagram = new List<string>
 	nameof(Tag),
 	nameof(Alias)
 };
-
-private string GetIdArguments(string modelName)
-{
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{	
-		return string.Join(", ", modelsWithCompositeKeys[modelName].Select(i => Decapitalize(i)));
-	}
-	else
-	{
-		return "id";
-	}
-}
-
-private string GetIdParameters(string modelName)
-{
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{	
-		return "Guid " + string.Join(", Guid ", modelsWithCompositeKeys[modelName].Select(i => Decapitalize(i)));
-	}
-	else
-	{
-		return "Guid id";
-	}
-}
-
-private string GetIdRoute(string modelName)
-{
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{	
-		return string.Join("/", modelsWithCompositeKeys[modelName].Select(i => $"{{{Decapitalize(i)}}}"));
-	}
-	else
-	{
-		return "{id}";
-	}
-}
-
-private string GetIdPath(string modelName, string owningObjectName)
-{
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{	
-		return string.Join("/", modelsWithCompositeKeys[modelName].Select(i => $"{{{owningObjectName}.{i}.ToString()}}"));
-	}
-	else
-	{
-		return $"{{{owningObjectName}.Id}}";
-	}
-}
-
-private string GetNewIdProperties(string modelName, string indentation)
-{
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{	
-		return string.Join($",{Environment.NewLine}{indentation}", modelsWithCompositeKeys[modelName].Select(i => $"{i} = Guid.NewGuid()"));
-	}
-	else
-	{
-		return "Id = Guid.NewGuid()";
-	}
-}
-
-private string GetNewIdProperties(string modelName, string indentation, string owningObjectName)
-{
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{	
-		return string.Join($",{Environment.NewLine}{indentation}", modelsWithCompositeKeys[modelName].Select(i => $"{i} = {owningObjectName}.{i}"));
-	}
-	else
-	{
-		return "Id = Guid.NewGuid()";
-	}
-}
-
-private string GetLinqWhereClauseForIds(string modelName)
-{
-	if (modelsWithCompositeKeys.Keys.Contains(modelName))
-	{	
-		return string.Join(" && ", modelsWithCompositeKeys[modelName].Select(i => $"EF.Property<Guid>(m, \"{i}\") == {Decapitalize(i)}"));
-	}
-	else
-	{
-		return "EF.Property<Guid>(m, ShadowPropertyNames.Id) == id";
-	}
-}
 
 private string Decapitalize(string capitalizedString)
 {

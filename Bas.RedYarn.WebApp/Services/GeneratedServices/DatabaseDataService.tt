@@ -13,6 +13,7 @@ namespace Bas.RedYarn.WebApp.Services
     {
 		private RedYarnDbContext dbContext;
 		private Func<object, Guid> getIdForModelFunc;
+
         public DatabaseDataService(RedYarnDbContext redYarnDbContext)
         {
             this.dbContext = redYarnDbContext;
@@ -22,39 +23,49 @@ namespace Bas.RedYarn.WebApp.Services
 <#
 foreach (var viewModelName in viewModelNames)
 {
-	var modelName = GetModelName(viewModelName);#>
-		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(<#=GetIdParameters(GetModelName(viewModelName))#>)
+	var modelName = GetModelName(viewModelName);
+#>
+		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
         {
 			var model = await (from m in this.dbContext.<#=Pluralize(modelName)#><# if (modelIncludes.Keys.Contains(modelName))
-{
-	WriteLine(modelIncludes[modelName]);
-#>				where <#=GetLinqWhereClauseForIds(modelName)#>
-				select m).SingleOrDefaultAsync();
+	{	
+		WriteLine(modelIncludes[modelName]);
+#>
+							   where EF.Property<Guid>(m, ShadowPropertyNames.Id) == id
+							   select m).SingleOrDefaultAsync();
 <#
-}
-else
-{#>
+	}
+	else
+	{
+#>
 
-				where <#=GetLinqWhereClauseForIds(modelName)#>
-				select m).SingleOrDefaultAsync();
-<#}#>			
+							   where EF.Property<Guid>(m, ShadowPropertyNames.Id) == id
+							   select m).SingleOrDefaultAsync();
+<#
+	}
+#>			
 			if (model == null)
 			{
 				return null;
 			}
 
-<# if (modelName == "Diagram")
-{
-	foreach (var entityWithNode in entitiesWithNodes)
-	{#>
+<# 
+	if (modelName == nameof(Diagram))
+	{
+		foreach (var entityWithNode in entitiesWithNodes)
+		{
+#>
 			var <#=Decapitalize(entityWithNode) + "Ids"#> = model.<#=Pluralize(entityWithNode)#>.Select(e => this.getIdForModelFunc(e));
 			var <#=Decapitalize(Pluralize(entityWithNode + "Node"))#> = this.dbContext.<#=entityWithNode + "Nodes"#>.Include(n => n.<#=entityWithNode#>).Where(n => <#=Decapitalize(entityWithNode) + "Ids"#>.Contains(this.getIdForModelFunc(n.<#=entityWithNode#>)));
 			var <#=Decapitalize(GetViewModelName(entityWithNode))#>Dictionary = model.<#=Pluralize(entityWithNode)#>.ToDictionary(e => e, e => new <#=GetViewModelName(entityWithNode)#>(e, <#=Decapitalize(Pluralize(entityWithNode + "Node"))#>.Single(n => this.getIdForModelFunc(n.<#=entityWithNode#>) == this.getIdForModelFunc(e)), this.getIdForModelFunc));
 			
-<#	}
-}#>
-<# if (EntityHasNode(modelName))
-{#>
+<#
+		}
+	}
+	
+	if (EntityHasNode(modelName))
+	{
+#>
 			var node = this.dbContext.<#=modelName#>Nodes.FindByParent(model);
 			if (node == null)
 			{
@@ -62,28 +73,24 @@ else
 			}
 
 			var viewModel = new <#=viewModelName#>(model, node.XPosition, node.YPosition, this.getIdForModelFunc);
-<#}
-else
-{#>
-			var viewModel = new <#=viewModelName#>(model, <#=GetIdForModelFunc(modelName)#><#
-	if (modelName == "Diagram") 
-	{
-		foreach(var entityWithNode in entitiesWithNodes)
-		{
-			Write($", {Decapitalize(GetViewModelName(entityWithNode))}Dictionary");
-		}
-	}#>);
-<#}
-if (modelsWithCompositeKeys.Keys.Contains(modelName))
-{
-	foreach(var keyName in modelsWithCompositeKeys[modelName])
-	{
-		WriteLine($"\t\t\tviewModel.{keyName} = {Decapitalize(keyName)};");
+<#
 	}
-}
-else
-{#>			viewModel.Id = id;
-<#}#>
+	else
+	{
+#>
+			var viewModel = new <#=viewModelName#>(model, this.getIdForModelFunc<#
+		if (modelName == nameof(Diagram)) 
+		{
+			foreach(var entityWithNode in entitiesWithNodes)
+			{
+				Write($", {Decapitalize(GetViewModelName(entityWithNode))}Dictionary");
+			}
+		}
+#>);
+<#
+	}
+#>
+			viewModel.Id = id;
 
 			return viewModel;
         }
@@ -95,120 +102,133 @@ else
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
 
-			var model = <#=Decapitalize(viewModelName)#>.ToModel(<#=GetToModelArguments(viewModelName)#>);
-<# if (entitiesToAddToDiagram.Contains(modelName))
-{#>
+			var model = <#=Decapitalize(viewModelName)#>.ToModel();
+<# 
+	if (entitiesToAddToDiagram.Contains(modelName))
+	{
+#>
 			var diagram = this.dbContext.Diagrams.Find(diagramId);
             diagram.<#=Pluralize(modelName)#>.Add(model);
-<#}
-else
-{#>
+
+<#
+	}
+	else
+	{
+#>
 			this.dbContext.<#=Pluralize(modelName)#>.Add(model);
-<#}#>
-<# if (EntityHasNode(modelName))
-{#>
+<#
+	}
+
+	if (EntityHasNode(modelName))
+	{
+#>
 			var node = <#=Decapitalize(viewModelName)#>.ToNode();
 			node.<#=modelName#> = model;
+
 			this.dbContext.<#=modelName#>Nodes.Add(node);
-<#}#>
+<#
+	}
+#>
 			await this.dbContext.SaveChangesAsync();
 
 			var newViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
-<#if (modelsWithCompositeKeys.Keys.Contains(modelName))
-{
-	foreach(var keyName in modelsWithCompositeKeys[modelName])
-	{
-		WriteLine($"\t\t\tnewViewModel.{keyName} = (Guid)this.dbContext.Entry(model).Property(\"{keyName}\").CurrentValue;");
-	}
-}
-else
-{#>
 			newViewModel.Id = (Guid)this.dbContext.Entry(model).Property(ShadowPropertyNames.Id).CurrentValue;
-<#}#>
 
 			return newViewModel;
         }
 
-        public async Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(<#=GetIdParameters(modelName)#>, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        public async Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
             if (<#=Decapitalize(viewModelName)#> == null)
 			{
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
 
-			var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(<#=GetIdArguments(modelName)#>);
+			var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(id);
 			if (model == null)
 			{
 				return (null, false);
 			}
-<# if (EntityHasNode(modelName))
-{#>
+<#
+	if (EntityHasNode(modelName))
+	{
+#>
+
 			var node = this.dbContext.<#=modelName#>Nodes.FindByParent(model);
 			if (node == null)
 			{
 				return (null, false);
 			}
-<#}
+<#
+	}
 
-if (modelName == nameof(Relationship))
-{#>
+	if (modelName == nameof(Relationship))
+	{
+#>
+
 			<#=Decapitalize(viewModelName)#>.UpdateModel(model, (f,s) => (this.dbContext.Characters.Find(f), this.dbContext.Characters.Find(s)) );			
-<#}
-else
-{#>
+<#
+	}
+	else
+	{
+#>
 			<#=Decapitalize(viewModelName)#>.UpdateModel(model);			
-<#}
-
-if (EntityHasNode(modelName))
-{#>
+<#
+	}
+	
+	if (EntityHasNode(modelName))
+	{
+#>
 			<#=Decapitalize(viewModelName)#>.UpdateNode(node);
-<#}#>
+<#
+	}
+#>
 			await this.dbContext.SaveChangesAsync();
 
 			var resultingViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
-<#if (modelsWithCompositeKeys.Keys.Contains(modelName))
-{
-	foreach(var keyName in modelsWithCompositeKeys[modelName])
-	{
-		WriteLine($"\t\t\tresultingViewModel.{keyName} = {Decapitalize(keyName)};");
-	}
-}
-else
-{#>
 			resultingViewModel.Id = id;
-<#}#>
 
 			return (resultingViewModel, true);
         }
 
-        public async Task<bool> Delete<#=viewModelName#>Async(<#=GetIdParameters(modelName)#>)
+        public async Task<bool> Delete<#=viewModelName#>Async(Guid id)
         {
-            var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(<#=GetIdArguments(modelName)#>);
+            var model = await this.dbContext.<#=Pluralize(modelName)#>.FindAsync(id);
 			if (model == null)
 			{
 				return false;
 			}
-<# if (EntityHasNode(modelName))
-{#>
+<#
+	if (EntityHasNode(modelName))
+	{
+#>
 
 			var node = this.dbContext.<#=modelName#>Nodes.FindByParent(model);
 			if (node == null)
 			{
 				return false;
 			}
-<#}#>
+<#
+	}
+#>
 			
 			this.dbContext.<#=Pluralize(modelName)#>.Remove(model);
-<# if (EntityHasNode(modelName))
-{#>
+<#
+	if (EntityHasNode(modelName))
+	{
+#>
 			this.dbContext.<#=modelName#>Nodes.Remove(node);
-<#}#>
+<#
+	}
+#>
 			await this.dbContext.SaveChangesAsync();
+
 			return true;			
         }
 
 <#
-}#>
+} // End of foreach
+#>
 	}
 }
 <#+
@@ -223,15 +243,4 @@ Dictionary<string, string> modelIncludes = new Dictionary<string, string>
 				.Include(diagram => diagram.Storylines)
 				.Include(diagram => diagram.Tags)"
 };
-
-
-Dictionary<string, string> toModelArguments = new Dictionary<string, string>
-{
-	["RelationshipViewModel"] = "id => this.dbContext.Characters.SingleOrDefault(c => EF.Property<Guid>(c, ShadowPropertyNames.Id) == id)"
-};
-
-private string GetToModelArguments(string viewModelName)
-{
-	return (toModelArguments.Keys.Contains(viewModelName)) ? toModelArguments[viewModelName] : string.Empty;	
-}
 #>
