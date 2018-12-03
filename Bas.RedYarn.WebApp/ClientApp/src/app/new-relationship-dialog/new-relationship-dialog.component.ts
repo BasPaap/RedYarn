@@ -19,7 +19,7 @@ export class NewRelationshipDialogComponent extends DialogComponent implements O
       this.toggleIsSubmitting();
 
       let relationshipViewModel = {
-        id: `${this.fromNodeId}-${this.toNodeId}-${this.formGroup.controls['name'].value}`,
+        id: "00000000-0000-0000-0000-000000000000",
         fromNodeId: this.fromNodeId,
         toNodeId: this.toNodeId,
         isDirectional: true,
