@@ -120,7 +120,7 @@ export class DiagramDrawingService {
     circle.y = y;
     circle.radius = this.settingsService.settings.ui.characterNode.radius;
     circle.style = this.settingsService.settings.ui.newRelationship.arrow.style;
-    circle.lineWidth = this.settingsService.settings.ui.characterNode.borderWidth;
+    circle.lineWidth = this.settingsService.settings.ui.characterNode.borderWidth * this.settingsService.settings.ui.newRelationship.nodeHighlightFactor;
     this.foregroundDrawables.push(circle);
   }
 
@@ -131,7 +131,7 @@ export class DiagramDrawingService {
     rectangle.width = width;
     rectangle.height = height;
     rectangle.style = this.settingsService.settings.ui.newRelationship.arrow.style;
-    rectangle.lineWidth = this.settingsService.settings.ui.storylineNode.borderWidth;
+    rectangle.lineWidth = this.settingsService.settings.ui.storylineNode.borderWidth * this.settingsService.settings.ui.newRelationship.nodeHighlightFactor;
     this.foregroundDrawables.push(rectangle);
   }
 
