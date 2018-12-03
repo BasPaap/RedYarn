@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { DiagramService } from '../diagram.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { Guid } from '../../Guid';
 
 @Component({
   selector: 'app-new-storyline-dialog',
@@ -16,7 +17,7 @@ export class NewStorylineDialogComponent extends DialogComponent implements OnIn
       this.toggleIsSubmitting();
 
       let storylineViewModel = {
-        id: "00000000-0000-0000-0000-000000000000",
+        id: Guid.empty,
         name: this.formGroup.controls['name'].value,
         description: this.formGroup.controls['description'].value,
         xPosition: 0,

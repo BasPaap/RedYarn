@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Diagram, Character, Storyline, PlotElement, Relationship } from './diagram-types';
 import { ActivatedRoute } from '@angular/router';
+import { Guid } from '../Guid';
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,7 @@ export class DiagramService {
 
   public createDiagram(name: string): Observable<Diagram> {
     let diagramViewModel = {
-      id: "00000000-0000-0000-0000-000000000000",
+      id: Guid.empty,
       name: name,
       characters: null,
       storylines: null,

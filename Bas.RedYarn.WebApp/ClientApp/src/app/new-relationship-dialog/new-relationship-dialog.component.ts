@@ -3,6 +3,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { Validators, FormControl } from '@angular/forms';
 import { DiagramService } from '../diagram.service';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Guid } from '../../Guid';
 
 @Component({
   selector: 'app-new-relationship-dialog',
@@ -19,7 +20,7 @@ export class NewRelationshipDialogComponent extends DialogComponent implements O
       this.toggleIsSubmitting();
 
       let relationshipViewModel = {
-        id: "00000000-0000-0000-0000-000000000000",
+        id: Guid.empty,
         fromNodeId: this.fromNodeId,
         toNodeId: this.toNodeId,
         isDirectional: true,
