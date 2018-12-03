@@ -102,7 +102,7 @@ foreach (var viewModelName in viewModelNames)
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
 
-			var model = <#=Decapitalize(viewModelName)#>.ToModel();
+			var model = <#=Decapitalize(viewModelName)#>.ToModel(<#= modelName == nameof(Relationship) ? "id => this.dbContext.Characters.Find(id)" : string.Empty #>);
 <# 
 	if (entitiesToAddToDiagram.Contains(modelName))
 	{

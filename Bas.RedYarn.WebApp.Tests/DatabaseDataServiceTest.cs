@@ -118,19 +118,19 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override void AssertCharacter(Character model, CharacterNode node)
         {
             var (testCharacter, testNode) = GetTestCharacter();
-            AssertPropertiesAreEqual(testCharacter, model, nameof(model.Name), 
+            AssertPropertiesAreEqual(testCharacter, model, nameof(model.Name),
                                                            nameof(model.Description));
-            AssertPropertiesAreEqual(testNode, node, nameof(node.XPosition), 
-                                                     nameof(node.YPosition));                                    
+            AssertPropertiesAreEqual(testNode, node, nameof(node.XPosition),
+                                                     nameof(node.YPosition));
         }
-        
+
         protected override void AssertCharacterViewModel(CharacterViewModel viewModel)
         {
             var testViewModel = GetTestCharacterViewModel();
             AssertPropertiesAreEqual(testViewModel, viewModel, nameof(viewModel.Name),
                                                                nameof(viewModel.Description),
                                                                nameof(viewModel.XPosition),
-                                                               nameof(viewModel.YPosition));            
+                                                               nameof(viewModel.YPosition));
         }
 
         protected override CharacterViewModel GetUpdatedCharacterViewModel()
@@ -212,7 +212,7 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override StorylineViewModel GetTestStorylineViewModel()
         {
             var (storyline, node) = GetTestStoryline();
-            return new StorylineViewModel(storyline, node.XPosition, node.YPosition);            
+            return new StorylineViewModel(storyline, node.XPosition, node.YPosition);
         }
 
         protected override void AssertStoryline(Storyline model, StorylineNode node)
@@ -297,7 +297,7 @@ namespace Bas.RedYarn.WebApp.Tests
                                                                         nameof(viewModel.YPosition));
         }
 
-        
+
         protected override PlotElementViewModel GetUpdatedPlotElementViewModel()
         {
             var viewModel = GetTestPlotElementViewModel();
@@ -354,7 +354,7 @@ namespace Bas.RedYarn.WebApp.Tests
             var viewModel = GetTestTagViewModel();
             viewModel.Name = updatedName;
             return viewModel;
-        }        
+        }
 
         protected override void AssertUpdatedTagViewModel(TagViewModel viewModel)
         {
@@ -385,14 +385,14 @@ namespace Bas.RedYarn.WebApp.Tests
             };
         }
 
-        protected override RelationshipViewModel GetTestRelationshipViewModel()
+        protected override RelationshipViewModel GetTestRelationshipViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new RelationshipViewModel(GetTestRelationship());
+            return new RelationshipViewModel(GetTestRelationship(), null, getNodeIdsFunc);
         }
 
         protected override RelationshipViewModel GetUpdatedRelationshipViewModel()
         {
-            var relationshipViewModel = GetTestRelationshipViewModel();
+            var relationshipViewModel = GetTestRelationshipViewModel(null);
             relationshipViewModel.Name = updatedName;
             return relationshipViewModel;
         }
@@ -403,10 +403,10 @@ namespace Bas.RedYarn.WebApp.Tests
             Assert.AreEqual(testRelationship.Name, model.Name);
             Assert.AreEqual(testRelationship.IsDirectional, model.IsDirectional);
         }
-       
+
         protected override void AssertRelationshipViewModel(RelationshipViewModel viewModel)
         {
-            var testRelationshipViewModel = GetTestRelationshipViewModel();
+            var testRelationshipViewModel = GetTestRelationshipViewModel(null);
             Assert.AreEqual(testRelationshipViewModel.Name, viewModel.Name);
             Assert.AreEqual(testRelationshipViewModel.IsDirectional, viewModel.IsDirectional);
         }

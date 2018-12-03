@@ -20,15 +20,15 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// </summary>
         /// <param name="model">The <see cref="Relationship"/> for which to create this viewmodel.</param>
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
-        /// <param name="getConnectionIdsForModelFunc">A function returning the node Id's for a connection</param>
-        public RelationshipViewModel(Relationship model, Func<object, Guid> getIdForModelFunc = null, Func<object, (Guid, Guid)> getConnectionIdsForModelFunc = null)
-            : base(model, getConnectionIdsForModelFunc)
+        /// <param name="getNodeIdsFunc">A function returning the FromNode and ToNode Id's.</param>
+        public RelationshipViewModel(Relationship model, Func<object, Guid> getIdForModelFunc = null, Func<(Guid, Guid)> getNodeIdsFunc = null)
+            : base(model, getNodeIdsFunc)
         {
             if (getIdForModelFunc != null)
             {
                 Id = getIdForModelFunc(model);
             }
-            
+
             Name = model.Name;
             IsDirectional = model.IsDirectional;
         }
@@ -38,7 +38,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// </summary>
         /// <param name="viewModel">The viewmodel to copy.</param>
         public RelationshipViewModel(RelationshipViewModel viewModel)
-            :base(viewModel)
+            : base(viewModel)
         {
             Name = viewModel.Name;
             IsDirectional = viewModel.IsDirectional;
@@ -48,7 +48,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// Returns the model this viewmodel represents.
         /// </summary>
         /// <returns>The model this viewmodel represents.</returns>
-        /// <param name="getCharacterFunc">A function returning a character by one of the Ids in FromNodeId or ToNodeId.</param>
+        /// <param name="getCharacterFunc">A function returning a character by one of the Ids in FromNodeId or ToNodeId. 
+        /// Because the viewmodel has no idea what to do with the ids in FromNodeId and ToNodeId, the caller of this method
+        /// will have to provide a method that takes an id and gets the right nodes for it. /></param>
         public Relationship ToModel(Func<Guid, Character> getCharacterFunc = null)
         {
             // Only set the properties we can set, so don't set shadow properties like the Id.
@@ -82,7 +84,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
             {
                 model.FirstCharacter = getCharacterFunc(FromNodeId);
                 model.SecondCharacter = getCharacterFunc(ToNodeId);
-            }            
+            }
         }
     }
 }
