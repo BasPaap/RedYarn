@@ -66,7 +66,7 @@ export class RectangularNodeLayout extends NodeLayout {
 @Injectable({
   providedIn: 'root'
 })
-export class NetworkItemsService {
+export class NodeLayoutInfoService {
 
   private nodeLayoutsSubject: Subject<NodeLayout> = new Subject<NodeLayout>();
   public get nodeLayoutsStream(): Observable<NodeLayout> {

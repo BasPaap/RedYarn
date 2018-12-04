@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
-import { DiagramService } from '../../services/diagram.service';
+import { DiagramDataService } from '../../services/diagram-data.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -20,7 +20,7 @@ export class NewDiagramDialogComponent extends DialogComponent implements OnInit
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
       
-      this.diagramService.createDiagram(this.formGroup.controls['name'].value)
+      this.diagramDataService.createDiagram(this.formGroup.controls['name'].value)
         .subscribe(newDiagram => {
           this.dialogRef.close();
           this.router.navigate(['diagram', newDiagram.id]);
@@ -28,7 +28,7 @@ export class NewDiagramDialogComponent extends DialogComponent implements OnInit
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramService: DiagramService, private router: Router) {
+  constructor(private dialogRef: MatDialogRef<NewDiagramDialogComponent>, private diagramDataService: DiagramDataService, private router: Router) {
     super();
     
     this.formGroup.addControl("name", new FormControl('', [Validators.required]));    

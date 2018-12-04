@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Guid } from '../../../Guid';
-import { DiagramService } from '../../services/diagram.service';
-import { VisNetworkGeneratorService } from '../../services/vis-network-generator.service';
+import { DiagramDataService } from '../../services/diagram-data.service';
+import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -25,12 +25,12 @@ export class NewPlotElementDialogComponent extends DialogComponent implements On
         yPosition: this.networkGeneratorService.getStartingCoordinate()
       };
 
-      this.diagramService.createPlotElement(plotElementViewModel)
+      this.diagramDataService.createPlotElement(plotElementViewModel)
         .subscribe(() => this.dialogRef.close());
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramService: DiagramService, private networkGeneratorService: VisNetworkGeneratorService) {
+  constructor(private dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

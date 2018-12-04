@@ -10,7 +10,7 @@ import { Character, Diagram, PlotElement, Relationship, Storyline } from '../dia
 @Injectable({
   providedIn: 'root'
 })
-export class DiagramService {
+export class DiagramDataService {
 
   private newCharacterSubject = new Subject<Character>();
   private newStorylineSubject = new Subject<Storyline>();

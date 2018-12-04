@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Network, IdType, Options } from 'vis-redyarn';
 import { DiagramDrawingService } from './services/diagram-drawing.service';
-import { NetworkItemsService } from './services/network-items.service';
+import { NodeLayoutInfoService } from './services/node-layout-info.service';
 
 @Directive({
   selector: '[appVisNetwork]'
@@ -20,7 +20,7 @@ export class VisNetworkDirective {
   };
 
 
-  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private networkItemsService: NetworkItemsService) { }
+  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private nodeLayoutInfoService: NodeLayoutInfoService) { }
 
   @Input() public set appVisNetwork(networkData) {
 

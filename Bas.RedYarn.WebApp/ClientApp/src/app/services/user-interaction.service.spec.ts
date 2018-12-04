@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UserInputService } from './user-input.service';
+import { UserInteractionService } from './user-interaction.service';
 
-describe('UserInputService', () => {
+describe('UserInteractionService ', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: UserInputService = TestBed.get(UserInputService);
+    const service: UserInteractionService = TestBed.get(UserInteractionService);
     expect(service).toBeTruthy();
   });
 });

@@ -10,7 +10,7 @@ export interface MouseState {
 @Injectable({
   providedIn: 'root'
 })
-export class UserInputService {
+export class UserInteractionService {
 
   private mouseState: MouseState = {
     isButtonDown: false,

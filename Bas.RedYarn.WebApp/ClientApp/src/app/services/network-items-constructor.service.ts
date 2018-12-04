@@ -5,7 +5,7 @@ import { SettingsService } from './settings.service';
 @Injectable({
   providedIn: 'root'
 })
-export class VisNetworkGeneratorService {
+export class NetworkItemsConstructorService {
 
   constructor(private settingsService: SettingsService) { }
 

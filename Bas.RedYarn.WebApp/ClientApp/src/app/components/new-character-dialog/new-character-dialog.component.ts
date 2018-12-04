@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
 import { Guid } from '../../../Guid';
-import { DiagramService } from '../../services/diagram.service';
-import { VisNetworkGeneratorService } from '../../services/vis-network-generator.service';
+import { DiagramDataService } from '../../services/diagram-data.service';
+import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -29,12 +29,12 @@ export class NewCharacterDialogComponent extends DialogComponent implements OnIn
         yPosition: this.networkGeneratorService.getStartingCoordinate()
       };
 
-      this.diagramService.createCharacter(characterViewModel)
+      this.diagramDataService.createCharacter(characterViewModel)
         .subscribe(() => this.dialogRef.close());
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramService: DiagramService, private networkGeneratorService: VisNetworkGeneratorService) {
+  constructor(private dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
     super();
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
     this.formGroup.addControl('description', new FormControl(''));

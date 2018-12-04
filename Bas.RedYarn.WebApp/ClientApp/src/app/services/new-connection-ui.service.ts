@@ -3,13 +3,13 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 import { NewRelationshipDialogComponent } from '../components/new-relationship-dialog/new-relationship-dialog.component';
 import { VisNetworkDirective } from '../vis-network.directive';
 import { DiagramDrawingService } from './diagram-drawing.service';
-import { CircularNodeLayout, NetworkItemsService, NodeLayout } from './network-items.service';
-import { MouseState, UserInputService } from './user-input.service';
+import { CircularNodeLayout, NodeLayoutInfoService, NodeLayout } from './node-layout-info.service';
+import { MouseState, UserInteractionService } from './user-interaction.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class NewRelationshipUIService {
+export class NewConnectionUIService {
 
   private nodeLayouts: { [id: string]: NodeLayout } = {};
   private fromNodeLayoutId: string = undefined;
@@ -19,9 +19,9 @@ export class NewRelationshipUIService {
     this.visNetwork = value;
   }
 
-  constructor(private userInputService: UserInputService, private networkItemsService: NetworkItemsService, private diagramDrawingService: DiagramDrawingService, private dialog: MatDialog) {
-    this.userInputService.mouseStateStream.subscribe(this.onMouseState.bind(this));
-    this.networkItemsService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts[nodeLayout.id] = nodeLayout);
+  constructor(private userInteractionService: UserInteractionService, private nodeLayoutInfoService: NodeLayoutInfoService, private diagramDrawingService: DiagramDrawingService, private dialog: MatDialog) {
+    this.userInteractionService.mouseStateStream.subscribe(this.onMouseState.bind(this));
+    this.nodeLayoutInfoService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts[nodeLayout.id] = nodeLayout);
   }
   
   private onMouseState(mouseState: MouseState) {

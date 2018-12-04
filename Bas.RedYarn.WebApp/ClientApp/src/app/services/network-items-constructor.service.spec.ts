@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { VisNetworkGeneratorService } from './vis-network-generator.service';
+import { NetworkItemsConstructorService } from './network-items-constructor.service';
 
-describe('VisNetworkGeneratorService', () => {
+describe('NetworkItemsConstructorService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: VisNetworkGeneratorService = TestBed.get(VisNetworkGeneratorService);
+    const service: NetworkItemsConstructorService = TestBed.get(NetworkItemsConstructorService);
     expect(service).toBeTruthy();
   });
 });

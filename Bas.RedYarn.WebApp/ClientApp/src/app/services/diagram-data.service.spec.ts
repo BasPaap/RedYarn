@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DiagramService } from './diagram.service';
+import { DiagramDataService } from './diagram-data.service';
 
-describe('DiagramService', () => {
+describe('DiagramDataService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: DiagramService = TestBed.get(DiagramService);
+    const service: DiagramDataService = TestBed.get(DiagramDataService);
     expect(service).toBeTruthy();
   });
 });

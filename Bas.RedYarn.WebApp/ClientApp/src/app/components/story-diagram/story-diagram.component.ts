@@ -3,11 +3,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { DataSet } from 'vis-redyarn';
 import { Diagram } from '../../diagram-types';
-import { DiagramService } from '../../services/diagram.service';
-import { NetworkItemsService } from '../../services/network-items.service';
-import { NewRelationshipUIService } from '../../services/new-relationship-ui.service';
+import { DiagramDataService } from '../../services/diagram-data.service';
+import { NodeLayoutInfoService } from '../../services/node-layout-info.service';
+import { NewConnectionUIService } from '../../services/new-connection-ui.service';
 import { SettingsService } from '../../services/settings.service';
-import { VisNetworkGeneratorService } from '../../services/vis-network-generator.service';
+import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
 import { VisNetworkDirective } from '../../vis-network.directive';
 
 @Component({
@@ -25,11 +25,11 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
     private router: Router,
-    private diagramService: DiagramService,
+    private diagramDataService: DiagramDataService,
     private settingsService: SettingsService,
-    private visNetworkGeneratorService: VisNetworkGeneratorService,
-    private networkItemsService: NetworkItemsService,
-    private newRelationshipUI: NewRelationshipUIService) {
+    private networkItemsConstructorService: NetworkItemsConstructorService,
+    private nodeLayoutInfoService: NodeLayoutInfoService,
+    private newRelationshipUI: NewConnectionUIService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // Force Angular to reload even if only the parameters change.    
   }
 
@@ -55,15 +55,15 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       if (draggedNode.storyline) {
         draggedNode.storyline.xPosition = position.x;
         draggedNode.storyline.yPosition = position.y;
-        this.diagramService.updateStoryline(draggedNode.storyline).subscribe();
+        this.diagramDataService.updateStoryline(draggedNode.storyline).subscribe();
       } else if (draggedNode.plotElement) {
         draggedNode.plotElement.xPosition = position.x;
         draggedNode.plotElement.yPosition = position.y;
-        this.diagramService.updatePlotElement(draggedNode.plotElement).subscribe();
+        this.diagramDataService.updatePlotElement(draggedNode.plotElement).subscribe();
       } else if (draggedNode.character) {
         draggedNode.character.xPosition = position.x;
         draggedNode.character.yPosition = position.y;
-        this.diagramService.updateCharacter(draggedNode.character).subscribe();
+        this.diagramDataService.updateCharacter(draggedNode.character).subscribe();
       }
     }
   }  
@@ -77,22 +77,22 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     
     const id = this.route.snapshot.paramMap.get('id');
     forkJoin([
-      this.diagramService.getDiagram(id)
+      this.diagramDataService.getDiagram(id)
     ]).subscribe(values => {
       this.diagram = values[0];
-      //this.visNetworkGeneratorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
+      //this.networkItemsConstructorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
       //this.newRelationshipUI.loadNodePositions(this.visNetwork.getNodePositions());
       this.isLoaded = true;
     }, error => console.error(error));
 
-    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramService.addedCharactersStream, this.visNetworkGeneratorService.getCharacterNode.bind(this.visNetworkGeneratorService));
-    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramService.addedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode.bind(this.visNetworkGeneratorService));
-    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramService.addedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode.bind(this.visNetworkGeneratorService));
-    this.subscriptions['newRelationship'] = this.subscribeToNewConnectionStream(this.diagramService.addedRelationshipsStream, this.visNetworkGeneratorService.getRelationshipConnection.bind(this.visNetworkGeneratorService));
-    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedCharactersStream, this.visNetworkGeneratorService.getCharacterNode.bind(this.visNetworkGeneratorService));
-    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedStorylinesStream, this.visNetworkGeneratorService.getStorylineNode.bind(this.visNetworkGeneratorService));
-    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramService.updatedPlotElementsStream, this.visNetworkGeneratorService.getPlotElementNode.bind(this.visNetworkGeneratorService));
-    this.subscriptions['updatedRelationship'] = this.subscribeToUpdatedConnectionStream(this.diagramService.updatedRelationshipsStream, this.visNetworkGeneratorService.getRelationshipConnection.bind(this.visNetworkGeneratorService));
+    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramDataService.addedCharactersStream, this.networkItemsConstructorService.getCharacterNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramDataService.addedStorylinesStream, this.networkItemsConstructorService.getStorylineNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramDataService.addedPlotElementsStream, this.networkItemsConstructorService.getPlotElementNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['newRelationship'] = this.subscribeToNewConnectionStream(this.diagramDataService.addedRelationshipsStream, this.networkItemsConstructorService.getRelationshipConnection.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedCharactersStream, this.networkItemsConstructorService.getCharacterNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedStorylinesStream, this.networkItemsConstructorService.getStorylineNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedPlotElementsStream, this.networkItemsConstructorService.getPlotElementNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedRelationship'] = this.subscribeToUpdatedConnectionStream(this.diagramDataService.updatedRelationshipsStream, this.networkItemsConstructorService.getRelationshipConnection.bind(this.networkItemsConstructorService));
   }
 
   private subscribeToNewConnectionStream<T>(service: Observable<T>, getEdge: (item: T) => any): Subscription {
@@ -114,7 +114,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     return service.subscribe(item => {
       let newNode = getNode(item);
       let nodeId = this.networkData["nodes"].add(newNode);
-      this.networkItemsService.onUpdatedNode(newNode, this.visNetwork.getBoundingBox(newNode));
+      this.nodeLayoutInfoService.onUpdatedNode(newNode, this.visNetwork.getBoundingBox(newNode));
 
       if (this.isLoaded) {
         this.visNetwork.focusOnNode(nodeId);
@@ -127,7 +127,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       let updatedNode = getNode(item);
       this.networkData["nodes"][updatedNode.id] = updatedNode;
 
-      this.networkItemsService.onUpdatedNode(updatedNode, this.visNetwork.getBoundingBox(updatedNode));
+      this.nodeLayoutInfoService.onUpdatedNode(updatedNode, this.visNetwork.getBoundingBox(updatedNode));
     });
   }
 

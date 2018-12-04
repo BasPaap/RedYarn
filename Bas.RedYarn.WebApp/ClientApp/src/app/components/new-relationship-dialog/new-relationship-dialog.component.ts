@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Guid } from '../../../Guid';
-import { DiagramService } from '../../services/diagram.service';
+import { DiagramDataService } from '../../services/diagram-data.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -27,12 +27,12 @@ export class NewRelationshipDialogComponent extends DialogComponent implements O
         name: this.formGroup.controls['name'].value
       };
 
-      this.diagramService.createRelationship(relationshipViewModel)
+      this.diagramDataService.createRelationship(relationshipViewModel)
         .subscribe(() => this.dialogRef.close());
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewRelationshipDialogComponent>, private diagramService: DiagramService, @Inject(MAT_DIALOG_DATA) data) {
+  constructor(private dialogRef: MatDialogRef<NewRelationshipDialogComponent>, private diagramDataService: DiagramDataService, @Inject(MAT_DIALOG_DATA) data) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

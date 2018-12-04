@@ -1,5 +1,5 @@
 import { Component, HostListener } from '@angular/core';
-import { UserInputService } from './services/user-input.service';
+import { UserInteractionService } from './services/user-interaction.service';
 import { SettingsService } from './services/settings.service';
 
 @Component({
@@ -10,20 +10,20 @@ import { SettingsService } from './services/settings.service';
 export class AppComponent {
   title = 'RedYarn';
 
-  constructor(private userInputService: UserInputService, private settingsService: SettingsService) {
+  constructor(private userInteractionService: UserInteractionService, private settingsService: SettingsService) {
     this.settingsService.load();
   }
   
   @HostListener('mousedown') onMouseDown() {
-    this.userInputService.onMouseDown();
+    this.userInteractionService.onMouseDown();
   }
 
   @HostListener('mouseup') onMouseUp() {
-    this.userInputService.onMouseUp;
+    this.userInteractionService.onMouseUp;
   }
   
   @HostListener('mousemove', ['$event.clientX', '$event.clientY', '$event.buttons'])
   onMouseMove(x: number, y: number, buttons: number) {
-    this.userInputService.onMouseMove(x, y, buttons);
+    this.userInteractionService.onMouseMove(x, y, buttons);
   }
 }
