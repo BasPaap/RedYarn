@@ -18,20 +18,6 @@ export class NetworkItemsConstructorService {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  public getRelationshipEdge(relationship: Relationship) {
-    return {
-      arrows: relationship.isDirectional ? 'to' : undefined,
-      from: relationship.fromNodeId,
-      to: relationship.toNodeId,
-      label: relationship.name,
-      smooth: {
-        type: "continuous",
-        forceDirection: "none"
-      },
-      color: { color: 'rgba(255,0,0,1)', highlight: 'rgba(255,0,0,1)' },
-    };
-  }
-
   public getStorylineNode(storyline: Storyline) {
     return {
       id: storyline.id,
@@ -88,6 +74,20 @@ export class NetworkItemsConstructorService {
       x: character.xPosition,
       y: character.yPosition,
       character: character
+    };
+  }
+
+  public getRelationshipEdge(relationship: Relationship) {
+    return {
+      arrows: relationship.isDirectional ? 'to' : undefined,
+      from: relationship.fromNodeId,
+      to: relationship.toNodeId,
+      label: relationship.name,
+      smooth: {
+        type: "continuous",
+        forceDirection: "none"
+      },
+      color: { color: 'rgba(255,0,0,1)', highlight: 'rgba(255,0,0,1)' },
     };
   }
 
