@@ -59,7 +59,7 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 <#
 	}
 #>
-		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>(<#= modelName == nameof(Relationship) ? "Func<(Guid, Guid)> getNodeIdsFunc" : string.Empty#>);
+		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "Func<(Guid, Guid)> getNodeIdsFunc" : string.Empty#>);
 		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>();
 		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);		
 		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
@@ -231,7 +231,7 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 <#
 	}
 #>
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= modelName == nameof(Relationship) ? "getNodeIdsFunc" : string.Empty #>);
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "getNodeIdsFunc" : string.Empty #>);
 <#
 	if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
 	{
@@ -260,20 +260,10 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 			Assert.AreEqual(diagramId, this.dbContextToTest.Entry(this.dbContextToTest.<#=Pluralize(modelName)#>.SingleAsync().Result).Property("DiagramId").CurrentValue);
 <#
 	}
-
-	if (viewModelName == nameof(RelationshipViewModel))
-	{
-#>
+#>	
 			Assert<#=viewModelName#>(returnedViewModel);
-<#
-	}
-	else
-	{
-#>
-			Assert<#=viewModelName#>(returnedViewModel);
-<#
-	}
 
+<#
 	if (EntityHasNode(modelName))
 	{
 #>
@@ -303,7 +293,7 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 		public void Update<#=viewModelName#>Async_IdIsUnknown_ReturnsNullAndFalse()
 		{
 			// Arrange			
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= modelName == nameof(Relationship) ? "null" : string.Empty #>);
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
 	if (EntityHasNode(modelName))
@@ -343,7 +333,7 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 		public async Task Update<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullExceptionAsync()
 		{
 			// Arrange			
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= modelName == nameof(Relationship) ? "null" : string.Empty #>);
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
 	if (EntityHasNode(modelName))
@@ -381,7 +371,7 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 		public void Update<#=viewModelName#>Async_ArgumentsAreOK_ReturnsUpdatedModelAndTrue()
 		{
 			// Arrange			
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= modelName == nameof(Relationship) ? "null" : string.Empty #>);
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
 			var test<#=modelName#> = GetTest<#=modelName#>();
 <#
 	if (EntityHasNode(modelName))

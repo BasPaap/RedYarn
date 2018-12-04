@@ -52,7 +52,7 @@ namespace Bas.RedYarn.WebApp.Controllers
 			try
 			{
 <#+
-	if (modelName == nameof(Relationship))
+	if (connectionViewModelNames.Contains(modelName + "ViewModel"))
     {
 #>
 				if (string.IsNullOrWhiteSpace(<#=instanceName#>ViewModel.Name))

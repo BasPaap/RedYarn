@@ -67,7 +67,7 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 		public void Create<#= modelName #>_ArgumentIsOk_CreatesObjectAndReturns201Created()
 		{
 <#+
-	if (modelName == nameof(Relationship))
+	if (connectionViewModelNames.Contains(viewModelName))
 	{
 #>
 			var firstCharacter = new CharacterViewModel()
@@ -90,7 +90,7 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 			var <#=viewModelInstanceName#> = new <#=viewModelName#>()
 			{
 <#+
-	if (modelName == nameof(Relationship))
+	if (connectionViewModelNames.Contains(viewModelName))
 	{
 #>
 				FromNodeId = firstCharacter.Id,
@@ -146,7 +146,7 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
             
             // Act
 <#+
-	if (modelName == nameof(Relationship))
+	if (connectionViewModelNames.Contains(viewModelName))
     {
 #>
 			var result = (httpClient.PostAsync($"api/<#=modelName#><#+ if (entitiesToAddToDiagram.Contains(modelName)) { #>/{diagramViewModel.Id}<#+}#>", (new System.Text.StringBuilder()).ToJsonStringContent())).Result;

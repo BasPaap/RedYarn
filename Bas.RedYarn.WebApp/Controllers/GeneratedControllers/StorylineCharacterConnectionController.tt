@@ -1,0 +1,4 @@
+﻿<#@ include file="ControllerGenerator.t4" #>
+<# 
+WriteController("StorylineCharacterConnection");
+#>

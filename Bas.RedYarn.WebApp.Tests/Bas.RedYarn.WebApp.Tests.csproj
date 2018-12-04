@@ -72,6 +72,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AliasControllerTest.cs</LastGenOutput>
     </None>
+    <None Update="GeneratedTests\CharacterPlotElementConnectionControllerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>CharacterPlotElementConnectionControllerTest.cs</LastGenOutput>
+    </None>
     <None Update="GeneratedTests\DatabaseDataServiceTest.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DatabaseDataServiceTest.cs</LastGenOutput>
@@ -103,6 +107,14 @@
     <None Update="Services\TestDataService.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TestDataService.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\StorylineCharacterConnectionControllerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StorylineCharacterConnectionControllerTest.cs</LastGenOutput>
+    </None>
+    <None Update="GeneratedTests\StorylinePlotElementConnectionControllerTest.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StorylinePlotElementConnectionControllerTest.cs</LastGenOutput>
     </None>
   </ItemGroup>
 
@@ -167,6 +179,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterControllerTest.tt</DependentUpon>
     </Compile>
+    <Compile Update="GeneratedTests\CharacterPlotElementConnectionControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterPlotElementConnectionControllerTest.tt</DependentUpon>
+    </Compile>
     <Compile Update="GeneratedTests\DatabaseDataServiceTestBase.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -186,6 +203,16 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>TestDataService.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\StorylineCharacterConnectionControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineCharacterConnectionControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\StorylinePlotElementConnectionControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylinePlotElementConnectionControllerTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   

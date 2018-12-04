@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NewRelationshipUIService } from './new-relationship-ui.service';
+import { NewConnectionUIService } from './new-connection-ui.service';
 
 describe('NewRelationshipUiService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: NewRelationshipUIService = TestBed.get(NewRelationshipUIService);
+    const service: NewConnectionUIService = TestBed.get(NewConnectionUIService);
     expect(service).toBeTruthy();
   });
 });
