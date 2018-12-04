@@ -150,15 +150,31 @@ export class DiagramDataService {
     return observable;
   }
 
-
-  public createRelationship(relationshipViewModel: Relationship): Observable<Relationship> {
-    let observable = this.httpClient.post<Relationship>(`${this.apiUrl}relationship`, relationshipViewModel).pipe(
-      tap(model => this.newRelationshipSubject.next(relationshipViewModel))
+  private createConnection<T>(controllerName: string, viewModel: T, subject: Subject<T>): Observable<T> {
+    let observable = this.httpClient.post<T>(`${this.apiUrl}${controllerName}`, viewModel).pipe(
+      tap(model => subject.next(model))
     );
 
     return observable;
   }
-  
+
+  public createRelationship(viewModel: Relationship): Observable<Relationship> {
+    return this.createConnection('relationship', viewModel, this.newRelationshipSubject);
+  }
+
+  public createStorylineCharacterConnection(viewModel: Connection): Observable<Connection> {
+    return this.createConnection('storylinecharacterconnection', viewModel, this.newStorylineCharacterConnectionSubject);
+  }
+
+  public createStorylinePlotElementConnection(viewModel: Connection): Observable<Connection> {
+    return this.createConnection('storylineplotelementconnection', viewModel, this.newStorylinePlotElementConnectionSubject);
+  }
+
+  public createCharacterPlotElementConnection(viewModel: CharacterPlotElementConnection): Observable<CharacterPlotElementConnection> {
+    return this.createConnection('characterplotelementconnection', viewModel, this.newCharacterPlotElementConnectionSubject);
+  }
+
+
   public updateCharacter(characterViewModel: Character): Observable<Character> {
     return this.updateNodeItem("character", characterViewModel.id, characterViewModel, this.updatedCharacterSubject);
   }
@@ -171,19 +187,36 @@ export class DiagramDataService {
     return this.updateNodeItem("PlotElement", plotElementViewModel.id, plotElementViewModel, this.updatedPlotElementSubject);
   }
 
-  private updateNodeItem<T>(controllerName: string, id: string, model: T, subject: Subject<T>): Observable<T> {
-    let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, model).pipe(
-      tap(_ => subject.next(model)) // Put operations return no value so we don't need any arguments here, just send the node we sent to the server to the stream.
+  private updateNodeItem<T>(controllerName: string, id: string, viewModel: T, subject: Subject<T>): Observable<T> {
+    let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, viewModel).pipe(
+      tap(_ => subject.next(viewModel)) // Put operations return no value so we don't need any arguments here, just send the node we sent to the server to the stream.
     );
 
     return observable;
   }
 
-  public updateRelationship(relationshipViewModel: Relationship): Observable<Relationship> {
-    let observable = this.httpClient.put<Relationship>(`${this.apiUrl}relationship/${relationshipViewModel.fromNodeId}/${relationshipViewModel.toNodeId}`, relationshipViewModel).pipe(
-      tap(_ => this.updatedRelationshipSubject.next(relationshipViewModel))
+  
+  private updateConnection<T>(controllerName: string, id: string, viewModel: T, subject: Subject<T>): Observable<T> {
+    let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${id}`, viewModel).pipe(
+      tap(_ => subject.next(viewModel))
     );
 
     return observable;
+  }
+
+  public updateRelationship(viewModel: Relationship): Observable<Relationship> {
+    return this.updateConnection('relationship', viewModel.id, viewModel, this.newRelationshipSubject);
+  }
+
+  public updateStorylineCharacterConnection(viewModel: Connection): Observable<Connection> {
+    return this.updateConnection('storylinecharacterconnection', viewModel.id, viewModel, this.newStorylineCharacterConnectionSubject);
+  }
+
+  public updateStorylinePlotElementConnection(viewModel: Connection): Observable<Connection> {
+    return this.updateConnection('storylineplotelementconnection', viewModel.id, viewModel, this.newStorylinePlotElementConnectionSubject);
+  }
+
+  public updateCharacterPlotElementConnection(viewModel: CharacterPlotElementConnection): Observable<CharacterPlotElementConnection> {
+    return this.updateConnection('characterplotelementconnection', viewModel.id, viewModel, this.newCharacterPlotElementConnectionSubject);
   }
 }
