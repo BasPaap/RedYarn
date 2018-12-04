@@ -215,6 +215,10 @@
       <LastGenOutput>IDataService.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\components\" />
+    <Folder Include="ClientApp\src\app\services\" />
+  </ItemGroup>
   
 
 
