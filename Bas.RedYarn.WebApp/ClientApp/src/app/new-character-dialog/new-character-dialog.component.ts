@@ -4,6 +4,7 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { DiagramService } from '../diagram.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Guid } from '../../Guid';
+import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 
 @Component({
   selector: 'app-new-character-dialog',
@@ -24,8 +25,8 @@ export class NewCharacterDialogComponent extends DialogComponent implements OnIn
         name: this.formGroup.controls['name'].value,
         description: this.formGroup.controls['description'].value,
         aliases: this.aliases.map(alias => { return { id: Guid.empty, name: alias } }),
-        xPosition: 0,
-        yPosition: 0
+        xPosition: this.networkGeneratorService.getStartingCoordinate(),
+        yPosition: this.networkGeneratorService.getStartingCoordinate()
       };
 
       this.diagramService.createCharacter(characterViewModel)
@@ -33,7 +34,7 @@ export class NewCharacterDialogComponent extends DialogComponent implements OnIn
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramService: DiagramService) {
+  constructor(private dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramService: DiagramService, private networkGeneratorService: VisNetworkGeneratorService) {
     super();
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
     this.formGroup.addControl('description', new FormControl(''));

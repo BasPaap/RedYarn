@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material';
 import { DiagramService } from '../diagram.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Guid } from '../../Guid';
+import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 
 @Component({
   selector: 'app-new-storyline-dialog',
@@ -20,8 +21,8 @@ export class NewStorylineDialogComponent extends DialogComponent implements OnIn
         id: Guid.empty,
         name: this.formGroup.controls['name'].value,
         description: this.formGroup.controls['description'].value,
-        xPosition: 0,
-        yPosition: 0
+        xPosition: this.networkGeneratorService.getStartingCoordinate(),
+        yPosition: this.networkGeneratorService.getStartingCoordinate()
       };
 
       this.diagramService.createStoryline(storylineViewModel)
@@ -29,7 +30,7 @@ export class NewStorylineDialogComponent extends DialogComponent implements OnIn
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramService: DiagramService) {
+  constructor(private dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramService: DiagramService, private networkGeneratorService: VisNetworkGeneratorService) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

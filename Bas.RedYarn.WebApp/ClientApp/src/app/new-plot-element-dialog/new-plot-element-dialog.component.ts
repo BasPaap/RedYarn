@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material';
 import { DiagramService } from '../diagram.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Guid } from '../../Guid';
+import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 
 @Component({
   selector: 'app-new-plot-element-dialog',
@@ -20,8 +21,8 @@ export class NewPlotElementDialogComponent extends DialogComponent implements On
         id: Guid.empty,
         name: this.formGroup.controls['name'].value,
         description: this.formGroup.controls['description'].value,
-        xPosition: 0,
-        yPosition: 0
+        xPosition: this.networkGeneratorService.getStartingCoordinate(),
+        yPosition: this.networkGeneratorService.getStartingCoordinate()
       };
 
       this.diagramService.createPlotElement(plotElementViewModel)
@@ -29,7 +30,7 @@ export class NewPlotElementDialogComponent extends DialogComponent implements On
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramService: DiagramService) {
+  constructor(private dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramService: DiagramService, private networkGeneratorService: VisNetworkGeneratorService) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

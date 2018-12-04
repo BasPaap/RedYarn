@@ -9,6 +9,14 @@ export class VisNetworkGeneratorService {
 
   constructor(private settingsService: SettingsService) { }
 
+  public getStartingCoordinate(): number {
+    return this.getRandomNumber(0, this.settingsService.settings.ui.newNodePlacementRadius);
+  }
+
+  private getRandomNumber(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
   public getRelationshipConnection(relationship: Relationship) {
     return {
       arrows: relationship.isDirectional ? 'to' : undefined,
