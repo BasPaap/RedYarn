@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
-import { style } from '@angular/animations';
 
 class Drawable {
   public draw(context: any) { }

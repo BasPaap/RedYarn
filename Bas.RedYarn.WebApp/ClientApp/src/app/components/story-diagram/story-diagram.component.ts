@@ -1,14 +1,14 @@
-import { Component, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
-import { DataSet } from 'vis-redyarn';
-import { DiagramService } from '../diagram.service';
-import { VisNetworkGeneratorService } from '../vis-network-generator.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Diagram } from '../diagram-types';
-import { Subscription, Observable, forkJoin } from 'rxjs';
-import { VisNetworkDirective } from '../vis-network.directive';
-import { Settings, SettingsService } from '../settings.service';
-import { NewRelationshipUIService } from '../new-relationship-ui.service';
-import { NetworkItemsService } from '../network-items.service';
+import { forkJoin, Observable, Subscription } from 'rxjs';
+import { DataSet } from 'vis-redyarn';
+import { Diagram } from '../../diagram-types';
+import { DiagramService } from '../../services/diagram.service';
+import { NetworkItemsService } from '../../services/network-items.service';
+import { NewRelationshipUIService } from '../../services/new-relationship-ui.service';
+import { SettingsService } from '../../services/settings.service';
+import { VisNetworkGeneratorService } from '../../services/vis-network-generator.service';
+import { VisNetworkDirective } from '../../vis-network.directive';
 
 @Component({
   selector: 'app-story-diagram',

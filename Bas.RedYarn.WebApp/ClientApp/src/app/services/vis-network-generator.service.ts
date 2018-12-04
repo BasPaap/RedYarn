@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Character, Storyline, PlotElement, Connection, Relationship } from './diagram-types';
+import { Character, PlotElement, Relationship, Storyline } from '../diagram-types';
 import { SettingsService } from './settings.service';
 
 @Injectable({

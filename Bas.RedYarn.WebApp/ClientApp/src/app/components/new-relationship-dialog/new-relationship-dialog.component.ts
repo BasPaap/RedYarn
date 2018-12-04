@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { DialogComponent } from '../dialog/dialog.component';
-import { Validators, FormControl } from '@angular/forms';
-import { DiagramService } from '../diagram.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Guid } from '../../Guid';
+import { Guid } from '../../../Guid';
+import { DiagramService } from '../../services/diagram.service';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-new-relationship-dialog',

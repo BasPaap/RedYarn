@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Network, DataSet, Node, Edge, IdType } from 'vis-redyarn';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { SettingsService } from './settings.service';
 
 export class NodeLayout {

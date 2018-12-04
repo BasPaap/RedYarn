@@ -1,10 +1,11 @@
-import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Diagram, Character, Storyline, PlotElement, Relationship } from './diagram-types';
-import { ActivatedRoute } from '@angular/router';
-import { Guid } from '../Guid';
+import { Guid } from '../../Guid';
+import { Character, Diagram, PlotElement, Relationship, Storyline } from '../diagram-types';
+
 
 @Injectable({
   providedIn: 'root'

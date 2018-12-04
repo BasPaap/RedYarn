@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { UserInputService, MouseState } from './user-input.service';
-import { Node } from './diagram-types';
-import { NetworkItemsService, NodeLayout, CircularNodeLayout, RectangularNodeLayout } from './network-items.service';
-import { SettingsService } from './settings.service';
-import { DiagramDrawingService } from './diagram-drawing.service';
-import { VisNetworkDirective } from './vis-network.directive';
-import { NewRelationshipDialogComponent } from './new-relationship-dialog/new-relationship-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { NewRelationshipDialogComponent } from '../components/new-relationship-dialog/new-relationship-dialog.component';
+import { VisNetworkDirective } from '../vis-network.directive';
+import { DiagramDrawingService } from './diagram-drawing.service';
+import { CircularNodeLayout, NetworkItemsService, NodeLayout } from './network-items.service';
+import { MouseState, UserInputService } from './user-input.service';
 
 @Injectable({
   providedIn: 'root'

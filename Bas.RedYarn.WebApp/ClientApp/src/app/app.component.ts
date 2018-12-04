@@ -1,6 +1,6 @@
 import { Component, HostListener } from '@angular/core';
-import { UserInputService } from './user-input.service';
-import { SettingsService } from './settings.service';
+import { UserInputService } from './services/user-input.service';
+import { SettingsService } from './services/settings.service';
 
 @Component({
   selector: 'app-root',

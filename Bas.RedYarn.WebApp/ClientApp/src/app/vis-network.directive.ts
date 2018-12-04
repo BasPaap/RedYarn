@@ -1,7 +1,7 @@
 import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Network, IdType, Options } from 'vis-redyarn';
-import { DiagramDrawingService } from './diagram-drawing.service';
-import { NetworkItemsService } from './network-items.service';
+import { DiagramDrawingService } from './services/diagram-drawing.service';
+import { NetworkItemsService } from './services/network-items.service';
 
 @Directive({
   selector: '[appVisNetwork]'

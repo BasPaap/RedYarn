@@ -1,6 +1,5 @@
-import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
 
 export class Settings {
   isInDebugMode: boolean = false;

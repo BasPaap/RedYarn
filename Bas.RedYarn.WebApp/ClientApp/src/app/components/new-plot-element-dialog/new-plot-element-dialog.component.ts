@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { DiagramService } from '../diagram.service';
+import { Guid } from '../../../Guid';
+import { DiagramService } from '../../services/diagram.service';
+import { VisNetworkGeneratorService } from '../../services/vis-network-generator.service';
 import { DialogComponent } from '../dialog/dialog.component';
-import { Guid } from '../../Guid';
-import { VisNetworkGeneratorService } from '../vis-network-generator.service';
 
 @Component({
   selector: 'app-new-plot-element-dialog',

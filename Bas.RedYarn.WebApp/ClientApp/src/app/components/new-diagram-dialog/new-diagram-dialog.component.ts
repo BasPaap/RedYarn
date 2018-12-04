@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { DiagramService } from '../diagram.service';
 import { Router } from '@angular/router';
+import { DiagramService } from '../../services/diagram.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
