@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Guid } from '../../Guid';
-import { Character, Diagram, PlotElement, Relationship, Storyline } from '../diagram-types';
+import { Character, Diagram, PlotElement, Relationship, Storyline, Connection, CharacterPlotElementConnection } from '../diagram-types';
 
 
 // Handles all communication with the REST API and provides observables for updates in existing nodes and connections.
@@ -17,10 +17,16 @@ export class DiagramDataService {
   private newStorylineSubject = new Subject<Storyline>();
   private newPlotElementSubject = new Subject<PlotElement>();
   private newRelationshipSubject = new Subject<Relationship>();
+  private newStorylineCharacterConnectionSubject = new Subject<Connection>();
+  private newStorylinePlotElementConnectionSubject = new Subject<Connection>();
+  private newCharacterPlotElementConnectionSubject = new Subject<CharacterPlotElementConnection>();
   private updatedCharacterSubject = new Subject<Character>();
   private updatedStorylineSubject = new Subject<Storyline>();
   private updatedPlotElementSubject = new Subject<PlotElement>();
   private updatedRelationshipSubject = new Subject<Relationship>();
+  private updatedStorylineCharacterConnectionSubject = new Subject<Connection>();
+  private updatedStorylinePlotElementConnectionSubject = new Subject<Connection>();
+  private updatedCharacterPlotElementConnectionSubject = new Subject<CharacterPlotElementConnection>();
 
 
   public get addedCharactersStream(): Observable<Character> {
@@ -39,6 +45,18 @@ export class DiagramDataService {
     return this.newRelationshipSubject.asObservable();
   }
 
+  public get addedStorylineCharacterConnectionsStream(): Observable<Connection> {
+    return this.newStorylineCharacterConnectionSubject.asObservable();
+  }
+
+  public get addedStorylinePlotElementConnectionsStream(): Observable<Connection> {
+    return this.newStorylinePlotElementConnectionSubject.asObservable();
+  }
+
+  public get addedCharacterPlotElementConnectionsStream(): Observable<CharacterPlotElementConnection> {
+    return this.newCharacterPlotElementConnectionSubject.asObservable();
+  }
+
   public get updatedCharactersStream(): Observable<Character> {
     return this.updatedCharacterSubject.asObservable();
   }
@@ -55,6 +73,17 @@ export class DiagramDataService {
     return this.updatedRelationshipSubject.asObservable();
   }
 
+  public get updatedStorylineCharacterConnectionsStream(): Observable<Connection> {
+    return this.updatedStorylineCharacterConnectionSubject.asObservable();
+  }
+
+  public get updatedStorylinePlotElementConnectionsStream(): Observable<Connection> {
+    return this.updatedStorylinePlotElementConnectionSubject.asObservable();
+  }
+
+  public get updatedCharacterPlotElementConnectionsStream(): Observable<CharacterPlotElementConnection> {
+    return this.updatedCharacterPlotElementConnectionSubject.asObservable();
+  }
 
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string, private route: ActivatedRoute) {
   }

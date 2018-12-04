@@ -1,3 +1,14 @@
+export enum DiagramItemType {
+  Unknown,
+  Character,
+  Storyline,
+  PlotElement,
+  Relationship,
+  StorylineCharacterConnection,
+  StorylinePlotElementConnection,
+  CharacterPlotElementConnection
+}
+
 export interface Node {
   id: string;
   xPosition: number;
@@ -35,15 +46,10 @@ export interface Relationship extends Connection {
   isDirectional: boolean;
 }
 
-export interface StorylineCharacterConnection {
-  connectionId: string;
-  storylineId: string;
+export interface CharacterPlotElementConnection extends Connection {
+  characterOwnsPlotElement: boolean;
 }
 
-export interface StorylinePlotElementConnection {
-  connectionId: string;
-  storylineId: string;
-}
 
 export interface Diagram {
   id: string;
@@ -53,13 +59,7 @@ export interface Diagram {
   plotElements: PlotElement[];
   relationships: Relationship[];
   aliases: Alias[];
-  storylineCharacterConnections: StorylineCharacterConnection[];
-  storylinePlotElementConnections: StorylinePlotElementConnection[];
-  characterPlotElementConnections: PlotElementConnection[];
-}
-
-export interface PlotElementConnection {
-  plotElementId: string;
-  characterId: string;
-  characterOwnsPlotElement: boolean;
+  storylineCharacterConnections: Connection[];
+  storylinePlotElementConnections: Connection[];
+  characterPlotElementConnections: CharacterPlotElementConnection[];
 }

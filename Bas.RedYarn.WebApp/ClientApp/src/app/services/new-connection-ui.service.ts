@@ -41,7 +41,7 @@ export class NewConnectionUIService {
         // if we're not in the zone and the mouse button is up, stop dragging the arrow and enable canvas dragging.
         if (mouseState.isButtonDown == false) {
           // If there happens to be a "from" node and the mouse is over a different node, that means we've dragged the arrow from one node to another,
-          // and need to create a relationship.
+          // and need to create a connection. The two node types determine which type of connection that will be
           if (this.fromNodeLayoutId && closestNodeLayout.isOverNode(canvasX, canvasY) && this.fromNodeLayoutId != closestNodeLayout.id) {
             let dialogConfig = new MatDialogConfig();
             dialogConfig.data = {
