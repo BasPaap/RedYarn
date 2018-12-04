@@ -7,6 +7,7 @@ import { Guid } from '../../Guid';
 import { Character, Diagram, PlotElement, Relationship, Storyline } from '../diagram-types';
 
 
+// Handles all communication with the REST API and provides observables for updates in existing nodes and connections.
 @Injectable({
   providedIn: 'root'
 })

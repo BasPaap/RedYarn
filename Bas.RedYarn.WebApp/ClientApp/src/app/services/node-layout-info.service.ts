@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { SettingsService } from './settings.service';
 
-export class NodeLayout {
+export class NodeLayoutInfo {
 
   constructor(protected settingsService: SettingsService) { }
 
@@ -22,7 +22,7 @@ export class NodeLayout {
 
 }
 
-export class CircularNodeLayout extends NodeLayout {
+export class CircularNodeLayoutInfo extends NodeLayoutInfo {
   public isCircular: boolean = true;
 
   public isInActivationZone(mouseX: number, mouseY: number): boolean {
@@ -36,7 +36,7 @@ export class CircularNodeLayout extends NodeLayout {
   }
 }
 
-export class RectangularNodeLayout extends NodeLayout {
+export class RectangularNodeLayoutInfo extends NodeLayoutInfo {
   public isRectangular: boolean = true;
 
   public isInActivationZone(mouseX: number, mouseY: number): boolean {
@@ -63,27 +63,28 @@ export class RectangularNodeLayout extends NodeLayout {
   }
 }
 
+// Offers an observable with information about current node layouts
 @Injectable({
   providedIn: 'root'
 })
 export class NodeLayoutInfoService {
 
-  private nodeLayoutsSubject: Subject<NodeLayout> = new Subject<NodeLayout>();
-  public get nodeLayoutsStream(): Observable<NodeLayout> {
+  private nodeLayoutsSubject: Subject<NodeLayoutInfo> = new Subject<NodeLayoutInfo>();
+  public get nodeLayoutsStream(): Observable<NodeLayoutInfo> {
     return this.nodeLayoutsSubject.asObservable();
   }
 
   public onUpdatedNode(node: vis.Node, boundingBox: vis.BoundingBox) {
     let width, height: number;
 
-    let nodeLayout: NodeLayout;
+    let nodeLayout: NodeLayoutInfo;
 
     if (node.shape == "circularImage") {
-      nodeLayout = new CircularNodeLayout(this.settingsService);
+      nodeLayout = new CircularNodeLayoutInfo(this.settingsService);
       width = this.settingsService.settings.ui.characterNode.radius * 2;
       height = this.settingsService.settings.ui.characterNode.radius * 2;
     } else {
-      nodeLayout = new RectangularNodeLayout(this.settingsService);
+      nodeLayout = new RectangularNodeLayoutInfo(this.settingsService);
       width = Math.abs(boundingBox.right - boundingBox.left - 12);  // Strangely, Network returns a bounding box that's 12 pixels too large for rectangular nodes.
       height = Math.abs(boundingBox.bottom - boundingBox.top - 12); // Strangely, Network returns a bounding box that's 12 pixels too large for rectangular nodes.
     }

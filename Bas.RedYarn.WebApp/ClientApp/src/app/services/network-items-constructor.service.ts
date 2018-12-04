@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Character, PlotElement, Relationship, Storyline } from '../diagram-types';
 import { SettingsService } from './settings.service';
 
+// Constructs vis network objects to visualize RedYarn characters, relationships, plots etc.
 @Injectable({
   providedIn: 'root'
 })

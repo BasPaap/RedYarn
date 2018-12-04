@@ -3,7 +3,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
 import { NewRelationshipDialogComponent } from '../components/new-relationship-dialog/new-relationship-dialog.component';
 import { VisNetworkDirective } from '../vis-network.directive';
 import { DiagramDrawingService } from './diagram-drawing.service';
-import { CircularNodeLayout, NodeLayoutInfoService, NodeLayout } from './node-layout-info.service';
+import { CircularNodeLayoutInfo, NodeLayoutInfoService, NodeLayoutInfo } from './node-layout-info.service';
 import { MouseState, UserInteractionService } from './user-interaction.service';
 
 @Injectable({
@@ -11,7 +11,7 @@ import { MouseState, UserInteractionService } from './user-interaction.service';
 })
 export class NewConnectionUIService {
 
-  private nodeLayouts: { [id: string]: NodeLayout } = {};
+  private nodeLayouts: { [id: string]: NodeLayoutInfo } = {};
   private fromNodeLayoutId: string = undefined;
   private visNetwork: VisNetworkDirective;
 
@@ -78,7 +78,7 @@ export class NewConnectionUIService {
     }
   }
 
-  private highlightNode(nodeLayout: NodeLayout) {
+  private highlightNode(nodeLayout: NodeLayoutInfo) {
     if (this.isCircularNodeLayout(nodeLayout)) {
       this.diagramDrawingService.drawCircularNodeHighlight(nodeLayout.positionX, nodeLayout.positionY);
     }
@@ -90,11 +90,11 @@ export class NewConnectionUIService {
     }
   }
 
-  private isCircularNodeLayout(nodeLayout: NodeLayout): nodeLayout is CircularNodeLayout {
-    return (<CircularNodeLayout>nodeLayout).isCircular !== undefined;
+  private isCircularNodeLayout(nodeLayout: NodeLayoutInfo): nodeLayout is CircularNodeLayoutInfo {
+    return (<CircularNodeLayoutInfo>nodeLayout).isCircular !== undefined;
   }
 
-  private getArrowDestination(closestNodeLayout: NodeLayout, canvasX: number, canvasY: number): [number, number] {
+  private getArrowDestination(closestNodeLayout: NodeLayoutInfo, canvasX: number, canvasY: number): [number, number] {
     // If hovering over a node, the arrow should be drawn to the center of that node so that it "snaps" to whatever node you are hovering over.
     // if not hovering over a node, the arrow should be drawn to the cursor position.
     if (closestNodeLayout.isOverNode(canvasX, canvasY)) {
@@ -106,9 +106,9 @@ export class NewConnectionUIService {
   }
 
 
-  private getClosestNodeLayout(x: number, y: number): [NodeLayout, number] {
+  private getClosestNodeLayout(x: number, y: number): [NodeLayoutInfo, number] {
     let minDistance: number = undefined;
-    let closestNodeLayout: NodeLayout = undefined;
+    let closestNodeLayout: NodeLayoutInfo = undefined;
 
     for (let key in this.nodeLayouts) {
       let distance = this.nodeLayouts[key].distanceTo(x, y);
