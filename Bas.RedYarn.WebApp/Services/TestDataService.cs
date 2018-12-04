@@ -251,5 +251,65 @@ namespace Bas.RedYarn.WebApp.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<StorylineCharacterConnectionViewModel> GetStorylineCharacterConnectionViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StorylineCharacterConnectionViewModel> CreateStorylineCharacterConnectionViewModelAsync(StorylineCharacterConnectionViewModel storylineCharacterConnectionViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(StorylineCharacterConnectionViewModel result, bool isFound)> UpdateStorylineCharacterConnectionViewModelAsync(Guid id, StorylineCharacterConnectionViewModel storylineCharacterConnectionViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteStorylineCharacterConnectionViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StorylinePlotElementConnectionViewModel> GetStorylinePlotElementConnectionViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<StorylinePlotElementConnectionViewModel> CreateStorylinePlotElementConnectionViewModelAsync(StorylinePlotElementConnectionViewModel storylinePlotElementConnectionViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(StorylinePlotElementConnectionViewModel result, bool isFound)> UpdateStorylinePlotElementConnectionViewModelAsync(Guid id, StorylinePlotElementConnectionViewModel storylinePlotElementConnectionViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteStorylinePlotElementConnectionViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CharacterPlotElementConnectionViewModel> GetCharacterPlotElementConnectionViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<CharacterPlotElementConnectionViewModel> CreateCharacterPlotElementConnectionViewModelAsync(CharacterPlotElementConnectionViewModel characterPlotElementConnectionViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<(CharacterPlotElementConnectionViewModel result, bool isFound)> UpdateCharacterPlotElementConnectionViewModelAsync(Guid id, CharacterPlotElementConnectionViewModel characterPlotElementConnectionViewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteCharacterPlotElementConnectionViewModelAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

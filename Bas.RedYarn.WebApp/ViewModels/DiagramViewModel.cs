@@ -24,7 +24,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Collection<RelationshipViewModel> Relationships { get; } = new Collection<RelationshipViewModel>();
         public Collection<ConnectionViewModel> StorylineCharacterConnections { get; } = new Collection<ConnectionViewModel>();
         public Collection<ConnectionViewModel> StorylinePlotElementConnections { get; } = new Collection<ConnectionViewModel>();
-        public Collection<PlotElementConnectionViewModel> CharacterPlotElementConnections { get; } = new Collection<PlotElementConnectionViewModel>();
+        public Collection<CharacterPlotElementConnectionViewModel> CharacterPlotElementConnections { get; } = new Collection<CharacterPlotElementConnectionViewModel>();
 
         public DiagramViewModel()
         {
@@ -137,7 +137,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
             {
                 foreach (var neededPlotElement in character.NeededPlotElements)
                 {
-                    CharacterPlotElementConnections.Add(new PlotElementConnectionViewModel()
+                    CharacterPlotElementConnections.Add(new CharacterPlotElementConnectionViewModel()
                     {
                         FromNodeId = plotElementDictionary[neededPlotElement].Id,
                         ToNodeId = characterDictionary[character].Id,
@@ -147,7 +147,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
 
                 foreach (var ownedPlotElement in character.OwnedPlotElements)
                 {
-                    CharacterPlotElementConnections.Add(new PlotElementConnectionViewModel()
+                    CharacterPlotElementConnections.Add(new CharacterPlotElementConnectionViewModel()
                     {
                         FromNodeId = plotElementDictionary[ownedPlotElement].Id,
                         ToNodeId = characterDictionary[character].Id,

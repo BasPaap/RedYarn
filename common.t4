@@ -27,7 +27,14 @@ static List<string> modelNames = new List<string>
 	nameof(Relationship)
 };
 
-List<string> viewModelNames = new List<string>(modelNames.Select(m => $"{m}ViewModel"));
+static List<string> extraViewModelNames = new List<string>
+{
+	"StorylineCharacterConnectionViewModel", 
+	"StorylinePlotElementConnectionViewModel",
+	"CharacterPlotElementConnectionViewModel"
+};
+
+List<string> viewModelNames = new List<string>((modelNames.Select(m => $"{m}ViewModel")).Concat(extraViewModelNames));
 
 List<string> entitiesWithNodes = new List<string>
 {

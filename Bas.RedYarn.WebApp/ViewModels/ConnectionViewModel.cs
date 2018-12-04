@@ -7,6 +7,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
 {
     public class ConnectionViewModel
     {
+        public Guid Id { get; set; }
         public Guid FromNodeId { get; set; }
         public Guid ToNodeId { get; set; }
 

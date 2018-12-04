@@ -41,7 +41,7 @@ namespace Bas.RedYarn.WebApp.Tests
         }
 
 <#
-foreach (var viewModelName in viewModelNames)
+foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 {
 	var modelName = GetModelName(viewModelName);
 	if (EntityHasNode(modelName))

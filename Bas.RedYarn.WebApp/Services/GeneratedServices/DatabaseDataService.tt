@@ -21,7 +21,7 @@ namespace Bas.RedYarn.WebApp.Services
         }
 
 <#
-foreach (var viewModelName in viewModelNames)
+foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 {
 	var modelName = GetModelName(viewModelName);
 #>
@@ -227,7 +227,36 @@ foreach (var viewModelName in viewModelNames)
         }
 
 <#
-} // End of foreach
+} // End of foreach for first list of viewmodels
+
+
+foreach (var viewModelName in extraViewModelNames)
+{
+#>
+
+		public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+		{
+			throw new NotImplementedException();
+		}
+
+        public Task<bool> Delete<#=viewModelName#>Async(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+<#
+} // End of foreach for second list of viewmodels
+
+
 #>
 	}
 }

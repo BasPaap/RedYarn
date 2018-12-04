@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.ViewModels
 {
-    public sealed class PlotElementConnectionViewModel : ConnectionViewModel
+    public sealed class CharacterPlotElementConnectionViewModel : ConnectionViewModel
     {
         public bool CharacterOwnsPlotElement { get; set; }
 
-        public PlotElementConnectionViewModel()
+        public CharacterPlotElementConnectionViewModel()
         {
         }
 
-        public PlotElementConnectionViewModel(PlotElementConnectionViewModel viewModel)
+        public CharacterPlotElementConnectionViewModel(CharacterPlotElementConnectionViewModel viewModel)
             : base(viewModel)
         {
             CharacterOwnsPlotElement = viewModel.CharacterOwnsPlotElement;

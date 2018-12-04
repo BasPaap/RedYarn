@@ -7,7 +7,6 @@ namespace Bas.RedYarn.WebApp.ViewModels
 {
     public sealed class RelationshipViewModel : ConnectionViewModel
     {
-        public Guid Id { get; set; }
         public string Name { get; set; }
         public bool IsDirectional { get; set; }
 
