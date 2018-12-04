@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Character, PlotElement, Relationship, Storyline } from '../diagram-types';
+import { Character, PlotElement, Relationship, Storyline, CharacterPlotElementConnection, Connection } from '../diagram-types';
 import { SettingsService } from './settings.service';
 
 // Constructs vis network objects to visualize RedYarn characters, relationships, plots etc.
@@ -18,7 +18,7 @@ export class NetworkItemsConstructorService {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  public getRelationshipConnection(relationship: Relationship) {
+  public getRelationshipEdge(relationship: Relationship) {
     return {
       arrows: relationship.isDirectional ? 'to' : undefined,
       from: relationship.fromNodeId,
@@ -91,60 +91,36 @@ export class NetworkItemsConstructorService {
     };
   }
 
-  //public generate(diagram: Diagram, nodes: DataSet<{}>, edges: DataSet<{}>) {
-  //  nodes.add(diagram.characters.map(c => this.getCharacterNode(c)));
-  //  nodes.add(diagram.storylines.map(s => this.getStorylineNode(s)));
-  //  nodes.add(diagram.plotElements.map(e => this.getPlotElementNode(e)));
+  public getCharacterPlotElementConnectionEdge(plotElementConnection: CharacterPlotElementConnection) {
+    return {
+      from: plotElementConnection.fromNodeId,
+      to: plotElementConnection.toNodeId,
+      smooth: false,
+      dashes: true,
+      arrowStrikethrough: false,  
+      arrows: plotElementConnection.characterOwnsPlotElement ? 'from' : 'to',      
+      color: plotElementConnection.characterOwnsPlotElement ? { color: 'rgba(0,250,0,1)', highlight: 'rgba(0,250,0,1)' } :
+                                                                       { color: 'rgba(253,106,2,1)', highlight: 'rgba(253,106,2,1)' }
+    };
+  }
 
-  //  edges.add(diagram.relationships.map(r => this.getRelationshipEdge(r)));
-  //  edges.add(diagram.storylineCharacterConnections.map(s => this.getStorylineCharacterConnectionEdge(s)));
-  //  edges.add(diagram.storylinePlotElementConnections.map(s => this.getStorylinePlotElementConnectionEdge(s)));
-  //  edges.add(diagram.characterPlotElementConnections.map(c => this.getCharacterPlotElementConnectionEdge(c)));
-  //}
+  public getStorylineCharacterConnectionEdge(connection: Connection) {
+    return {
+      from: connection.fromNodeId,
+      to: connection.toNodeId,
+      smooth: false,
+      color: { color: 'rgba(0,0,0,1)', highlight: 'rgba(0,0,0,1)' },
+    };
+  }
 
-  //private getCharacterPlotElementConnectionEdge(plotElementConnection: PlotElementConnection) {
-  //  return {
-  //    from: plotElementConnection.plotElementId,
-  //    to: plotElementConnection.characterId,
-  //    smooth: false,
-  //    dashes: true,
-  //    arrowStrikethrough: false,
-  //    arrows: plotElementConnection.characterOwnsPlotElement ? 'from' : 'to',      
-  //    color: plotElementConnection.characterOwnsPlotElement ? { color: 'rgba(0,250,0,1)', highlight: 'rgba(0,250,0,1)' } :
-  //                                                                     { color: 'rgba(253,106,2,1)', highlight: 'rgba(253,106,2,1)' }
-  //  };
-  //}
-  //private getRelationshipEdge(relationship: Relationship) {
-  //  return {
-  //    arrows: relationship.isDirectional ? 'to' : undefined,
-  //    from: relationship.fromCharacterId,
-  //    to: relationship.toCharacterId,
-  //    label: relationship.name,
-  //    smooth: {
-  //      type: "continuous",
-  //      forceDirection: "none"
-  //    },
-  //    color: { color: 'rgba(255,0,0,1)', highlight: 'rgba(255,0,0,1)' },
-  //  };
-  //}
-
-  //private getStorylineCharacterConnectionEdge(connection: StorylineCharacterConnection) {
-  //  return {
-  //    from: connection.connectionId,
-  //    to: connection.storylineId,
-  //    smooth: false,
-  //    color: { color: 'rgba(0,0,0,1)', highlight: 'rgba(0,0,0,1)' },
-  //  };
-  //}
-
-  //private getStorylinePlotElementConnectionEdge(connection: StorylinePlotElementConnection) {
-  //  return {
-  //    from: connection.connectionId,
-  //    to: connection.storylineId,
-  //    smooth: false,
-  //    arrows: 'to',
-  //    arrowStrikethrough: false,
-  //    color: { color: 'rgba(0,0,0,0.5)', highlight: 'rgba(0,0,0,0.5)' },
-  //  };
-  //}
+  public getStorylinePlotElementConnectionEdge(connection: Connection) {
+    return {
+      from: connection.fromNodeId,
+      to: connection.toNodeId,
+      smooth: false,
+      arrows: 'to',
+      arrowStrikethrough: false,
+      color: { color: 'rgba(0,0,0,0.5)', highlight: 'rgba(0,0,0,0.5)' },
+    };
+  }
 }
