@@ -9,6 +9,7 @@ import { NewConnectionUIService } from '../../services/new-connection-ui.service
 import { SettingsService } from '../../services/settings.service';
 import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
 import { VisNetworkDirective } from '../../vis-network.directive';
+import { DiagramInfoService } from '../../services/diagram-info.service';
 
 @Component({
   selector: 'app-story-diagram',
@@ -29,6 +30,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     private settingsService: SettingsService,
     private networkItemsConstructorService: NetworkItemsConstructorService,
     private nodeLayoutInfoService: NodeLayoutInfoService,
+    private diagramInfoService: DiagramInfoService,
     private newRelationshipUI: NewConnectionUIService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // Force Angular to reload even if only the parameters change.    
   }
@@ -75,6 +77,17 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this.networkData["nodes"] = new DataSet<vis.Node>();
     this.networkData["edges"] = new DataSet<vis.Edge>();
     
+    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramDataService.addedCharactersStream, this.networkItemsConstructorService.getCharacterNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramDataService.addedStorylinesStream, this.networkItemsConstructorService.getStorylineNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramDataService.addedPlotElementsStream, this.networkItemsConstructorService.getPlotElementNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['newRelationship'] = this.subscribeToNewConnectionStream(this.diagramDataService.addedRelationshipsStream, this.networkItemsConstructorService.getRelationshipConnection.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedCharactersStream, this.networkItemsConstructorService.getCharacterNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedStorylinesStream, this.networkItemsConstructorService.getStorylineNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedPlotElementsStream, this.networkItemsConstructorService.getPlotElementNode.bind(this.networkItemsConstructorService));
+    this.subscriptions['updatedRelationship'] = this.subscribeToUpdatedConnectionStream(this.diagramDataService.updatedRelationshipsStream, this.networkItemsConstructorService.getRelationshipConnection.bind(this.networkItemsConstructorService));
+
+    this.diagramInfoService.initialize();
+
     const id = this.route.snapshot.paramMap.get('id');
     forkJoin([
       this.diagramDataService.getDiagram(id)
@@ -85,14 +98,6 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.isLoaded = true;
     }, error => console.error(error));
 
-    this.subscriptions['newCharacter'] = this.subscribeToNewNodeStream(this.diagramDataService.addedCharactersStream, this.networkItemsConstructorService.getCharacterNode.bind(this.networkItemsConstructorService));
-    this.subscriptions['newStoryline'] = this.subscribeToNewNodeStream(this.diagramDataService.addedStorylinesStream, this.networkItemsConstructorService.getStorylineNode.bind(this.networkItemsConstructorService));
-    this.subscriptions['newPlotElement'] = this.subscribeToNewNodeStream(this.diagramDataService.addedPlotElementsStream, this.networkItemsConstructorService.getPlotElementNode.bind(this.networkItemsConstructorService));
-    this.subscriptions['newRelationship'] = this.subscribeToNewConnectionStream(this.diagramDataService.addedRelationshipsStream, this.networkItemsConstructorService.getRelationshipConnection.bind(this.networkItemsConstructorService));
-    this.subscriptions['updatedCharacter'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedCharactersStream, this.networkItemsConstructorService.getCharacterNode.bind(this.networkItemsConstructorService));
-    this.subscriptions['updatedStoryline'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedStorylinesStream, this.networkItemsConstructorService.getStorylineNode.bind(this.networkItemsConstructorService));
-    this.subscriptions['updatedPlotElement'] = this.subscribeToUpdatedNodeStream(this.diagramDataService.updatedPlotElementsStream, this.networkItemsConstructorService.getPlotElementNode.bind(this.networkItemsConstructorService));
-    this.subscriptions['updatedRelationship'] = this.subscribeToUpdatedConnectionStream(this.diagramDataService.updatedRelationshipsStream, this.networkItemsConstructorService.getRelationshipConnection.bind(this.networkItemsConstructorService));
   }
 
   private subscribeToNewConnectionStream<T>(service: Observable<T>, getEdge: (item: T) => any): Subscription {
@@ -135,5 +140,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     for (let key in this.subscriptions) {
       this.subscriptions[key].unsubscribe();
     }
+
+    this.diagramInfoService.reset();
   }
 }

@@ -30,7 +30,11 @@ export class DiagramInfoService implements OnDestroy {
     return (this.diagramItemTypes[id]) ? this.diagramItemTypes[id] : DiagramItemType.Unknown;
   }
 
-  constructor(public diagramDataService: DiagramDataService) {
+  constructor(private diagramDataService: DiagramDataService) { }
+
+  public initialize() {
+    this.reset();
+
     this.subscriptions['newCharacter'] = this.subscribe(this.diagramDataService.addedCharactersStream, DiagramItemType.Character, this.characters);
     this.subscriptions['newStoryline'] = this.subscribe(this.diagramDataService.addedStorylinesStream, DiagramItemType.Storyline, this.storylines);
     this.subscriptions['newPlotElement'] = this.subscribe(this.diagramDataService.addedPlotElementsStream, DiagramItemType.PlotElement, this.plotElements);
@@ -40,9 +44,21 @@ export class DiagramInfoService implements OnDestroy {
     this.subscriptions['newCharacterPlotElementConnection'] = this.subscribe(this.diagramDataService.addedCharacterPlotElementConnectionsStream, DiagramItemType.CharacterPlotElementConnection, this.characterPlotElementConnections);
   }
 
-  ngOnDestroy(): void {
+  public reset() {
     for (let key in this.subscriptions) {
       this.subscriptions[key].unsubscribe();
     }
+
+    this.characters = {};
+    this.plotElements = {};
+    this.storylines = {};
+    this.relationships = {};
+    this.storylineCharacterConnections = {};
+    this.storylinePlotElementConnections = {};
+    this.characterPlotElementConnections = {};
+  }
+
+  ngOnDestroy(): void {
+    this.reset();
   }
 }

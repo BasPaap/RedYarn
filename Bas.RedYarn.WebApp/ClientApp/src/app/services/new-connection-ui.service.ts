@@ -5,6 +5,8 @@ import { VisNetworkDirective } from '../vis-network.directive';
 import { DiagramDrawingService } from './diagram-drawing.service';
 import { CircularNodeLayoutInfo, NodeLayoutInfoService, NodeLayoutInfo } from './node-layout-info.service';
 import { MouseState, UserInteractionService } from './user-interaction.service';
+import { DiagramInfoService } from './diagram-info.service';
+import { DiagramItemType } from '../diagram-types';
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +21,11 @@ export class NewConnectionUIService {
     this.visNetwork = value;
   }
 
-  constructor(private userInteractionService: UserInteractionService, private nodeLayoutInfoService: NodeLayoutInfoService, private diagramDrawingService: DiagramDrawingService, private dialog: MatDialog) {
+  constructor(private userInteractionService: UserInteractionService, private nodeLayoutInfoService: NodeLayoutInfoService, private diagramDrawingService: DiagramDrawingService, private dialog: MatDialog, private diagramInfoService: DiagramInfoService) {
     this.userInteractionService.mouseStateStream.subscribe(this.onMouseState.bind(this));
     this.nodeLayoutInfoService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts[nodeLayout.id] = nodeLayout);
   }
-  
+
   private onMouseState(mouseState: MouseState) {
 
     if (this.visNetwork && !this.visNetwork.isDragging) {
@@ -43,13 +45,7 @@ export class NewConnectionUIService {
           // If there happens to be a "from" node and the mouse is over a different node, that means we've dragged the arrow from one node to another,
           // and need to create a connection. The two node types determine which type of connection that will be
           if (this.fromNodeLayoutId && closestNodeLayout.isOverNode(canvasX, canvasY) && this.fromNodeLayoutId != closestNodeLayout.id) {
-            let dialogConfig = new MatDialogConfig();
-            dialogConfig.data = {
-              fromNodeId: this.fromNodeLayoutId,
-              toNodeId: closestNodeLayout.id
-            };
-
-            this.dialog.open(NewRelationshipDialogComponent, dialogConfig);
+            this.connectNodes(this.fromNodeLayoutId, closestNodeLayout.id);
           }
 
           this.fromNodeLayoutId = undefined;
@@ -76,6 +72,44 @@ export class NewConnectionUIService {
 
       this.visNetwork.redraw();
     }
+  }
+
+  private connectNodes(fromNodeId: string, toNodeId: string) {
+    let fromType = this.diagramInfoService.getItemType(fromNodeId);
+    let toType = this.diagramInfoService.getItemType(toNodeId);
+    if (fromType == DiagramItemType.Character && toType == DiagramItemType.Character) {
+      this.openNewRelationshipDialog(fromNodeId, toNodeId);
+    }
+    else if ((fromType == DiagramItemType.Character && toType == DiagramItemType.Storyline) ||
+             (fromType == DiagramItemType.Storyline && toType == DiagramItemType.Character)) {
+      this.createConnection(fromNodeId, toNodeId);
+    }
+    else if ((fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Storyline) ||
+      (fromType == DiagramItemType.Storyline && toType == DiagramItemType.PlotElement)) {
+      this.createConnection(fromNodeId, toNodeId);
+    }
+    else if ((fromType == DiagramItemType.Character && toType == DiagramItemType.PlotElement) ||
+      (fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Character)) {
+      this.openNewCharacterPlotElementConnectionDialog(fromNodeId, toNodeId);
+    }
+  }
+
+  private openNewRelationshipDialog(fromNodeId: string, toNodeId: string) {
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      fromNodeId: fromNodeId,
+      toNodeId: toNodeId
+    };
+
+    this.dialog.open(NewRelationshipDialogComponent, dialogConfig);
+  }
+
+  private createConnection(fromNodeId: string, toNodeId: string) {
+    alert('not implemented');
+  }
+
+  private openNewCharacterPlotElementConnectionDialog(fromNodeId: string, toNodeId: string) {
+    alert('not implemented');
   }
 
   private highlightNode(nodeLayout: NodeLayoutInfo) {
