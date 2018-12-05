@@ -252,7 +252,7 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<StorylineCharacterConnectionViewModel> GetStorylineCharacterConnectionViewModelAsync(Guid id)
+        public Task<StorylineCharacterConnectionViewModel> GetStorylineCharacterConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId)
         {
             throw new NotImplementedException();
         }
@@ -262,17 +262,17 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<(StorylineCharacterConnectionViewModel result, bool isFound)> UpdateStorylineCharacterConnectionViewModelAsync(Guid id, StorylineCharacterConnectionViewModel storylineCharacterConnectionViewModel)
+        public Task<(StorylineCharacterConnectionViewModel result, bool isFound)> UpdateStorylineCharacterConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId, StorylineCharacterConnectionViewModel storylineCharacterConnectionViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteStorylineCharacterConnectionViewModelAsync(Guid id)
+        public Task<bool> DeleteStorylineCharacterConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<StorylinePlotElementConnectionViewModel> GetStorylinePlotElementConnectionViewModelAsync(Guid id)
+        public Task<StorylinePlotElementConnectionViewModel> GetStorylinePlotElementConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId)
         {
             throw new NotImplementedException();
         }
@@ -282,17 +282,17 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<(StorylinePlotElementConnectionViewModel result, bool isFound)> UpdateStorylinePlotElementConnectionViewModelAsync(Guid id, StorylinePlotElementConnectionViewModel storylinePlotElementConnectionViewModel)
+        public Task<(StorylinePlotElementConnectionViewModel result, bool isFound)> UpdateStorylinePlotElementConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId, StorylinePlotElementConnectionViewModel storylinePlotElementConnectionViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteStorylinePlotElementConnectionViewModelAsync(Guid id)
+        public Task<bool> DeleteStorylinePlotElementConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<CharacterPlotElementConnectionViewModel> GetCharacterPlotElementConnectionViewModelAsync(Guid id)
+        public Task<CharacterPlotElementConnectionViewModel> GetCharacterPlotElementConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId)
         {
             throw new NotImplementedException();
         }
@@ -302,12 +302,12 @@ namespace Bas.RedYarn.WebApp.Services
             throw new NotImplementedException();
         }
 
-        public Task<(CharacterPlotElementConnectionViewModel result, bool isFound)> UpdateCharacterPlotElementConnectionViewModelAsync(Guid id, CharacterPlotElementConnectionViewModel characterPlotElementConnectionViewModel)
+        public Task<(CharacterPlotElementConnectionViewModel result, bool isFound)> UpdateCharacterPlotElementConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId, CharacterPlotElementConnectionViewModel characterPlotElementConnectionViewModel)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> DeleteCharacterPlotElementConnectionViewModelAsync(Guid id)
+        public Task<bool> DeleteCharacterPlotElementConnectionViewModelAsync(Guid fromNodeId, Guid toNodeId)
         {
             throw new NotImplementedException();
         }

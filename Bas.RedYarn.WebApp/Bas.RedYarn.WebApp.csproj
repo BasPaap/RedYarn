@@ -163,6 +163,34 @@
     <None Include="settings.json" />
   </ItemGroup>
   
+  <ItemGroup>
+    <Compile Update="Controllers\GeneratedControllers\CharacterPlotElementConnectionController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>CharacterPlotElementConnectionController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\GeneratedControllers\StorylineCharacterConnectionController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineCharacterConnectionController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Controllers\GeneratedControllers\StorylinePlotElementConnectionController.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylinePlotElementConnectionController.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Services\GeneratedServices\DatabaseDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>DatabaseDataService.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Services\IDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IDataService.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  
 
   <ItemGroup>
     <None Update="Controllers\GeneratedControllers\AliasController.tt">

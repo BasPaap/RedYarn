@@ -8,11 +8,20 @@ namespace Bas.RedYarn.WebApp.Services
     public interface IDataService
     {
 <#
-foreach (var viewModelName in viewModelNames)
+foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
+{
+	WriteDeclarations(viewModelName, "Guid id");
+}
+
+foreach (var viewModelName in extraViewModelNames)
+{
+	WriteDeclarations(viewModelName, "Guid fromNodeId, Guid toNodeId");
+}
+
+void WriteDeclarations(string viewModelName, string idParameters)
 {
 #>
-
-		Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id);
+		Task<<#=viewModelName#>> Get<#=viewModelName#>Async(<#=idParameters#>);
 <#
 	if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName)))
 	{
@@ -23,8 +32,9 @@ foreach (var viewModelName in viewModelNames)
 #>		Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>); <#
 	}
 #>		
-		Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
-        Task<bool> Delete<#=viewModelName#>Async(Guid id);
+		Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(<#=idParameters#>, <#=viewModelName#> <#=Decapitalize(viewModelName)#>);
+        Task<bool> Delete<#=viewModelName#>Async(<#=idParameters#>);
+
 <#
 }
 #>

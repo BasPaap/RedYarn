@@ -1,4 +1,4 @@
 ﻿<#@ include file="ControllerGenerator.t4" #>
 <# 
-WriteController("StorylinePlotElementConnection");
+WriteController("StorylinePlotElementConnection", "FromNodeId", "ToNodeId");
 #>

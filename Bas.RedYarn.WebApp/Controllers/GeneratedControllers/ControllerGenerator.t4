@@ -1,7 +1,28 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
 <#+
-private void WriteController(string modelName)
+
+private string GetParameters(string[] idPropertyNames)
 {
+	return string.Join(", ", idPropertyNames.Select(i => "Guid " + Decapitalize(i)));
+}
+
+private string GetArguments(string[] idPropertyNames)
+{
+	return string.Join(", ", idPropertyNames.Select(i => Decapitalize(i)));
+}
+
+private string GetRoutingPath(string[] idPropertyNames)
+{
+	return string.Join("/", idPropertyNames.Select(i => $"{{{Decapitalize(i)}}}"));
+}
+
+private void WriteController(string modelName, params string[] idPropertyNames)
+{
+	if (idPropertyNames.Length == 0)
+	{
+		idPropertyNames = new [] { "Id" };
+	}
+
 	string instanceName = Decapitalize(modelName);
 #>using Bas.RedYarn.WebApp.Services;
 using Bas.RedYarn.WebApp.ViewModels;
@@ -22,12 +43,12 @@ namespace Bas.RedYarn.WebApp.Controllers
             this.dataService = dataService;
         }
 
-		[HttpGet("{id}")]
+		[HttpGet("<#=GetRoutingPath(idPropertyNames)#>")]
         [ProducesResponseType(200)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<<#=modelName#>ViewModel>> Get<#=modelName#>ViewModelAsync(Guid id)
+        public async Task<ActionResult<<#=modelName#>ViewModel>> Get<#=modelName#>ViewModelAsync(<#=GetParameters(idPropertyNames)#>)
         {            
-            var <#=instanceName#>ViewModel = await this.dataService.Get<#=modelName#>ViewModelAsync(id);            
+            var <#=instanceName#>ViewModel = await this.dataService.Get<#=modelName#>ViewModelAsync(<#=GetArguments(idPropertyNames)#>);            
             if (<#=instanceName#>ViewModel == null)
             {
                 return NotFound();
@@ -72,11 +93,11 @@ namespace Bas.RedYarn.WebApp.Controllers
 			}
         }
 
-        [HttpPut("{id}")]        
+        [HttpPut("<#=GetRoutingPath(idPropertyNames)#>")]        
 		[ProducesResponseType(201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult> Update<#=modelName#>Async(Guid id, <#=modelName#>ViewModel <#=instanceName#>ViewModel)
+        public async Task<ActionResult> Update<#=modelName#>Async(<#=GetParameters(idPropertyNames)#>, <#=modelName#>ViewModel <#=instanceName#>ViewModel)
         {
 			try
 			{
@@ -92,7 +113,7 @@ namespace Bas.RedYarn.WebApp.Controllers
 <#+
     }
 #>
-				var response = await this.dataService.Update<#=modelName#>ViewModelAsync(id, <#=instanceName#>ViewModel);
+				var response = await this.dataService.Update<#=modelName#>ViewModelAsync(<#=GetArguments(idPropertyNames)#>, <#=instanceName#>ViewModel);
 				if (response.isFound)
 				{
 					return NoContent();
@@ -108,12 +129,12 @@ namespace Bas.RedYarn.WebApp.Controllers
 			}
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("<#=GetRoutingPath(idPropertyNames)#>")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<ActionResult> Delete<#=modelName#>Async(Guid id)
+        public async Task<ActionResult> Delete<#=modelName#>Async(<#=GetParameters(idPropertyNames)#>)
         {
-            var isFound = await this.dataService.Delete<#=modelName#>ViewModelAsync(id);
+            var isFound = await this.dataService.Delete<#=modelName#>ViewModelAsync(<#=GetArguments(idPropertyNames)#>);
             if (isFound)
 			{
 				return NoContent();

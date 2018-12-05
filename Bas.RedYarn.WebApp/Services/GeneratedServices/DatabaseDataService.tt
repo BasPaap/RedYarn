@@ -234,7 +234,7 @@ foreach (var viewModelName in extraViewModelNames)
 {
 #>
 
-		public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
+		public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
 		{
 			throw new NotImplementedException();
 		}
@@ -244,12 +244,12 @@ foreach (var viewModelName in extraViewModelNames)
 			throw new NotImplementedException();
 		}
 		
-		public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+		public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
 		{
 			throw new NotImplementedException();
 		}
 
-        public Task<bool> Delete<#=viewModelName#>Async(Guid id)
+        public Task<bool> Delete<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
 		{
 			throw new NotImplementedException();
 		}
