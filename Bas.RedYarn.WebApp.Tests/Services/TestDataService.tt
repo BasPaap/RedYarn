@@ -1,4 +1,32 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
+<#
+string GetIdProperties(string viewModelName)
+{
+	if (extraViewModelNames.Contains(viewModelName))
+	{
+		return "Guid fromNodeId, Guid toNodeId";		
+	}
+	else
+	{
+		return "Guid id";
+	}
+}
+#>
+
+<#
+string GetPredicate(string viewModelName)
+{
+	if (extraViewModelNames.Contains(viewModelName))
+	{
+		return "d => d.FromNodeId == fromNodeId && d.ToNodeId == toNodeId";		
+	}
+	else
+	{
+		return "d => d.Id == id";
+	}
+}
+#>
+
 using Bas.RedYarn.WebApp.ViewModels;
 using Bas.RedYarn.WebApp.Services;
 using System;
@@ -23,9 +51,9 @@ foreach (var viewModelName in viewModelNames)
 foreach (var viewModelName in viewModelNames)
 {
 #>
-        public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid id)
+        public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(<#=GetIdProperties(viewModelName)#>)
         {
-            return Task.FromResult(<#=Pluralize(viewModelName)#>.SingleOrDefault(d => d.Id == id));
+            return Task.FromResult(<#=Pluralize(viewModelName)#>.SingleOrDefault(<#=GetPredicate(viewModelName)#>));
         }
 
         public Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<# if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) {#>Guid diagramId, <#}#><#=viewModelName#> <#=Decapitalize(viewModelName)#>)
@@ -36,9 +64,9 @@ foreach (var viewModelName in viewModelNames)
             return Task.FromResult(<#=Decapitalize(viewModelName)#>);
         }
 
-        public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid id, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+        public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(<#=GetIdProperties(viewModelName)#>, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
-            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(d => d.Id == id);
+            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(<#=GetPredicate(viewModelName)#>);
 
 			if (existingViewModel == null)
 			{
@@ -47,15 +75,29 @@ foreach (var viewModelName in viewModelNames)
 						
             var indexOfViewModel = <#=Pluralize(viewModelName)#>.IndexOf(existingViewModel);
             existingViewModel = <#=Decapitalize(viewModelName)#>;
+<#
+	if (extraViewModelNames.Contains(viewModelName))
+	{
+#>
+			existingViewModel.FromNodeId = fromNodeId;
+			existingViewModel.ToNodeId = toNodeId;
+<#
+	}
+	else
+	{
+#>
 			existingViewModel.Id = id;
+<#
+	}
+#>
 			<#=Pluralize(viewModelName)#>[indexOfViewModel] = existingViewModel;
 
             return Task.FromResult((existingViewModel, true));
         }
 
-        public Task<bool> Delete<#=viewModelName#>Async(Guid id)
+        public Task<bool> Delete<#=viewModelName#>Async(<#=GetIdProperties(viewModelName)#>)
         {
-            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(d => d.Id == id);
+            var existingViewModel = <#=Pluralize(viewModelName)#>.SingleOrDefault(<#=GetPredicate(viewModelName)#>);
 
 			if (existingViewModel == null)
 			{
@@ -65,6 +107,7 @@ foreach (var viewModelName in viewModelNames)
 			<#=Pluralize(viewModelName)#>.Remove(existingViewModel);
             return Task.FromResult(true);
         }
+
 <#
 }
 #>

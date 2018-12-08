@@ -1,4 +1,4 @@
-﻿<#@ include file="ControllerBaseTestGenerator.t4" #>
+﻿<#@ include file="ControllerTestGenerator.t4" #>
 <# 
 WriteTestClass(nameof(Diagram));
 #>

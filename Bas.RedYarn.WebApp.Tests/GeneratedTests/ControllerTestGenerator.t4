@@ -1,9 +1,74 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #><#+
-private void WriteTestClass(string unitUnderTestName)
+
+private void ArrangeConnectionTypes(string firstConnectionType, string secondConnectionType)
+{
+	if (!string.IsNullOrWhiteSpace(firstConnectionType))
+	{
+#>
+			var <#=Decapitalize(firstConnectionType)#> = new <#=firstConnectionType#>()
+			{
+				Id = Guid.NewGuid(),
+				Name = "<#=firstConnectionType#>1"
+			};
+			this.dataService.<#=firstConnectionType#>s.Add(<#=Decapitalize(firstConnectionType)#>);
+<#+
+	}
+#>
+
+<#+
+	if (!string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var <#=Decapitalize(secondConnectionType)#> = new <#=secondConnectionType#>()
+			{
+				Id = Guid.NewGuid(),
+				Name = "<#=secondConnectionType#>1"
+			};
+			this.dataService.<#=secondConnectionType#>s.Add(<#=Decapitalize(secondConnectionType)#>);
+<#+
+	}
+}
+
+private void WriteIdProperties(string firstConnectionType, string secondConnectionType)
+{
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+				FromNodeId = <#=Decapitalize(firstConnectionType)#>.Id,
+				ToNodeId = <#=Decapitalize(secondConnectionType)#>.Id,
+<#+
+	}
+	else
+	{
+#>
+                Id = Guid.NewGuid(),
+<#+
+	}
+}
+
+
+private void WriteConnectionTests(string firstConnectionType, string secondConnectionType)
+{
+			if (!string.IsNullOrWhiteSpace(firstConnectionType))
+			{
+#>
+			Assert.AreEqual(1, this.dataService.<#=Pluralize(firstConnectionType)#>.Count);
+<#+
+			}
+
+if (!string.IsNullOrWhiteSpace(secondConnectionType))
+			{
+#>
+			Assert.AreEqual(1, this.dataService.<#=Pluralize(secondConnectionType)#>.Count);
+<#+
+			}
+}
+
+private void WriteTestClass(string unitUnderTestName, string firstConnectionType = "", string secondConnectionType = "")
 {
 	var controllerName = $"{unitUnderTestName}Controller";
 	WriteBeginning(controllerName);
-	WriteTests(controllerName);
+	WriteTests(controllerName, firstConnectionType, secondConnectionType);
 	WriteEnd();
 }
 
@@ -45,20 +110,20 @@ private void WriteEnd()
 #>
 
 <#+
-private void WriteTests(string unitUnderTestName)
+private void WriteTests(string unitUnderTestName, string firstConnectionType, string secondConnectionType)
 {
 	string modelName = unitUnderTestName.Substring(0, unitUnderTestName.IndexOf("Controller"));			// "Diagram"
 	string viewModelName = modelName + "ViewModel";			// "DiagramViewModel"
 	string viewModelInstanceName = Decapitalize(viewModelName); // "diagramViewModel"
 	string controllerObjectName = Decapitalize(unitUnderTestName);	// "diagramController"
 
-	WriteCreateTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName);
-	WriteUpdateTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName);
-	WriteDeleteTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName);
-	WriteGetTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName);
+	WriteCreateTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName, firstConnectionType, secondConnectionType);
+	WriteUpdateTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName, firstConnectionType, secondConnectionType);
+	WriteDeleteTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName, firstConnectionType, secondConnectionType);
+	WriteGetTests(unitUnderTestName, modelName, viewModelName, viewModelInstanceName, controllerObjectName, firstConnectionType, secondConnectionType);
 }
 
-private void WriteCreateTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName)
+private void WriteCreateTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName, string firstConnectionType, string secondConnectionType)
 {
 #>
 
@@ -66,35 +131,18 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 		[TestMethod]
 		public void Create<#= modelName #>_ArgumentIsOk_CreatesObjectAndReturns201Created()
 		{
-<#+
-	if (connectionViewModelNames.Contains(viewModelName))
-	{
-#>
-			var firstCharacter = new CharacterViewModel()
-			{
-				Id = Guid.NewGuid(),
-				Name = "FirstCharacter"
-			};
-			this.dataService.CharacterViewModels.Add(firstCharacter);
-
-			var secondCharacter = new CharacterViewModel()
-			{
-				Id = Guid.NewGuid(),
-				Name = "SecondCharacter"
-			};
-			this.dataService.CharacterViewModels.Add(secondCharacter);
-<#+
-	}
-#>
 			// Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
 			var <#=viewModelInstanceName#> = new <#=viewModelName#>()
 			{
 <#+
-	if (connectionViewModelNames.Contains(viewModelName))
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
 	{
 #>
-				FromNodeId = firstCharacter.Id,
-				ToNodeId = secondCharacter.Id,
+				FromNodeId = <#=Decapitalize(firstConnectionType)#>.Id,
+				ToNodeId = <#=Decapitalize(secondConnectionType)#>.Id,
 <#+
 	}
 #>				Name = "New<#=viewModelName#>"
@@ -121,9 +169,24 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 			Assert.IsNotNull(result);
             Assert.IsNotNull(content);
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
-            Assert.AreEqual($"/api/<#=modelName#>/{content.Id}", result.Headers.Location.PathAndQuery);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=modelName#>ViewModels.Single().Name);
+            Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=modelName#>ViewModels.Single().Name);
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			Assert.AreEqual($"/api/<#=modelName#>/{content.FromNodeId}/{content.ToNodeId}", result.Headers.Location.PathAndQuery);
+			Assert.AreEqual(content.FromNodeId, this.dataService.<#=modelName#>ViewModels.Single().FromNodeId);			
+			Assert.AreEqual(content.ToNodeId, this.dataService.<#=modelName#>ViewModels.Single().ToNodeId);			
+<#+
+	}
+	else
+	{
+#>
+			Assert.AreEqual($"/api/<#=modelName#>/{content.Id}", result.Headers.Location.PathAndQuery);
 			Assert.AreEqual(content.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
+<#+
+	}
+#>
 		}
 
 		[TestMethod]
@@ -145,20 +208,8 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 #>
             
             // Act
-<#+
-	if (connectionViewModelNames.Contains(viewModelName))
-    {
-#>
 			var result = (httpClient.PostAsync($"api/<#=modelName#><#+ if (entitiesToAddToDiagram.Contains(modelName)) { #>/{diagramViewModel.Id}<#+}#>", (new System.Text.StringBuilder()).ToJsonStringContent())).Result;
-<#+
-	}
-	else
-	{
-#>
-	        var result = (httpClient.PostAsync($"api/<#=modelName#><#+ if (entitiesToAddToDiagram.Contains(modelName)) { #>/{diagramViewModel.Id}<#+}#>", (new <#=viewModelName#>()).ToJsonStringContent())).Result;
-<#+
-	}
-#>
+
             // Assert          
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
         }
@@ -177,6 +228,7 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
                 Name = "Diagram",
                 Id = Guid.NewGuid()
             };
+
             this.dataService.DiagramViewModels.Add(diagramViewModel);
 <#+			
 	}
@@ -195,83 +247,149 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 #>
 
 <#+
-private void WriteUpdateTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName)
+private void WriteUpdateTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName, string firstConnectionType, string secondConnectionType)
 {
 #>
 		#region Update
 		[TestMethod]
         public void Update<#=modelName#>_ArgumentIsOk_Updates<#=modelName#>AndReturns204NoContent()
         {
-            // Arrange
+			// Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
             var <#=viewModelInstanceName#> = new <#=viewModelName#>()
             {
-                Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
                 Name = "New<#=modelName#>"
             };
 
             var updated<#=viewModelName#> = new <#=viewModelName#>()
             {
-                Id = Guid.NewGuid(),
-                Name = "UpdatedNew<#=modelName#>"
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>                Name = "UpdatedNew<#=modelName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}", updated<#=viewModelName#>.ToJsonStringContent())).Result;
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var result = (httpClient.PutAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.FromNodeId}/{<#=viewModelInstanceName#>.ToNodeId}", updated<#=viewModelName#>.ToJsonStringContent())).Result;
+<#+
+	}
+	else
+	{
+#>
+			var result = (httpClient.PutAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}", updated<#=viewModelName#>.ToJsonStringContent())).Result;
+<#+
+	}
+#>
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
             Assert.AreEqual(updated<#=viewModelName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
+<#+
+	WriteConnectionTests(firstConnectionType, secondConnectionType);
+#>
         }
 
         [TestMethod]
         public void Update<#=modelName#>_ArgumentIsNull_Returns400BadRequest()
         {
             // Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
             var <#=viewModelInstanceName#> = new <#=viewModelName#>()
             {
-                Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
                 Name = "New<#=modelName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}", string.Empty.ToJsonStringContent())).Result;
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var result = (httpClient.PutAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.FromNodeId}/{<#=viewModelInstanceName#>.ToNodeId}", string.Empty.ToJsonStringContent())).Result;
+<#+
+	}
+	else
+	{
+#>
+			var result = (httpClient.PutAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}", string.Empty.ToJsonStringContent())).Result;
+<#+
+	}
+#>
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
+<#+
+	WriteConnectionTests(firstConnectionType, secondConnectionType);
+#>
         }
 
         [TestMethod]
         public void Update<#=modelName#>_IdIsWrong_Returns404NotFound()
         {
             // Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
             var <#=viewModelInstanceName#> = new <#=viewModelName#>()
             {
-                Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
                 Name = "New<#=modelName#>"
             };
 
             var updated<#=viewModelName#> = new <#=viewModelName#>()
             {
-                Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
                 Name = "UpdatedNew<#=modelName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.PutAsync($"api/<#=modelName#>/{Guid.NewGuid().ToString()}", updated<#=viewModelName#>.ToJsonStringContent())).Result;
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var result = (httpClient.PutAsync($"api/<#=modelName#>/{Guid.NewGuid()}/{Guid.NewGuid()}", updated<#=viewModelName#>.ToJsonStringContent())).Result;
+<#+
+	}
+	else
+	{
+#>
+			var result = (httpClient.PutAsync($"api/<#=modelName#>/{Guid.NewGuid()}", updated<#=viewModelName#>.ToJsonStringContent())).Result;
+<#+
+	}
+#>
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);					
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
+<#+
+	WriteConnectionTests(firstConnectionType, secondConnectionType);
+#>
         }
 		#endregion
 
@@ -280,7 +398,7 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
 #>
 
 <#+
-private void WriteDeleteTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName)
+private void WriteDeleteTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName, string firstConnectionType, string secondConnectionType)
 {
 #>
 		#region Delete
@@ -288,41 +406,83 @@ private void WriteDeleteTests(string unitUnderTestName, string modelName, string
         public void Delete<#=modelName#>_IdIsOk_Deletes<#=modelName#>AndReturns204NoContent()
         {
             // Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
             var <#=viewModelInstanceName#> = new <#=viewModelName#>()
             {
-                Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
                 Name = "New<#=modelName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.DeleteAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}")).Result;
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var result = (httpClient.DeleteAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.FromNodeId}/{<#=viewModelInstanceName#>.ToNodeId}")).Result;
+<#+
+	}
+	else
+	{
+#>
+			var result = (httpClient.DeleteAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}")).Result;
+<#+
+	}
+#>
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
             Assert.AreEqual(0, this.dataService.<#=Pluralize(viewModelName)#>.Count);
+<#+
+	WriteConnectionTests(firstConnectionType, secondConnectionType);
+#>
         }
         
         [TestMethod]
         public void Delete<#=modelName#>_IdIsWrong_Returns404NotFound()
         {
             // Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
             var <#=viewModelInstanceName#> = new <#=viewModelName#>()
             {
-                Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
                 Name = "New<#=modelName#>"
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.DeleteAsync($"api/<#=modelName#>/{Guid.NewGuid().ToString()}")).Result;
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var result = (httpClient.DeleteAsync($"api/<#=modelName#>/{Guid.NewGuid()}/{Guid.NewGuid()}")).Result;
+<#+
+	}
+	else
+	{
+#>
+			var result = (httpClient.DeleteAsync($"api/<#=modelName#>/{Guid.NewGuid()}")).Result;
+<#+
+	}
+#>
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
+<#+
+	WriteConnectionTests(firstConnectionType, secondConnectionType);
+#>
         }
 		#endregion
 
@@ -331,7 +491,7 @@ private void WriteDeleteTests(string unitUnderTestName, string modelName, string
 #>
 
 <#+
-private void WriteGetTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName)
+private void WriteGetTests(string unitUnderTestName, string modelName, string viewModelName, string viewModelInstanceName, string controllerObjectName, string firstConnectionType, string secondConnectionType)
 {
 #>
 		#region Get
@@ -339,15 +499,33 @@ private void WriteGetTests(string unitUnderTestName, string modelName, string vi
 		public void Get<#= modelName #>_ArgumentIsOk_CreatesObjectAndReturns200Ok()
 		{
 			// Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
             var <#=viewModelInstanceName#> = new <#=viewModelName#>()
 			{
-				Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
 				Name = "New<#=viewModelName#>"
 			};
 			this.dataService.<#= modelName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.GetAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}")).Result;
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var result = (httpClient.GetAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.FromNodeId}/{<#=viewModelInstanceName#>.ToNodeId}")).Result;
+<#+
+	}
+	else
+	{
+#>
+			var result = (httpClient.GetAsync($"api/<#=modelName#>/{<#=viewModelInstanceName#>.Id}")).Result;
+<#+
+	}
+#>
 
             // Assert
 			var content = result.Content.FromJsonString<<#=viewModelName#>>();
@@ -362,15 +540,33 @@ private void WriteGetTests(string unitUnderTestName, string modelName, string vi
         public void Get<#=modelName#>_WithInvalidId_Returns404NotFound()
         {
             // Arrange
+<#+
+	ArrangeConnectionTypes(firstConnectionType, secondConnectionType);
+#>
             var <#=viewModelInstanceName#> = new <#=viewModelName#>()
 			{
-				Id = Guid.NewGuid(),
+<#+
+	WriteIdProperties(firstConnectionType, secondConnectionType);
+#>
 				Name = "New<#=viewModelName#>"
 			};
 			this.dataService.<#= modelName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
             // Act
-            var result = (httpClient.GetAsync($"api/<#=modelName#>/{Guid.NewGuid().ToString()}")).Result;
+<#+
+	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
+	{
+#>
+			var result = (httpClient.GetAsync($"api/<#=modelName#>/{Guid.NewGuid()}/{Guid.NewGuid()}")).Result;
+<#+
+	}
+	else
+	{
+#>
+			var result = (httpClient.GetAsync($"api/<#=modelName#>/{Guid.NewGuid()}")).Result;
+<#+
+	}
+#>
 
             // Assert
 			Assert.IsNotNull(result);

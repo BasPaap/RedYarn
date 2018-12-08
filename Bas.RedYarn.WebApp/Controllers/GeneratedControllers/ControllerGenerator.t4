@@ -16,6 +16,11 @@ private string GetRoutingPath(string[] idPropertyNames)
 	return string.Join("/", idPropertyNames.Select(i => $"{{{Decapitalize(i)}}}"));
 }
 
+private string GetRoutingParameters(string[] idPropertyNames, string modelName)
+{
+	return string.Join(", ", idPropertyNames.Select(i => $"{Decapitalize(i)} = created{modelName}ViewModel.{i}"));
+}
+
 private void WriteController(string modelName, params string[] idPropertyNames)
 {
 	if (idPropertyNames.Length == 0)
@@ -85,7 +90,7 @@ namespace Bas.RedYarn.WebApp.Controllers
     }
 #>
 				var created<#=modelName#>ViewModel = await this.dataService.Create<#=modelName#>ViewModelAsync(<#+ if (entitiesToAddToDiagram.Contains(modelName)) { #>diagramId, <#+}#><#=instanceName#>ViewModel);
-				return CreatedAtAction(nameof(Get<#=modelName#>ViewModelAsync), new { id = created<#=modelName#>ViewModel.Id }, created<#=modelName#>ViewModel);            
+				return CreatedAtAction(nameof(Get<#=modelName#>ViewModelAsync), new { <#=GetRoutingParameters(idPropertyNames, modelName)#> }, created<#=modelName#>ViewModel);            
 			}
 			catch
 			{
