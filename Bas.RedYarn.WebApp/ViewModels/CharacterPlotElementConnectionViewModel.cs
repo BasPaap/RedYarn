@@ -18,5 +18,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
             CharacterOwnsPlotElement = viewModel.CharacterOwnsPlotElement;
         }
+
+        public CharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
+            : base(getNodeIdsFunc)
+        {
+        }
     }
 }

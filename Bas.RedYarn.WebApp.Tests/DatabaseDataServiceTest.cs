@@ -390,9 +390,9 @@ namespace Bas.RedYarn.WebApp.Tests
             return new RelationshipViewModel(GetTestRelationship(), null, getNodeIdsFunc);
         }
 
-        protected override RelationshipViewModel GetUpdatedRelationshipViewModel()
+        protected override RelationshipViewModel GetUpdatedRelationshipViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            var relationshipViewModel = GetTestRelationshipViewModel(null);
+            var relationshipViewModel = GetTestRelationshipViewModel(getNodeIdsFunc);
             relationshipViewModel.Name = updatedName;
             return relationshipViewModel;
         }
@@ -438,12 +438,12 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override CharacterPlotElementConnectionViewModel GetTestCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new CharacterPlotElementConnectionViewModel();            
+            return new CharacterPlotElementConnectionViewModel(getNodeIdsFunc);            
         }
 
-        protected override CharacterPlotElementConnectionViewModel GetUpdatedCharacterPlotElementConnectionViewModel()
+        protected override CharacterPlotElementConnectionViewModel GetUpdatedCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new CharacterPlotElementConnectionViewModel()
+            return new CharacterPlotElementConnectionViewModel(getNodeIdsFunc)
             {
                 CharacterOwnsPlotElement = false
             };
@@ -490,12 +490,12 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override StorylineCharacterConnectionViewModel GetTestStorylineCharacterConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new StorylineCharacterConnectionViewModel();
+            return new StorylineCharacterConnectionViewModel(getNodeIdsFunc);
         }
 
-        protected override StorylineCharacterConnectionViewModel GetUpdatedStorylineCharacterConnectionViewModel()
+        protected override StorylineCharacterConnectionViewModel GetUpdatedStorylineCharacterConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new StorylineCharacterConnectionViewModel();
+            return new StorylineCharacterConnectionViewModel(getNodeIdsFunc);
         }
 
         protected override void AssertStorylineCharacterConnectionViewModel(StorylineCharacterConnectionViewModel viewModel)
@@ -537,12 +537,12 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override StorylinePlotElementConnectionViewModel GetTestStorylinePlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new StorylinePlotElementConnectionViewModel();
+            return new StorylinePlotElementConnectionViewModel(getNodeIdsFunc);
         }
 
-        protected override StorylinePlotElementConnectionViewModel GetUpdatedStorylinePlotElementConnectionViewModel()
+        protected override StorylinePlotElementConnectionViewModel GetUpdatedStorylinePlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new StorylinePlotElementConnectionViewModel();
+            return new StorylinePlotElementConnectionViewModel(getNodeIdsFunc);
         }
 
         protected override void AssertStorylinePlotElementConnectionViewModel(StorylinePlotElementConnectionViewModel viewModel)

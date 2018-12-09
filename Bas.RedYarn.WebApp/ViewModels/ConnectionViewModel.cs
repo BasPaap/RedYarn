@@ -37,10 +37,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// For this reason a method is provided as a parameter that simply returns the ids of both nodes when called. It is up to
         /// the caller of this constructor to determine how to obtain those ids.
         /// </summary>
-        /// <param name="model">The RedYarn model for which to create this viewmodel.</param>
         /// <param name="getNodeIdsFunc">A function returning the FromNode and ToNode Id's.</param>
 
-        public ConnectionViewModel(object model, Func<(Guid, Guid)> getNodeIdsFunc)
+        public ConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
             if (getNodeIdsFunc != null)
             {

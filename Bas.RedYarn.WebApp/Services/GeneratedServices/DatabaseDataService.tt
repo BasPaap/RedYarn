@@ -241,11 +241,21 @@ foreach (var viewModelName in extraViewModelNames)
 
 		public Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
 		{
+			if (<#=Decapitalize(viewModelName)#> == null)
+			{
+				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
+			}
+
 			throw new NotImplementedException();
 		}
 		
 		public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
 		{
+			if (<#=Decapitalize(viewModelName)#> == null)
+			{
+				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
+			}
+
 			throw new NotImplementedException();
 		}
 

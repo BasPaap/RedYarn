@@ -7,5 +7,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
 {
     public sealed class StorylinePlotElementConnectionViewModel : ConnectionViewModel
     {
+        public StorylinePlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc = null)
+            : base(getNodeIdsFunc)
+        {
+        }
     }
 }

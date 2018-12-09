@@ -63,7 +63,7 @@ foreach (var viewModelName in viewModelNames)
 	}
 #>
 		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "Func<(Guid, Guid)> getNodeIdsFunc" : string.Empty#>);
-		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>();
+		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "Func<(Guid, Guid)> getNodeIdsFunc" : string.Empty#>);
 		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);		
 		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
 <#
@@ -324,15 +324,8 @@ foreach (var viewModelName in viewModelNames)
 	}
 #>
 			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "getNodeIdsFunc" : string.Empty #>);
-<#
-	if (extraViewModelNames.Contains(viewModelName))
-	{
-#>
-			test<#=viewModelName#>.FromNodeId = (Guid)this.dbContextToAddTo.Entry(fromNode).Property(ShadowPropertyNames.Id).CurrentValue;
-			test<#=viewModelName#>.ToNodeId = (Guid)this.dbContextToAddTo.Entry(toNode).Property(ShadowPropertyNames.Id).CurrentValue;
-<#
-	}
 
+<#
 	if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
 	{
 #>
@@ -527,7 +520,7 @@ foreach (var viewModelName in viewModelNames)
 	if (extraViewModelNames.Contains(viewModelName))
 	{
 #>
-			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
+			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
 			test<#=modelName#>.LeftEntity = fromNode;
 			test<#=modelName#>.RightEntity = toNode;
 
@@ -541,7 +534,7 @@ foreach (var viewModelName in viewModelNames)
 #>
 			var newId = (Guid)this.dbContextToAddTo.Entry(test<#=modelName#><#=modelSuffix#>).Property(ShadowPropertyNames.Id).CurrentValue;
 
-			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>();
+			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
 			updated<#=viewModelName#>.Id = newId;
 
 			// Act

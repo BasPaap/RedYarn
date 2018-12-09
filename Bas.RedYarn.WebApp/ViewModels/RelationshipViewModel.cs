@@ -20,7 +20,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         /// <param name="getNodeIdsFunc">A function returning the FromNode and ToNode Id's.</param>
         public RelationshipViewModel(Relationship model, Func<object, Guid> getIdForModelFunc = null, Func<(Guid, Guid)> getNodeIdsFunc = null)
-            : base(model, getNodeIdsFunc)
+            : base(getNodeIdsFunc)
         {
             if (getIdForModelFunc != null)
             {
