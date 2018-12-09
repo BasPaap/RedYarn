@@ -70,8 +70,8 @@ foreach (var viewModelName in viewModelNames)
 	if (extraViewModelNames.Contains(viewModelName))
 	{
 #>
-		protected abstract <#=extraViewModelConnectionTypeNames[viewModelName][0]#> GetTest<#=viewModelName#>FromNode();
-		protected abstract <#=extraViewModelConnectionTypeNames[viewModelName][1]#> GetTest<#=viewModelName#>ToNode();
+		protected abstract <#=extraViewModelConnectionTypeNames[viewModelName][0]#> GetTest<#=modelName#>FromNode();
+		protected abstract <#=extraViewModelConnectionTypeNames[viewModelName][1]#> GetTest<#=modelName#>ToNode();
 <#
 	}
 #>
@@ -135,8 +135,8 @@ foreach (var viewModelName in viewModelNames)
 		if (extraViewModelNames.Contains(viewModelName))
 		{
 #>
-			var fromNode = GetTest<#=viewModelName#>FromNode();
-			var toNode = GetTest<#=viewModelName#>ToNode();
+			var fromNode = GetTest<#=modelName#>FromNode();
+			var toNode = GetTest<#=modelName#>ToNode();
 			test<#=modelName#>.LeftEntity = fromNode;
 			test<#=modelName#>.RightEntity = toNode;
 <#
@@ -194,8 +194,8 @@ foreach (var viewModelName in viewModelNames)
 		if (extraViewModelNames.Contains(viewModelName))
 		{
 #>
-			var fromNode = GetTest<#=viewModelName#>FromNode();
-			var toNode = GetTest<#=viewModelName#>ToNode();
+			var fromNode = GetTest<#=modelName#>FromNode();
+			var toNode = GetTest<#=modelName#>ToNode();
 			test<#=modelName#>.LeftEntity = fromNode;
 			test<#=modelName#>.RightEntity = toNode;
 <#
@@ -240,8 +240,8 @@ foreach (var viewModelName in viewModelNames)
 		if (extraViewModelNames.Contains(viewModelName))
 		{
 #>
-			var fromNode = GetTest<#=viewModelName#>FromNode();
-			var toNode = GetTest<#=viewModelName#>ToNode();
+			var fromNode = GetTest<#=modelName#>FromNode();
+			var toNode = GetTest<#=modelName#>ToNode();
 			test<#=modelName#>.LeftEntity = fromNode;
 			test<#=modelName#>.RightEntity = toNode;
 <#
@@ -314,8 +314,8 @@ foreach (var viewModelName in viewModelNames)
 	if (extraViewModelNames.Contains(viewModelName))
 	{
 #>
-			var fromNode = GetTest<#=viewModelName#>FromNode();
-			var toNode = GetTest<#=viewModelName#>ToNode();
+			var fromNode = GetTest<#=modelName#>FromNode();
+			var toNode = GetTest<#=modelName#>ToNode();
 			this.dbContextToAddTo.SaveChanges();
 
 			Func<(Guid, Guid)> getNodeIdsFunc = () => ((Guid)this.dbContextToAddTo.Entry(fromNode).Property(ShadowPropertyNames.Id).CurrentValue, 
@@ -398,8 +398,8 @@ foreach (var viewModelName in viewModelNames)
 	if (extraViewModelNames.Contains(viewModelName))
 	{
 #>
-			var fromNode = GetTest<#=viewModelName#>FromNode();
-			var toNode = GetTest<#=viewModelName#>ToNode();
+			var fromNode = GetTest<#=modelName#>FromNode();
+			var toNode = GetTest<#=modelName#>ToNode();
 			test<#=modelName#>.LeftEntity = fromNode;
 			test<#=modelName#>.RightEntity = toNode;
 <#
@@ -510,8 +510,8 @@ foreach (var viewModelName in viewModelNames)
 		if (extraViewModelNames.Contains(viewModelName))
 		{
 #>
-			var fromNode = GetTest<#=viewModelName#>FromNode();
-			var toNode = GetTest<#=viewModelName#>ToNode();
+			var fromNode = GetTest<#=modelName#>FromNode();
+			var toNode = GetTest<#=modelName#>ToNode();
 			test<#=modelName#>.LeftEntity = fromNode;
 			test<#=modelName#>.RightEntity = toNode;
 <#
