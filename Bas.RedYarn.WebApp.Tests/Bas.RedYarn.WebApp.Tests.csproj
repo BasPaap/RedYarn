@@ -127,6 +127,11 @@
        generate a build error if the files already exist on disk - because then MSBuild will already have included them
        implicitly. Therefore, we only include these here with the condition that they do not yet exist on disk. -->
   <ItemGroup>
+    <Compile Condition="!Exists('GeneratedTests\AliasControllerTest.cs')" Include="GeneratedTests\AliasControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AliasControllerTest.tt</DependentUpon>
+    </Compile>
     <Compile Condition="!Exists('GeneratedTests\AuthorControllerTest.cs')" Include="GeneratedTests\AuthorControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -137,35 +142,50 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterControllerTest.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('GeneratedTests\DiagramControllerTest.cs')" Include="GeneratedTests\DiagramControllerTest.cs">
+    <Compile Condition="!Exists('GeneratedTests\CharacterPlotElementConnectionControllerTest.cs')" Include="GeneratedTests\CharacterPlotElementConnectionControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>DiagramControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('GeneratedTests\StorylineControllerTest.cs')" Include="GeneratedTests\StorylineControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StorylineControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Condition="!Exists('Services\TestDataService.cs')" Include="Services\TestDataService.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TestDataService.tt</DependentUpon>
+      <DependentUpon>CharacterPlotElementConnectionControllerTest.tt</DependentUpon>
     </Compile>
     <Compile Condition="!Exists('GeneratedTests\DatabaseDataServiceTestBase.cs')" Include="GeneratedTests\DatabaseDataServiceTestBase.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
     </Compile>
-    <Compile Condition="!Exists('GeneratedTests\AliasControllerTest.cs')" Include="GeneratedTests\AliasControllerTest.cs">
+    <Compile Condition="!Exists('GeneratedTests\DiagramControllerTest.cs')" Include="GeneratedTests\DiagramControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>AliasControllerTest.tt</DependentUpon>
+      <DependentUpon>DiagramControllerTest.tt</DependentUpon>
     </Compile>
     <Compile Condition="!Exists('GeneratedTests\RelationshipControllerTest.cs')" Include="GeneratedTests\RelationshipControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>RelationshipControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('GeneratedTests\StorylineControllerTest.cs')" Include="GeneratedTests\StorylineControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('GeneratedTests\StorylineCharacterConnectionControllerTest.cs')" Include="GeneratedTests\StorylineCharacterConnectionControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineCharacterConnectionControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('GeneratedTests\StorylinePlotElementConnectionControllerTest.cs')" Include="GeneratedTests\StorylinePlotElementConnectionControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylinePlotElementConnectionControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('Services\TestDataService.cs')" Include="Services\TestDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TestDataService.tt</DependentUpon>
+    </Compile>
+    <Compile Condition="!Exists('GeneratedTests\AliasControllerTest.cs')" Include="GeneratedTests\AliasControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AliasControllerTest.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -174,48 +194,23 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>AliasControllerTest.tt</DependentUpon>
     </Compile>
+    <Compile Update="GeneratedTests\AuthorControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AuthorControllerTest.tt</DependentUpon>
+    </Compile>
     <Compile Update="GeneratedTests\CharacterControllerTest.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>CharacterControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Update="GeneratedTests\CharacterPlotElementConnectionControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>CharacterPlotElementConnectionControllerTest.tt</DependentUpon>
     </Compile>
     <Compile Update="GeneratedTests\DatabaseDataServiceTestBase.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
     </Compile>
-    <Compile Update="GeneratedTests\DiagramControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>DiagramControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Update="GeneratedTests\RelationshipControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>RelationshipControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Services\TestDataService.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>TestDataService.tt</DependentUpon>
-    </Compile>
-    <Compile Update="GeneratedTests\StorylineCharacterConnectionControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StorylineCharacterConnectionControllerTest.tt</DependentUpon>
-    </Compile>
-    <Compile Update="GeneratedTests\StorylinePlotElementConnectionControllerTest.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>StorylinePlotElementConnectionControllerTest.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
-  
+
   <!-- Because we are no longer implicitly importing Sdk.Targets at the end of the project file, we explicitly import it here. 
        Note that it needs to be imported -before- Microsoft.TextTemplating.targets, because otherwise it would overwrite
        the BuildDependsOn variable that texttemplating.targets modifies.
