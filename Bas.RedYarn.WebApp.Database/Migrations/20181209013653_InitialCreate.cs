@@ -197,25 +197,27 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharacterStoryline",
+                name: "CharacterPlotElement",
                 columns: table => new
                 {
                     LeftEntityId = table.Column<string>(nullable: false),
-                    RightEntityId = table.Column<string>(nullable: false)
+                    RightEntityId = table.Column<string>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    CharacterOwnsPlotElement = table.Column<bool>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterStoryline", x => new { x.LeftEntityId, x.RightEntityId });
+                    table.PrimaryKey("PK_CharacterPlotElement", x => new { x.LeftEntityId, x.RightEntityId });
                     table.ForeignKey(
-                        name: "FK_CharacterStoryline_Characters_LeftEntityId",
+                        name: "FK_CharacterPlotElement_Characters_LeftEntityId",
                         column: x => x.LeftEntityId,
                         principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterStoryline_Storylines_RightEntityId",
+                        name: "FK_CharacterPlotElement_PlotElements_RightEntityId",
                         column: x => x.RightEntityId,
-                        principalTable: "Storylines",
+                        principalTable: "PlotElements",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -275,6 +277,30 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                         name: "FK_StorylineAuthor_Authors_RightEntityId",
                         column: x => x.RightEntityId,
                         principalTable: "Authors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StorylineCharacter",
+                columns: table => new
+                {
+                    LeftEntityId = table.Column<string>(nullable: false),
+                    RightEntityId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StorylineCharacter", x => new { x.LeftEntityId, x.RightEntityId });
+                    table.ForeignKey(
+                        name: "FK_StorylineCharacter_Storylines_LeftEntityId",
+                        column: x => x.LeftEntityId,
+                        principalTable: "Storylines",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StorylineCharacter_Characters_RightEntityId",
+                        column: x => x.RightEntityId,
+                        principalTable: "Characters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -348,14 +374,14 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CharacterPlotElement_RightEntityId",
+                table: "CharacterPlotElement",
+                column: "RightEntityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Characters_DiagramId",
                 table: "Characters",
                 column: "DiagramId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CharacterStoryline_RightEntityId",
-                table: "CharacterStoryline",
-                column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CharacterTag_RightEntityId",
@@ -398,6 +424,11 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 column: "RightEntityId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StorylineCharacter_RightEntityId",
+                table: "StorylineCharacter",
+                column: "RightEntityId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StorylinePlotElement_RightEntityId",
                 table: "StorylinePlotElement",
                 column: "RightEntityId");
@@ -422,7 +453,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "CharacterAuthor");
 
             migrationBuilder.DropTable(
-                name: "CharacterStoryline");
+                name: "CharacterPlotElement");
 
             migrationBuilder.DropTable(
                 name: "CharacterTag");
@@ -437,16 +468,19 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                 name: "StorylineAuthor");
 
             migrationBuilder.DropTable(
+                name: "StorylineCharacter");
+
+            migrationBuilder.DropTable(
                 name: "StorylinePlotElement");
 
             migrationBuilder.DropTable(
                 name: "Tags");
 
             migrationBuilder.DropTable(
-                name: "Characters");
+                name: "Authors");
 
             migrationBuilder.DropTable(
-                name: "Authors");
+                name: "Characters");
 
             migrationBuilder.DropTable(
                 name: "Storylines");

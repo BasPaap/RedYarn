@@ -202,7 +202,7 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     b.ToTable("CharacterAuthor");
                 });
 
-            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Character, Bas.RedYarn.Storyline>", b =>
+            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Character, Bas.RedYarn.PlotElement>", b =>
                 {
                     b.Property<string>("LeftEntityId")
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
@@ -210,11 +210,16 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     b.Property<string>("RightEntityId")
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
                     b.HasKey("LeftEntityId", "RightEntityId");
 
                     b.HasIndex("RightEntityId");
 
-                    b.ToTable("CharacterStoryline");
+                    b.ToTable("CharacterPlotElement");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("JoinTable<Character, PlotElement>");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Character, Bas.RedYarn.Tag>", b =>
@@ -245,6 +250,21 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     b.HasIndex("RightEntityId");
 
                     b.ToTable("StorylineAuthor");
+                });
+
+            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Storyline, Bas.RedYarn.Character>", b =>
+                {
+                    b.Property<string>("LeftEntityId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
+
+                    b.Property<string>("RightEntityId")
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 36)));
+
+                    b.HasKey("LeftEntityId", "RightEntityId");
+
+                    b.HasIndex("RightEntityId");
+
+                    b.ToTable("StorylineCharacter");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Storyline, Bas.RedYarn.PlotElement>", b =>
@@ -279,6 +299,17 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                     b.ToTable("Nodes");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Node");
+                });
+
+            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.CharacterPlotElementJoinTable", b =>
+                {
+                    b.HasBaseType("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Character, Bas.RedYarn.PlotElement>");
+
+                    b.Property<bool>("CharacterOwnsPlotElement");
+
+                    b.ToTable("CharacterPlotElementJoinTable");
+
+                    b.HasDiscriminator().HasValue("CharacterPlotElementJoinTable");
                 });
 
             modelBuilder.Entity("Bas.RedYarn.WebApp.Database.CharacterNode", b =>
@@ -395,14 +426,14 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Character, Bas.RedYarn.Storyline>", b =>
+            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Character, Bas.RedYarn.PlotElement>", b =>
                 {
                     b.HasOne("Bas.RedYarn.Character", "LeftEntity")
                         .WithMany()
                         .HasForeignKey("LeftEntityId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Bas.RedYarn.Storyline", "RightEntity")
+                    b.HasOne("Bas.RedYarn.PlotElement", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -429,6 +460,19 @@ namespace Bas.RedYarn.WebApp.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Bas.RedYarn.Author", "RightEntity")
+                        .WithMany()
+                        .HasForeignKey("RightEntityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Bas.RedYarn.WebApp.Database.JoinTable<Bas.RedYarn.Storyline, Bas.RedYarn.Character>", b =>
+                {
+                    b.HasOne("Bas.RedYarn.Storyline", "LeftEntity")
+                        .WithMany()
+                        .HasForeignKey("LeftEntityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Bas.RedYarn.Character", "RightEntity")
                         .WithMany()
                         .HasForeignKey("RightEntityId")
                         .OnDelete(DeleteBehavior.Cascade);

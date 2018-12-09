@@ -416,5 +416,132 @@ namespace Bas.RedYarn.WebApp.Tests
             Assert.AreEqual(updatedName, viewModel.Name);
         }
         #endregion
+
+        #region CharacterPlotElement
+
+        protected override CharacterPlotElementJoinTable GetTestCharacterPlotElementConnection()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertCharacterPlotElementConnection(CharacterPlotElementJoinTable model)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override CharacterPlotElementConnectionViewModel GetTestCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override CharacterPlotElementConnectionViewModel GetUpdatedCharacterPlotElementConnectionViewModel()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertCharacterPlotElementConnectionViewModel(CharacterPlotElementConnectionViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertUpdatedCharacterPlotElementConnectionViewModel(CharacterPlotElementConnectionViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Character GetTestCharacterPlotElementConnectionViewModelFromNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override PlotElement GetTestCharacterPlotElementConnectionViewModelToNode()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region StorylineCharacter
+        protected override JoinTable<Storyline, Character> GetTestStorylineCharacterConnection()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertStorylineCharacterConnection(JoinTable<Storyline, Character> model)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override StorylineCharacterConnectionViewModel GetTestStorylineCharacterConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override StorylineCharacterConnectionViewModel GetUpdatedStorylineCharacterConnectionViewModel()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertStorylineCharacterConnectionViewModel(StorylineCharacterConnectionViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertUpdatedStorylineCharacterConnectionViewModel(StorylineCharacterConnectionViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Storyline GetTestStorylineCharacterConnectionViewModelFromNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Character GetTestStorylineCharacterConnectionViewModelToNode()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+        #region StorylinePlotElement
+        protected override JoinTable<Storyline, PlotElement> GetTestStorylinePlotElementConnection()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertStorylinePlotElementConnection(JoinTable<Storyline, PlotElement> model)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override StorylinePlotElementConnectionViewModel GetTestStorylinePlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override StorylinePlotElementConnectionViewModel GetUpdatedStorylinePlotElementConnectionViewModel()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertStorylinePlotElementConnectionViewModel(StorylinePlotElementConnectionViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void AssertUpdatedStorylinePlotElementConnectionViewModel(StorylinePlotElementConnectionViewModel viewModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override Storyline GetTestStorylinePlotElementConnectionViewModelFromNode()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override PlotElement GetTestStorylinePlotElementConnectionViewModelToNode()
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
     }
 }

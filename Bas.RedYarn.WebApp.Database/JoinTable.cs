@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bas.RedYarn.WebApp.Database
 {
-    public sealed class JoinTable<LeftType, RightType> where LeftType: class
+    public class JoinTable<LeftType, RightType> where LeftType: class
                          where RightType: class
     {
         public Guid LeftEntityId { get; set; }

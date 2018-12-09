@@ -27,12 +27,26 @@ static List<string> modelNames = new List<string>
 	nameof(Relationship)
 };
 
-static List<string> extraViewModelNames = new List<string>
+static Dictionary<string, string[]> extraViewModelConnectionTypeNames = new Dictionary<string, string[]>
 {
-	"StorylineCharacterConnectionViewModel", 
-	"StorylinePlotElementConnectionViewModel",
-	"CharacterPlotElementConnectionViewModel"
+	["CharacterPlotElementConnectionViewModel"] = new [] { nameof(Character), nameof(PlotElement) },
+	["StorylineCharacterConnectionViewModel"] = new [] { nameof(Storyline), nameof(Character) },
+	["StorylinePlotElementConnectionViewModel"] = new [] { nameof(Storyline), nameof(PlotElement) }
 };
+
+static string GetJoinTableTypeName(string viewModelName)
+{
+	if (viewModelName == "CharacterPlotElementConnectionViewModel")
+	{
+		return "CharacterPlotElementJoinTable";
+	}
+	else
+	{
+		return $"JoinTable<{extraViewModelConnectionTypeNames[viewModelName][0]}, {extraViewModelConnectionTypeNames[viewModelName][1]}>";
+	}
+}
+
+static List<string> extraViewModelNames = new List<string>( extraViewModelConnectionTypeNames.Keys );
 
 List<string> viewModelNames = new List<string>((modelNames.Select(m => $"{m}ViewModel")).Concat(extraViewModelNames));
 
@@ -60,6 +74,7 @@ List<string> entitiesToAddToDiagram = new List<string>
 	nameof(Tag),
 	nameof(Alias)
 };
+
 
 private string Decapitalize(string capitalizedString)
 {

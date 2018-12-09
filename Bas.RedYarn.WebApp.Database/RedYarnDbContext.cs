@@ -21,10 +21,11 @@ namespace Bas.RedYarn.WebApp.Database
         public DbSet<PlotElementNode> PlotElementNodes { get; set; }
         public DbSet<Node> Nodes { get; set; }
         public DbSet<JoinTable<Character, Author>> CharacterAuthors { get; set; }
-        public DbSet<JoinTable<Character, Storyline>> CharacterStorylines { get; set; }
+        public DbSet<JoinTable<Storyline, Character>> StorylineCharacters { get; set; }
         public DbSet<JoinTable<Character, Tag>> CharacterTags { get; set; }
         public DbSet<JoinTable<Storyline, Author>> StorylineAuthors { get; set; }
         public DbSet<JoinTable<Storyline, PlotElement>> StorylinePlotElements { get; set; }
+        public DbSet<CharacterPlotElementJoinTable> CharacterPlotElements { get; set; }
         public DbSet<Relationship> Relationships { get; set; }
 
         public RedYarnDbContext(DbContextOptions<RedYarnDbContext> options)
@@ -72,7 +73,7 @@ namespace Bas.RedYarn.WebApp.Database
         {
             var joinTableTypes = GetJoinTableTypes();
 
-            foreach (var joinTableType in joinTableTypes)
+            foreach (var joinTableType in joinTableTypes.Concat(new[] { typeof(CharacterPlotElementJoinTable) }))
             {
                 var onModelCreatingMethod = joinTableType.GetMethod("OnModelCreating", BindingFlags.NonPublic | BindingFlags.Static);
                 onModelCreatingMethod.Invoke(null, new [] { modelBuilder });                
