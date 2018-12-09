@@ -316,6 +316,8 @@ foreach (var viewModelName in viewModelNames)
 #>
 			var fromNode = GetTest<#=modelName#>FromNode();
 			var toNode = GetTest<#=modelName#>ToNode();
+			this.dbContextToAddTo.<#=Pluralize(extraViewModelConnectionTypeNames[viewModelName][0])#>.Add(fromNode);
+			this.dbContextToAddTo.<#=Pluralize(extraViewModelConnectionTypeNames[viewModelName][1])#>.Add(toNode);
 			this.dbContextToAddTo.SaveChanges();
 
 			Func<(Guid, Guid)> getNodeIdsFunc = () => ((Guid)this.dbContextToAddTo.Entry(fromNode).Property(ShadowPropertyNames.Id).CurrentValue, 
