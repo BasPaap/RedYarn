@@ -232,24 +232,44 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 
 foreach (var viewModelName in extraViewModelNames)
 {
+	var modelName = GetModelName(viewModelName);
+	var modelTypeName = viewModelName == "CharacterPlotElementConnectionViewModel" ? "CharacterPlotElementJoinTable" : modelName;
 #>
 
-		public Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
+		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+		public async Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
 		{
 			if (<#=Decapitalize(viewModelName)#> == null)
 			{
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
+			
+			var model = <#=Decapitalize(viewModelName)#>.ToModel(fromId => this.dbContext.<#=Pluralize(extraViewModelConnectionTypeNames[viewModelName][0])#>.Find(fromId),
+                                                                 toId => this.dbContext.<#=Pluralize(extraViewModelConnectionTypeNames[viewModelName][1])#>.Find(toId));
+<#
+	if (viewModelName == "CharacterPlotElementConnectionViewModel")
+	{
+#>
+			this.dbContext.CharacterPlotElements.Add(model);
+<#
+	}
+	else
+	{
+#>
+			this.dbContext.<#=Pluralize(modelTypeName.Replace("Connection", string.Empty))#>.Add(model);
+<#
+	}
+#>
+			await this.dbContext.SaveChangesAsync();
 
-			throw new NotImplementedException();
+            return <#=Decapitalize(viewModelName)#>;
 		}
 		
-		public Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
+		public async Task<(<#=viewModelName#> result, bool isFound)> Update<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId, <#=viewModelName#> <#=Decapitalize(viewModelName)#>)
 		{
 			if (<#=Decapitalize(viewModelName)#> == null)
 			{
@@ -259,7 +279,7 @@ foreach (var viewModelName in extraViewModelNames)
 			throw new NotImplementedException();
 		}
 
-        public Task<bool> Delete<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
+        public async Task<bool> Delete<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
 		{
 			throw new NotImplementedException();
 		}
