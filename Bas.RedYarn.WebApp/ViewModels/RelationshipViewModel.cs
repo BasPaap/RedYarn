@@ -38,6 +38,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public RelationshipViewModel(RelationshipViewModel viewModel)
             : base(viewModel)
         {
+            Id = viewModel.Id;
             IsDirectional = viewModel.IsDirectional;
         }
 
