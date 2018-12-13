@@ -145,7 +145,14 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 				ToNodeId = <#=Decapitalize(secondConnectionType)#>.Id,
 <#+
 	}
-#>				Name = "New<#=viewModelName#>"
+	
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>
+				Name = "New<#=viewModelName#>"
+<#+
+    }
+#>
 			};
 <#+
 	if (entitiesToAddToDiagram.Contains(modelName))
@@ -169,8 +176,14 @@ private void WriteCreateTests(string unitUnderTestName, string modelName, string
 			Assert.IsNotNull(result);
             Assert.IsNotNull(content);
 			Assert.AreEqual(System.Net.HttpStatusCode.Created, result.StatusCode);
+<#+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=modelName#>ViewModels.Single().Name);
 <#+
+    }
+
 	if (!string.IsNullOrWhiteSpace(firstConnectionType) && !string.IsNullOrWhiteSpace(secondConnectionType))
 	{
 #>
@@ -262,15 +275,28 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
             {
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
                 Name = "New<#=modelName#>"
+<#+
+    }
+#>
             };
 
             var updated<#=viewModelName#> = new <#=viewModelName#>()
             {
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
-#>                Name = "UpdatedNew<#=modelName#>"
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>
+				Name = "UpdatedNew<#=modelName#>"
+<#+
+    }
+#>
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
@@ -294,8 +320,14 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
+<#+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>
             Assert.AreEqual(updated<#=viewModelName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
+    }
+
 	WriteConnectionTests(firstConnectionType, secondConnectionType);
 #>
         }
@@ -311,8 +343,14 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
             {
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
                 Name = "New<#=modelName#>"
+<#+
+    }
+#>
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
@@ -335,9 +373,15 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);		
+<#+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>	
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
+	}
+
 	WriteConnectionTests(firstConnectionType, secondConnectionType);
 #>
         }
@@ -353,16 +397,28 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
             {
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
                 Name = "New<#=modelName#>"
+<#+
+    }
+#>
             };
 
             var updated<#=viewModelName#> = new <#=viewModelName#>()
             {
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
                 Name = "UpdatedNew<#=modelName#>"
+<#+
+    }
+#>
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
@@ -385,9 +441,15 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);					
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);
+<#+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>					
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
+    }
+
 	WriteConnectionTests(firstConnectionType, secondConnectionType);
 #>
         }
@@ -413,8 +475,14 @@ private void WriteDeleteTests(string unitUnderTestName, string modelName, string
             {
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
                 Name = "New<#=modelName#>"
+<#+
+    }
+#>
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
@@ -454,8 +522,14 @@ private void WriteDeleteTests(string unitUnderTestName, string modelName, string
             {
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
                 Name = "New<#=modelName#>"
+<#+
+    }
+#>
             };
 
             this.dataService.<#=Pluralize(viewModelName)#>.Add(<#=viewModelInstanceName#>);
@@ -478,9 +552,15 @@ private void WriteDeleteTests(string unitUnderTestName, string modelName, string
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);	
+<#+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>		
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
+    }
+
 	WriteConnectionTests(firstConnectionType, secondConnectionType);
 #>
         }
@@ -506,8 +586,14 @@ private void WriteGetTests(string unitUnderTestName, string modelName, string vi
 			{
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
 				Name = "New<#=viewModelName#>"
+<#+
+    }
+#>
 			};
 			this.dataService.<#= modelName #>ViewModels.Add(<#=viewModelInstanceName#>);
 
@@ -533,7 +619,14 @@ private void WriteGetTests(string unitUnderTestName, string modelName, string vi
 			Assert.IsNotNull(content);
             Assert.AreEqual(System.Net.HttpStatusCode.OK, result.StatusCode);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
+<#+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
+#>
 			Assert.AreEqual(<#=viewModelInstanceName#>.Name, content.Name);
+<#+
+    }
+#>
 		}
 
 		[TestMethod]
@@ -547,8 +640,14 @@ private void WriteGetTests(string unitUnderTestName, string modelName, string vi
 			{
 <#+
 	WriteIdProperties(firstConnectionType, secondConnectionType);
+
+	if (!extraViewModelNames.Contains(viewModelName))
+    {
 #>
 				Name = "New<#=viewModelName#>"
+<#+
+    }
+#>
 			};
 			this.dataService.<#= modelName #>ViewModels.Add(<#=viewModelInstanceName#>);
 

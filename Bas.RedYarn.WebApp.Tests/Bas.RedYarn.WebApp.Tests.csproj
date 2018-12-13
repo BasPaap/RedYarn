@@ -209,6 +209,21 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>DatabaseDataServiceTestBase.tt</DependentUpon>
     </Compile>
+    <Compile Update="GeneratedTests\StorylineCharacterConnectionControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineCharacterConnectionControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\StorylineControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylineControllerTest.tt</DependentUpon>
+    </Compile>
+    <Compile Update="GeneratedTests\StorylinePlotElementConnectionControllerTest.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>StorylinePlotElementConnectionControllerTest.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <!-- Because we are no longer implicitly importing Sdk.Targets at the end of the project file, we explicitly import it here. 

@@ -75,6 +75,19 @@ namespace Bas.RedYarn.WebApp.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<<#=modelName#>ViewModel>> Create<#=modelName#>Async(<#+ if (entitiesToAddToDiagram.Contains(modelName)) { #>Guid diagramId, <#+}#><#=modelName#>ViewModel <#=instanceName#>ViewModel)
         {
+<#+
+	if (extraViewModelNames.Contains(modelName + "ViewModel"))
+    {
+#>
+			if (<#=instanceName#>ViewModel.FromNodeId == Guid.Empty || 
+				<#=instanceName#>ViewModel.ToNodeId == Guid.Empty)
+			{
+				return BadRequest();
+			}
+
+<#+
+    }
+#>
 			try
 			{
 <#+

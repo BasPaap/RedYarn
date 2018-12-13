@@ -11,7 +11,6 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public Guid Id { get; set; }
         public Guid FromNodeId { get; set; }
         public Guid ToNodeId { get; set; }
-        public string Name { get; set; }
 
         public ConnectionViewModel()
         {
@@ -25,7 +24,6 @@ namespace Bas.RedYarn.WebApp.ViewModels
         {
             FromNodeId = connectionViewModel.FromNodeId;
             ToNodeId = connectionViewModel.ToNodeId;
-            Name = connectionViewModel.Name;
         }
 
         /// <summary>
