@@ -281,7 +281,17 @@ foreach (var viewModelName in extraViewModelNames)
 
         public async Task<bool> Delete<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
 		{
-			throw new NotImplementedException();
+			var model = await this.dbContext.<#=Pluralize(modelTypeName.Replace("Connection", string.Empty).Replace("JoinTable", string.Empty))#>.SingleOrDefaultAsync(c => c.LeftEntityId == fromNodeId && c.RightEntityId == toNodeId);
+
+			if (model == null)
+			{
+				return false;
+			}
+
+			this.dbContext.<#=Pluralize(modelTypeName.Replace("Connection", string.Empty).Replace("JoinTable", string.Empty))#>.Remove(model);
+			await this.dbContext.SaveChangesAsync();
+
+			return true;
 		}
 <#
 } // End of foreach for second list of viewmodels
