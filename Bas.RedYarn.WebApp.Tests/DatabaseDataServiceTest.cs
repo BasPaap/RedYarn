@@ -447,17 +447,17 @@ namespace Bas.RedYarn.WebApp.Tests
         }
 
 
-        protected override CharacterPlotElementConnectionViewModel GetTestCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
+        protected override CharacterPlotElementConnectionViewModel GetTestCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc, CharacterPlotElementJoinTable model)
         {
-            return new CharacterPlotElementConnectionViewModel(getNodeIdsFunc)
+            return new CharacterPlotElementConnectionViewModel(model, getNodeIdsFunc)
             {
                 CharacterOwnsPlotElement = true
             };
         }
 
-        protected override CharacterPlotElementConnectionViewModel GetUpdatedCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
+        protected override CharacterPlotElementConnectionViewModel GetUpdatedCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc, CharacterPlotElementJoinTable model)
         {
-            var viewmodel = GetTestCharacterPlotElementConnectionViewModel(getNodeIdsFunc);
+            var viewmodel = GetTestCharacterPlotElementConnectionViewModel(getNodeIdsFunc, model);
             viewmodel.CharacterOwnsPlotElement = false;
 
             return viewmodel;

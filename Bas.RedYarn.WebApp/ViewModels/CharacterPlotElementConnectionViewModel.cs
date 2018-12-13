@@ -20,9 +20,10 @@ namespace Bas.RedYarn.WebApp.ViewModels
             CharacterOwnsPlotElement = viewModel.CharacterOwnsPlotElement;
         }
 
-        public CharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
+        public CharacterPlotElementConnectionViewModel(CharacterPlotElementJoinTable model, Func<(Guid, Guid)> getNodeIdsFunc)
             : base(getNodeIdsFunc)
         {
+            CharacterOwnsPlotElement = model.CharacterOwnsPlotElement;
         }
 
 

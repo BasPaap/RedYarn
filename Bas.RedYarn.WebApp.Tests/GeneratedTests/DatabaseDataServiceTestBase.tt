@@ -61,9 +61,23 @@ foreach (var viewModelName in viewModelNames)
 		protected abstract void Assert<#=modelName#>(<#=modelTypeName#> model);		
 <#
 	}
+
+	if (viewModelName == nameof(CharacterPlotElementConnectionViewModel))
+    {
+#>
+		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>(Func<(Guid, Guid)> getNodeIdsFunc, CharacterPlotElementJoinTable model);
+		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>(Func<(Guid, Guid)> getNodeIdsFunc, CharacterPlotElementJoinTable model);
+<#
+    }
+	else
+    {
 #>
 		protected abstract <#=viewModelName#> GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "Func<(Guid, Guid)> getNodeIdsFunc" : string.Empty#>);
 		protected abstract <#=viewModelName#> GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "Func<(Guid, Guid)> getNodeIdsFunc" : string.Empty#>);
+<#
+	}
+#>
+		
 		protected abstract void Assert<#=viewModelName#>(<#=viewModelName#> viewModel);		
 		protected abstract void AssertUpdated<#=viewModelName#>(<#=viewModelName#> viewModel);
 
@@ -312,7 +326,7 @@ foreach (var viewModelName in viewModelNames)
 <#
 	}
 #>			
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "getNodeIdsFunc" : string.Empty #>);
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "getNodeIdsFunc" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
 <#
 	if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) 
 	{
@@ -380,7 +394,7 @@ foreach (var viewModelName in viewModelNames)
 		{
 			// Arrange			
 			var test<#=modelName#> = GetTest<#=modelName#>();
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
 
 <#
 	if (EntityHasNode(modelName))
@@ -442,8 +456,8 @@ foreach (var viewModelName in viewModelNames)
 		public async Task Update<#=viewModelName#>Async_ModelIsNull_ThrowsArgumentNullExceptionAsync()
 		{
 			// Arrange			
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
 			var test<#=modelName#> = GetTest<#=modelName#>();
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
 <#
 	if (EntityHasNode(modelName))
 	{
@@ -480,8 +494,8 @@ foreach (var viewModelName in viewModelNames)
 		public void Update<#=viewModelName#>Async_ArgumentsAreOK_ReturnsUpdatedModelAndTrue()
 		{
 			// Arrange			
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
 			var test<#=modelName#> = GetTest<#=modelName#>();
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
 <#
 	if (EntityHasNode(modelName))
 	{
@@ -511,7 +525,7 @@ foreach (var viewModelName in viewModelNames)
 	if (extraViewModelNames.Contains(viewModelName))
 	{
 #>
-			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #>);
+			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
 
 			// Act
 			var result = this.dataService.Update<#=viewModelName#>Async((Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.LeftEntity).Property(ShadowPropertyNames.Id).CurrentValue,

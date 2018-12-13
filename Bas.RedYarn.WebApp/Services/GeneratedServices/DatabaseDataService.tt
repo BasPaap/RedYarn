@@ -238,7 +238,19 @@ foreach (var viewModelName in extraViewModelNames)
 
 		public async Task<<#=viewModelName#>> Get<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
 		{
-			throw new NotImplementedException();
+			var model = await (from m in this.dbContext.<#=Pluralize(modelTypeName.Replace("Connection", string.Empty).Replace("JoinTable", string.Empty))#>
+							   where m.LeftEntityId == fromNodeId &&
+									 m.RightEntityId == toNodeId
+							   select m).SingleOrDefaultAsync();
+			
+			if (model == null)
+			{
+				return null;
+			}
+
+			var viewModel = new <#=viewModelName#>(<#=viewModelName == "CharacterPlotElementConnectionViewModel" ? "model, " : string.Empty#>() => (fromNodeId, toNodeId));
+
+			return viewModel;
 		}
 
 		public async Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<#=viewModelName#> <#=Decapitalize(viewModelName)#>)
