@@ -446,10 +446,13 @@ namespace Bas.RedYarn.WebApp.Tests
             Assert.AreEqual(GetTestCharacterPlotElementConnection().RightEntity.Name, model.RightEntity.Name);
         }
 
-        
+
         protected override CharacterPlotElementConnectionViewModel GetTestCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new CharacterPlotElementConnectionViewModel(getNodeIdsFunc);            
+            return new CharacterPlotElementConnectionViewModel(getNodeIdsFunc)
+            {
+                CharacterOwnsPlotElement = true
+            };
         }
 
         protected override CharacterPlotElementConnectionViewModel GetUpdatedCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
