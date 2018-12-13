@@ -9,6 +9,7 @@ import { DiagramInfoService } from './diagram-info.service';
 import { DiagramItemType } from '../diagram-types';
 import { DiagramDataService } from './diagram-data.service';
 import { Guid } from 'src/Guid';
+import { NewCharacterPlotElementDialogComponent } from '../components/new-character-plotelement-dialog/new-character-plotelement-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -112,10 +113,8 @@ export class NewConnectionUIService {
 
   private createStorylineCharacterConnection(storylineId: string, characterId: string) {
     let connection = {
-      id: Guid.empty,
       fromNodeId: storylineId,
-      toNodeId: characterId,
-      name: ""
+      toNodeId: characterId
     };
 
     this.diagramDataService.createStorylineCharacterConnection(connection).subscribe();
@@ -123,17 +122,21 @@ export class NewConnectionUIService {
 
   private createStorylinePlotElementConnection(storylineId: string, plotElementId: string) {
     let connection = {
-      id: Guid.empty,
       fromNodeId: storylineId,
-      toNodeId: plotElementId,
-      name: ""
+      toNodeId: plotElementId
     };
 
     this.diagramDataService.createStorylinePlotElementConnection(connection).subscribe();
   }
 
   private openNewCharacterPlotElementConnectionDialog(characterId: string, plotElementId: string) {
-    alert('not implemented');
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      fromNodeId: characterId,
+      toNodeId: plotElementId
+    };
+
+    this.dialog.open(NewCharacterPlotElementDialogComponent, dialogConfig);
   }
 
   private highlightNode(nodeLayout: NodeLayoutInfo) {

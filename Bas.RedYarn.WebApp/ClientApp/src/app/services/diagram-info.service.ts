@@ -19,15 +19,26 @@ export class DiagramInfoService implements OnDestroy {
 
   private diagramItemTypes: { [id: string]: DiagramItemType } = {};
 
-  private subscribe<T extends Character | PlotElement | Storyline | Relationship | Connection | CharacterPlotElementConnection>(service: Observable<T>, itemType: DiagramItemType, array: { [id: string]: T; }): Subscription {
+  private subscribe<T extends Character | PlotElement | Storyline | Relationship >(service: Observable<T>, itemType: DiagramItemType, array: { [id: string]: T; }): Subscription {
     return service.subscribe(item => {
       array[item.id] = item;
       this.diagramItemTypes[item.id] = itemType;
     })
   }
 
+  private subscribeConnection<T extends Connection | CharacterPlotElementConnection>(service: Observable<T>, itemType: DiagramItemType, array: { [id: string]: T; }): Subscription {
+    return service.subscribe(item => {
+      array[`${item.fromNodeId}-${item.toNodeId}`] = item;
+      this.diagramItemTypes[`${item.fromNodeId}-${item.toNodeId}`] = itemType;
+    })
+  }
+
   public getItemType(id: string): DiagramItemType {
     return (this.diagramItemTypes[id]) ? this.diagramItemTypes[id] : DiagramItemType.Unknown;
+  }
+
+  public getConnectionItemType(fromId: string, toId: string): DiagramItemType {
+    return (this.diagramItemTypes[`${fromId}-${toId}`]) ? this.diagramItemTypes[`${fromId}-${toId}`] : DiagramItemType.Unknown;
   }
 
   constructor(private diagramDataService: DiagramDataService) { }
@@ -39,9 +50,9 @@ export class DiagramInfoService implements OnDestroy {
     this.subscriptions['newStoryline'] = this.subscribe(this.diagramDataService.addedStorylinesStream, DiagramItemType.Storyline, this.storylines);
     this.subscriptions['newPlotElement'] = this.subscribe(this.diagramDataService.addedPlotElementsStream, DiagramItemType.PlotElement, this.plotElements);
     this.subscriptions['newRelationship'] = this.subscribe(this.diagramDataService.addedRelationshipsStream, DiagramItemType.Relationship, this.relationships);
-    this.subscriptions['newStorylineCharacterConnection'] = this.subscribe(this.diagramDataService.addedStorylineCharacterConnectionsStream, DiagramItemType.StorylineCharacterConnection, this.storylineCharacterConnections);
-    this.subscriptions['newStorylinePlotElementConnection'] = this.subscribe(this.diagramDataService.addedStorylinePlotElementConnectionsStream, DiagramItemType.StorylinePlotElementConnection, this.storylinePlotElementConnections);
-    this.subscriptions['newCharacterPlotElementConnection'] = this.subscribe(this.diagramDataService.addedCharacterPlotElementConnectionsStream, DiagramItemType.CharacterPlotElementConnection, this.characterPlotElementConnections);
+    this.subscriptions['newStorylineCharacterConnection'] = this.subscribeConnection(this.diagramDataService.addedStorylineCharacterConnectionsStream, DiagramItemType.StorylineCharacterConnection, this.storylineCharacterConnections);
+    this.subscriptions['newStorylinePlotElementConnection'] = this.subscribeConnection(this.diagramDataService.addedStorylinePlotElementConnectionsStream, DiagramItemType.StorylinePlotElementConnection, this.storylinePlotElementConnections);
+    this.subscriptions['newCharacterPlotElementConnection'] = this.subscribeConnection(this.diagramDataService.addedCharacterPlotElementConnectionsStream, DiagramItemType.CharacterPlotElementConnection, this.characterPlotElementConnections);
   }
 
   public reset() {

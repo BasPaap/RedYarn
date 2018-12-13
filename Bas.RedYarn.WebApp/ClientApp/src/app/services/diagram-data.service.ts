@@ -198,7 +198,7 @@ export class DiagramDataService {
 
 
   private updateConnection<T extends Relationship | Connection | CharacterPlotElementConnection>(controllerName: string, viewModel: T, subject: Subject<T>): Observable<T> {
-    let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${viewModel.id}`, viewModel).pipe(
+    let observable = this.httpClient.put<T>(`${this.apiUrl}${controllerName}/${viewModel.fromNodeId}/${viewModel.toNodeId}`, viewModel).pipe(
       tap(_ => subject.next(viewModel))
     );
 

@@ -19,6 +19,7 @@ import { NewPlotElementDialogComponent } from './components/new-plot-element-dia
 import { DefaultDialogActionsComponent } from './components/default-dialog-actions/default-dialog-actions.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { NewRelationshipDialogComponent } from './components/new-relationship-dialog/new-relationship-dialog.component';
+import { NewCharacterPlotElementDialogComponent } from './components/new-character-plotelement-dialog/new-character-plotelement-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { NewRelationshipDialogComponent } from './components/new-relationship-di
     NewPlotElementDialogComponent,
     DefaultDialogActionsComponent,
     DialogComponent,
-    NewRelationshipDialogComponent
+    NewRelationshipDialogComponent,
+    NewCharacterPlotElementDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import { NewRelationshipDialogComponent } from './components/new-relationship-di
     NewCharacterDialogComponent,
     NewStorylineDialogComponent,
     NewPlotElementDialogComponent,
-    NewRelationshipDialogComponent
+    NewRelationshipDialogComponent,
+    NewCharacterPlotElementDialogComponent
   ],
   providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
   bootstrap: [AppComponent]
