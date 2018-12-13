@@ -7,6 +7,8 @@ import { CircularNodeLayoutInfo, NodeLayoutInfoService, NodeLayoutInfo } from '.
 import { MouseState, UserInteractionService } from './user-interaction.service';
 import { DiagramInfoService } from './diagram-info.service';
 import { DiagramItemType } from '../diagram-types';
+import { DiagramDataService } from './diagram-data.service';
+import { Guid } from 'src/Guid';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class NewConnectionUIService {
     this.visNetwork = value;
   }
 
-  constructor(private userInteractionService: UserInteractionService, private nodeLayoutInfoService: NodeLayoutInfoService, private diagramDrawingService: DiagramDrawingService, private dialog: MatDialog, private diagramInfoService: DiagramInfoService) {
+  constructor(private userInteractionService: UserInteractionService, private nodeLayoutInfoService: NodeLayoutInfoService, private diagramDrawingService: DiagramDrawingService, private dialog: MatDialog, private diagramInfoService: DiagramInfoService, private diagramDataService: DiagramDataService) {
     this.userInteractionService.mouseStateStream.subscribe(this.onMouseState.bind(this));
     this.nodeLayoutInfoService.nodeLayoutsStream.subscribe(nodeLayout => this.nodeLayouts[nodeLayout.id] = nodeLayout);
   }
@@ -80,13 +82,17 @@ export class NewConnectionUIService {
     if (fromType == DiagramItemType.Character && toType == DiagramItemType.Character) {
       this.openNewRelationshipDialog(fromNodeId, toNodeId);
     }
-    else if ((fromType == DiagramItemType.Character && toType == DiagramItemType.Storyline) ||
-             (fromType == DiagramItemType.Storyline && toType == DiagramItemType.Character)) {
-      this.createConnection(fromNodeId, toNodeId);
+    else if (fromType == DiagramItemType.Character && toType == DiagramItemType.Storyline) {
+      this.createStorylineCharacterConnection(toNodeId, fromNodeId);
     }
-    else if ((fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Storyline) ||
-      (fromType == DiagramItemType.Storyline && toType == DiagramItemType.PlotElement)) {
-      this.createConnection(fromNodeId, toNodeId);
+    else if (fromType == DiagramItemType.Storyline && toType == DiagramItemType.Character) {
+      this.createStorylineCharacterConnection(fromNodeId, toNodeId);
+    }
+    else if (fromType == DiagramItemType.Storyline && toType == DiagramItemType.PlotElement) {
+      this.createStorylinePlotElementConnection(fromNodeId, toNodeId);
+    }
+    else if (fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Storyline) {
+      this.createStorylinePlotElementConnection(toNodeId, fromNodeId);
     }
     else if ((fromType == DiagramItemType.Character && toType == DiagramItemType.PlotElement) ||
       (fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Character)) {
@@ -104,11 +110,29 @@ export class NewConnectionUIService {
     this.dialog.open(NewRelationshipDialogComponent, dialogConfig);
   }
 
-  private createConnection(fromNodeId: string, toNodeId: string) {
-    alert('not implemented');
+  private createStorylineCharacterConnection(storylineId: string, characterId: string) {
+    let connection = {
+      id: Guid.empty,
+      fromNodeId: storylineId,
+      toNodeId: characterId,
+      name: ""
+    };
+
+    this.diagramDataService.createStorylineCharacterConnection(connection).subscribe();
   }
 
-  private openNewCharacterPlotElementConnectionDialog(fromNodeId: string, toNodeId: string) {
+  private createStorylinePlotElementConnection(storylineId: string, plotElementId: string) {
+    let connection = {
+      id: Guid.empty,
+      fromNodeId: storylineId,
+      toNodeId: plotElementId,
+      name: ""
+    };
+
+    this.diagramDataService.createStorylinePlotElementConnection(connection).subscribe();
+  }
+
+  private openNewCharacterPlotElementConnectionDialog(characterId: string, plotElementId: string) {
     alert('not implemented');
   }
 

@@ -19,6 +19,7 @@ export interface Connection {
   id: string;
   fromNodeId: string;
   toNodeId: string;
+  name: string;
 }
 
 export interface Alias {
@@ -42,7 +43,6 @@ export interface PlotElement extends Node {
 }
 
 export interface Relationship extends Connection {
-  name: string;
   isDirectional: boolean;
 }
 

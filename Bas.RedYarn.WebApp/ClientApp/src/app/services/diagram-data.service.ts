@@ -158,6 +158,7 @@ export class DiagramDataService {
     return observable;
   }
 
+
   public createRelationship(viewModel: Relationship): Observable<Relationship> {
     return this.createConnection('relationship', viewModel, this.newRelationshipSubject);
   }

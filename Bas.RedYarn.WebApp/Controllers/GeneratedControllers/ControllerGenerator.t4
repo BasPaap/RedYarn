@@ -78,7 +78,7 @@ namespace Bas.RedYarn.WebApp.Controllers
 			try
 			{
 <#+
-	if (connectionViewModelNames.Contains(modelName + "ViewModel"))
+	if (connectionViewModelNames.Except(extraViewModelNames).Contains(modelName + "ViewModel"))
     {
 #>
 				if (string.IsNullOrWhiteSpace(<#=instanceName#>ViewModel.Name))
