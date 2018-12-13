@@ -361,14 +361,7 @@ foreach (var viewModelName in viewModelNames)
 		else if (extraViewModelNames.Contains(viewModelName))
 		{
 #>
-			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName.Replace("Connection", string.Empty))#><#
-			
-			if (viewModelName == nameof(CharacterPlotElementConnectionViewModel))
-            {
-				Write(".Include(c => c.LeftEntity).Include(c => c.RightEntity)");
-            }
-
-			#>.SingleAsync().Result);
+			Assert<#=modelName#>(this.dbContextToTest.<#=Pluralize(modelName.Replace("Connection", string.Empty))#>.Include(c => c.LeftEntity).Include(c => c.RightEntity).SingleAsync().Result);
 <#
 		}			
 		else
