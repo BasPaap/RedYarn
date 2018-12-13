@@ -495,7 +495,6 @@ foreach (var viewModelName in viewModelNames)
 		{
 			// Arrange			
 			var test<#=modelName#> = GetTest<#=modelName#>();
-			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
 <#
 	if (EntityHasNode(modelName))
 	{
@@ -523,9 +522,26 @@ foreach (var viewModelName in viewModelNames)
 
 <#
 	if (extraViewModelNames.Contains(viewModelName))
+    {
+#>
+			Func<(Guid, Guid)> getNodeIdsFunc = () => ((Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.LeftEntity).Property(ShadowPropertyNames.Id).CurrentValue, 
+													   (Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.RightEntity).Property(ShadowPropertyNames.Id).CurrentValue);	
+<#
+    }
+	else if (viewModelName == nameof(RelationshipViewModel))
+    {
+#>
+			Func<(Guid, Guid)> getNodeIdsFunc = null;
+<#
+    }
+#>
+			
+			var test<#=viewModelName#> = GetTest<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "getNodeIdsFunc" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
+<#
+	if (extraViewModelNames.Contains(viewModelName))
 	{
 #>
-			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "null" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
+			var updated<#=viewModelName#> = GetUpdated<#=viewModelName#>(<#= connectionViewModelNames.Contains(viewModelName) ? "getNodeIdsFunc" : string.Empty #><#= (viewModelName == nameof(CharacterPlotElementConnectionViewModel)) ? $", test{modelName}" : string.Empty #>);
 
 			// Act
 			var result = this.dataService.Update<#=viewModelName#>Async((Guid)this.dbContextToAddTo.Entry(test<#=modelName#>.LeftEntity).Property(ShadowPropertyNames.Id).CurrentValue,

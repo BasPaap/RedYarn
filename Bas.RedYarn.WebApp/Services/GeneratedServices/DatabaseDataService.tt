@@ -287,13 +287,24 @@ foreach (var viewModelName in extraViewModelNames)
 			{
 				throw new ArgumentNullException(nameof(<#=Decapitalize(viewModelName)#>));
 			}
+						
+			var model = await this.dbContext.<#=Pluralize(modelTypeName.Replace("Connection", string.Empty).Replace("JoinTable", string.Empty))#>.SingleOrDefaultAsync(j => j.LeftEntityId == fromNodeId && j.RightEntityId == toNodeId);
+			if (model == null)
+			{
+				return (null, false);
+			}
 
-			throw new NotImplementedException();
+			<#=Decapitalize(viewModelName)#>.UpdateModel(model);			
+			await this.dbContext.SaveChangesAsync();
+
+			var resultingViewModel = new <#=viewModelName#>(<#=Decapitalize(viewModelName)#>);
+			
+			return (resultingViewModel, true);
 		}
 
         public async Task<bool> Delete<#=viewModelName#>Async(Guid fromNodeId, Guid toNodeId)
 		{
-			var model = await this.dbContext.<#=Pluralize(modelTypeName.Replace("Connection", string.Empty).Replace("JoinTable", string.Empty))#>.SingleOrDefaultAsync(c => c.LeftEntityId == fromNodeId && c.RightEntityId == toNodeId);
+			var model = await this.dbContext.<#=Pluralize(modelTypeName.Replace("Connection", string.Empty).Replace("JoinTable", string.Empty))#>.SingleOrDefaultAsync(j => j.LeftEntityId == fromNodeId && j.RightEntityId == toNodeId);
 
 			if (model == null)
 			{
