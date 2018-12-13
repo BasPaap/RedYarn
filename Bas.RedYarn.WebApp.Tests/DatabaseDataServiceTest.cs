@@ -423,7 +423,15 @@ namespace Bas.RedYarn.WebApp.Tests
         {
             var characterPlotElementConnection = new CharacterPlotElementJoinTable()
             {
-                CharacterOwnsPlotElement = true
+                CharacterOwnsPlotElement = true,
+                LeftEntity = new Character()
+                {
+                    Name = "Character"
+                },
+                RightEntity = new PlotElement()
+                {
+                    Name = "PlotElement"
+                }
             };
 
             return characterPlotElementConnection;
@@ -432,10 +440,13 @@ namespace Bas.RedYarn.WebApp.Tests
         protected override void AssertCharacterPlotElementConnection(CharacterPlotElementJoinTable model)
         {
             Assert.IsTrue(model.CharacterOwnsPlotElement);
-            Assert.AreEqual(GetTestCharacterPlotElementConnectionFromNode().Name, model.LeftEntity.Name);
-            Assert.AreEqual(GetTestCharacterPlotElementConnectionToNode().Name, model.RightEntity.Name);
+            Assert.AreNotEqual(Guid.Empty, model.LeftEntityId);
+            Assert.AreNotEqual(Guid.Empty, model.RightEntityId);
+            Assert.AreEqual(GetTestCharacterPlotElementConnection().LeftEntity.Name, model.LeftEntity.Name);
+            Assert.AreEqual(GetTestCharacterPlotElementConnection().RightEntity.Name, model.RightEntity.Name);
         }
 
+        
         protected override CharacterPlotElementConnectionViewModel GetTestCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
             return new CharacterPlotElementConnectionViewModel(getNodeIdsFunc);            
@@ -443,49 +454,50 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override CharacterPlotElementConnectionViewModel GetUpdatedCharacterPlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
         {
-            return new CharacterPlotElementConnectionViewModel(getNodeIdsFunc)
-            {
-                CharacterOwnsPlotElement = false
-            };
+            var viewmodel = GetTestCharacterPlotElementConnectionViewModel(getNodeIdsFunc);
+            viewmodel.CharacterOwnsPlotElement = false;
+
+            return viewmodel;
         }
 
         protected override void AssertCharacterPlotElementConnectionViewModel(CharacterPlotElementConnectionViewModel viewModel)
         {
             Assert.IsTrue(viewModel.CharacterOwnsPlotElement);
+            Assert.AreNotEqual(Guid.Empty, viewModel.FromNodeId);
+            Assert.AreNotEqual(Guid.Empty, viewModel.ToNodeId);
         }
 
         protected override void AssertUpdatedCharacterPlotElementConnectionViewModel(CharacterPlotElementConnectionViewModel viewModel)
         {
             Assert.IsFalse(viewModel.CharacterOwnsPlotElement);
+            Assert.AreNotEqual(Guid.Empty, viewModel.FromNodeId);
+            Assert.AreNotEqual(Guid.Empty, viewModel.ToNodeId);
         }
 
-        protected override Character GetTestCharacterPlotElementConnectionFromNode()
-        {
-            return new Character()
-            {
-                Name = "CharacterName"
-            };
-        }
-
-        protected override PlotElement GetTestCharacterPlotElementConnectionToNode()
-        {
-            return new PlotElement()
-            {
-                Name = "PlotElementName"
-            };
-        }
         #endregion
 
         #region StorylineCharacter
         protected override JoinTable<Storyline, Character> GetTestStorylineCharacterConnection()
         {
-            return new JoinTable<Storyline, Character>();
+            return new JoinTable<Storyline, Character>()
+            {
+                LeftEntity = new Storyline()
+                {
+                    Name = "Storyline"
+                },
+                RightEntity = new Character()
+                {
+                    Name = "Character"
+                }
+            };
         }
 
         protected override void AssertStorylineCharacterConnection(JoinTable<Storyline, Character> model)
         {
-            Assert.AreEqual(GetTestStorylineCharacterConnectionFromNode().Name, model.LeftEntity.Name);
-            Assert.AreEqual(GetTestStorylineCharacterConnectionFromNode().Name, model.RightEntity.Name);
+            Assert.AreNotEqual(Guid.Empty, model.LeftEntityId);
+            Assert.AreNotEqual(Guid.Empty, model.RightEntityId);
+            Assert.AreEqual(GetTestStorylineCharacterConnection().LeftEntity.Name, model.LeftEntity.Name);
+            Assert.AreEqual(GetTestStorylineCharacterConnection().RightEntity.Name, model.RightEntity.Name);
         }
 
         protected override StorylineCharacterConnectionViewModel GetTestStorylineCharacterConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
@@ -500,39 +512,39 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override void AssertStorylineCharacterConnectionViewModel(StorylineCharacterConnectionViewModel viewModel)
         {
+            Assert.AreNotEqual(Guid.Empty, viewModel.FromNodeId);
+            Assert.AreNotEqual(Guid.Empty, viewModel.ToNodeId);
         }
 
         protected override void AssertUpdatedStorylineCharacterConnectionViewModel(StorylineCharacterConnectionViewModel viewModel)
         {
-        }
-
-        protected override Storyline GetTestStorylineCharacterConnectionFromNode()
-        {
-            return new Storyline()
-            {
-                Name = "Storyline"
-            };
-        }
-
-        protected override Character GetTestStorylineCharacterConnectionToNode()
-        {
-            return new Character()
-            {
-                Name = "Character"
-            };
+            Assert.AreNotEqual(Guid.Empty, viewModel.FromNodeId);
+            Assert.AreNotEqual(Guid.Empty, viewModel.ToNodeId);
         }
         #endregion
 
         #region StorylinePlotElement
         protected override JoinTable<Storyline, PlotElement> GetTestStorylinePlotElementConnection()
         {
-            return new JoinTable<Storyline, PlotElement>();
+            return new JoinTable<Storyline, PlotElement>()
+            {
+                LeftEntity = new Storyline()
+                {
+                    Name = "Storyline"
+                },
+                RightEntity = new PlotElement()
+                {
+                    Name = "PlotElement"
+                }
+            };
         }
 
         protected override void AssertStorylinePlotElementConnection(JoinTable<Storyline, PlotElement> model)
-        {
-            Assert.AreEqual(GetTestStorylinePlotElementConnectionFromNode().Name, model.LeftEntity.Name);
-            Assert.AreEqual(GetTestStorylinePlotElementConnectionToNode().Name, model.RightEntity.Name);
+        {            
+            Assert.AreNotEqual(Guid.Empty, model.LeftEntityId);
+            Assert.AreNotEqual(Guid.Empty, model.RightEntityId);
+            Assert.AreEqual(GetTestStorylinePlotElementConnection().LeftEntity.Name, model.LeftEntity.Name);
+            Assert.AreEqual(GetTestStorylinePlotElementConnection().RightEntity.Name, model.RightEntity.Name);
         }
 
         protected override StorylinePlotElementConnectionViewModel GetTestStorylinePlotElementConnectionViewModel(Func<(Guid, Guid)> getNodeIdsFunc)
@@ -547,27 +559,16 @@ namespace Bas.RedYarn.WebApp.Tests
 
         protected override void AssertStorylinePlotElementConnectionViewModel(StorylinePlotElementConnectionViewModel viewModel)
         {
+            Assert.AreNotEqual(Guid.Empty, viewModel.FromNodeId);
+            Assert.AreNotEqual(Guid.Empty, viewModel.ToNodeId);
         }
 
         protected override void AssertUpdatedStorylinePlotElementConnectionViewModel(StorylinePlotElementConnectionViewModel viewModel)
         {
+            Assert.AreNotEqual(Guid.Empty, viewModel.FromNodeId);
+            Assert.AreNotEqual(Guid.Empty, viewModel.ToNodeId);
         }
-
-        protected override Storyline GetTestStorylinePlotElementConnectionFromNode()
-        {
-            return new Storyline()
-            {
-                Name = "Storyline"
-            };
-        }
-
-        protected override PlotElement GetTestStorylinePlotElementConnectionToNode()
-        {
-            return new PlotElement()
-            {
-                Name = "PlotElement"
-            };
-        }
+        
         #endregion
     }
 }
