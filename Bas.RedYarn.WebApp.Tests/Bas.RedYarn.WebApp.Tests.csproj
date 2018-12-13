@@ -224,6 +224,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>StorylinePlotElementConnectionControllerTest.tt</DependentUpon>
     </Compile>
+    <Compile Update="Services\TestDataService.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TestDataService.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <!-- Because we are no longer implicitly importing Sdk.Targets at the end of the project file, we explicitly import it here. 

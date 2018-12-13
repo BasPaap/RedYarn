@@ -319,11 +319,11 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NoContent, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
 <#+
 	if (!extraViewModelNames.Contains(viewModelName))
     {
 #>
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
             Assert.AreEqual(updated<#=viewModelName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
     }
@@ -373,11 +373,11 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.BadRequest, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);		
 <#+
 	if (!extraViewModelNames.Contains(viewModelName))
     {
 #>	
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);		
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
 	}
@@ -441,11 +441,11 @@ private void WriteUpdateTests(string unitUnderTestName, string modelName, string
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);
 <#+
 	if (!extraViewModelNames.Contains(viewModelName))
     {
 #>					
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
     }
@@ -552,11 +552,11 @@ private void WriteDeleteTests(string unitUnderTestName, string modelName, string
 
             // Assert
             Assert.AreEqual(System.Net.HttpStatusCode.NotFound, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);	
 <#+
 	if (!extraViewModelNames.Contains(viewModelName))
     {
 #>		
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);	
             Assert.AreEqual(<#=viewModelInstanceName#>.Name, this.dataService.<#=Pluralize(viewModelName)#>.Single().Name);
 <#+
     }
@@ -617,12 +617,12 @@ private void WriteGetTests(string unitUnderTestName, string modelName, string vi
 			var content = result.Content.FromJsonString<<#=viewModelName#>>();
 			Assert.IsNotNull(result);
 			Assert.IsNotNull(content);
-            Assert.AreEqual(System.Net.HttpStatusCode.OK, result.StatusCode);
-			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);			
+            Assert.AreEqual(System.Net.HttpStatusCode.OK, result.StatusCode);			
 <#+
 	if (!extraViewModelNames.Contains(viewModelName))
     {
 #>
+			Assert.AreEqual(<#=viewModelInstanceName#>.Id, this.dataService.<#=modelName#>ViewModels.Single().Id);
 			Assert.AreEqual(<#=viewModelInstanceName#>.Name, content.Name);
 <#+
     }

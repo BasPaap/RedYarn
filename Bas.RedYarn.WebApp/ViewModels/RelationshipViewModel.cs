@@ -9,6 +9,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
     {
         public bool IsDirectional { get; set; }
         public string Name { get; set; }
+        public Guid Id { get; set; }
 
         public RelationshipViewModel()
         {

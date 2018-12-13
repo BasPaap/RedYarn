@@ -58,7 +58,14 @@ foreach (var viewModelName in viewModelNames)
 
         public Task<<#=viewModelName#>> Create<#=viewModelName#>Async(<# if (entitiesToAddToDiagram.Contains(GetModelName(viewModelName))) {#>Guid diagramId, <#}#><#=viewModelName#> <#=Decapitalize(viewModelName)#>)
         {
+<#
+	if (!extraViewModelNames.Contains(viewModelName))
+	{
+#>
 			<#=Decapitalize(viewModelName)#>.Id = Guid.NewGuid();
+<#
+	}
+#>
             <#=Pluralize(viewModelName)#>.Add(<#=Decapitalize(viewModelName)#>);
 
             return Task.FromResult(<#=Decapitalize(viewModelName)#>);
