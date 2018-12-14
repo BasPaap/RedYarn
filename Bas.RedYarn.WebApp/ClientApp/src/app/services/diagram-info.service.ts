@@ -41,6 +41,14 @@ export class DiagramInfoService implements OnDestroy {
     return (this.diagramItemTypes[`${fromId}-${toId}`]) ? this.diagramItemTypes[`${fromId}-${toId}`] : DiagramItemType.Unknown;
   }
 
+  public getCharacter(id: string): Character {
+    return this.characters[id];
+  }
+
+  public getPlotElement(id: string): PlotElement {
+    return this.plotElements[id];
+  }
+
   constructor(private diagramDataService: DiagramDataService) { }
 
   public initialize() {

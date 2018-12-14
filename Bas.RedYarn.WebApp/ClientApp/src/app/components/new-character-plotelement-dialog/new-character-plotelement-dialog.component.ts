@@ -1,9 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Guid } from '../../../Guid';
+import { Component, Inject, OnInit, ChangeDetectorRef, Input, Output, EventEmitter } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatRadioGroup, MatRadioChange } from '@angular/material';
 import { DiagramDataService } from '../../services/diagram-data.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { DiagramInfoService } from 'src/app/services/diagram-info.service';
+import { PlotElement, Character } from 'src/app/diagram-types';
 
 @Component({
   selector: 'app-new-character-plotelement-dialog',
@@ -12,32 +13,36 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class NewCharacterPlotElementDialogComponent extends DialogComponent implements OnInit {
 
-  private fromNodeId: string;
-  private toNodeId: string;
+  public character: Character;
+  public plotElement: PlotElement;
+  
+  @Input() public characterHasPlotElement: boolean;
+
+  public onCharacterHasPlotElementChanged(change: MatRadioChange) {
+    this.characterHasPlotElement = change.value;
+  }
 
   public createCharacterPlotElementConnection(): void {
     if (this.formGroup.valid) {
       this.toggleIsSubmitting();
 
-      //let relationshipViewModel = {
-      //  id: Guid.empty,
-      //  fromNodeId: this.fromNodeId,
-      //  toNodeId: this.toNodeId,
-      //  isDirectional: true,
-      //  name: this.formGroup.controls['name'].value
-      //};
+      let characterPlotElementViewModel = {
+        fromNodeId: this.character.id,
+        toNodeId: this.plotElement.id,
+        characterOwnsPlotElement: this.characterHasPlotElement
+      };
 
-      //this.diagramDataService.createRelationship(relationshipViewModel)
-      //  .subscribe(() => this.dialogRef.close());
+      this.diagramDataService.createCharacterPlotElementConnection(characterPlotElementViewModel)
+        .subscribe(() => this.dialogRef.close());
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewCharacterPlotElementDialogComponent>, private diagramDataService: DiagramDataService, @Inject(MAT_DIALOG_DATA) data) {
+  constructor(private dialogRef: MatDialogRef<NewCharacterPlotElementDialogComponent>, private diagramDataService: DiagramDataService, private diagramInfoService: DiagramInfoService, @Inject(MAT_DIALOG_DATA) data) {
     super();
 
-    this.formGroup.addControl('characterOwnsPlotElement', new FormControl(''));
-    this.fromNodeId = data.fromNodeId;
-    this.toNodeId = data.toNodeId;
+    this.characterHasPlotElement = true;
+    this.character = this.diagramInfoService.getCharacter(data.fromNodeId);
+    this.plotElement = this.diagramInfoService.getPlotElement(data.toNodeId);    
   }
 
   ngOnInit() {

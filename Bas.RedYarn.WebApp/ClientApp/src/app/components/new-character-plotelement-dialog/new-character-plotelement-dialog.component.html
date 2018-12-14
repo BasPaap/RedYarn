@@ -1,5 +1,5 @@
 <form [formGroup]="formGroup">
-  <h2 mat-dialog-title>Connect to plot element</h2>
+  <h2 mat-dialog-title>Connect character to plot element</h2>
   <mat-dialog-content class="content">
     <!--<mat-form-field class="fullWidth" appearance="outline">
     <mat-label>Name</mat-label>
@@ -7,13 +7,13 @@
     <mat-error *ngIf="formGroup.controls['name'].hasError('required')">You must enter a name.</mat-error>
   </mat-form-field>-->
 
-    <mat-radio-group name="characterOwnsPlotElement" value="true">
-      <mat-radio-button value="true">
-        Character has plot element
+    <mat-radio-group name="radio" [value]="characterHasPlotElement" (change)="onCharacterHasPlotElementChanged($event)">
+      <mat-radio-button [value]="true">
+        {{character.name}} has information about {{plotElement.name}}
       </mat-radio-button>
       <p>This character has information about this plot element that is essential for one or more related storylines.</p>
-      <mat-radio-button value="false">
-        Character needs plot element
+      <mat-radio-button [value]="false">
+        {{character.name}} needs information about {{plotElement.name}}
       </mat-radio-button>
       <p>This character needs the information in this plot element in order to complete any related storylines.</p>
     </mat-radio-group>
