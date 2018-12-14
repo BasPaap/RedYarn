@@ -7,7 +7,7 @@
     <mat-error *ngIf="formGroup.controls['name'].hasError('required')">You must enter a name.</mat-error>
   </mat-form-field>-->
 
-    <mat-radio-group name="radio" [value]="characterHasPlotElement" (change)="onCharacterHasPlotElementChanged($event)">
+    <mat-radio-group name="radio" [value]="characterOwnsPlotElement" (change)="oncharacterOwnsPlotElementChanged($event)">
       <mat-radio-button [value]="true">
         {{character.name}} has information about {{plotElement.name}}
       </mat-radio-button>

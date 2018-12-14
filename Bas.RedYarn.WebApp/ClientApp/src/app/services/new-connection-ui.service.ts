@@ -95,9 +95,11 @@ export class NewConnectionUIService {
     else if (fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Storyline) {
       this.createStorylinePlotElementConnection(toNodeId, fromNodeId);
     }
-    else if ((fromType == DiagramItemType.Character && toType == DiagramItemType.PlotElement) ||
-      (fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Character)) {
-      this.openNewCharacterPlotElementConnectionDialog(fromNodeId, toNodeId);
+    else if (fromType == DiagramItemType.Character && toType == DiagramItemType.PlotElement) {
+      this.openNewCharacterPlotElementConnectionDialog(fromNodeId, toNodeId, false);
+    }
+    else if (fromType == DiagramItemType.PlotElement && toType == DiagramItemType.Character) {
+      this.openNewCharacterPlotElementConnectionDialog(toNodeId, fromNodeId, true);
     }
   }
 
@@ -129,11 +131,12 @@ export class NewConnectionUIService {
     this.diagramDataService.createStorylinePlotElementConnection(connection).subscribe();
   }
 
-  private openNewCharacterPlotElementConnectionDialog(characterId: string, plotElementId: string) {
+  private openNewCharacterPlotElementConnectionDialog(characterId: string, plotElementId: string, characterOwnsPlotElement: boolean) {
     let dialogConfig = new MatDialogConfig();
     dialogConfig.data = {
       fromNodeId: characterId,
-      toNodeId: plotElementId
+      toNodeId: plotElementId,
+      characterOwnsPlotElement: characterOwnsPlotElement
     };
 
     this.dialog.open(NewCharacterPlotElementDialogComponent, dialogConfig);

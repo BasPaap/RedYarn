@@ -16,10 +16,10 @@ export class NewCharacterPlotElementDialogComponent extends DialogComponent impl
   public character: Character;
   public plotElement: PlotElement;
   
-  @Input() public characterHasPlotElement: boolean;
+  @Input() public characterOwnsPlotElement: boolean;
 
-  public onCharacterHasPlotElementChanged(change: MatRadioChange) {
-    this.characterHasPlotElement = change.value;
+  public oncharacterOwnsPlotElementChanged(change: MatRadioChange) {
+    this.characterOwnsPlotElement = change.value;
   }
 
   public createCharacterPlotElementConnection(): void {
@@ -29,7 +29,7 @@ export class NewCharacterPlotElementDialogComponent extends DialogComponent impl
       let characterPlotElementViewModel = {
         fromNodeId: this.character.id,
         toNodeId: this.plotElement.id,
-        characterOwnsPlotElement: this.characterHasPlotElement
+        characterOwnsPlotElement: this.characterOwnsPlotElement
       };
 
       this.diagramDataService.createCharacterPlotElementConnection(characterPlotElementViewModel)
@@ -40,9 +40,9 @@ export class NewCharacterPlotElementDialogComponent extends DialogComponent impl
   constructor(private dialogRef: MatDialogRef<NewCharacterPlotElementDialogComponent>, private diagramDataService: DiagramDataService, private diagramInfoService: DiagramInfoService, @Inject(MAT_DIALOG_DATA) data) {
     super();
 
-    this.characterHasPlotElement = true;
     this.character = this.diagramInfoService.getCharacter(data.fromNodeId);
-    this.plotElement = this.diagramInfoService.getPlotElement(data.toNodeId);    
+    this.plotElement = this.diagramInfoService.getPlotElement(data.toNodeId);
+    this.characterOwnsPlotElement = data.characterOwnsPlotElement;
   }
 
   ngOnInit() {
