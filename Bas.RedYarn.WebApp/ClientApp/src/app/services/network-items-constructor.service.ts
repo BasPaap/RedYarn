@@ -23,6 +23,14 @@ export class NetworkItemsConstructorService {
       id: storyline.id,
       label: storyline.name,
       shape: this.settingsService.settings.ui.storylineNode.shape,
+      margin: this.settingsService.settings.ui.storylineNode.margin,
+      font: {
+        size: this.settingsService.settings.ui.storylineNode.fontSize
+      },
+      widthConstraint: {
+        minimum: this.settingsService.settings.ui.storylineNode.minWidthConstraint,
+        maximum: this.settingsService.settings.ui.storylineNode.maxWidthConstraint
+      },
       color: {
         border: this.settingsService.settings.ui.storylineNode.borderColor,
         background: this.settingsService.settings.ui.storylineNode.background,
@@ -30,7 +38,7 @@ export class NetworkItemsConstructorService {
         hover: { border: this.settingsService.settings.ui.storylineNode.borderColor, background: this.settingsService.settings.ui.storylineNode.background }
       },
       borderWidth: this.settingsService.settings.ui.storylineNode.borderWidth,
-      labelHighlightBold: false,
+      labelHighlightBold: this.settingsService.settings.ui.storylineNode.labelHighlightBold,
       x: storyline.xPosition,
       y: storyline.yPosition,
       storyline: storyline
@@ -42,6 +50,14 @@ export class NetworkItemsConstructorService {
       id: plotElement.id,
       label: plotElement.name,
       shape: this.settingsService.settings.ui.plotElementNode.shape,
+      font: {
+        size: this.settingsService.settings.ui.plotElementNode.fontSize
+      },
+      margin: this.settingsService.settings.ui.plotElementNode.margin,
+      widthConstraint: {
+        minimum: this.settingsService.settings.ui.plotElementNode.minWidthConstraint,
+        maximum: this.settingsService.settings.ui.plotElementNode.maxWidthConstraint
+      },
       color: {
         border: this.settingsService.settings.ui.plotElementNode.borderColor,
         background: this.settingsService.settings.ui.plotElementNode.background,
@@ -49,7 +65,7 @@ export class NetworkItemsConstructorService {
         hover: { border: this.settingsService.settings.ui.plotElementNode.borderColor, background: this.settingsService.settings.ui.plotElementNode.background }
       },
       borderWidth: this.settingsService.settings.ui.plotElementNode.borderWidth,
-      labelHighlightBold: false,
+      labelHighlightBold: this.settingsService.settings.ui.plotElementNode.labelHighlightBold,
       x: plotElement.xPosition,
       y: plotElement.yPosition,
       plotElement: plotElement
@@ -70,7 +86,7 @@ export class NetworkItemsConstructorService {
         highlight: { border: this.settingsService.settings.ui.characterNode.highlightBorderColor },
         hover: { border: this.settingsService.settings.ui.characterNode.borderColor }
       },
-      labelHighlightBold: false,
+      labelHighlightBold: this.settingsService.settings.ui.characterNode.labelHighlightBold,
       x: character.xPosition,
       y: character.yPosition,
       character: character
@@ -87,7 +103,7 @@ export class NetworkItemsConstructorService {
         type: "continuous",
         forceDirection: "none"
       },
-      color: { color: 'rgba(255,0,0,1)', highlight: 'rgba(255,0,0,1)' },
+      color: { color: this.settingsService.settings.ui.relationshipEdge.color, highlight: this.settingsService.settings.ui.relationshipEdge.highlightColor },
     };
   }
 

@@ -6,17 +6,27 @@ export class Settings {
   ui: {
     storylineNode: {
       shape: "box",
+      margin: 15,
+      fontSize: 16,
       borderColor: "rgba(0,0,0,0)",
       background: "rgba(255,255,255,1)",
       highlightBorderColor: "rgba(0,0,0,1)",
-      borderWidth: 1
+      borderWidth: 1,
+      minWidthConstraint: 50,
+      maxWidthConstraint: 300,
+      labelHighlightBold: false
     },
     plotElementNode: {
       shape: "box",
+      margin: 15,
+      fontSize: 16,
       borderColor: "rgba(50,50,50,1)",
       background: "rgba(200,200,200,1)",
       highlightBorderColor: "rgba(50,50,50,1)",
-      borderWidth: 1
+      borderWidth: 1,
+      minWidthConstraint: 50,
+      maxWidthConstraint: 200,
+      labelHighlightBold: false
     },
     characterNode: {
       shape: "circularImage",
@@ -24,7 +34,12 @@ export class Settings {
       borderColor: "rgba(0,0,0,1)",
       highlightBorderColor: "rgba(0,0,0,1)",
       borderWidth: 2,
-      brokenImageUri: "../../../assets/default-character.png"
+      brokenImageUri: "../../../assets/default-character.png",
+      labelHighlightBold: false
+    },
+    relationshipEdge: {
+      color: "rgba(255,0,0,1)",
+      highlightColor: "rgba(255,0,0,1)"
     },
     newNodePlacementRadius: 5; // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
     newRelationship: {
