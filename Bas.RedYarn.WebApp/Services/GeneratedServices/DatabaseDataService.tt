@@ -61,6 +61,41 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 			
 <#
 		}
+#>
+			var relationships = this.dbContext.Relationships.Where(r => characterIds.Contains(this.getIdForModelFunc(r.FirstCharacter)));
+			foreach (var relationship in relationships)
+			{
+				relationship.FirstCharacter.RelateTo(relationship.SecondCharacter, relationship.Name, relationship.IsDirectional);
+			} 
+
+			var characterPlotElements = this.dbContext.CharacterPlotElements.Where(c => characterIds.Contains(this.getIdForModelFunc(c.LeftEntity)));
+			foreach (var characterPlotElement in characterPlotElements)
+            {
+                if (characterPlotElement.CharacterOwnsPlotElement)
+                {
+                    characterPlotElement.LeftEntity.OwnedPlotElements.Add(characterPlotElement.RightEntity);
+                }
+                else
+                {
+                    characterPlotElement.LeftEntity.NeededPlotElements.Add(characterPlotElement.RightEntity);
+                }
+            }
+
+<#
+		foreach (var extraViewModelName in extraViewModelNames.Except(new [] {"CharacterPlotElementConnectionViewModel" }))
+        {
+			var extraModelName = GetModelName(extraViewModelName).Replace("Connection", string.Empty);
+			var firstTypeName = extraViewModelConnectionTypeNames[extraViewModelName][0];
+			var secondTypeName = extraViewModelConnectionTypeNames[extraViewModelName][1];
+#>
+			var <#=Decapitalize(Pluralize(extraModelName))#> = this.dbContext.<#=Pluralize(extraModelName)#>.Where(c => <#=Decapitalize(firstTypeName)#>Ids.Contains(this.getIdForModelFunc(c.LeftEntity)));
+			foreach (var <#=Decapitalize(extraModelName)#> in <#=Decapitalize(Pluralize(extraModelName))#>)
+			{
+                <#=Decapitalize(extraModelName)#>.LeftEntity.<#=Pluralize(secondTypeName)#>.Add(<#=Decapitalize(extraModelName)#>.RightEntity);
+			}
+
+<#
+        }
 	}
 	
 	if (EntityHasNode(modelName))

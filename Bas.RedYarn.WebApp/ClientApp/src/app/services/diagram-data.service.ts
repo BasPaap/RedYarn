@@ -106,6 +106,18 @@ export class DiagramDataService {
         for (let relationship of diagram.relationships) {
           this.newRelationshipSubject.next(relationship);
         }
+
+        for (let characterPlotElementConnection of diagram.characterPlotElementConnections) {
+          this.newCharacterPlotElementConnectionSubject.next(characterPlotElementConnection);
+        }
+
+        for (let storylineCharacterConnection of diagram.storylineCharacterConnections) {
+          this.newStorylineCharacterConnectionSubject.next(storylineCharacterConnection);
+        }
+
+        for (let storylinePlotElementConnection of diagram.storylinePlotElementConnections) {
+          this.newStorylinePlotElementConnectionSubject.next(storylinePlotElementConnection);
+        }
       })
     );
 
