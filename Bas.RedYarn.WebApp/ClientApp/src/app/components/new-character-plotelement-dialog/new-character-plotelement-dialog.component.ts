@@ -35,7 +35,7 @@ export class NewCharacterPlotElementDialogComponent extends DialogComponent impl
   constructor(private dialogRef: MatDialogRef<NewCharacterPlotElementDialogComponent>, private diagramDataService: DiagramDataService, @Inject(MAT_DIALOG_DATA) data) {
     super();
 
-    //this.formGroup.addControl('name', new FormControl('', [Validators.required]));
+    this.formGroup.addControl('characterOwnsPlotElement', new FormControl(''));
     this.fromNodeId = data.fromNodeId;
     this.toNodeId = data.toNodeId;
   }
