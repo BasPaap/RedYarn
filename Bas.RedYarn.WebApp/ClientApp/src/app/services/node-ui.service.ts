@@ -17,12 +17,22 @@ export class NodeUiService {
 
   public onRedraw(): void {
     for (let key in this.nodeLayouts) {
-      switch (this.diagramInfoService.getItemType(this.nodeLayouts[key].id)) {
+      let nodeLayout = this.nodeLayouts[key];
+
+
+      switch (this.diagramInfoService.getItemType(nodeLayout.id)) {
         case DiagramItemType.PlotElement:
-          this.diagramDrawingService.drawPuzzlePieceIcon(this.nodeLayouts[key].positionX, this.nodeLayouts[key].positionY);
+          const iconSize = 25;
+          let x = nodeLayout.positionX + (nodeLayout.width / 2) - iconSize * 2;
+          let y = nodeLayout.positionY - (nodeLayout.height / 2) - (iconSize / 1.1);
+          this.diagramDrawingService.drawPuzzlePieceIcon(x, y);
           break;
         case DiagramItemType.Storyline:
-          this.diagramDrawingService.drawBookIcon(this.nodeLayouts[key].positionX, this.nodeLayouts[key].positionY);
+          const iconWidth = 40;
+          const iconHeight = 30;
+          let x = nodeLayout.positionX + (nodeLayout.width / 2) - iconWidth * 1.5;
+          let y = nodeLayout.positionY - (nodeLayout.height / 2) - (iconHeight / 1.7);
+          this.diagramDrawingService.drawBookIcon(x,y);
           break;
         default:
           break;
