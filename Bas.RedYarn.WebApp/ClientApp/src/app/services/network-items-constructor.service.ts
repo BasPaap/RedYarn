@@ -21,6 +21,7 @@ export class NetworkItemsConstructorService {
   public getStorylineNode(storyline: Storyline) {
     return {
       id: storyline.id,
+      
       label: storyline.name,
       shape: this.settingsService.settings.ui.storylineNode.shape,
       margin: this.settingsService.settings.ui.storylineNode.margin,

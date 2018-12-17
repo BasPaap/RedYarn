@@ -71,10 +71,10 @@ export class NewConnectionUIService {
             this.highlightNode(closestNodeLayout);
           }
         }
-      }
-
-      this.visNetwork.redraw();
+      }     
     }
+
+    this.visNetwork.redraw();
   }
 
   private connectNodes(fromNodeId: string, toNodeId: string) {

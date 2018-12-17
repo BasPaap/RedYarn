@@ -74,7 +74,7 @@ export class NodeLayoutInfoService {
     return this.nodeLayoutsSubject.asObservable();
   }
 
-  public onUpdatedNode(node: vis.Node, boundingBox: vis.BoundingBox) {
+  public onUpdatedNode(node: vis.Node, boundingBox: vis.BoundingBox, x?: number, y?: number) {
     let width, height: number;
 
     let nodeLayout: NodeLayoutInfo;
@@ -90,8 +90,8 @@ export class NodeLayoutInfoService {
     }
 
     nodeLayout.id = node.id.toString();
-    nodeLayout.positionX = node.x.valueOf();
-    nodeLayout.positionY = node.y.valueOf();
+    nodeLayout.positionX = x ? x : node.x.valueOf(); // The Node coordinates are not always reliable (they are not updated when dragging, for instance) so use the coordinates from the parameters if possible.
+    nodeLayout.positionY = y ? y : node.y.valueOf(); // The Node coordinates are not always reliable (they are not updated when dragging, for instance) so use the coordinates from the parameters if possible.
     nodeLayout.width = width;
     nodeLayout.height = height;
 

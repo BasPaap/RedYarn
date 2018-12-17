@@ -2,6 +2,7 @@ import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/cor
 import { Network, IdType, Options } from 'vis-redyarn';
 import { DiagramDrawingService } from './services/diagram-drawing.service';
 import { NodeLayoutInfoService } from './services/node-layout-info.service';
+import { NodeUiService } from './services/node-ui.service';
 
 @Directive({
   selector: '[appVisNetwork]'
@@ -20,19 +21,24 @@ export class VisNetworkDirective {
   };
 
 
-  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private nodeLayoutInfoService: NodeLayoutInfoService) { }
+  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private nodeLayoutInfoService: NodeLayoutInfoService, private nodeUiService: NodeUiService) { }
 
   @Input() public set appVisNetwork(networkData) {
 
     if (!this.network) {
       this.network = new Network(this.element.nativeElement, networkData, this.options);
+      this.network.on("initRedraw", _ => this.nodeUiService.onRedraw());
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));
       this.network.on("afterDrawing", context => this.diagramDrawingService.onDrawForegroundUI(context));
-      this.network.on("dragStart", _ => this._isDragging = true);
+      this.network.on("dragStart", params => {
+        this._isDragging = true;
+        this.dragStart.emit(params);
+      });
       this.network.on("dragEnd", params => {
         this._isDragging = false;
         this.dragEnd.emit(params);
       });
+      this.network.on("dragging", params => this.dragging.emit(params));
 
       this.element.nativeElement.childNodes[0].style.outline = "none"; // Visjs appears to overwrite any style you set on the div in the container, so we'll need to manually set it after creation.
     }
@@ -52,7 +58,9 @@ export class VisNetworkDirective {
     this.network.setOptions(this.options);
   }
 
+  @Output() public dragStart: EventEmitter<any> = new EventEmitter();
   @Output() public dragEnd: EventEmitter<any> = new EventEmitter();
+  @Output() public dragging: EventEmitter<any> = new EventEmitter();
 
   public focusOnNode(nodeId: IdType): void {
     if (this.network) {

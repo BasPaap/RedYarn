@@ -10,6 +10,7 @@ import { SettingsService } from '../../services/settings.service';
 import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
 import { VisNetworkDirective } from '../../vis-network.directive';
 import { DiagramInfoService } from '../../services/diagram-info.service';
+import { DiagramDrawingService } from 'src/app/services/diagram-drawing.service';
 
 @Component({
   selector: 'app-story-diagram',
@@ -18,6 +19,7 @@ import { DiagramInfoService } from '../../services/diagram-info.service';
 })
 export class StoryDiagramComponent implements OnInit, OnDestroy {
   private subscriptions: { [name: string]: Subscription; } = {};
+  private dragOffsets: { [id: string]: vis.Position; } = {};
   private _visNetwork: VisNetworkDirective;
   private isLoaded: boolean;
 
@@ -27,7 +29,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private diagramDataService: DiagramDataService,
-    private settingsService: SettingsService,
+    private diagramDrawingService: DiagramDrawingService,
     private networkItemsConstructorService: NetworkItemsConstructorService,
     private nodeLayoutInfoService: NodeLayoutInfoService,
     private diagramInfoService: DiagramInfoService,
@@ -53,6 +55,9 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
     for (let key in draggedNodes) {
       let draggedNode = draggedNodes[key];
+      this.dragOffsets[draggedNode.id] = { x: 0, y: 0 };
+
+      
       let position = this.visNetwork.getNodePosition(draggedNode.id)[draggedNode.id];
       if (draggedNode.storyline) {
         draggedNode.storyline.xPosition = position.x;
@@ -68,7 +73,32 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
         this.diagramDataService.updateCharacter(draggedNode.character).subscribe();
       }
     }
-  }  
+  }
+
+  
+
+  public onDragStart(eventArgs: any): void {
+    for (let nodeId of eventArgs.nodes) {
+      if (this.networkData["nodes"][nodeId] && eventArgs.pointer.canvas) {
+        this.dragOffsets[nodeId] = {
+          x: this.networkData["nodes"][nodeId].x.valueOf() - eventArgs.pointer.canvas.x.valueOf(),
+          y: this.networkData["nodes"][nodeId].y.valueOf() - eventArgs.pointer.canvas.y.valueOf()
+        };
+      }
+    }
+  }
+
+  public onDragging(eventArgs: any): void {
+    for (let nodeId of eventArgs.nodes) {
+      let node = this.networkData["nodes"][nodeId];
+      if (node) {
+        this.nodeLayoutInfoService.onUpdatedNode(node,
+          this.visNetwork.getBoundingBox(node),
+          eventArgs.pointer.canvas.x.valueOf() + this.dragOffsets[nodeId].x,
+          eventArgs.pointer.canvas.y.valueOf() + this.dragOffsets[nodeId].y);
+      }
+    }
+  }
 
   ngOnInit() {
   }
