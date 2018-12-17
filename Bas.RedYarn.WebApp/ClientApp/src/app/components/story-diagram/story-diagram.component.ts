@@ -79,10 +79,10 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
   public onDragStart(eventArgs: any): void {
     for (let nodeId of eventArgs.nodes) {
-      if (this.networkData["nodes"][nodeId] && eventArgs.pointer.canvas) {
+      if (this.networkData["nodes"].get(nodeId) && eventArgs.pointer.canvas) {
         this.dragOffsets[nodeId] = {
-          x: this.networkData["nodes"][nodeId].x.valueOf() - eventArgs.pointer.canvas.x.valueOf(),
-          y: this.networkData["nodes"][nodeId].y.valueOf() - eventArgs.pointer.canvas.y.valueOf()
+          x: this.networkData["nodes"].get(nodeId).x.valueOf() - eventArgs.pointer.canvas.x.valueOf(),
+          y: this.networkData["nodes"].get(nodeId).y.valueOf() - eventArgs.pointer.canvas.y.valueOf()
         };
       }
     }
@@ -90,7 +90,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
 
   public onDragging(eventArgs: any): void {
     for (let nodeId of eventArgs.nodes) {
-      let node = this.networkData["nodes"][nodeId];
+      let node = this.networkData["nodes"].get(nodeId);
       if (node) {
         this.nodeLayoutInfoService.onUpdatedNode(node,
           this.visNetwork.getBoundingBox(node),
@@ -146,7 +146,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   private subscribeToUpdatedConnectionStream<T>(service: Observable<T>, getEdge: (item: T) => any): Subscription {
     return service.subscribe(item => {
       let updatedEdge = getEdge(item);
-      this.networkData["edges"][updatedEdge.id] = updatedEdge;
+      this.networkData["edges"].update(updatedEdge);
     });
   }
 
@@ -166,7 +166,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   private subscribeToUpdatedNodeStream<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
     return service.subscribe(item => {
       let updatedNode = getNode(item);
-      this.networkData["nodes"][updatedNode.id] = updatedNode;
+      this.networkData["nodes"].update(updatedNode);
 
       this.nodeLayoutInfoService.onUpdatedNode(updatedNode, this.visNetwork.getBoundingBox(updatedNode));
     });
