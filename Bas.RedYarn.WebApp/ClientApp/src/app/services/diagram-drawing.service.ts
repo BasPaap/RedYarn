@@ -420,7 +420,7 @@ export class DiagramDrawingService {
   private backgroundDrawables: Drawable[] = [];
   private readonly iconZ = 10;
   private readonly highlightZ = 5;
-  private readonly arrowZ = 15;
+  
 
   constructor(private settingsService: SettingsService) { }
 
@@ -430,7 +430,7 @@ export class DiagramDrawingService {
     arrow.fromY = fromY;
     arrow.toX = toX;
     arrow.toY = toY;
-    arrow.z = this.arrowZ;
+    
     arrow.lineWidth = this.settingsService.settings.ui.newRelationship.arrow.lineWidth;
     arrow.style = this.settingsService.settings.ui.newRelationship.arrow.style;
     arrow.headLength = this.settingsService.settings.ui.newRelationship.arrow.headLength;
