@@ -135,7 +135,7 @@ export class NetworkItemsConstructorService {
       to: connection.toNodeId,
       chosen: false,
       smooth: false,
-      arrows: 'to',
+      arrows: 'from',
       arrowStrikethrough: false,
       color: { color: 'rgba(0,0,0,0.5)', highlight: 'rgba(0,0,0,0.5)' },
     };
