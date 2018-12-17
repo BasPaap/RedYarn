@@ -24,14 +24,14 @@ export class NodeUiService {
       switch (this.diagramInfoService.getItemType(nodeLayout.id)) {
         case DiagramItemType.PlotElement:
           const iconSize = 25;
-          x = nodeLayout.positionX + (nodeLayout.width / 2) - iconSize * 2;
-          y = nodeLayout.positionY - (nodeLayout.height / 2) - (iconSize / 1.1);
+          x = nodeLayout.positionX - (nodeLayout.width / 2) + iconSize * 0.5;
+          y = nodeLayout.positionY - (nodeLayout.height / 2) - (iconSize / 1.5);
           this.diagramDrawingService.drawPuzzlePieceIcon(x, y);
           break;
         case DiagramItemType.Storyline:
           const iconWidth = 40;
           const iconHeight = 30;
-          x = nodeLayout.positionX + (nodeLayout.width / 2) - iconWidth * 1.5;
+          x = nodeLayout.positionX - (nodeLayout.width / 2) + iconWidth * 0.5;
           y = nodeLayout.positionY - (nodeLayout.height / 2) - (iconHeight / 1.7);
           this.diagramDrawingService.drawBookIcon(x,y);
           break;

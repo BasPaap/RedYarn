@@ -21,16 +21,12 @@ export class NetworkItemsConstructorService {
   public getStorylineNode(storyline: Storyline) {
     return {
       id: storyline.id,
-      
+      chosen: false,
       label: storyline.name,
       shape: this.settingsService.settings.ui.storylineNode.shape,
       margin: this.settingsService.settings.ui.storylineNode.margin,
       font: {
         size: this.settingsService.settings.ui.storylineNode.fontSize
-      },
-      widthConstraint: {
-        minimum: this.settingsService.settings.ui.storylineNode.minWidthConstraint,
-        maximum: this.settingsService.settings.ui.storylineNode.maxWidthConstraint
       },
       color: {
         border: this.settingsService.settings.ui.storylineNode.borderColor,
@@ -55,9 +51,8 @@ export class NetworkItemsConstructorService {
         size: this.settingsService.settings.ui.plotElementNode.fontSize
       },
       margin: this.settingsService.settings.ui.plotElementNode.margin,
-      widthConstraint: {
-        minimum: this.settingsService.settings.ui.plotElementNode.minWidthConstraint,
-        maximum: this.settingsService.settings.ui.plotElementNode.maxWidthConstraint
+      chosen: {
+        node: false
       },
       color: {
         border: this.settingsService.settings.ui.plotElementNode.borderColor,
@@ -77,6 +72,7 @@ export class NetworkItemsConstructorService {
     return {
       id: character.id,
       label: character.name,
+      chosen: false,
       shape: this.settingsService.settings.ui.characterNode.shape,
       size: this.settingsService.settings.ui.characterNode.radius,
       image: '../../../assets/default-character.png',
@@ -97,6 +93,7 @@ export class NetworkItemsConstructorService {
   public getRelationshipEdge(relationship: Relationship) {
     return {
       arrows: relationship.isDirectional ? 'to' : undefined,
+      chosen: false,
       from: relationship.fromNodeId,
       to: relationship.toNodeId,
       label: relationship.name,
@@ -112,6 +109,7 @@ export class NetworkItemsConstructorService {
     return {
       from: plotElementConnection.fromNodeId,
       to: plotElementConnection.toNodeId,
+      chosen: false,
       smooth: false,
       dashes: true,
       arrowStrikethrough: false,  
@@ -125,6 +123,7 @@ export class NetworkItemsConstructorService {
     return {
       from: connection.fromNodeId,
       to: connection.toNodeId,
+      chosen: false,
       smooth: false,
       color: { color: 'rgba(0,0,0,1)', highlight: 'rgba(0,0,0,1)' },
     };
@@ -134,6 +133,7 @@ export class NetworkItemsConstructorService {
     return {
       from: connection.fromNodeId,
       to: connection.toNodeId,
+      chosen: false,
       smooth: false,
       arrows: 'to',
       arrowStrikethrough: false,

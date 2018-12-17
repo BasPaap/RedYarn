@@ -3,10 +3,8 @@
   "ui": {
     "storylineNode": {
       "shape": "box",
-      "margin": 15,
+      "margin": 25,
       "fontSize": 16,
-      "minWidthConstraint": 50,
-      "maxWidthConstraint": 300,
       "borderColor": "rgba(0,0,0,0.8)",
       "background": "rgba(255,255,255,1)",
       "highlightBorderColor": "rgba(0,0,0,1)",
@@ -15,10 +13,8 @@
     },
     "plotElementNode": {
       "shape": "box",
-      "margin": 15,
+      "margin": 25,
       "fontSize": 16,
-      "minWidthConstraint": 50,
-      "maxWidthConstraint": 200,
       "borderColor": "rgba(50,50,50,0.8)",
       "background": "rgba(200,200,200,1)",
       "highlightBorderColor": "rgba(50,50,50,1)",

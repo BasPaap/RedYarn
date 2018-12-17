@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
 
 class Drawable {
+  z: number;
   public draw(context: any) { }
 }
 
@@ -375,7 +376,7 @@ class PuzzlePieceIcon extends Drawable {
 
       context.fillStyle = "#ffffff";
       context.strokeStyle = "#000000";
-    context.lineWidth = 1; //0.4339999854564667;
+      context.lineWidth = 1;
       context.lineCap = "butt";
       context.lineJoin = "miter";
       context.miterLimit = 4;
@@ -407,59 +408,6 @@ class PuzzlePieceIcon extends Drawable {
       context.stroke();
 
       context.restore();
-
-
-    //context.save(); // Save the context so that we can restore it to the default state after drawing the icon.
-    //context.translate(this.x, this.y); // Translate everything to the location where we want to draw the icon.
-
-    //context.beginPath();
-    //context.moveTo(0, 0);
-    //context.lineTo(25, 0);
-    //context.lineTo(25, 25);
-    //context.lineTo(0, 25);
-    //context.closePath();
-    //context.clip();
-
-    
-    //context.translate(0, 1.3888888888888892);
-    //context.scale(0.043402777777777776, 0.043402777777777776);
-    //context.translate(0, 0);
-    //context.strokeStyle = 'rgba(0,0,0,0)';
-    //context.lineCap = 'butt';
-    //context.lineJoin = 'miter';
-    //context.miterLimit = 4;
-
-    //context.fillStyle = "#ff0000";
-    //context.strokeStyle = "#000000";
-    //context.lineWidth = 10;
-
-    //context.rotate(Math.PI / 4);
-    //context.beginPath();
-    //context.moveTo(519.442, 288.651);
-    //context.bezierCurveTo(477.923, 288.651, 459.942, 320.244, 437.384, 320.244);
-    //context.bezierCurveTo(377.409, 320.244, 432, 144, 432, 144);
-    //context.bezierCurveTo(432, 144, 235.712, 224, 235.712, 140.703);
-    //context.bezierCurveTo(235.712, 104.876, 272, 94.453, 272, 54.718);
-    //context.bezierCurveTo(272, 19.216, 243.885, 0, 210.539, 0);
-    //context.bezierCurveTo(175.885, 0, 144.173, 18.891, 144.173, 56.346);
-    //context.bezierCurveTo(144.173, 97.71, 175.88400000000001, 115.62299999999999, 175.88400000000001, 138.096);
-    //context.bezierCurveTo(175.885, 207.719, 0, 166.758, 0, 166.758);
-    //context.lineTo(0, 499.995);
-    //context.bezierCurveTo(0, 499.995, 178.635, 541.042, 178.635, 471.333);
-    //context.bezierCurveTo(178.635, 448.86, 138.635, 431.226, 138.635, 389.862);
-    //context.bezierCurveTo(138.635, 352.406, 167.885, 333.516, 202.212, 333.516);
-    //context.bezierCurveTo(235.885, 333.516, 264, 352.732, 264, 388.233);
-    //context.bezierCurveTo(264, 427.968, 227.712, 438.391, 227.712, 474.218);
-    //context.bezierCurveTo(227.712, 535.021, 357.387, 499.94800000000003, 408.942, 499.94800000000003);
-    //context.bezierCurveTo(408.942, 499.94800000000003, 374.217, 379.84700000000003, 434.769, 379.84700000000003);
-    //context.bezierCurveTo(470.731, 379.84700000000003, 481.192, 415.999, 521.077, 415.999);
-    //context.bezierCurveTo(556.712, 416, 576, 387.99, 576, 354.443);
-    //context.bezierCurveTo(576, 320.24399999999997, 557.038, 288.65099999999995, 519.442, 288.65099999999995);
-    //context.closePath();
-    //context.fill();
-    //context.stroke();
-    
-    //context.restore();
   }
 }
 
@@ -470,6 +418,9 @@ export class DiagramDrawingService {
 
   private foregroundDrawables: Drawable[] = [];
   private backgroundDrawables: Drawable[] = [];
+  private readonly iconZ = 10;
+  private readonly highlightZ = 5;
+  private readonly arrowZ = 15;
 
   constructor(private settingsService: SettingsService) { }
 
@@ -479,6 +430,7 @@ export class DiagramDrawingService {
     arrow.fromY = fromY;
     arrow.toX = toX;
     arrow.toY = toY;
+    arrow.z = this.arrowZ;
     arrow.lineWidth = this.settingsService.settings.ui.newRelationship.arrow.lineWidth;
     arrow.style = this.settingsService.settings.ui.newRelationship.arrow.style;
     arrow.headLength = this.settingsService.settings.ui.newRelationship.arrow.headLength;
@@ -489,6 +441,7 @@ export class DiagramDrawingService {
     let circle = new Circle();
     circle.x = x;
     circle.y = y;
+    circle.z = this.highlightZ;
     circle.radius = this.settingsService.settings.ui.characterNode.radius;
     circle.style = this.settingsService.settings.ui.newRelationship.arrow.style;
     circle.lineWidth = this.settingsService.settings.ui.characterNode.borderWidth * this.settingsService.settings.ui.newRelationship.nodeHighlightFactor;
@@ -499,6 +452,7 @@ export class DiagramDrawingService {
     let rectangle = new Rectangle();
     rectangle.x = x;
     rectangle.y = y;
+    rectangle.z = this.highlightZ;
     rectangle.width = width;
     rectangle.height = height;
     rectangle.style = this.settingsService.settings.ui.newRelationship.arrow.style;
@@ -510,6 +464,7 @@ export class DiagramDrawingService {
     let puzzlePieceIcon = new PuzzlePieceIcon();
     puzzlePieceIcon.x = x;
     puzzlePieceIcon.y = y;
+    puzzlePieceIcon.z = this.iconZ;
     this.foregroundDrawables.push(puzzlePieceIcon);
   }
 
@@ -517,17 +472,22 @@ export class DiagramDrawingService {
     let bookIcon = new BookIcon();
     bookIcon.x = x;
     bookIcon.y = y;
+    bookIcon.z = this.iconZ;
     this.foregroundDrawables.push(bookIcon);
   }
 
   public onDrawBackgroundUI(context: any) {
-    for (var i = 0; i < this.backgroundDrawables.length; i++) {
+    this.backgroundDrawables = this.backgroundDrawables.sort((d1, d2) => d2.z - d1.z); // sort the array on the z index, descending (because the last items will be popped first)
+
+    while (this.backgroundDrawables.length > 0) {
       this.backgroundDrawables.pop().draw(context);
     }
   }
 
   public onDrawForegroundUI(context: any) {
-    for (var i = 0; i < this.foregroundDrawables.length; i++) {
+    this.foregroundDrawables = this.foregroundDrawables.sort((d1, d2) => d2.z - d1.z); // sort the array on the z index, descending (because the last items will be popped first)
+
+    while (this.foregroundDrawables.length > 0) {
       this.foregroundDrawables.pop().draw(context);
     }
   }
