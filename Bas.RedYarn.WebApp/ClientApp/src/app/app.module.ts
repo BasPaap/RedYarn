@@ -21,6 +21,7 @@ import { DefaultDialogActionsComponent } from './components/default-dialog-actio
 import { DialogComponent } from './components/dialog/dialog.component';
 import { NewRelationshipDialogComponent } from './components/new-relationship-dialog/new-relationship-dialog.component';
 import { NewCharacterPlotElementDialogComponent } from './components/new-character-plotelement-dialog/new-character-plotelement-dialog.component';
+import { DrawableDirective } from './drawable.directive';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { NewCharacterPlotElementDialogComponent } from './components/new-charact
     DefaultDialogActionsComponent,
     DialogComponent,
     NewRelationshipDialogComponent,
-    NewCharacterPlotElementDialogComponent
+    NewCharacterPlotElementDialogComponent,
+    DrawableDirective
   ],
   imports: [
     BrowserModule,

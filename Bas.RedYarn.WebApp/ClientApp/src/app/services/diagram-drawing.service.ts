@@ -1,9 +1,21 @@
 import { Injectable } from '@angular/core';
 import { SettingsService } from './settings.service';
 
-class Drawable {
+export class Drawable {
   z: number;
   public draw(context: any) { }
+}
+
+export class DrawableIcon extends Drawable {
+  x: number;
+  y: number;
+
+  constructor(xPosition: number, yPosition: number) {
+    super();
+
+    this.x = xPosition;
+    this.y = yPosition;
+  }
 }
 
 class Circle extends Drawable {
@@ -92,12 +104,12 @@ class Arrow extends Drawable {
   }
 }
 
-class BookIcon extends Drawable {
-  x: number;
-  y: number;
+export class BookIcon extends DrawableIcon {
+  constructor(xPosition: number, yPosition: number) {
+    super(xPosition, yPosition);
+  }
 
   public draw(context: any) {
-
       context.save(); // Save the context so that we can restore it to the default state after drawing the icon.
       context.translate(this.x, this.y); // Translate everything to the location where we want to draw the icon.
 
@@ -112,7 +124,7 @@ class BookIcon extends Drawable {
       context.lineJoin = 'miter';
       context.miterLimit = 4;
       context.fillStyle = "#ffffff";
-      context.strokeStyle = "#000000";
+      context.strokeStyle = "#0000aa";
       context.lineWidth = 1.5;
 
       context.beginPath();
@@ -130,8 +142,8 @@ class BookIcon extends Drawable {
       context.fill();
       context.stroke();
 
-      context.fillStyle = "#000000";
-      context.strokeStyle = "#000000";
+      context.fillStyle = "#0000aa";
+      context.strokeStyle = "#0000aa";
       context.lineWidth = 0.1;
       
       context.beginPath();
@@ -352,9 +364,10 @@ class BookIcon extends Drawable {
   }
 }
 
-class PuzzlePieceIcon extends Drawable {
-  x: number;
-  y: number;
+export class PuzzlePieceIcon extends DrawableIcon {
+  constructor(xPosition: number, yPosition: number) {
+    super(xPosition, yPosition);
+  }
 
   public draw(context: any) {
  
@@ -375,8 +388,8 @@ class PuzzlePieceIcon extends Drawable {
       context.miterLimit = 4;
 
       context.fillStyle = "#ffffff";
-      context.strokeStyle = "#000000";
-      context.lineWidth = 1;
+      context.strokeStyle = "#E34234";
+      context.lineWidth = 2;
       context.lineCap = "butt";
       context.lineJoin = "miter";
       context.miterLimit = 4;
@@ -461,17 +474,13 @@ export class DiagramDrawingService {
   }
 
   drawPuzzlePieceIcon(x: number, y: number) {
-    let puzzlePieceIcon = new PuzzlePieceIcon();
-    puzzlePieceIcon.x = x;
-    puzzlePieceIcon.y = y;
+    let puzzlePieceIcon = new PuzzlePieceIcon(x, y);
     puzzlePieceIcon.z = this.iconZ;
     this.foregroundDrawables.push(puzzlePieceIcon);
   }
 
   drawBookIcon(x: number, y: number) {
-    let bookIcon = new BookIcon();
-    bookIcon.x = x;
-    bookIcon.y = y;
+    let bookIcon = new BookIcon(x,y);
     bookIcon.z = this.iconZ;
     this.foregroundDrawables.push(bookIcon);
   }

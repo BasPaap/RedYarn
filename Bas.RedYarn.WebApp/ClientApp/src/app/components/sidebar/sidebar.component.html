@@ -1,19 +1,19 @@
 <mat-list>
   <mat-list-item>
     <button mat-stroked-button (click)="onNewCharacterClick()">
-      <canvas></canvas>
+      <img src="../../../assets/default-character-icon.png" />
       New character
     </button>
   </mat-list-item>
   <mat-list-item>
     <button mat-stroked-button (click)="onNewStorylineClick()">
-      <canvas></canvas>
+      <canvas appDrawable="book" width="40" height="35"></canvas>
       New storyline
     </button>
   </mat-list-item>
   <mat-list-item>
     <button mat-stroked-button (click)="onNewPlotElementClick()">
-      <canvas></canvas>
+      <canvas appDrawable="puzzlePiece" width="40" height="35"></canvas>
       New plot element
     </button>
   </mat-list-item>
