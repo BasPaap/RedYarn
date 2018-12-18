@@ -5,5 +5,14 @@ mat-list {
 }
 
 mat-list button {
-  color: mat-color($redyarn-app-primary, "300-contrast");
+  color: mat-color($redyarn-app-primary, default-contrast);
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+mat-list button canvas {
+  width: 40px;
+  height: 30px;
+
 }
