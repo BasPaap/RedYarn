@@ -17,11 +17,11 @@ import { ChipsInputComponent } from './components/chips-input/chips-input.compon
 import { NewStorylineDialogComponent } from './components/new-storyline-dialog/new-storyline-dialog.component';
 import { VisNetworkDirective } from './vis-network.directive';
 import { NewPlotElementDialogComponent } from './components/new-plot-element-dialog/new-plot-element-dialog.component';
-import { DefaultDialogActionsComponent } from './components/default-dialog-actions/default-dialog-actions.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { NewRelationshipDialogComponent } from './components/new-relationship-dialog/new-relationship-dialog.component';
 import { NewCharacterPlotElementDialogComponent } from './components/new-character-plotelement-dialog/new-character-plotelement-dialog.component';
 import { DrawableDirective } from './drawable.directive';
+import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
   declarations: [
@@ -36,11 +36,11 @@ import { DrawableDirective } from './drawable.directive';
     ChipsInputComponent,
     NewStorylineDialogComponent,
     NewPlotElementDialogComponent,
-    DefaultDialogActionsComponent,
     DialogComponent,
     NewRelationshipDialogComponent,
     NewCharacterPlotElementDialogComponent,
-    DrawableDirective
+    DrawableDirective,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +69,8 @@ import { DrawableDirective } from './drawable.directive';
     NewStorylineDialogComponent,
     NewPlotElementDialogComponent,
     NewRelationshipDialogComponent,
-    NewCharacterPlotElementDialogComponent
+    NewCharacterPlotElementDialogComponent,
+    ConfirmationDialogComponent
   ],
   providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
   bootstrap: [AppComponent]

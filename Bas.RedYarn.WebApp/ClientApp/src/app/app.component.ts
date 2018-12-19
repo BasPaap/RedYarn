@@ -26,4 +26,9 @@ export class AppComponent {
   onMouseMove(x: number, y: number, buttons: number) {
     this.userInteractionService.onMouseMove(x, y, buttons);
   }
+
+  @HostListener('keyup', ['$event.key'])
+  onkeyup(key: string) {
+    this.userInteractionService.onKeyUp(key);
+  }
 }

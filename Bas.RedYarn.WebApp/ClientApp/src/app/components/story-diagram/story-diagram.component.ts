@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { DataSet } from 'vis-redyarn';
-import { Diagram } from '../../diagram-types';
+import { Diagram, DiagramItemType } from '../../diagram-types';
 import { DiagramDataService } from '../../services/diagram-data.service';
 import { NodeLayoutInfoService } from '../../services/node-layout-info.service';
 import { NewConnectionUIService } from '../../services/new-connection-ui.service';
@@ -11,6 +11,10 @@ import { NetworkItemsConstructorService } from '../../services/network-items-con
 import { VisNetworkDirective } from '../../vis-network.directive';
 import { DiagramInfoService } from '../../services/diagram-info.service';
 import { DiagramDrawingService } from 'src/app/services/diagram-drawing.service';
+import { UserInteractionService } from 'src/app/services/user-interaction.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-story-diagram',
@@ -27,7 +31,9 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   public diagram: Diagram; // Used to display Diagram.name in the template.
 
   constructor(private route: ActivatedRoute,
+    private dialog: MatDialog,
     private router: Router,
+    private interactionService: UserInteractionService,
     private diagramDataService: DiagramDataService,
     private diagramDrawingService: DiagramDrawingService,
     private networkItemsConstructorService: NetworkItemsConstructorService,
@@ -134,6 +140,25 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.isLoaded = true;
     }, error => console.error(error));
 
+    this.interactionService.keyUpStream.subscribe(key => {
+      if (key == "Delete") {
+        let selectedEdgeIds = this.visNetwork.getSelectedEdgeIds();
+        for (let selectedEdgeId of selectedEdgeIds) {
+          let dialogConfig = new MatDialogConfig();
+
+          let connectionItemTypeName = this.diagramInfoService.getItemType(selectedEdgeId.toString()) == DiagramItemType.Relationship ? "relationship" : "connection";
+          dialogConfig.data = {
+            title: `Delete ${connectionItemTypeName}`,
+            message: `Are you sure you want to delete this ${connectionItemTypeName}?`,
+            action: dialogRef => {
+              setTimeout(_ => dialogRef.close(), 3000);
+            }
+          };
+          
+          this.dialog.open(ConfirmationDialogComponent, dialogConfig);
+        }        
+      }
+    });
   }
 
   private subscribeToNewConnectionStream<T>(service: Observable<T>, getEdge: (item: T) => any): Subscription {

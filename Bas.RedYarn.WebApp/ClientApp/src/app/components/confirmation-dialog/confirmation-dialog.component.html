@@ -1,0 +1,9 @@
+  <h2 mat-dialog-title>{{title}}</h2>
+  <mat-dialog-content class="content">
+    {{message}}
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <mat-spinner *ngIf="isSubmitting" diameter="25"></mat-spinner>
+    <button mat-flat-button (click)="onOK()" [disabled]="isSubmitting">OK</button>
+    <button mat-flat-button mat-dialog-close [disabled]="isSubmitting">Cancel</button>
+  </mat-dialog-actions>

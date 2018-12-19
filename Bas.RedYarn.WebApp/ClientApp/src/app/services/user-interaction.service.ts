@@ -24,6 +24,12 @@ export class UserInteractionService {
     return this.mouseStateSubject.asObservable();
   }
 
+  private keyUpSubject: Subject<string> = new Subject<string>();
+
+  public get keyUpStream(): Observable<string> {
+    return this.keyUpSubject.asObservable();
+  }
+
   constructor() { }
 
   public onMouseUp() {
@@ -41,5 +47,9 @@ export class UserInteractionService {
     this.mouseState.y = y;
     this.mouseState.isButtonDown = buttons == 1;
     this.mouseStateSubject.next(this.mouseState);
+  }
+
+  public onKeyUp(key: string) {
+    this.keyUpSubject.next(key);
   }
 }
