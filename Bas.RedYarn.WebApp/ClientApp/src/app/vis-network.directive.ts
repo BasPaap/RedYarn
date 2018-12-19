@@ -102,6 +102,10 @@ export class VisNetworkDirective {
     return this.network.getSelectedEdges();
   }
 
+  public getSelectedNodeIds(): IdType[] {
+    return this.network.getSelectedNodes();
+  }
+
   public redraw() {
     this.network.redraw();
   }
