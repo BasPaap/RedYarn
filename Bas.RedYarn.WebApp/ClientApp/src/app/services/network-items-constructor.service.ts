@@ -62,34 +62,37 @@ export class NetworkItemsConstructorService {
     relationshipEdge["from"] = relationship.fromNodeId;
     relationshipEdge["to"] = relationship.toNodeId;
     relationshipEdge["label"] = relationship.name;
-
+    relationshipEdge["relationship"] = relationship;
     return relationshipEdge;
   }
 
   public getCharacterPlotElementConnectionEdge(plotElementConnection: CharacterPlotElementConnection) {
     let characterPlotElementConnectionEdge = this.getDeepCopy(this.settingsService.settings.ui.characterPlotElementConnectionEdge);
+    characterPlotElementConnectionEdge["id"] = `${plotElementConnection.fromNodeId}-${plotElementConnection.toNodeId}`;
     characterPlotElementConnectionEdge["color"] = plotElementConnection.characterOwnsPlotElement ? { color: this.settingsService.settings.ui.characterOwnsPlotElementEdgeColor, highlight: this.settingsService.settings.ui.characterOwnsPlotElementEdgeColor, hover: this.settingsService.settings.ui.characterOwnsPlotElementEdgeColor } :
       { color: this.settingsService.settings.ui.characterDoesNotOwnPlotElementEdgeColor, highlight: this.settingsService.settings.ui.characterDoesNotOwnPlotElementEdgeColor, hover: this.settingsService.settings.ui.characterDoesNotOwnPlotElementEdgeColor };
     characterPlotElementConnectionEdge["arrows"] = plotElementConnection.characterOwnsPlotElement ? 'from' : 'to';
     characterPlotElementConnectionEdge["from"] = plotElementConnection.fromNodeId;
     characterPlotElementConnectionEdge["to"] = plotElementConnection.toNodeId;
-
+    characterPlotElementConnectionEdge["characterPlotElementConnection"] = plotElementConnection;
     return characterPlotElementConnectionEdge;
   }
 
   public getStorylineCharacterConnectionEdge(connection: Connection) {
     let storylineCharacterConnectionEdge = this.getDeepCopy(this.settingsService.settings.ui.storylineCharacterConnectionEdge);
+    storylineCharacterConnectionEdge["id"] = `${connection.fromNodeId}-${connection.toNodeId}`;
     storylineCharacterConnectionEdge["from"] = connection.fromNodeId;
     storylineCharacterConnectionEdge["to"] = connection.toNodeId;
-
+    storylineCharacterConnectionEdge["storylineCharacterConnection"] = connection;
     return storylineCharacterConnectionEdge;    
   }
 
   public getStorylinePlotElementConnectionEdge(connection: Connection) {
     let storylinePlotElementConnectionEdge = this.getDeepCopy(this.settingsService.settings.ui.storylinePlotElementConnectionEdge);
+    storylinePlotElementConnectionEdge["id"] = `${connection.fromNodeId}-${connection.toNodeId}`;
     storylinePlotElementConnectionEdge["from"] = connection.fromNodeId;
     storylinePlotElementConnectionEdge["to"] = connection.toNodeId;
-    
+    storylinePlotElementConnectionEdge["storylinePlotElementConnection"] = connection;
     return storylinePlotElementConnectionEdge;    
   }
 }

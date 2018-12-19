@@ -33,6 +33,20 @@ export class DiagramInfoService implements OnDestroy {
     })
   }
 
+  private subscribeDeletedItem<T extends Character | PlotElement | Storyline | Relationship>(service: Observable<T>, array: { [id: string]: T; }): Subscription {
+    return service.subscribe(item => {
+      delete this.characters[item.id];
+      delete this.diagramItemTypes[item.id];
+    });
+  }
+
+  private subscribeDeletedConnection<T extends Connection | CharacterPlotElementConnection>(service: Observable<T>, array: { [id: string]: T; }): Subscription {
+    return service.subscribe(item => {
+      delete this.characters[`${item.fromNodeId}-${item.toNodeId}`];
+      delete this.diagramItemTypes[`${item.fromNodeId}-${item.toNodeId}`];
+    });
+  }
+
   public getItemType(id: string): DiagramItemType {
     return (this.diagramItemTypes[id]) ? this.diagramItemTypes[id] : DiagramItemType.Unknown;
   }
@@ -61,6 +75,14 @@ export class DiagramInfoService implements OnDestroy {
     this.subscriptions['newStorylineCharacterConnection'] = this.subscribeConnection(this.diagramDataService.addedStorylineCharacterConnectionsStream, DiagramItemType.StorylineCharacterConnection, this.storylineCharacterConnections);
     this.subscriptions['newStorylinePlotElementConnection'] = this.subscribeConnection(this.diagramDataService.addedStorylinePlotElementConnectionsStream, DiagramItemType.StorylinePlotElementConnection, this.storylinePlotElementConnections);
     this.subscriptions['newCharacterPlotElementConnection'] = this.subscribeConnection(this.diagramDataService.addedCharacterPlotElementConnectionsStream, DiagramItemType.CharacterPlotElementConnection, this.characterPlotElementConnections);
+
+    this.subscriptions['deletedCharacter'] = this.subscribeDeletedItem(this.diagramDataService.deletedCharactersStream, this.characters);
+    this.subscriptions['deletedStoryline'] = this.subscribeDeletedItem(this.diagramDataService.deletedStorylinesStream, this.storylines);
+    this.subscriptions['deletedPlotElement'] = this.subscribeDeletedItem(this.diagramDataService.deletedPlotElementsStream, this.plotElements);
+    this.subscriptions['deletedRelationship'] = this.subscribeDeletedItem(this.diagramDataService.deletedRelationshipsStream, this.relationships);
+    this.subscriptions['deletedStorylineCharacterConnection'] = this.subscribeDeletedConnection(this.diagramDataService.deletedStorylineCharacterConnectionsStream, this.storylineCharacterConnections);
+    this.subscriptions['deletedStorylinePlotElementConnection'] = this.subscribeDeletedConnection(this.diagramDataService.deletedStorylinePlotElementConnectionsStream, this.storylinePlotElementConnections);
+    this.subscriptions['deletedCharacterPlotElementConnection'] = this.subscribeDeletedConnection(this.diagramDataService.deletedCharacterPlotElementConnectionsStream, this.characterPlotElementConnections);
   }
 
   public reset() {

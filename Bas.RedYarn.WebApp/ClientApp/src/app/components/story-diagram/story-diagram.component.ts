@@ -2,11 +2,10 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable, Subscription } from 'rxjs';
 import { DataSet } from 'vis-redyarn';
-import { Diagram, DiagramItemType } from '../../diagram-types';
+import { Diagram, DiagramItemType, Character, Storyline, PlotElement, Relationship, Connection, CharacterPlotElementConnection } from '../../diagram-types';
 import { DiagramDataService } from '../../services/diagram-data.service';
 import { NodeLayoutInfoService } from '../../services/node-layout-info.service';
 import { NewConnectionUIService } from '../../services/new-connection-ui.service';
-import { SettingsService } from '../../services/settings.service';
 import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
 import { VisNetworkDirective } from '../../vis-network.directive';
 import { DiagramInfoService } from '../../services/diagram-info.service';
@@ -14,7 +13,6 @@ import { DiagramDrawingService } from 'src/app/services/diagram-drawing.service'
 import { UserInteractionService } from 'src/app/services/user-interaction.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material';
-import { Action } from 'rxjs/internal/scheduler/Action';
 
 @Component({
   selector: 'app-story-diagram',
@@ -81,8 +79,6 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     }
   }
 
-  
-
   public onDragStart(eventArgs: any): void {
     for (let nodeId of eventArgs.nodes) {
       if (this.networkData["nodes"].get(nodeId) && eventArgs.pointer.canvas) {
@@ -128,6 +124,14 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this.subscriptions['updatedStorylinePlotElementConnection'] = this.subscribeToUpdatedConnectionStream(this.diagramDataService.updatedStorylinePlotElementConnectionsStream, this.networkItemsConstructorService.getStorylinePlotElementConnectionEdge.bind(this.networkItemsConstructorService));
     this.subscriptions['updatedCharacterPlotElementConnection'] = this.subscribeToUpdatedConnectionStream(this.diagramDataService.updatedCharacterPlotElementConnectionsStream, this.networkItemsConstructorService.getCharacterPlotElementConnectionEdge.bind(this.networkItemsConstructorService));
 
+    this.subscriptions['deletedCharacter'] = this.subscribeToDeletedNodeStream(this.diagramDataService.deletedCharactersStream);
+    this.subscriptions['deletedStoryline'] = this.subscribeToDeletedNodeStream(this.diagramDataService.deletedStorylinesStream);
+    this.subscriptions['deletedPlotElement'] = this.subscribeToDeletedNodeStream(this.diagramDataService.deletedPlotElementsStream);
+    this.subscriptions['deletedRelationship'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedRelationshipsStream);
+    this.subscriptions['deletedStorylineCharacterConnection'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedStorylineCharacterConnectionsStream);
+    this.subscriptions['deletedStorylinePlotElementConnection'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedStorylinePlotElementConnectionsStream);
+    this.subscriptions['deletedCharacterPlotElementConnection'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedCharacterPlotElementConnectionsStream);
+
     this.diagramInfoService.initialize();
 
     const id = this.route.snapshot.paramMap.get('id');
@@ -135,8 +139,6 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.diagramDataService.getDiagram(id)
     ]).subscribe(values => {
       this.diagram = values[0];
-      //this.networkItemsConstructorService.generate(this.diagram, this.networkData["nodes"], this.networkData["edges"]);
-      //this.newRelationshipUI.loadNodePositions(this.visNetwork.getNodePositions());
       this.isLoaded = true;
     }, error => console.error(error));
 
@@ -145,13 +147,28 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
         let selectedEdgeIds = this.visNetwork.getSelectedEdgeIds();
         for (let selectedEdgeId of selectedEdgeIds) {
           let dialogConfig = new MatDialogConfig();
-
-          let connectionItemTypeName = this.diagramInfoService.getItemType(selectedEdgeId.toString()) == DiagramItemType.Relationship ? "relationship" : "connection";
+          let itemType = this.diagramInfoService.getItemType(selectedEdgeId.toString());
+          let connectionItemTypeName = (itemType == DiagramItemType.Relationship) ? "relationship" : "connection";
           dialogConfig.data = {
             title: `Delete ${connectionItemTypeName}`,
             message: `Are you sure you want to delete this ${connectionItemTypeName}?`,
             action: dialogRef => {
-              setTimeout(_ => dialogRef.close(), 3000);
+              switch (itemType) {
+                case DiagramItemType.Relationship:
+                  this.diagramDataService.deleteRelationship(this.networkData["edges"].get(selectedEdgeId.toString()).relationship).subscribe(_ => dialogRef.close());
+                  break;
+                case DiagramItemType.CharacterPlotElementConnection:
+                  this.diagramDataService.deleteCharacterPlotElementConnection(this.networkData["edges"].get(selectedEdgeId.toString()).subscribe(_ => dialogRef.close());
+                  break;
+                case DiagramItemType.StorylineCharacterConnection:
+                  this.diagramDataService.deleteStorylineCharacterConnection(this.networkData["edges"].get(selectedEdgeId.toString()).storylineCharacterConnection).subscribe(_ => dialogRef.close());
+                  break;
+                case DiagramItemType.StorylinePlotElementConnection:
+                  this.diagramDataService.deleteStorylinePlotElementConnection(this.networkData["edges"].get(selectedEdgeId.toString()).storylinePlotElementConnection).subscribe(_ => dialogRef.close());
+                default:
+                  dialogRef.close();
+                  break;
+              }
             }
           };
           
@@ -175,6 +192,11 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     });
   }
 
+  private subscribeToDeletedConnectionStream<T extends Connection | CharacterPlotElementConnection>(service: Observable<T>): Subscription {
+    return service.subscribe(item => {
+      this.networkData["edges"].remove(`${item.fromNodeId}-${item.toNodeId}`);
+    });
+  }
 
   private subscribeToNewNodeStream<T>(service: Observable<T>, getNode: (item: T) => any): Subscription {
     return service.subscribe(item => {
@@ -194,6 +216,12 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.networkData["nodes"].update(updatedNode);
 
       this.nodeLayoutInfoService.onUpdatedNode(updatedNode, this.visNetwork.getBoundingBox(updatedNode));
+    });
+  }
+
+  private subscribeToDeletedNodeStream<T extends Character | Storyline | PlotElement | Relationship>(service: Observable<T>): Subscription {
+    return service.subscribe(item => {
+      this.networkData["edges"].remove(item.id);
     });
   }
 

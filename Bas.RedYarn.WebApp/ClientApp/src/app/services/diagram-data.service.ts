@@ -4,8 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Guid } from '../../Guid';
-import { Character, Diagram, PlotElement, Relationship, Storyline, Connection, CharacterPlotElementConnection } from '../diagram-types';
-
+import { Character, Diagram, PlotElement, Relationship, Storyline, Connection, CharacterPlotElementConnection, DiagramItemType } from '../diagram-types';
 
 // Handles all communication with the REST API and provides observables for updates in existing nodes and connections.
 @Injectable({
@@ -27,7 +26,13 @@ export class DiagramDataService {
   private updatedStorylineCharacterConnectionSubject = new Subject<Connection>();
   private updatedStorylinePlotElementConnectionSubject = new Subject<Connection>();
   private updatedCharacterPlotElementConnectionSubject = new Subject<CharacterPlotElementConnection>();
-
+  private deletedCharacterSubject = new Subject<Character>();
+  private deletedStorylineSubject = new Subject<Storyline>();
+  private deletedPlotElementSubject = new Subject<PlotElement>();
+  private deletedRelationshipSubject = new Subject<Relationship>();
+  private deletedStorylineCharacterConnectionSubject = new Subject<Connection>();
+  private deletedStorylinePlotElementConnectionSubject = new Subject<Connection>();
+  private deletedCharacterPlotElementConnectionSubject = new Subject<CharacterPlotElementConnection>();
 
   public get addedCharactersStream(): Observable<Character> {
     return this.newCharacterSubject.asObservable();
@@ -83,6 +88,34 @@ export class DiagramDataService {
 
   public get updatedCharacterPlotElementConnectionsStream(): Observable<CharacterPlotElementConnection> {
     return this.updatedCharacterPlotElementConnectionSubject.asObservable();
+  }
+
+  public get deletedCharactersStream(): Observable<Character> {
+    return this.deletedCharacterSubject.asObservable();
+  }
+
+  public get deletedStorylinesStream(): Observable<Storyline> {
+    return this.deletedStorylineSubject.asObservable();
+  }
+
+  public get deletedPlotElementsStream(): Observable<PlotElement> {
+    return this.deletedPlotElementSubject.asObservable();
+  }
+
+  public get deletedRelationshipsStream(): Observable<Relationship> {
+    return this.deletedRelationshipSubject.asObservable();
+  }
+
+  public get deletedStorylineCharacterConnectionsStream(): Observable<Connection> {
+    return this.deletedStorylineCharacterConnectionSubject.asObservable();
+  }
+
+  public get deletedStorylinePlotElementConnectionsStream(): Observable<Connection> {
+    return this.deletedStorylinePlotElementConnectionSubject.asObservable();
+  }
+
+  public get deletedCharacterPlotElementConnectionsStream(): Observable<CharacterPlotElementConnection> {
+    return this.deletedCharacterPlotElementConnectionSubject.asObservable();
   }
 
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string, private route: ActivatedRoute) {
@@ -231,5 +264,49 @@ export class DiagramDataService {
 
   public updateCharacterPlotElementConnection(viewModel: CharacterPlotElementConnection): Observable<CharacterPlotElementConnection> {
     return this.updateConnection('characterplotelementconnection', viewModel, this.newCharacterPlotElementConnectionSubject);
+  }
+
+  private deleteItem<T extends Character | Storyline | PlotElement | Relationship>(controllerName: string, viewModel: T, subject: Subject<T>): Observable<string> {
+    let observable = this.httpClient.delete<string>(`${this.apiUrl}${controllerName}/${viewModel.id}`).pipe(
+      tap(_ => subject.next(viewModel))
+    );
+
+    return observable;
+  }
+
+  private deleteConnection<T extends Connection | CharacterPlotElementConnection>(controllerName: string, viewModel: T, subject: Subject<T>): Observable<string> {
+    let observable = this.httpClient.delete<string>(`${this.apiUrl}${controllerName}/${viewModel.fromNodeId}/${viewModel.toNodeId}`).pipe(
+      tap(_ => subject.next(viewModel))
+    );
+
+    return observable;
+  }
+
+  public deleteCharacter(characterViewModel: Character): Observable<string> {
+    return this.deleteItem('character', characterViewModel, this.deletedCharacterSubject);
+  }
+
+  public deleteStoryline(storylineViewModel: Storyline): Observable<string> {
+    return this.deleteItem('storyline', storylineViewModel, this.deletedStorylineSubject);
+  }
+
+  public deletePlotElement(plotElementViewModel: PlotElement): Observable<string> {
+    return this.deleteItem('plotelement', plotElementViewModel, this.deletedPlotElementSubject);
+  }
+
+  public deleteRelationship(viewModel: Relationship): Observable<string> {
+    return this.deleteItem('relationship', viewModel, this.deletedRelationshipSubject);
+  }
+
+  public deleteStorylineCharacterConnection(viewModel: Connection): Observable<string> {
+    return this.deleteConnection('storylinecharacterconnection', viewModel, this.deletedStorylineCharacterConnectionSubject);
+  }
+
+  public deleteStorylinePlotElementConnection(viewModel: Connection): Observable<string> {
+    return this.deleteConnection('storylineplotelementconnection', viewModel, this.deletedStorylinePlotElementConnectionSubject);
+  }
+
+  public deleteCharacterPlotElementConnection(viewModel: CharacterPlotElementConnection): Observable<string> {
+    return this.deleteConnection('characterplotelementconnection', viewModel, this.deletedCharacterPlotElementConnectionSubject);
   }
 }
