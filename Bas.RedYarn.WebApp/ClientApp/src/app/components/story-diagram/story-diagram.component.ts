@@ -127,7 +127,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this.subscriptions['deletedCharacter'] = this.subscribeToDeletedNodeStream(this.diagramDataService.deletedCharactersStream);
     this.subscriptions['deletedStoryline'] = this.subscribeToDeletedNodeStream(this.diagramDataService.deletedStorylinesStream);
     this.subscriptions['deletedPlotElement'] = this.subscribeToDeletedNodeStream(this.diagramDataService.deletedPlotElementsStream);
-    this.subscriptions['deletedRelationship'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedRelationshipsStream);
+    this.subscriptions['deletedRelationship'] = this.subscribeToDeletedRelationshipStream(this.diagramDataService.deletedRelationshipsStream);
     this.subscriptions['deletedStorylineCharacterConnection'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedStorylineCharacterConnectionsStream);
     this.subscriptions['deletedStorylinePlotElementConnection'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedStorylinePlotElementConnectionsStream);
     this.subscriptions['deletedCharacterPlotElementConnection'] = this.subscribeToDeletedConnectionStream(this.diagramDataService.deletedCharacterPlotElementConnectionsStream);
@@ -158,7 +158,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
                   this.diagramDataService.deleteRelationship(this.networkData["edges"].get(selectedEdgeId.toString()).relationship).subscribe(_ => dialogRef.close());
                   break;
                 case DiagramItemType.CharacterPlotElementConnection:
-                  this.diagramDataService.deleteCharacterPlotElementConnection(this.networkData["edges"].get(selectedEdgeId.toString()).subscribe(_ => dialogRef.close());
+                  this.diagramDataService.deleteCharacterPlotElementConnection(this.networkData["edges"].get(selectedEdgeId.toString()).characterPlotElementConnection).subscribe(_ => dialogRef.close());
                   break;
                 case DiagramItemType.StorylineCharacterConnection:
                   this.diagramDataService.deleteStorylineCharacterConnection(this.networkData["edges"].get(selectedEdgeId.toString()).storylineCharacterConnection).subscribe(_ => dialogRef.close());
@@ -192,8 +192,15 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     });
   }
 
+  private subscribeToDeletedRelationshipStream(service: Observable<Relationship>): Subscription {
+    return service.subscribe(item => {
+      this.networkData["edges"].remove(item.id);
+    });
+  }
+
   private subscribeToDeletedConnectionStream<T extends Connection | CharacterPlotElementConnection>(service: Observable<T>): Subscription {
     return service.subscribe(item => {
+      
       this.networkData["edges"].remove(`${item.fromNodeId}-${item.toNodeId}`);
     });
   }
