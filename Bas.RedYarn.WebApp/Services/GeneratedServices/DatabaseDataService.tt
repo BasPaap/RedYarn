@@ -112,10 +112,26 @@ foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 	}
 	else
 	{
+		if (modelName == nameof(Diagram))
+        {
+#>
+			Func<Relationship, Guid, Guid, Guid> getIdForRelationshipFunc = (relationship, firstCharacterId, secondCharacterId) => 
+			{
+				var foundRelationship = this.dbContext.Relationships.Single(r => (EF.Property<Guid>(r, ShadowPropertyNames.FirstCharacterId) == firstCharacterId &&
+						 														 EF.Property<Guid>(r, ShadowPropertyNames.SecondCharacterId) == secondCharacterId) &&
+																				 r.Name == relationship.Name &&
+																				 r.IsDirectional == relationship.IsDirectional);
+				return (Guid)this.dbContext.Entry(foundRelationship).Property(ShadowPropertyNames.Id).CurrentValue;
+			};
+
+<#
+        }
 #>
 			var viewModel = new <#=viewModelName#>(model, this.getIdForModelFunc<#
 		if (modelName == nameof(Diagram)) 
 		{
+			Write($", getIdForRelationshipFunc");
+			
 			foreach(var entityWithNode in entitiesWithNodes)
 			{
 				Write($", {Decapitalize(GetViewModelName(entityWithNode))}Dictionary");

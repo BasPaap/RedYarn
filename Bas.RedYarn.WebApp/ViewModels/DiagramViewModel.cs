@@ -37,6 +37,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         /// <param name="getIdForModelFunc">A function returning the Id for the provided model.</param>
         public DiagramViewModel(RedYarn.Diagram diagram, 
                                 Func<object, Guid> getIdForModelFunc = null, 
+                                Func<Relationship, Guid, Guid, Guid> getIdForRelationshipFunc = null,
                                 Dictionary<RedYarn.Character, CharacterViewModel> characterDictionary = null, 
                                 Dictionary<RedYarn.Storyline, StorylineViewModel> storylineDictionary = null, 
                                 Dictionary<RedYarn.PlotElement, PlotElementViewModel> plotElementDictionary = null)
@@ -56,7 +57,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
             AddPlotElements(plotElementDictionary);
 
             GenerateStorylineCharacterConnections(storylineDictionary, characterDictionary);
-            GenerateRelationships(characterDictionary);
+            GenerateRelationships(characterDictionary, getIdForRelationshipFunc);
             GenerateStorylinePlotElementConnections(plotElementDictionary, storylineDictionary);
             GeneratePlotElementConnections(plotElementDictionary, characterDictionary);
         }
@@ -172,7 +173,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
             }
         }
 
-        private void GenerateRelationships(Dictionary<RedYarn.Character, CharacterViewModel> characterDictionary)
+        private void GenerateRelationships(Dictionary<RedYarn.Character, CharacterViewModel> characterDictionary, Func<Relationship, Guid, Guid, Guid> getIdForRelationshipFunc)
         {
             var uniqueRelationships = new HashSet<Relationship>();
             
@@ -188,6 +189,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
             {
                 Relationships.Add(new RelationshipViewModel()
                 {
+                    Id = getIdForRelationshipFunc(relationship, 
+                                                  characterDictionary[relationship.FirstCharacter].Id,
+                                                  characterDictionary[relationship.SecondCharacter].Id),
                     FromNodeId = characterDictionary[relationship.FirstCharacter].Id,
                     ToNodeId = characterDictionary[relationship.SecondCharacter].Id,
                     Name = relationship.Name,
