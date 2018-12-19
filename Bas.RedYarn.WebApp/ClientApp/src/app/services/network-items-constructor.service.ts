@@ -57,6 +57,7 @@ export class NetworkItemsConstructorService {
 
   public getRelationshipEdge(relationship: Relationship) {
     let relationshipEdge = this.getDeepCopy(this.settingsService.settings.ui.relationshipEdge);
+    relationshipEdge["id"] = relationship.id;
     relationshipEdge["arrows"] = relationship.isDirectional ? 'to' : undefined;
     relationshipEdge["from"] = relationship.fromNodeId;
     relationshipEdge["to"] = relationship.toNodeId;
