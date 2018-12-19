@@ -124,9 +124,9 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 foreach (var plotElement in storyline.PlotElements)
                 {
                     StorylinePlotElementConnections.Add(new ConnectionViewModel()
-                    {                        
-                        FromNodeId = plotElementDictionary[plotElement].Id,
-                        ToNodeId = storylineDictionary[storyline].Id
+                    {
+                        FromNodeId = storylineDictionary[storyline].Id,
+                        ToNodeId = plotElementDictionary[plotElement].Id                        
                     });
                 }
             }
@@ -140,8 +140,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 {
                     CharacterPlotElementConnections.Add(new CharacterPlotElementConnectionViewModel()
                     {
-                        FromNodeId = plotElementDictionary[neededPlotElement].Id,
-                        ToNodeId = characterDictionary[character].Id,
+                        FromNodeId = characterDictionary[character].Id,
+                        ToNodeId = plotElementDictionary[neededPlotElement].Id,
                         CharacterOwnsPlotElement = false
                     });
                 }
@@ -150,8 +150,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 {
                     CharacterPlotElementConnections.Add(new CharacterPlotElementConnectionViewModel()
                     {
-                        FromNodeId = plotElementDictionary[ownedPlotElement].Id,
-                        ToNodeId = characterDictionary[character].Id,
+                        FromNodeId = characterDictionary[character].Id,
+                        ToNodeId = plotElementDictionary[ownedPlotElement].Id,
                         CharacterOwnsPlotElement = true
                     });
                 }
@@ -166,8 +166,8 @@ namespace Bas.RedYarn.WebApp.ViewModels
                 {
                     StorylineCharacterConnections.Add(new ConnectionViewModel()
                     {
-                        FromNodeId = characterDictionary[character].Id,
-                        ToNodeId = storylineDictionary[storyline].Id
+                        FromNodeId = storylineDictionary[storyline].Id,
+                        ToNodeId = characterDictionary[character].Id                        
                     });
                 }
             }
