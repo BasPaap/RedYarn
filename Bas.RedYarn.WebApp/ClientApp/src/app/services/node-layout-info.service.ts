@@ -27,12 +27,12 @@ export class CircularNodeLayoutInfo extends NodeLayoutInfo {
 
   public isInActivationZone(mouseX: number, mouseY: number): boolean {
     let distance = this.distanceTo(mouseX, mouseY);
-    return distance > this.settingsService.settings.ui.characterNode.radius &&
-      distance <= this.settingsService.settings.ui.characterNode.radius + this.settingsService.settings.ui.newRelationship.activationZoneWidth;    
+    return distance > this.settingsService.settings.ui.characterNode.size &&
+      distance <= this.settingsService.settings.ui.characterNode.size + this.settingsService.settings.ui.newRelationship.activationZoneWidth;    
   }
 
   public isOverNode(mouseX: number, mouseY: number): boolean {
-    return this.distanceTo(mouseX, mouseY) <= this.settingsService.settings.ui.characterNode.radius;
+    return this.distanceTo(mouseX, mouseY) <= this.settingsService.settings.ui.characterNode.size;
   }
 }
 
@@ -81,8 +81,8 @@ export class NodeLayoutInfoService {
 
     if (node.shape == "circularImage") {
       nodeLayout = new CircularNodeLayoutInfo(this.settingsService);
-      width = this.settingsService.settings.ui.characterNode.radius * 2;
-      height = this.settingsService.settings.ui.characterNode.radius * 2;
+      width = this.settingsService.settings.ui.characterNode.size * 2;
+      height = this.settingsService.settings.ui.characterNode.size * 2;
     } else {
       nodeLayout = new RectangularNodeLayoutInfo(this.settingsService);
       width = Math.abs(boundingBox.right - boundingBox.left - 12);  // Strangely, Network returns a bounding box that's 12 pixels too large for rectangular nodes.

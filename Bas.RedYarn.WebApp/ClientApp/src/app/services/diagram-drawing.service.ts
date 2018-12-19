@@ -455,7 +455,7 @@ export class DiagramDrawingService {
     circle.x = x;
     circle.y = y;
     circle.z = this.highlightZ;
-    circle.radius = this.settingsService.settings.ui.characterNode.radius;
+    circle.radius = this.settingsService.settings.ui.characterNode.size;
     circle.style = this.settingsService.settings.ui.newRelationship.arrow.style;
     circle.lineWidth = this.settingsService.settings.ui.characterNode.borderWidth * this.settingsService.settings.ui.newRelationship.nodeHighlightFactor;
     this.foregroundDrawables.push(circle);

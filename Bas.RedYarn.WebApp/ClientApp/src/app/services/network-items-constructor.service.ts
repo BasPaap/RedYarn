@@ -18,126 +18,77 @@ export class NetworkItemsConstructorService {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
+  private getDeepCopy<T>(object: T): T {
+    return JSON.parse(JSON.stringify(object));
+  }
+
   public getStorylineNode(storyline: Storyline) {
-    return {
-      id: storyline.id,
-      chosen: false,
-      label: storyline.name,
-      shape: this.settingsService.settings.ui.storylineNode.shape,
-      margin: this.settingsService.settings.ui.storylineNode.margin,
-      font: {
-        size: this.settingsService.settings.ui.storylineNode.fontSize
-      },
-      color: {
-        border: this.settingsService.settings.ui.storylineNode.borderColor,
-        background: this.settingsService.settings.ui.storylineNode.background,
-        highlight: { border: this.settingsService.settings.ui.storylineNode.highlightBorderColor, background: this.settingsService.settings.ui.storylineNode.background },
-        hover: { border: this.settingsService.settings.ui.storylineNode.borderColor, background: this.settingsService.settings.ui.storylineNode.background }
-      },
-      borderWidth: this.settingsService.settings.ui.storylineNode.borderWidth,
-      labelHighlightBold: this.settingsService.settings.ui.storylineNode.labelHighlightBold,
-      x: storyline.xPosition,
-      y: storyline.yPosition,
-      storyline: storyline
-    };
+    let plotElementNode = this.getDeepCopy(this.settingsService.settings.ui.storylineNode);
+    plotElementNode["id"] = storyline.id;
+    plotElementNode["label"] = storyline.name;
+    plotElementNode["x"] = storyline.xPosition;
+    plotElementNode["y"] = storyline.yPosition;
+    plotElementNode["storyline"] = storyline;
+
+    return plotElementNode;
   }
 
   public getPlotElementNode(plotElement: PlotElement) {
-    return {
-      id: plotElement.id,
-      label: plotElement.name,
-      shape: this.settingsService.settings.ui.plotElementNode.shape,
-      font: {
-        size: this.settingsService.settings.ui.plotElementNode.fontSize
-      },
-      margin: this.settingsService.settings.ui.plotElementNode.margin,
-      chosen: {
-        node: false
-      },
-      color: {
-        border: this.settingsService.settings.ui.plotElementNode.borderColor,
-        background: this.settingsService.settings.ui.plotElementNode.background,
-        highlight: { border: this.settingsService.settings.ui.plotElementNode.highlightBorderColor, background: this.settingsService.settings.ui.plotElementNode.background },
-        hover: { border: this.settingsService.settings.ui.plotElementNode.borderColor, background: this.settingsService.settings.ui.plotElementNode.background }
-      },
-      borderWidth: this.settingsService.settings.ui.plotElementNode.borderWidth,
-      labelHighlightBold: this.settingsService.settings.ui.plotElementNode.labelHighlightBold,
-      x: plotElement.xPosition,
-      y: plotElement.yPosition,
-      plotElement: plotElement
-    };
+    let plotElementNode = this.getDeepCopy(this.settingsService.settings.ui.plotElementNode);
+    plotElementNode["id"] = plotElement.id;
+    plotElementNode["label"] = plotElement.name;
+    plotElementNode["x"] = plotElement.xPosition;
+    plotElementNode["y"] = plotElement.yPosition;
+    plotElementNode["plotElement"] = plotElement;
+
+    return plotElementNode;
   }
 
   public getCharacterNode(character: Character) {
-    return {
-      id: character.id,
-      label: character.name,
-      chosen: false,
-      shape: this.settingsService.settings.ui.characterNode.shape,
-      size: this.settingsService.settings.ui.characterNode.radius,
-      image: '../../../assets/default-character.png',
-      brokenImage: this.settingsService.settings.ui.characterNode.brokenImageUri,
-      borderWidth: this.settingsService.settings.ui.characterNode.borderWidth,
-      color: {
-        border: this.settingsService.settings.ui.characterNode.borderColor,
-        highlight: { border: this.settingsService.settings.ui.characterNode.highlightBorderColor },
-        hover: { border: this.settingsService.settings.ui.characterNode.borderColor }
-      },
-      labelHighlightBold: this.settingsService.settings.ui.characterNode.labelHighlightBold,
-      x: character.xPosition,
-      y: character.yPosition,
-      character: character
-    };
+    let characterNode = this.getDeepCopy(this.settingsService.settings.ui.characterNode);
+    characterNode["id"] = character.id;
+    characterNode["label"] = character.name;
+    characterNode["x"] = character.xPosition;
+    characterNode["y"] = character.yPosition;
+    characterNode["character"] = character;
+    characterNode["image"] = '../../../assets/default-character.png';
+    return characterNode;
   }
 
   public getRelationshipEdge(relationship: Relationship) {
-    return {
-      arrows: relationship.isDirectional ? 'to' : undefined,
-      chosen: false,
-      from: relationship.fromNodeId,
-      to: relationship.toNodeId,
-      label: relationship.name,
-      smooth: {
-        type: "continuous",
-        forceDirection: "none"
-      },
-      color: { color: this.settingsService.settings.ui.relationshipEdge.color, highlight: this.settingsService.settings.ui.relationshipEdge.highlightColor },
-    };
+    let relationshipEdge = this.getDeepCopy(this.settingsService.settings.ui.relationshipEdge);
+    relationshipEdge["arrows"] = relationship.isDirectional ? 'to' : undefined;
+    relationshipEdge["from"] = relationship.fromNodeId;
+    relationshipEdge["to"] = relationship.toNodeId;
+    relationshipEdge["label"] = relationship.name;
+
+    return relationshipEdge;
   }
 
   public getCharacterPlotElementConnectionEdge(plotElementConnection: CharacterPlotElementConnection) {
-    return {
-      from: plotElementConnection.fromNodeId,
-      to: plotElementConnection.toNodeId,
-      chosen: false,
-      smooth: false,
-      dashes: true,
-      arrowStrikethrough: false,  
-      arrows: plotElementConnection.characterOwnsPlotElement ? 'from' : 'to',      
-      color: plotElementConnection.characterOwnsPlotElement ? { color: 'rgba(0,250,0,1)', highlight: 'rgba(0,250,0,1)' } :
-                                                                       { color: 'rgba(253,106,2,1)', highlight: 'rgba(253,106,2,1)' }
-    };
+    let characterPlotElementConnectionEdge = this.getDeepCopy(this.settingsService.settings.ui.characterPlotElementConnectionEdge);
+    characterPlotElementConnectionEdge["color"] = plotElementConnection.characterOwnsPlotElement ? { color: this.settingsService.settings.ui.characterOwnsPlotElementEdgeColor, highlight: this.settingsService.settings.ui.characterOwnsPlotElementEdgeColor, hover: this.settingsService.settings.ui.characterOwnsPlotElementEdgeColor } :
+      { color: this.settingsService.settings.ui.characterDoesNotOwnPlotElementEdgeColor, highlight: this.settingsService.settings.ui.characterDoesNotOwnPlotElementEdgeColor, hover: this.settingsService.settings.ui.characterDoesNotOwnPlotElementEdgeColor };
+    characterPlotElementConnectionEdge["arrows"] = plotElementConnection.characterOwnsPlotElement ? 'from' : 'to';
+    characterPlotElementConnectionEdge["from"] = plotElementConnection.fromNodeId;
+    characterPlotElementConnectionEdge["to"] = plotElementConnection.toNodeId;
+
+    return characterPlotElementConnectionEdge;
   }
 
   public getStorylineCharacterConnectionEdge(connection: Connection) {
-    return {
-      from: connection.fromNodeId,
-      to: connection.toNodeId,
-      chosen: false,
-      smooth: false,
-      color: { color: 'rgba(0,0,0,1)', highlight: 'rgba(0,0,0,1)' },
-    };
+    let storylineCharacterConnectionEdge = this.getDeepCopy(this.settingsService.settings.ui.storylineCharacterConnectionEdge);
+    storylineCharacterConnectionEdge["from"] = connection.fromNodeId;
+    storylineCharacterConnectionEdge["to"] = connection.toNodeId;
+
+    return storylineCharacterConnectionEdge;    
   }
 
   public getStorylinePlotElementConnectionEdge(connection: Connection) {
-    return {
-      from: connection.fromNodeId,
-      to: connection.toNodeId,
-      chosen: false,
-      smooth: false,
-      arrows: 'from',
-      arrowStrikethrough: false,
-      color: { color: 'rgba(0,0,0,0.5)', highlight: 'rgba(0,0,0,0.5)' },
-    };
+    let storylinePlotElementConnectionEdge = this.getDeepCopy(this.settingsService.settings.ui.storylinePlotElementConnectionEdge);
+    storylinePlotElementConnectionEdge["from"] = connection.fromNodeId;
+    storylinePlotElementConnectionEdge["to"] = connection.toNodeId;
+    
+    return storylinePlotElementConnectionEdge;    
   }
 }

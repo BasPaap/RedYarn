@@ -1,47 +1,114 @@
 {
   "isInDebugMode":  true,
   "ui": {
+    "characterOwnsPlotElementEdgeColor": "rgba(0,250,0,1)",
+    "characterDoesNotOwnPlotElementEdgeColor": "rgba(253,206,2,1)",
+    "newNodePlacementRadius": 400, // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
+
+    // VisJS-specific options for nodes and edges:
+    "newRelationship": {
+      "activationZoneWidth": 25, // Defines the width of the area around the node in which the cursor activates the new relationship arrow.
+      "nodeHighlightFactor": 2,
+      "arrow": {
+        "style": "#ff0000",
+        "lineWidth": 1,
+        "headLength": 10
+      }
+    },
     "storylineNode": {
       "shape": "box",
       "margin": 25,
-      "fontSize": 16,
-      "borderColor": "rgba(0,0,0,0.8)",
-      "background": "rgba(255,255,255,1)",
-      "highlightBorderColor": "rgba(0,0,0,1)",
+      "font": {
+        "size": 16
+      },
+      "color": {
+        "border": "rgba(0,0,0,0.8)",
+        "background": "rgba(255,255,255,1)",
+        "highlight": {
+          "border": "rgba(0,0,0,1)",
+          "background": "rgba(255,255,255,1)"
+        },
+        "hover": {
+          "border": "rgba(0,0,0,0.8)",
+          "background": "rgba(255,255,255,1)"
+        }
+      },
       "borderWidth": 1,
-      "labelHighlightBold":  false
+      "labelHighlightBold": false
     },
     "plotElementNode": {
       "shape": "box",
       "margin": 25,
-      "fontSize": 16,
-      "borderColor": "rgba(50,50,50,0.8)",
-      "background": "rgba(200,200,200,1)",
-      "highlightBorderColor": "rgba(50,50,50,1)",
+      "font": {
+        "size": 16
+      },
+      "color": {
+        "border": "rgba(50,50,50,0.8)",
+        "background": "rgba(200,200,200,1)",
+        "highlight": {
+          "border": "rgba(50,50,50,1)",
+          "background": "rgba(200,200,200,1)"
+        },
+        "hover": {
+          "border": "rgba(50,50,50,0.8)",
+          "background": "rgba(200,200,200,1)"
+        }
+      },
       "borderWidth": 1,
       "labelHighlightBold": false
     },
     "characterNode": {
       "shape": "circularImage",
-      "radius": 35,
-      "borderColor": "rgba(0,0,0,0.8)",
-      "highlightBorderColor": "rgba(0,0,0,1)",
+      "size": 35,
+      "color": {
+        "border": "rgba(0,0,0,0.8)",
+        "highlight": "rgba(0,0,0,1)",
+        "hover": "rgba(0,0,0,0.8)"
+      },
       "borderWidth": 2,
-      "brokenImageUri": "../../../assets/default-character.png",
+      "brokenImage": "../../../assets/default-character.png",
       "labelHighlightBold": false
     },
     "relationshipEdge": {
-      "color": "rgba(255,0,0,1)",
-      "highlightColor": "rgba(255,0,0,1)"
+      "smooth": {
+        "type": "continuous",
+        "forceDirection": "none"
+      },
+      "color": {
+        "color": "rgba(255,0,0,1)",
+        "highlight": "rgba(255,0,0,1)",
+        "hover": "rgba(255,0,0,1)"
+      }
     },
-    "newNodePlacementRadius": 400, // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
-    "newRelationship": {
-      "activationZoneWidth": 25, // Defines the width of the area around the node in which the cursor activates the new relationship arrow.
-      "nodeHighlightFactor":  2,
-      "arrow": {
-        "style": "#ff0000",
-        "lineWidth": 1,
-        "headLength": 10
+    "characterPlotElementConnectionEdge": {
+      "smooth": false,
+      "dashes": true,
+      "arrowStrikethrough": false,
+      "color": {
+        "color": "rgba(0,0,0,1)",
+        "highlight": "rgba(0,0,0,1)",
+        "hover": "rgba(0,0,0,1)"
+      }
+    },
+    "storylineCharacterConnectionEdge": {
+      "smooth": false,
+      "dashes": false,
+      "arrowStrikethrough": false,
+      "color": {
+        "color": "rgba(0,0,0,1)",
+        "highlight": "rgba(0,0,0,1)",
+        "hover": "rgba(0,0,0,1)"
+      }
+    },
+    "storylinePlotElementConnectionEdge": {
+      "arrows":  "from",
+      "smooth": false,
+      "dashes": false,
+      "arrowStrikethrough": false,
+      "color": {
+        "color": "rgba(0,0,0,0.5)",
+        "highlight": "rgba(0,0,0,0.5)",
+        "hover": "rgba(0,0,0,0.5)"
       }
     }
   }
