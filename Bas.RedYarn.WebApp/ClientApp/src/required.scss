@@ -33,3 +33,10 @@ mat-dialog-actions mat-spinner {
 .fullWidth {
   width: 100%;
 }
+
+h1 {
+  color: mat-color($redyarn-app-primary, 200);
+  margin: 10px;
+  user-select: none;
+}
+

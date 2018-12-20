@@ -1,6 +1,6 @@
-
-<ul>
+<h1>My diagrams</h1>
+<ul class="diagrams">
   <li *ngFor="let diagram of diagrams">
-    <a routerLink="/diagram/{{diagram.id}}">{{diagram.name}}</a>
+    <button routerLink="/diagram/{{diagram.id}}" mat-button>{{diagram.name}}</button>
   </li>
 </ul>
