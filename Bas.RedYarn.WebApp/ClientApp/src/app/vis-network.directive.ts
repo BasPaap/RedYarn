@@ -1,31 +1,25 @@
-import { Directive, Input, ElementRef, Output, EventEmitter } from '@angular/core';
-import { Network, IdType, Options } from 'vis-redyarn';
+import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { IdType, Network, Options } from 'vis-redyarn';
 import { DiagramDrawingService } from './services/diagram-drawing.service';
 import { NodeLayoutInfoService } from './services/node-layout-info.service';
 import { NodeUiService } from './services/node-ui.service';
+import { SettingsService } from './services/settings.service';
 
 @Directive({
   selector: '[appVisNetwork]'
 })
 export class VisNetworkDirective {
 
+  private options: Options;
+
   private network: Network
-  private options: Options  = {
-    physics: {
-      enabled: false
-    },
-    interaction: {
-      dragView: true,
-      hover: true
-    }
-  };
-
-
-  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private nodeLayoutInfoService: NodeLayoutInfoService, private nodeUiService: NodeUiService) { }
+  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private settingsService: SettingsService, private nodeLayoutInfoService: NodeLayoutInfoService, private nodeUiService: NodeUiService) { }
 
   @Input() public set appVisNetwork(networkData) {
 
     if (!this.network) {
+      this.options = JSON.parse(JSON.stringify(this.settingsService.settings.ui.networkOptions)); // Make a deep copy of the network options so they can change without affecting anything.
+
       this.network = new Network(this.element.nativeElement, networkData, this.options);
       this.network.on("initRedraw", _ => this.nodeUiService.onRedraw());
       this.network.on("beforeDrawing", context => this.diagramDrawingService.onDrawBackgroundUI(context));

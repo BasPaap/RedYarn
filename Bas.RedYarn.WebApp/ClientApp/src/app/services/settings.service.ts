@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { NodeOptions, EdgeOptions } from 'vis-redyarn';
+import { NodeOptions, EdgeOptions, Options } from 'vis-redyarn';
 
 export interface Settings {
   isInDebugMode: boolean;
@@ -12,6 +12,7 @@ export interface Settings {
     characterPlotElementConnectionEdge: EdgeOptions;
     storylineCharacterConnectionEdge: EdgeOptions;
     storylinePlotElementConnectionEdge: EdgeOptions;
+    networkOptions: Options;
     characterOwnsPlotElementEdgeColor: string;
     characterDoesNotOwnPlotElementEdgeColor: string;
     newNodePlacementRadius: number; // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
