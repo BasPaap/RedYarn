@@ -7,6 +7,11 @@ export interface MouseState {
   y: number
 }
 
+export interface KeyState {
+  key: string,
+  ctrlKey: boolean
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,9 +29,9 @@ export class UserInteractionService {
     return this.mouseStateSubject.asObservable();
   }
 
-  private keyUpSubject: Subject<string> = new Subject<string>();
+  private keyUpSubject: Subject<KeyState> = new Subject<KeyState>();
 
-  public get keyUpStream(): Observable<string> {
+  public get keyUpStream(): Observable<KeyState> {
     return this.keyUpSubject.asObservable();
   }
 
@@ -49,7 +54,10 @@ export class UserInteractionService {
     this.mouseStateSubject.next(this.mouseState);
   }
 
-  public onKeyUp(key: string) {
-    this.keyUpSubject.next(key);
+  public onKeyUp(key: string, ctrlKey: boolean) {
+    this.keyUpSubject.next({
+      key: key,
+      ctrlKey: ctrlKey
+    });
   }
 }

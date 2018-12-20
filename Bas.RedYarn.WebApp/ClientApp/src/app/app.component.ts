@@ -27,8 +27,8 @@ export class AppComponent {
     this.userInteractionService.onMouseMove(x, y, buttons);
   }
 
-  @HostListener('keyup', ['$event.key'])
-  onkeyup(key: string) {
-    this.userInteractionService.onKeyUp(key);
+  @HostListener('keyup', ['$event.key', '$event.ctrlKey'])
+  onkeyup(key: string, ctrlKey: boolean) {
+    this.userInteractionService.onKeyUp(key, ctrlKey);
   }
 }

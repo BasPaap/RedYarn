@@ -139,8 +139,8 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       this.isLoaded = true;
     }, error => console.error(error));
 
-    this.interactionService.keyUpStream.subscribe(key => {
-      if (key == "Delete") {
+    this.interactionService.keyUpStream.subscribe(keyState => {
+      if (keyState.key == "Delete") {
         for (let selectedEdgeId of this.visNetwork.getSelectedEdgeIds()) {
           this.deleteItemUiService.deleteEdge(this.networkData["edges"].get(selectedEdgeId.toString()));
         }
