@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatDialogModule, MatSidenavModule, MatListModule, ErrorStateMatcher, ShowOnDirtyErrorStateMatcher, MatChipsModule, MatIconModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatToolbarModule, MatProgressBarModule, MatButtonModule, MatFormFieldModule, MatCheckboxModule, MatInputModule, MatDialogModule, MatSidenavModule, MatListModule, ErrorStateMatcher, ShowOnDirtyErrorStateMatcher, MatChipsModule, MatIconModule, MatProgressSpinnerModule } from '@angular/material';
 import { MatRadioModule } from '@angular/material/radio';
 import { LoginDialogComponent } from './components/login-dialog/login-dialog.component';
 import { MainToolbarComponent } from './components/main-toolbar/main-toolbar.component';
@@ -62,7 +62,8 @@ import { MyDiagramsComponent } from './components/my-diagrams/my-diagrams.compon
     ReactiveFormsModule,
     MatChipsModule,
     MatIconModule,
-    MatProgressSpinnerModule    
+    MatProgressSpinnerModule,
+    MatProgressBarModule
   ],
   entryComponents: [
     LoginDialogComponent,
