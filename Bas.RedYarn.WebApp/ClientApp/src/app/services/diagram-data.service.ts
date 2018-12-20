@@ -121,6 +121,10 @@ export class DiagramDataService {
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string, private route: ActivatedRoute) {
   }
 
+  public getDiagrams(): Observable<Diagram[]> {
+    return this.httpClient.get<Diagram[]>(this.apiUrl + 'diagram');
+  }
+
   public getDiagram(diagramId: string): Observable<Diagram> {
     let observable = this.httpClient.get<Diagram>(this.apiUrl + `diagram/${diagramId}`).pipe(
       tap(diagram => {
