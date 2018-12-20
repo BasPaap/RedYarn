@@ -27,6 +27,7 @@
       }
     },
     "storylineNode": {
+      "shadow":  true,
       "shape": "box",
       "margin": 25,
       "font": {
@@ -48,6 +49,7 @@
       "labelHighlightBold": false
     },
     "plotElementNode": {
+      "shadow": true,
       "shape": "box",
       "margin": 25,
       "font": {
@@ -69,6 +71,7 @@
       "labelHighlightBold": false
     },
     "characterNode": {
+      "shadow": true,
       "shape": "circularImage",
       "size": 35,
       "color": {
@@ -81,6 +84,7 @@
       "labelHighlightBold": false
     },
     "relationshipEdge": {
+      "shadow": true,
       "smooth": {
         "type": "continuous",
         "forceDirection": "none"
@@ -92,6 +96,7 @@
       }
     },
     "characterPlotElementConnectionEdge": {
+      "shadow": true,
       "smooth": false,
       "dashes": true,
       "arrowStrikethrough": false,
@@ -102,6 +107,7 @@
       }
     },
     "storylineCharacterConnectionEdge": {
+      "shadow": true,
       "smooth": false,
       "dashes": false,
       "arrowStrikethrough": false,
