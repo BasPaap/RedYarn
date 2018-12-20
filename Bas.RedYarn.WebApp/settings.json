@@ -119,6 +119,7 @@
     },
     "storylinePlotElementConnectionEdge": {
       "arrows": "from",
+      "shadow": true,
       "smooth": false,
       "dashes": false,
       "arrowStrikethrough": false,
