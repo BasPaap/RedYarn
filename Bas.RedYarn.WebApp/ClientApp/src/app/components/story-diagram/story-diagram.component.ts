@@ -1,19 +1,16 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Observable, Subscription } from 'rxjs';
-import { DataSet } from 'vis-redyarn';
-import { Diagram, DiagramItemType, Character, Storyline, PlotElement, Relationship, Connection, CharacterPlotElementConnection } from '../../diagram-types';
-import { DiagramDataService } from '../../services/diagram-data.service';
-import { NodeLayoutInfoService } from '../../services/node-layout-info.service';
-import { NewConnectionUIService } from '../../services/new-connection-ui.service';
-import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
-import { VisNetworkDirective } from '../../vis-network.directive';
-import { DiagramInfoService } from '../../services/diagram-info.service';
-import { DiagramDrawingService } from 'src/app/services/diagram-drawing.service';
+import { DeleteItemUiService } from 'src/app/services/delete-item-ui.service';
 import { UserInteractionService } from 'src/app/services/user-interaction.service';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { MatDialog, MatDialogConfig } from '@angular/material';
-import { P } from '@angular/cdk/keycodes';
+import { DataSet } from 'vis-redyarn';
+import { Character, CharacterPlotElementConnection, Connection, Diagram, PlotElement, Relationship, Storyline } from '../../diagram-types';
+import { DiagramDataService } from '../../services/diagram-data.service';
+import { DiagramInfoService } from '../../services/diagram-info.service';
+import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
+import { NewConnectionUIService } from '../../services/new-connection-ui.service';
+import { NodeLayoutInfoService } from '../../services/node-layout-info.service';
+import { VisNetworkDirective } from '../../vis-network.directive';
 
 @Component({
   selector: 'app-story-diagram',
@@ -30,11 +27,10 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   public diagram: Diagram; // Used to display Diagram.name in the template.
 
   constructor(private route: ActivatedRoute,
-    private dialog: MatDialog,
+    private deleteItemUiService: DeleteItemUiService,
     private router: Router,
     private interactionService: UserInteractionService,
     private diagramDataService: DiagramDataService,
-    private diagramDrawingService: DiagramDrawingService,
     private networkItemsConstructorService: NetworkItemsConstructorService,
     private nodeLayoutInfoService: NodeLayoutInfoService,
     private diagramInfoService: DiagramInfoService,
@@ -146,93 +142,17 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     this.interactionService.keyUpStream.subscribe(key => {
       if (key == "Delete") {
         for (let selectedEdgeId of this.visNetwork.getSelectedEdgeIds()) {
-          this.deleteEdge(selectedEdgeId.toString());
+          this.deleteItemUiService.deleteEdge(this.networkData["edges"].get(selectedEdgeId.toString()));
         }
 
         for (let selectedNodeId of this.visNetwork.getSelectedNodeIds()) {
-          this.deleteNode(selectedNodeId.toString());
+          this.deleteItemUiService.deleteNode(this.networkData["nodes"].get(selectedNodeId.toString()));
         }
       }
     });
   }
 
-  private getDiagramItemTypeName(itemType: DiagramItemType): string {
-    switch (itemType) {
-      case DiagramItemType.Character:
-        return "character";
-      case DiagramItemType.Storyline:
-        return "storyline";
-      case DiagramItemType.PlotElement:
-        return "plot element";
-      case DiagramItemType.Relationship:
-        return "relationship";
-      case DiagramItemType.CharacterPlotElementConnection:
-      case DiagramItemType.StorylineCharacterConnection:
-      case DiagramItemType.StorylinePlotElementConnection:
-        return "connection";
-      default:
-        return "";
-    }
-  }
-
-  private deleteNode(nodeId: string): void {
-    let dialogConfig = new MatDialogConfig();
-    let itemType = this.diagramInfoService.getItemType(nodeId);
-
-    dialogConfig.data = {
-      title: `Delete ${this.getDiagramItemTypeName(itemType)}`,
-      message: itemType == DiagramItemType.Character ? `Are you sure you want to delete ${this.networkData["nodes"].get(nodeId).label}?` :
-        `Are you sure you want to delete this ${this.getDiagramItemTypeName(itemType)}?`,
-      action: dialogRef => {
-        switch (itemType) {
-          case DiagramItemType.Character:
-            this.diagramDataService.deleteCharacter(this.networkData["nodes"].get(nodeId).character).subscribe(_ => dialogRef.close());
-            break;
-          case DiagramItemType.Storyline:
-            this.diagramDataService.deleteStoryline(this.networkData["nodes"].get(nodeId).storyline).subscribe(_ => dialogRef.close());
-            break;
-          case DiagramItemType.PlotElement:
-            this.diagramDataService.deletePlotElement(this.networkData["nodes"].get(nodeId).plotElement).subscribe(_ => dialogRef.close());
-            break;
-          default:
-            dialogRef.close();
-            break;
-        }
-      }
-    };
-
-    this.dialog.open(ConfirmationDialogComponent, dialogConfig);
-  }
-
-  private deleteEdge(edgeId: string) : void {
-    let dialogConfig = new MatDialogConfig();
-    let itemType = this.diagramInfoService.getItemType(edgeId);
-    
-    dialogConfig.data = {
-      title: `Delete ${this.getDiagramItemTypeName(itemType)}`,
-      message: `Are you sure you want to delete this ${this.getDiagramItemTypeName(itemType)}?`,
-      action: dialogRef => {
-        switch (itemType) {
-          case DiagramItemType.Relationship:
-            this.diagramDataService.deleteRelationship(this.networkData["edges"].get(edgeId).relationship).subscribe(_ => dialogRef.close());
-            break;
-          case DiagramItemType.CharacterPlotElementConnection:
-            this.diagramDataService.deleteCharacterPlotElementConnection(this.networkData["edges"].get(edgeId).characterPlotElementConnection).subscribe(_ => dialogRef.close());
-            break;
-          case DiagramItemType.StorylineCharacterConnection:
-            this.diagramDataService.deleteStorylineCharacterConnection(this.networkData["edges"].get(edgeId).storylineCharacterConnection).subscribe(_ => dialogRef.close());
-            break;
-          case DiagramItemType.StorylinePlotElementConnection:
-            this.diagramDataService.deleteStorylinePlotElementConnection(this.networkData["edges"].get(edgeId).storylinePlotElementConnection).subscribe(_ => dialogRef.close());
-          default:
-            dialogRef.close();
-            break;
-        }
-      }
-    };
-
-    this.dialog.open(ConfirmationDialogComponent, dialogConfig);
-  }
+  
 
   private subscribeToNewConnectionStream<T>(service: Observable<T>, getEdge: (item: T) => any): Subscription {
     return service.subscribe(item => {
