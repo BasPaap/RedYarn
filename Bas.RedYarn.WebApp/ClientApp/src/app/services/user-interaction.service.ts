@@ -9,7 +9,7 @@ export interface MouseState {
 
 export interface KeyState {
   key: string,
-  ctrlKey: boolean
+  altKey: boolean
 }
 
 @Injectable({
@@ -54,10 +54,10 @@ export class UserInteractionService {
     this.mouseStateSubject.next(this.mouseState);
   }
 
-  public onKeyUp(key: string, ctrlKey: boolean) {
+  public onKeyUp(key: string, altKey: boolean) {
     this.keyUpSubject.next({
       key: key,
-      ctrlKey: ctrlKey
+      altKey: altKey
     });
   }
 }

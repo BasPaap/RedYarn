@@ -11,6 +11,10 @@ import { NetworkItemsConstructorService } from '../../services/network-items-con
 import { NewConnectionUIService } from '../../services/new-connection-ui.service';
 import { NodeLayoutInfoService } from '../../services/node-layout-info.service';
 import { VisNetworkDirective } from '../../vis-network.directive';
+import { MatDialog } from '@angular/material';
+import { NewCharacterDialogComponent } from '../new-character-dialog/new-character-dialog.component';
+import { NewStorylineDialogComponent } from '../new-storyline-dialog/new-storyline-dialog.component';
+import { NewPlotElementDialogComponent } from '../new-plot-element-dialog/new-plot-element-dialog.component';
 
 @Component({
   selector: 'app-story-diagram',
@@ -34,6 +38,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
     private networkItemsConstructorService: NetworkItemsConstructorService,
     private nodeLayoutInfoService: NodeLayoutInfoService,
     private diagramInfoService: DiagramInfoService,
+    private dialog: MatDialog,
     private newRelationshipUI: NewConnectionUIService) {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false; // Force Angular to reload even if only the parameters change.    
   }
@@ -148,6 +153,18 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
         for (let selectedNodeId of this.visNetwork.getSelectedNodeIds()) {
           this.deleteItemUiService.deleteNode(this.networkData["nodes"].get(selectedNodeId.toString()));
         }
+      }
+
+      if (keyState.altKey && keyState.key == "c") {
+        this.dialog.open(NewCharacterDialogComponent);
+      }
+
+      if (keyState.altKey && keyState.key == "s") {
+        this.dialog.open(NewStorylineDialogComponent);
+      }
+
+      if (keyState.altKey && keyState.key == "p") {
+        this.dialog.open(NewPlotElementDialogComponent);
       }
     });
   }
