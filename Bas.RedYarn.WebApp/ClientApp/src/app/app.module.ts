@@ -22,6 +22,7 @@ import { NewRelationshipDialogComponent } from './components/new-relationship-di
 import { NewCharacterPlotElementDialogComponent } from './components/new-character-plotelement-dialog/new-character-plotelement-dialog.component';
 import { DrawableDirective } from './drawable.directive';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
+import { MyDiagramsComponent } from './components/my-diagrams/my-diagrams.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ConfirmationDialogComponent } from './components/confirmation-dialog/co
     NewRelationshipDialogComponent,
     NewCharacterPlotElementDialogComponent,
     DrawableDirective,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    MyDiagramsComponent
   ],
   imports: [
     BrowserModule,
