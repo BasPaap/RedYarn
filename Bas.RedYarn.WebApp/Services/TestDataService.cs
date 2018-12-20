@@ -1,6 +1,7 @@
 ﻿using Bas.RedYarn.WebApp.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,11 @@ namespace Bas.RedYarn.WebApp.Services
 {
     sealed class TestDataService : IDataService
     {
+        public Task<Collection<DiagramListItemViewModel>> GetDiagramsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<DiagramViewModel> CreateDiagramViewModelAsync(DiagramViewModel diagramViewModel)
         {
             throw new NotImplementedException();

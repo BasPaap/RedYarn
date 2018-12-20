@@ -1,6 +1,7 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
 <#@ import namespace="System.Collections.Generic" #>
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Bas.RedYarn.WebApp.Database;
@@ -19,6 +20,17 @@ namespace Bas.RedYarn.WebApp.Services
             this.dbContext = redYarnDbContext;
 			this.getIdForModelFunc = m => (Guid)this.dbContext.Entry(m).Property(ShadowPropertyNames.Id).CurrentValue;
         }
+
+		public async Task<Collection<DiagramListItemViewModel>> GetDiagramsAsync()
+		{
+			return new Collection<DiagramListItemViewModel>(await (from d in this.dbContext.Diagrams
+																   select new DiagramListItemViewModel()
+																   {
+																		Id = EF.Property<Guid>(d, ShadowPropertyNames.Id),
+																		Name = d.Name
+																   }).ToListAsync());
+		}
+
 
 <#
 foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))

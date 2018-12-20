@@ -1,12 +1,15 @@
 ﻿<#@ include file="$(SolutionDir)common.t4" #>
 using Bas.RedYarn.WebApp.ViewModels;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace Bas.RedYarn.WebApp.Services
 {
     public interface IDataService
     {
+		Task<Collection<DiagramListItemViewModel>> GetDiagramsAsync();
+
 <#
 foreach (var viewModelName in viewModelNames.Except(extraViewModelNames))
 {
