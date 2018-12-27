@@ -35,9 +35,6 @@ export class NewStorylineDialogComponent extends DialogComponent implements OnIn
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
     this.formGroup.addControl('description', new FormControl());
-
-
-    this.isInReadMode = true;
   }
 
   ngOnInit() {

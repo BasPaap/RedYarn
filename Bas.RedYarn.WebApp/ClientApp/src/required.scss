@@ -59,8 +59,20 @@ h1 {
     opacity: 0;
   }
 
+  .mat-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  button[mat-dialog-close] {
+    display:none;
+  }
+
   /* If the form field is focused, we do want to show some of the ui: */
   .mat-focused {
+    .mat-form-field-wrapper {
+      padding-bottom: 1.34375em;
+    }
+
     .mat-form-field-subscript-wrapper {
       display: block;
     }

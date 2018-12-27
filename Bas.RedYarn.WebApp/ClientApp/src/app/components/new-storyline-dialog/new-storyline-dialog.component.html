@@ -1,19 +1,19 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="formGroup" [ngClass]="{'readMode': this.isInReadMode}">
   <h2 mat-dialog-title>New storyline</h2>
   <mat-dialog-content class="content">
-    <mat-form-field class="fullWidth" appearance="outline">
+    <mat-form-field class="fullWidth form-field-name" appearance="outline">
       <mat-label>Name</mat-label>
       <input matInput formControlName="name" cdkFocusInitial>
       <mat-error *ngIf="formGroup.controls['name'].hasError('required')">You must enter a name.</mat-error>
     </mat-form-field>
 
-    <mat-form-field class="fullWidth" appearance="outline">
+    <mat-form-field class="fullWidth" floatLabel="always" appearance="outline">
       <mat-label>Description</mat-label>
       <textarea matInput formControlName="description"></textarea>
       <mat-hint>Add a description, outline and other information about your storyline.</mat-hint>
     </mat-form-field>
-
   </mat-dialog-content>
+
   <mat-dialog-actions align="end">
     <mat-spinner *ngIf="isSubmitting" diameter="25"></mat-spinner>
     <button mat-flat-button (click)="createStoryline()" [disabled]="!formGroup.valid || isSubmitting">OK</button>
