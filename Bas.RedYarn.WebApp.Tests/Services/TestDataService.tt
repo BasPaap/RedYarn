@@ -118,5 +118,10 @@ foreach (var viewModelName in viewModelNames)
 <#
 }
 #>
+
+        public Task<Collection<DiagramListItemViewModel>> GetDiagramsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
