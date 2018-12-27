@@ -25,11 +25,6 @@ mat-dialog-actions .mat-flat-button {
   margin: 2px;
 }
 
-mat-dialog-actions mat-spinner {
-  margin-top: 10px;
-  marging-right: 5px;
-}
-
 .fullWidth {
   width: 100%;
 }
@@ -40,3 +35,38 @@ h1 {
   user-select: none;
 }
 
+.readMode {
+  h2 {
+    display: none;
+  }
+
+  .mat-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .form-field-name {
+    input.mat-input-element {
+      font-size: 24px;
+      color: mat-color($redyarn-app-primary, 200);
+    }
+  }
+
+  div.mat-form-field-outline {
+    color: transparent;
+  }
+
+  .form-field-name label {
+    opacity: 0;
+  }
+
+  /* If the form field is focused, we do want to show some of the ui: */
+  .mat-focused {
+    .mat-form-field-subscript-wrapper {
+      display: block;
+    }
+
+    label {
+      opacity: 1;
+    }
+  }
+}

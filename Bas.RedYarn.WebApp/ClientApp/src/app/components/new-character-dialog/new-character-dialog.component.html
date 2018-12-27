@@ -1,4 +1,4 @@
-<form [formGroup]="formGroup">
+<form [formGroup]="formGroup" [ngClass]="{'readMode': this.isInReadMode}">
   <h2 mat-dialog-title>New character</h2>
   <mat-dialog-content class="content">
     <mat-form-field class="fullWidth" appearance="outline">

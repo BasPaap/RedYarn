@@ -24,6 +24,7 @@ export class DialogComponent implements OnInit {
   }
 
   public formGroup: FormGroup = new FormGroup({});
+  public isInReadMode: boolean;
 
   protected toggleIsSubmitting() {
     this._isSubmitting = !this._isSubmitting;
