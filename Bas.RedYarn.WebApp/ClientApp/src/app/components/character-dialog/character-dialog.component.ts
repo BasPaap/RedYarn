@@ -8,10 +8,10 @@ import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-new-character-dialog',
-  templateUrl: './new-character-dialog.component.html',
-  styleUrls: ['./new-character-dialog.component.scss']
+  templateUrl: './character-dialog.component.html',
+  styleUrls: ['./character-dialog.component.scss']
 })
-export class NewCharacterDialogComponent extends DialogComponent implements OnInit {
+export class CharacterDialogComponent extends DialogComponent implements OnInit {
   
   public aliases: string[] = [];
   public authors: string[] = [];
@@ -34,7 +34,7 @@ export class NewCharacterDialogComponent extends DialogComponent implements OnIn
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewCharacterDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
+  constructor(private dialogRef: MatDialogRef<CharacterDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
     super();
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
     this.formGroup.addControl('description', new FormControl(''));

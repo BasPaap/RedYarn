@@ -8,10 +8,10 @@ import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-new-plot-element-dialog',
-  templateUrl: './new-plot-element-dialog.component.html',
-  styleUrls: ['./new-plot-element-dialog.component.scss']
+  templateUrl: './plot-element-dialog.component.html',
+  styleUrls: ['./plot-element-dialog.component.scss']
 })
-export class NewPlotElementDialogComponent extends DialogComponent implements OnInit {
+export class PlotElementDialogComponent extends DialogComponent implements OnInit {
 
   public createPlotElement(): void {
     if (this.formGroup.valid) {
@@ -30,7 +30,7 @@ export class NewPlotElementDialogComponent extends DialogComponent implements On
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewPlotElementDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
+  constructor(private dialogRef: MatDialogRef<PlotElementDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

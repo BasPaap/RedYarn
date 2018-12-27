@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewStorylineDialogComponent } from './new-storyline-dialog.component';
+import { StorylineDialogComponent } from './storyline-dialog.component';
 
-describe('NewStorylineDialogComponent', () => {
-  let component: NewStorylineDialogComponent;
-  let fixture: ComponentFixture<NewStorylineDialogComponent>;
+describe('StorylineDialogComponent', () => {
+  let component: StorylineDialogComponent;
+  let fixture: ComponentFixture<StorylineDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewStorylineDialogComponent ]
+      declarations: [ StorylineDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewStorylineDialogComponent);
+    fixture = TestBed.createComponent(StorylineDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { NewCharacterDialogComponent } from '../new-character-dialog/new-character-dialog.component';
-import { NewPlotElementDialogComponent } from '../new-plot-element-dialog/new-plot-element-dialog.component';
-import { NewStorylineDialogComponent } from '../new-storyline-dialog/new-storyline-dialog.component';
+import { CharacterDialogComponent } from '../character-dialog/character-dialog.component';
+import { PlotElementDialogComponent } from '../plot-element-dialog/plot-element-dialog.component';
+import { StorylineDialogComponent } from '../storyline-dialog/storyline-dialog.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,14 +17,14 @@ export class SidebarComponent implements OnInit {
   }
 
   public onNewCharacterClick() {
-    this.dialog.open(NewCharacterDialogComponent);
+    this.dialog.open(CharacterDialogComponent);
   }
 
   public onNewStorylineClick() {
-    this.dialog.open(NewStorylineDialogComponent);
+    this.dialog.open(StorylineDialogComponent);
   }
 
   public onNewPlotElementClick() {
-    this.dialog.open(NewPlotElementDialogComponent);
+    this.dialog.open(PlotElementDialogComponent);
   }
 }

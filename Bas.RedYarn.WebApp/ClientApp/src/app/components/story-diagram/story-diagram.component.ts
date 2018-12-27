@@ -12,9 +12,9 @@ import { NewConnectionUIService } from '../../services/new-connection-ui.service
 import { NodeLayoutInfoService } from '../../services/node-layout-info.service';
 import { VisNetworkDirective } from '../../vis-network.directive';
 import { MatDialog } from '@angular/material';
-import { NewCharacterDialogComponent } from '../new-character-dialog/new-character-dialog.component';
-import { NewStorylineDialogComponent } from '../new-storyline-dialog/new-storyline-dialog.component';
-import { NewPlotElementDialogComponent } from '../new-plot-element-dialog/new-plot-element-dialog.component';
+import { CharacterDialogComponent } from '../character-dialog/character-dialog.component';
+import { StorylineDialogComponent } from '../storyline-dialog/storyline-dialog.component';
+import { PlotElementDialogComponent } from '../plot-element-dialog/plot-element-dialog.component';
 
 @Component({
   selector: 'app-story-diagram',
@@ -156,15 +156,15 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
       }
 
       if (keyState.altKey && keyState.key == "c") {
-        this.dialog.open(NewCharacterDialogComponent);
+        this.dialog.open(CharacterDialogComponent);
       }
 
       if (keyState.altKey && keyState.key == "s") {
-        this.dialog.open(NewStorylineDialogComponent);
+        this.dialog.open(StorylineDialogComponent);
       }
 
       if (keyState.altKey && keyState.key == "p") {
-        this.dialog.open(NewPlotElementDialogComponent);
+        this.dialog.open(PlotElementDialogComponent);
       }
     });
   }

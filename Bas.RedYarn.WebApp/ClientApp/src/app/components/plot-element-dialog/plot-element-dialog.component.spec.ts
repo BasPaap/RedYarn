@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewPlotElementDialogComponent } from './new-plot-element-dialog.component';
+import { PlotElementDialogComponent } from './plot-element-dialog.component';
 
-describe('NewPlotElementDialogComponent', () => {
-  let component: NewPlotElementDialogComponent;
-  let fixture: ComponentFixture<NewPlotElementDialogComponent>;
+describe('PlotElementDialogComponent', () => {
+  let component: PlotElementDialogComponent;
+  let fixture: ComponentFixture<PlotElementDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NewPlotElementDialogComponent ]
+      declarations: [ PlotElementDialogComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewPlotElementDialogComponent);
+    fixture = TestBed.createComponent(PlotElementDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

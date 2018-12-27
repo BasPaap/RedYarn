@@ -8,10 +8,10 @@ import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-new-storyline-dialog',
-  templateUrl: './new-storyline-dialog.component.html',
-  styleUrls: ['./new-storyline-dialog.component.scss']
+  templateUrl: './storyline-dialog.component.html',
+  styleUrls: ['./storyline-dialog.component.scss']
 })
-export class NewStorylineDialogComponent extends DialogComponent implements OnInit {
+export class StorylineDialogComponent extends DialogComponent implements OnInit {
 
   public createStoryline(): void {
     if (this.formGroup.valid) {
@@ -30,7 +30,7 @@ export class NewStorylineDialogComponent extends DialogComponent implements OnIn
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<NewStorylineDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
+  constructor(private dialogRef: MatDialogRef<StorylineDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
     super();
 
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));

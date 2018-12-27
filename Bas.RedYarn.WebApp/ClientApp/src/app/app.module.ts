@@ -12,11 +12,11 @@ import { StoryDiagramComponent } from './components/story-diagram/story-diagram.
 import { AppRoutingModule } from './app-routing.module';
 import { NewDiagramDialogComponent } from './components/new-diagram-dialog/new-diagram-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NewCharacterDialogComponent } from './components/new-character-dialog/new-character-dialog.component';
+import { CharacterDialogComponent } from './components/character-dialog/character-dialog.component';
 import { ChipsInputComponent } from './components/chips-input/chips-input.component';
-import { NewStorylineDialogComponent } from './components/new-storyline-dialog/new-storyline-dialog.component';
+import { StorylineDialogComponent } from './components/storyline-dialog/storyline-dialog.component';
 import { VisNetworkDirective } from './vis-network.directive';
-import { NewPlotElementDialogComponent } from './components/new-plot-element-dialog/new-plot-element-dialog.component';
+import { PlotElementDialogComponent } from './components/plot-element-dialog/plot-element-dialog.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { NewRelationshipDialogComponent } from './components/new-relationship-dialog/new-relationship-dialog.component';
 import { NewCharacterPlotElementDialogComponent } from './components/new-character-plotelement-dialog/new-character-plotelement-dialog.component';
@@ -33,10 +33,10 @@ import { MyDiagramsComponent } from './components/my-diagrams/my-diagrams.compon
     StoryDiagramComponent,
     VisNetworkDirective,
     NewDiagramDialogComponent,
-    NewCharacterDialogComponent,
+    CharacterDialogComponent,
     ChipsInputComponent,
-    NewStorylineDialogComponent,
-    NewPlotElementDialogComponent,
+    StorylineDialogComponent,
+    PlotElementDialogComponent,
     DialogComponent,
     NewRelationshipDialogComponent,
     NewCharacterPlotElementDialogComponent,
@@ -68,9 +68,9 @@ import { MyDiagramsComponent } from './components/my-diagrams/my-diagrams.compon
   entryComponents: [
     LoginDialogComponent,
     NewDiagramDialogComponent,
-    NewCharacterDialogComponent,
-    NewStorylineDialogComponent,
-    NewPlotElementDialogComponent,
+    CharacterDialogComponent,
+    StorylineDialogComponent,
+    PlotElementDialogComponent,
     NewRelationshipDialogComponent,
     NewCharacterPlotElementDialogComponent,
     ConfirmationDialogComponent
