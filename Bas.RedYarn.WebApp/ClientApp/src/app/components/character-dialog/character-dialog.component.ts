@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Guid } from '../../../Guid';
 import { DiagramDataService } from '../../services/diagram-data.service';
 import { NetworkItemsConstructorService } from '../../services/network-items-constructor.service';
@@ -34,10 +34,23 @@ export class CharacterDialogComponent extends DialogComponent implements OnInit 
     }
   }
 
-  constructor(private dialogRef: MatDialogRef<CharacterDialogComponent>, private diagramDataService: DiagramDataService, private networkGeneratorService: NetworkItemsConstructorService) {
+  constructor(private dialogRef: MatDialogRef<CharacterDialogComponent>,
+              private diagramDataService: DiagramDataService,
+              private networkGeneratorService: NetworkItemsConstructorService,
+              @Inject(MAT_DIALOG_DATA) data) {
     super();
+
     this.formGroup.addControl('name', new FormControl('', [Validators.required]));
     this.formGroup.addControl('description', new FormControl(''));
+
+
+    if (data) {
+      this.isInReadMode = true;
+      this.formGroup.controls['name'].setValue(data.name);
+      this.formGroup.controls['description'].setValue(data.description);
+      this.aliases = data.aliases;
+      this.authors = data.authors;
+    }
   }
 
   ngOnInit() {

@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material';
 import { CharacterDialogComponent } from '../character-dialog/character-dialog.component';
 import { StorylineDialogComponent } from '../storyline-dialog/storyline-dialog.component';
 import { PlotElementDialogComponent } from '../plot-element-dialog/plot-element-dialog.component';
+import { ReadItemUiService } from 'src/app/services/read-item-ui.service';
 
 @Component({
   selector: 'app-story-diagram',
@@ -31,6 +32,7 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   public diagram: Diagram; // Used to display Diagram.name in the template.
 
   constructor(private route: ActivatedRoute,
+    private readItemUiService: ReadItemUiService,
     private deleteItemUiService: DeleteItemUiService,
     private router: Router,
     private interactionService: UserInteractionService,
@@ -51,11 +53,17 @@ export class StoryDiagramComponent implements OnInit, OnDestroy {
   public get visNetwork(): VisNetworkDirective {
     return this._visNetwork;
   }
+
+  public onDoubleClick(eventArgs: any): void {
+    if (eventArgs.nodes.length > 0) {
+      this.readItemUiService.readNode(this.networkData["nodes"].get(eventArgs.nodes[0]));
+    }
+  }
   
-  public onDragEnd(event: any): void {
+  public onDragEnd(eventArgs: any): void {
     let draggedNodes = this.networkData["nodes"].get({
       filter: function (item) {
-        return (event.nodes.includes(item.id));
+        return (eventArgs.nodes.includes(item.id));
       }
     });
 

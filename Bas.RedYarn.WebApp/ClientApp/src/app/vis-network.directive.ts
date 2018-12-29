@@ -1,7 +1,6 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import { IdType, Network, Options } from 'vis-redyarn';
 import { DiagramDrawingService } from './services/diagram-drawing.service';
-import { NodeLayoutInfoService } from './services/node-layout-info.service';
 import { NodeUiService } from './services/node-ui.service';
 import { SettingsService } from './services/settings.service';
 
@@ -12,8 +11,12 @@ export class VisNetworkDirective {
 
   private options: Options;
 
-  private network: Network
-  constructor(private element: ElementRef, private diagramDrawingService: DiagramDrawingService, private settingsService: SettingsService, private nodeLayoutInfoService: NodeLayoutInfoService, private nodeUiService: NodeUiService) { }
+  private network: Network;
+
+  constructor(private element: ElementRef,
+    private diagramDrawingService: DiagramDrawingService,
+    private settingsService: SettingsService,
+    private nodeUiService: NodeUiService) { }
 
   @Input() public set appVisNetwork(networkData) {
 
@@ -33,6 +36,11 @@ export class VisNetworkDirective {
         this.dragEnd.emit(params);
       });
       this.network.on("dragging", params => this.dragging.emit(params));
+      this.network.on("doubleClick", params => {
+        if (params.nodes.length > 0 || params.edges.length > 0) {
+          this.doubleClick.emit(params);
+        }
+      });
 
       this.element.nativeElement.childNodes[0].style.outline = "none"; // Visjs appears to overwrite any style you set on the div in the container, so we'll need to manually set it after creation.
     }
@@ -46,12 +54,13 @@ export class VisNetworkDirective {
   public get isViewDraggingEnabled(): boolean {
     return this.options.interaction.dragView;
   }
-    
+
   public set isViewDraggingEnabled(value: boolean) {
     this.options.interaction.dragView = value;
     this.network.setOptions(this.options);
   }
 
+  @Output() public doubleClick: EventEmitter<any> = new EventEmitter();
   @Output() public dragStart: EventEmitter<any> = new EventEmitter();
   @Output() public dragEnd: EventEmitter<any> = new EventEmitter();
   @Output() public dragging: EventEmitter<any> = new EventEmitter();
@@ -92,7 +101,7 @@ export class VisNetworkDirective {
     return [position.x, position.y];
   }
 
-  public getSelectedEdgeIds() : IdType[] {
+  public getSelectedEdgeIds(): IdType[] {
     return this.network.getSelectedEdges();
   }
 

@@ -1,5 +1,5 @@
 <mat-progress-bar mode="indeterminate" *ngIf="!isLoaded" color="primary"></mat-progress-bar>
 <h1>{{diagram?.name || ""}}</h1>
 <!--<mat-spinner *ngIf="!isLoaded" diameter="100" ></mat-spinner>-->
-<div [appVisNetwork]="networkData" class="vis-network-container" (dragStart)="onDragStart($event)" (dragEnd)="onDragEnd($event)" (dragging)="onDragging($event)" ng-mouseup="onMouseMove($event)"></div>
+<div [appVisNetwork]="networkData" class="vis-network-container" (doubleClick)="onDoubleClick($event)" (dragStart)="onDragStart($event)" (dragEnd)="onDragEnd($event)" (dragging)="onDragging($event)" ng-mouseup="onMouseMove($event)"></div>
 
