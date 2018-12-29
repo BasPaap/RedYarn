@@ -45,15 +45,12 @@ export class SettingsService {
 
   public load(): Promise<any> {
     // Because this method is called by a factory function for the APP_INITIALIZE provider, we need to return a Promise.
-    console.log("before get");
     const promise = this.httpClient.get<Settings>(this.apiUrl + 'settings')
       .toPromise()
       .then(loadedSettings => {
-        console.log("inside then");
         this.settings = loadedSettings;
         return loadedSettings;
       });
-    console.log("returning");
     return promise;
   }
 }
