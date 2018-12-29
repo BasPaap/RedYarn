@@ -2,7 +2,7 @@
   "isInDebugMode":  true,
   "ui": {
     "characterOwnsPlotElementEdgeColor": "rgba(0,250,0,1)",
-    "characterDoesNotOwnPlotElementEdgeColor": "rgba(253,206,2,1)",
+    "characterDoesNotOwnPlotElementEdgeColor": "rgba(253,106,2,1)",
     "newNodePlacementRadius": 400, // Radius of the circle around the diagram's origin into which new nodes will be randomly placed, to avoid nodes being placed on top of each other.
 
     // VisJS-specific network-options:
