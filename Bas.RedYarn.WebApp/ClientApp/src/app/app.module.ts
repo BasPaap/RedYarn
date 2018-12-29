@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +23,7 @@ import { NewCharacterPlotElementDialogComponent } from './components/new-charact
 import { DrawableDirective } from './drawable.directive';
 import { ConfirmationDialogComponent } from './components/confirmation-dialog/confirmation-dialog.component';
 import { MyDiagramsComponent } from './components/my-diagrams/my-diagrams.component';
+import { settingsFactory, SettingsService } from './services/settings.service';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,10 @@ import { MyDiagramsComponent } from './components/my-diagrams/my-diagrams.compon
     NewCharacterPlotElementDialogComponent,
     ConfirmationDialogComponent
   ],
-  providers: [{ provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
+  providers: [
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+    { provide: APP_INITIALIZER, useFactory: settingsFactory, multi: true, deps: [SettingsService] } // Ensure that settings are loaded during app initialization
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

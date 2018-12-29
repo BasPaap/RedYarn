@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { NodeOptions, EdgeOptions, Options } from 'vis-redyarn';
 
+
 export interface Settings {
   isInDebugMode: boolean;
   ui: {
@@ -28,6 +29,11 @@ export interface Settings {
   }
 }
 
+// Factory function for the APP_INITIALIZE provider, to ensure that settings are loaded during the initialization.
+export function settingsFactory(settingsService: SettingsService) {
+  return () => settingsService.load();
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,7 +43,18 @@ export class SettingsService {
 
   constructor(private httpClient: HttpClient, @Inject('API_URL') private apiUrl: string) { }
 
-  public load() {
-    this.httpClient.get<Settings>(this.apiUrl + 'settings').subscribe(loadedSettings => this.settings = loadedSettings);
+  public load(): Promise<any> {
+    // Because this method is called by a factory function for the APP_INITIALIZE provider, we need to return a Promise.
+    console.log("before get");
+    const promise = this.httpClient.get<Settings>(this.apiUrl + 'settings')
+      .toPromise()
+      .then(loadedSettings => {
+        console.log("inside then");
+        this.settings = loadedSettings;
+        return loadedSettings;
+      });
+    console.log("returning");
+    return promise;
   }
 }
+

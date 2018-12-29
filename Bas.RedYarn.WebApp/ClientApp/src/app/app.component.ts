@@ -14,8 +14,7 @@ export class AppComponent {
 
   @ViewChild(MatSidenav) sideNav: MatSidenav;
 
-  constructor(private userInteractionService: UserInteractionService, private settingsService: SettingsService, private router: Router) {
-    this.settingsService.load();
+  constructor(private userInteractionService: UserInteractionService, private router: Router) {
 
     router.events.subscribe(event => {
       // If we are navigating to a diagram, open the sidenav.
