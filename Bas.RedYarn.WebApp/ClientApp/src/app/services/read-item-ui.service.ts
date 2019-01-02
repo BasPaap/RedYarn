@@ -16,6 +16,7 @@ export class ReadItemUiService {
   
   public readNode(node: any): void {
     let dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
     let itemType = this.diagramInfoService.getItemType(node.id);
 
     switch (itemType) {
