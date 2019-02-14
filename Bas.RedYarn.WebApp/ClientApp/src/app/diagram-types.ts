@@ -24,10 +24,15 @@ export interface Alias {
   name: string;
 }
 
+export interface Author {
+  name: string;
+}
+
 export interface Character extends Node {
   name: string;
   description?: any;
   aliases: Alias[];
+  authors: Author[];
 }
 
 export interface Storyline extends Node {
