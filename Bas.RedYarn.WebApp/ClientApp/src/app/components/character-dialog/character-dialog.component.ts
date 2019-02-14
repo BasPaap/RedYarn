@@ -25,6 +25,7 @@ export class CharacterDialogComponent extends DialogComponent implements OnInit 
         name: this.formGroup.controls['name'].value,
         description: this.formGroup.controls['description'].value,
         aliases: this.aliases.map(alias => { return { id: Guid.empty, name: alias } }),
+        authors: this.authors.map(author => { return { id: Guid.empty, name: author } }),
         xPosition: this.networkGeneratorService.getStartingCoordinate(),
         yPosition: this.networkGeneratorService.getStartingCoordinate()
       };
