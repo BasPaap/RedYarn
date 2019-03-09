@@ -26,8 +26,9 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <mat-spinner *ngIf="isSubmitting" diameter="25"></mat-spinner>
-    <button mat-flat-button (click)="createCharacter()" [disabled]="!formGroup.valid || isSubmitting">OK</button>
-    <button mat-flat-button mat-dialog-close [disabled]="isSubmitting">Cancel</button>
+    <button *ngIf="isInReadMode" mat-flat-button mat-dialog-close>OK2</button>
+    <button *ngIf="!isInReadMode" mat-flat-button (click)="createCharacter()" [disabled]="!formGroup.valid || isSubmitting">OK</button>
+    <button *ngIf="!isInReadMode" mat-flat-button mat-dialog-close [disabled]="isSubmitting">Cancel</button>
   </mat-dialog-actions>
   <!--<default-dialog-actions (submit)="onSubmit()" [isSubmitting]="isSubmitting" [formGroup]="formGroup"></default-dialog-actions>-->
 </form>
