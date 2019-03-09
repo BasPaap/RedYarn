@@ -3,7 +3,7 @@
   <mat-label>{{label}}</mat-label>
   <mat-chip-list #chipsInputChipList>
     <mat-chip *ngFor="let value of values" [removable]="removable" (removed)="remove(value)" color="primary" selected>
-      {{value}}
+      {{value.name}}
       <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
     </mat-chip>
     <input [matChipInputFor]="chipsInputChipList"

@@ -1,6 +1,12 @@
 import { ENTER, SEMICOLON } from '@angular/cdk/keycodes';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material';
+import { Guid } from 'src/Guid';
+
+export interface ChipValue {
+  id: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-chips-input',
@@ -18,18 +24,24 @@ export class ChipsInputComponent implements OnInit {
   @Input() public firstHint: string;
   @Input() public secondHint: string;
 
-  @Input() public values: string[] = [];
-  @Output() public valuesChange = new EventEmitter<string[]>();
+  @Input() public values: ChipValue[] = [];
+  @Output() public valuesChange = new EventEmitter<ChipValue[]>();
   
   public readonly separatorKeyCodes: number[] = [ENTER, SEMICOLON];
   public removable = true;
 
   public add(event: MatChipInputEvent): void {
     const input = event.input;
-    const value = event.value;
+    const name = event.value;
 
-    if ((value || '').trim()) {
-      this.values.push(value.trim());
+    if ((name || '').trim()) {
+
+      let value = {
+        id: Guid.empty,
+        name: name.trim()
+      };
+
+      this.values.push(value);
     }
 
     // Reset the input value
@@ -40,7 +52,7 @@ export class ChipsInputComponent implements OnInit {
     this.valuesChange.emit(this.values);
   }
 
-  public remove(value: string): void {
+  public remove(value: ChipValue): void {
     const index = this.values.indexOf(value);
 
     if (index >= 0) {
