@@ -18,6 +18,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
         public float XPosition { get; set; }
         public float YPosition { get; set; }
         public Collection<AliasViewModel> Aliases { get; } = new Collection<AliasViewModel>();
+        public Collection<AuthorViewModel> Authors { get; } = new Collection<AuthorViewModel>();
 
         public CharacterViewModel()
         {
@@ -51,6 +52,7 @@ namespace Bas.RedYarn.WebApp.ViewModels
             XPosition = viewModel.XPosition;
             YPosition = viewModel.YPosition;
             Aliases.AddRange(viewModel.Aliases);
+            Authors.AddRange(viewModel.Authors);
         }
 
         /// <summary>
@@ -94,6 +96,11 @@ namespace Bas.RedYarn.WebApp.ViewModels
             character.Aliases.AddRange(this.Aliases.Select(alias => new Alias()
             {
                 Name = alias.Name
+            }));
+
+            character.Authors.AddRange(this.Authors.Select(author => new Author()
+            {
+                Name = author.Name
             }));
 
             return character;
