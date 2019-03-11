@@ -130,8 +130,13 @@ namespace Bas.RedYarn.WebApp.ViewModels
             // Only set the properties we can set, so don't set shadow properties like the Id.
             model.Name = Name;
             model.Description = Description;
+
+            // Aliases are specific to this character, so we can safely delete all aliases attached to the model and add the ones in this viewmodel.
             model.Aliases.Clear();
             model.Aliases.AddRange(Aliases.Select(aliasViewModel => new Alias() { Name = aliasViewModel.Name }));
+
+            model.Authors.Clear();
+            model.Authors.AddRange(Authors.Select(authorViewModel => new Author() { Name = authorViewModel.Name }));
         }
 
         /// <summary>
